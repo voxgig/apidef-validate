@@ -1,7 +1,9 @@
 /* Copyright (c) 2025 Voxgig Ltd, MIT License */
 
+import * as Fs from 'node:fs'
 import { test, describe } from 'node:test'
-import { expect } from '@hapi/code'
+
+import { expect, fail } from '@hapi/code'
 
 import { ApiDef } from '@voxgig/apidef'
 
@@ -17,6 +19,16 @@ import {
 
 
 
+type FST = typeof Fs
+
+
+type Case = {
+  name: string
+  version: string
+  spec: string
+  format: string
+}
+
 
 describe('main', () => {
 
@@ -25,20 +37,43 @@ describe('main', () => {
   })
 
 
-  test('core', async () => {
+  test('core-case', async () => {
+    const caseSelector = process.env.npm_config_case
 
-    const cases = [
-      { name: 'solar', version: '1.0.0', format: 'openapi-3.0.0' }
+    let cases: Case[] = [
+      { name: 'solar', version: '1.0.0', format: 'yaml', spec: 'openapi-3.0.0' },
+      { name: 'taxonomy', version: '1.0.0', format: 'yaml', spec: 'openapi-3.1.0' },
+      { name: 'learnworlds', version: '2', format: 'yaml', spec: 'openapi-3.1.0' },
+      { name: 'statuspage', version: '1.0.0', format: 'json', spec: 'openapi-3.0.0' },
+
     ]
+
+    if ('string' === typeof caseSelector) {
+      cases = cases.filter(c => c.name.includes(caseSelector))
+    }
 
     const { fs, vol } = prepfs(cases)
 
-    for (let kase of cases) {
-      console.log('CASE', kase)
-      const build = await makeBuild(kase, fs)
-      const bres = await runBuild(kase, build)
+    const fails: any[] = []
 
-      validateGuide(kase, fs, vol)
+    for (let c of cases) {
+      try {
+        const build = await makeBuild(c, fs)
+        const bres = await runBuild(c, build)
+        if (!bres.ok) {
+          fails.push(JSON.stringify(bres, null, 2))
+        }
+        validateGuide(c, fails, fs, vol)
+      }
+      catch (err: any) {
+        console.error(err)
+        fails.push(JSON.stringify({ ...err }, null, 2))
+      }
+
+    }
+
+    if (0 < fails.length) {
+      fail(fails.join('\n---\n'))
     }
 
   })
@@ -49,12 +84,17 @@ describe('main', () => {
 })
 
 
+function fullname(c: Case) {
+  return `${c.name}-${c.version}-${c.spec}`
+}
 
-function prepfs(cases: any[]) {
+
+function prepfs(cases: Case[]) {
   const vol = {
     'model': {
       'guide':
-        cases.reduce((a: any, n: any) => (a[n.name + '-guide.jsonic'] = 'guide:{}', a), {})
+        cases.reduce((a: any, c: Case) =>
+          (a[fullname(c) + '-guide.jsonic'] = 'guide:{}', a), {})
     }
   }
 
@@ -66,9 +106,9 @@ function prepfs(cases: any[]) {
 
 
 
-async function makeBuild(kase: any, fs: any) {
+async function makeBuild(c: Case, fs: FST) {
   let folder = '/model'
-  let outprefix = kase.name + '-'
+  let outprefix = fullname(c) + '-'
 
   const build = await ApiDef.makeBuild({
     fs,
@@ -81,11 +121,11 @@ async function makeBuild(kase: any, fs: any) {
 }
 
 
-async function runBuild(kase: any, build: any) {
+async function runBuild(c: Case, build: any) {
   const bres = await build(
     {
-      name: kase.name,
-      def: `${kase.name}-${kase.version}-${kase.format}.yaml`
+      name: c.name,
+      def: fullname(c) + '.' + c.format
     },
     {
       spec: {
@@ -113,20 +153,49 @@ async function runBuild(kase: any, build: any) {
 
 
 
-function validateGuide(kase: any, fs: any, vol: any) {
+function validateGuide(c: Case, fails: any[], fs: FST, vol: any) {
+  const cfn = fullname(c)
 
   const volJSON = vol.toJSON()
-  const baseGuide = volJSON[`/model/guide/${kase.name}-base-guide.jsonic`].trim()
-  // console.log('<' + baseGuide + '>')
+  const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim()
+
+  // if ('statuspage' === c.name) {
+  //   console.log('BASE:' + cfn + '<' + baseGuide + '>')
+  // }
 
   const expectedBaseGuide = fs.readFileSync(__dirname + '/../guide/' +
-    `${kase.name}-${kase.version}-${kase.format}-base-guide.jsonic`, 'utf8').trim()
+    `${cfn}-base-guide.jsonic`, 'utf8').trim()
 
   // console.log('<' + expectedBaseGuide + '>')
 
   if (expectedBaseGuide !== baseGuide) {
-    const difflines = Diff.diffLines(baseGuide, expectedBaseGuide)
-    console.log(difflines)
-    expect(baseGuide).equal(expectedBaseGuide)
+    const difflines = Diff.diffLines(expectedBaseGuide, baseGuide)
+    // console.log(difflines)
+    fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines))
   }
+}
+
+
+function prettyDiff(difflines: any[]) {
+  const out: string[] = []
+
+  difflines.forEach((part: any) => {
+    if (part.added) {
+      out.push('\x1b[38;5;220m<<<<<<< GENERATED\n')
+      out.push(part.value)
+      out.push('>>>>>>> GENERATED\n\x1b[0m')
+    }
+    else if (part.removed) {
+      out.push('\x1b[92m<<<<<<< EXISTING\n')
+      out.push(part.value)
+      out.push('>>>>>>> EXISTING\n\x1b[0m')
+    }
+    else {
+      out.push(part.value)
+    }
+  })
+
+  const content = out.join('')
+  return content
+
 }

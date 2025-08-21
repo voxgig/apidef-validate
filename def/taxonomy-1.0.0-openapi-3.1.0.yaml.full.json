@@ -1,0 +1,1397 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Taxonomy API",
+    "version": "1.0.0",
+    "description": "CRUD-style API for biological taxonomy: Domain → Kingdom → Phylum → Class → Order → Family → Genus → Species.\n"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Domain"
+    },
+    {
+      "name": "Kingdom"
+    },
+    {
+      "name": "Phylum"
+    },
+    {
+      "name": "Class"
+    },
+    {
+      "name": "Order"
+    },
+    {
+      "name": "Family"
+    },
+    {
+      "name": "Genus"
+    },
+    {
+      "name": "Species"
+    }
+  ],
+  "paths": {
+    "/{year}/domain": {
+      "get": {
+        "tags": [
+          "Domain"
+        ],
+        "summary": "List domains",
+        "operationId": "listDomains",
+        "parameters": [
+          {
+            "x-ref": "#/components/parameters/Year",
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "Calendar year for the dataset view.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "x-ref": "#/components/parameters/Page",
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "1-based page index",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "x-ref": "#/components/parameters/PageSize",
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "description": "Items per page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-ref": "#/components/responses/PaginatedTaxaResponse",
+            "description": "A paginated list of taxa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "x-ref": "#/components/schemas/PaginatedTaxa",
+                  "type": "object",
+                  "required": [
+                    "items",
+                    "page",
+                    "pageSize",
+                    "total"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "x-ref": "#/components/schemas/Taxon",
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "rank"
+                        ],
+                        "properties": {
+                          "id": {
+                            "x-ref": "#/components/schemas/Id",
+                            "type": "string",
+                            "pattern": "^[A-Za-z0-9_.-]+$",
+                            "description": "URL-safe identifier",
+                            "examples": [
+                              "eukarya",
+                              "animalia",
+                              "chordata"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "examples": [
+                              "Animalia",
+                              "Chordata",
+                              "Mammalia"
+                            ]
+                          },
+                          "rank": {
+                            "type": "string",
+                            "enum": [
+                              "domain",
+                              "kingdom",
+                              "phylum",
+                              "class",
+                              "order",
+                              "family",
+                              "genus",
+                              "species"
+                            ]
+                          },
+                          "parentId": {
+                            "allOf": [
+                              {
+                                "x-ref": "#/components/schemas/Id",
+                                "type": "string",
+                                "pattern": "^[A-Za-z0-9_.-]+$",
+                                "description": "URL-safe identifier",
+                                "examples": [
+                                  "eukarya",
+                                  "animalia",
+                                  "chordata"
+                                ]
+                              }
+                            ],
+                            "nullable": true,
+                            "description": "ID of the parent taxon in the hierarchy"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "description": "Year view this record belongs to"
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "additionalProperties": true
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "pageSize": {
+                      "type": "integer"
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "x-ref": "#/components/responses/Error",
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "x-ref": "#/components/schemas/Error",
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "Machine-readable error code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Human-readable error message"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{year}/domain/{id}": {
+      "get": {
+        "tags": [
+          "Domain"
+        ],
+        "summary": "Get a domain",
+        "operationId": "getDomain",
+        "parameters": [
+          {
+            "x-ref": "#/components/parameters/Year",
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "Calendar year for the dataset view.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identifier of the domain",
+            "schema": {
+              "x-ref": "#/components/schemas/Id",
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+$",
+              "description": "URL-safe identifier",
+              "examples": [
+                "eukarya",
+                "animalia",
+                "chordata"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-ref": "#/components/responses/OkTaxon",
+            "description": "The requested taxon",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "x-ref": "#/components/schemas/Taxon",
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "rank"
+                  ],
+                  "properties": {
+                    "id": {
+                      "x-ref": "#/components/schemas/Id",
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_.-]+$",
+                      "description": "URL-safe identifier",
+                      "examples": [
+                        "eukarya",
+                        "animalia",
+                        "chordata"
+                      ]
+                    },
+                    "name": {
+                      "type": "string",
+                      "examples": [
+                        "Animalia",
+                        "Chordata",
+                        "Mammalia"
+                      ]
+                    },
+                    "rank": {
+                      "type": "string",
+                      "enum": [
+                        "domain",
+                        "kingdom",
+                        "phylum",
+                        "class",
+                        "order",
+                        "family",
+                        "genus",
+                        "species"
+                      ]
+                    },
+                    "parentId": {
+                      "allOf": [
+                        {
+                          "x-ref": "#/components/schemas/Id",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "description": "URL-safe identifier",
+                          "examples": [
+                            "eukarya",
+                            "animalia",
+                            "chordata"
+                          ]
+                        }
+                      ],
+                      "nullable": true,
+                      "description": "ID of the parent taxon in the hierarchy"
+                    },
+                    "year": {
+                      "type": "integer",
+                      "description": "Year view this record belongs to"
+                    },
+                    "attributes": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "x-ref": "#/components/responses/Error",
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "x-ref": "#/components/schemas/Error",
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "Machine-readable error code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Human-readable error message"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Domain"
+        ],
+        "summary": "Update a domain",
+        "operationId": "updateDomain",
+        "parameters": [
+          {
+            "x-ref": "#/components/parameters/Year",
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "Calendar year for the dataset view.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identifier of the domain",
+            "schema": {
+              "x-ref": "#/components/schemas/Id",
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+$",
+              "description": "URL-safe identifier",
+              "examples": [
+                "eukarya",
+                "animalia",
+                "chordata"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "x-ref": "#/components/requestBodies/TaxonUpdate",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "x-ref": "#/components/schemas/TaxonUpdate",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "attributes": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "x-ref": "#/components/responses/OkTaxon",
+            "description": "The requested taxon",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "x-ref": "#/components/schemas/Taxon",
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "rank"
+                  ],
+                  "properties": {
+                    "id": {
+                      "x-ref": "#/components/schemas/Id",
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_.-]+$",
+                      "description": "URL-safe identifier",
+                      "examples": [
+                        "eukarya",
+                        "animalia",
+                        "chordata"
+                      ]
+                    },
+                    "name": {
+                      "type": "string",
+                      "examples": [
+                        "Animalia",
+                        "Chordata",
+                        "Mammalia"
+                      ]
+                    },
+                    "rank": {
+                      "type": "string",
+                      "enum": [
+                        "domain",
+                        "kingdom",
+                        "phylum",
+                        "class",
+                        "order",
+                        "family",
+                        "genus",
+                        "species"
+                      ]
+                    },
+                    "parentId": {
+                      "allOf": [
+                        {
+                          "x-ref": "#/components/schemas/Id",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_.-]+$",
+                          "description": "URL-safe identifier",
+                          "examples": [
+                            "eukarya",
+                            "animalia",
+                            "chordata"
+                          ]
+                        }
+                      ],
+                      "nullable": true,
+                      "description": "ID of the parent taxon in the hierarchy"
+                    },
+                    "year": {
+                      "type": "integer",
+                      "description": "Year view this record belongs to"
+                    },
+                    "attributes": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "x-ref": "#/components/responses/Error",
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "x-ref": "#/components/schemas/Error",
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "Machine-readable error code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Human-readable error message"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{year}/domain/{id}/kingdom": {
+      "get": {
+        "tags": [
+          "Kingdom"
+        ],
+        "summary": "List kingdoms within a domain",
+        "operationId": "listKingdoms",
+        "parameters": [
+          {
+            "x-ref": "#/components/parameters/Year",
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "Calendar year for the dataset view.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "x-ref": "#/components/parameters/Page",
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "1-based page index",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "x-ref": "#/components/parameters/PageSize",
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "description": "Items per page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 20
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identifier of the domain",
+            "schema": {
+              "x-ref": "#/components/schemas/Id",
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+$",
+              "description": "URL-safe identifier",
+              "examples": [
+                "eukarya",
+                "animalia",
+                "chordata"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-ref": "#/components/responses/PaginatedTaxaResponse",
+            "description": "A paginated list of taxa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "x-ref": "#/components/schemas/PaginatedTaxa",
+                  "type": "object",
+                  "required": [
+                    "items",
+                    "page",
+                    "pageSize",
+                    "total"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "x-ref": "#/components/schemas/Taxon",
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "rank"
+                        ],
+                        "properties": {
+                          "id": {
+                            "x-ref": "#/components/schemas/Id",
+                            "type": "string",
+                            "pattern": "^[A-Za-z0-9_.-]+$",
+                            "description": "URL-safe identifier",
+                            "examples": [
+                              "eukarya",
+                              "animalia",
+                              "chordata"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "examples": [
+                              "Animalia",
+                              "Chordata",
+                              "Mammalia"
+                            ]
+                          },
+                          "rank": {
+                            "type": "string",
+                            "enum": [
+                              "domain",
+                              "kingdom",
+                              "phylum",
+                              "class",
+                              "order",
+                              "family",
+                              "genus",
+                              "species"
+                            ]
+                          },
+                          "parentId": {
+                            "allOf": [
+                              {
+                                "x-ref": "#/components/schemas/Id",
+                                "type": "string",
+                                "pattern": "^[A-Za-z0-9_.-]+$",
+                                "description": "URL-safe identifier",
+                                "examples": [
+                                  "eukarya",
+                                  "animalia",
+                                  "chordata"
+                                ]
+                              }
+                            ],
+                            "nullable": true,
+                            "description": "ID of the parent taxon in the hierarchy"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "description": "Year view this record belongs to"
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "additionalProperties": true
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "pageSize": {
+                      "type": "integer"
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "x-ref": "#/components/responses/Error",
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "x-ref": "#/components/schemas/Error",
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "Machine-readable error code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Human-readable error message"
+                    },
+                    "details": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Year": {
+        "name": "year",
+        "in": "path",
+        "required": true,
+        "description": "Calendar year for the dataset view.",
+        "schema": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "Page": {
+        "name": "page",
+        "in": "query",
+        "required": false,
+        "description": "1-based page index",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        }
+      },
+      "PageSize": {
+        "name": "pageSize",
+        "in": "query",
+        "required": false,
+        "description": "Items per page",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200,
+          "default": 20
+        }
+      },
+      "DomainId": {
+        "name": "domain_id",
+        "in": "path",
+        "required": true,
+        "description": "Identifier of the domain",
+        "schema": {
+          "x-ref": "#/components/schemas/Id",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+$",
+          "description": "URL-safe identifier",
+          "examples": [
+            "eukarya",
+            "animalia",
+            "chordata"
+          ]
+        }
+      }
+    },
+    "requestBodies": {
+      "TaxonCreate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "x-ref": "#/components/schemas/TaxonCreate",
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "attributes": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              },
+              "description": "Rank and parent are implied by the endpoint. ID is server-assigned unless your implementation permits client-specified IDs.\n"
+            }
+          }
+        }
+      },
+      "TaxonUpdate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "x-ref": "#/components/schemas/TaxonUpdate",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "attributes": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "PaginatedTaxaResponse": {
+        "description": "A paginated list of taxa",
+        "content": {
+          "application/json": {
+            "schema": {
+              "x-ref": "#/components/schemas/PaginatedTaxa",
+              "type": "object",
+              "required": [
+                "items",
+                "page",
+                "pageSize",
+                "total"
+              ],
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "x-ref": "#/components/schemas/Taxon",
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name",
+                      "rank"
+                    ],
+                    "properties": {
+                      "id": {
+                        "x-ref": "#/components/schemas/Id",
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "description": "URL-safe identifier",
+                        "examples": [
+                          "eukarya",
+                          "animalia",
+                          "chordata"
+                        ]
+                      },
+                      "name": {
+                        "type": "string",
+                        "examples": [
+                          "Animalia",
+                          "Chordata",
+                          "Mammalia"
+                        ]
+                      },
+                      "rank": {
+                        "type": "string",
+                        "enum": [
+                          "domain",
+                          "kingdom",
+                          "phylum",
+                          "class",
+                          "order",
+                          "family",
+                          "genus",
+                          "species"
+                        ]
+                      },
+                      "parentId": {
+                        "allOf": [
+                          {
+                            "x-ref": "#/components/schemas/Id",
+                            "type": "string",
+                            "pattern": "^[A-Za-z0-9_.-]+$",
+                            "description": "URL-safe identifier",
+                            "examples": [
+                              "eukarya",
+                              "animalia",
+                              "chordata"
+                            ]
+                          }
+                        ],
+                        "nullable": true,
+                        "description": "ID of the parent taxon in the hierarchy"
+                      },
+                      "year": {
+                        "type": "integer",
+                        "description": "Year view this record belongs to"
+                      },
+                      "attributes": {
+                        "type": "object",
+                        "additionalProperties": true
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "pageSize": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "OkTaxon": {
+        "description": "The requested taxon",
+        "content": {
+          "application/json": {
+            "schema": {
+              "x-ref": "#/components/schemas/Taxon",
+              "type": "object",
+              "required": [
+                "id",
+                "name",
+                "rank"
+              ],
+              "properties": {
+                "id": {
+                  "x-ref": "#/components/schemas/Id",
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "description": "URL-safe identifier",
+                  "examples": [
+                    "eukarya",
+                    "animalia",
+                    "chordata"
+                  ]
+                },
+                "name": {
+                  "type": "string",
+                  "examples": [
+                    "Animalia",
+                    "Chordata",
+                    "Mammalia"
+                  ]
+                },
+                "rank": {
+                  "type": "string",
+                  "enum": [
+                    "domain",
+                    "kingdom",
+                    "phylum",
+                    "class",
+                    "order",
+                    "family",
+                    "genus",
+                    "species"
+                  ]
+                },
+                "parentId": {
+                  "allOf": [
+                    {
+                      "x-ref": "#/components/schemas/Id",
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_.-]+$",
+                      "description": "URL-safe identifier",
+                      "examples": [
+                        "eukarya",
+                        "animalia",
+                        "chordata"
+                      ]
+                    }
+                  ],
+                  "nullable": true,
+                  "description": "ID of the parent taxon in the hierarchy"
+                },
+                "year": {
+                  "type": "integer",
+                  "description": "Year view this record belongs to"
+                },
+                "attributes": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreatedTaxon": {
+        "description": "The created taxon",
+        "content": {
+          "application/json": {
+            "schema": {
+              "x-ref": "#/components/schemas/Taxon",
+              "type": "object",
+              "required": [
+                "id",
+                "name",
+                "rank"
+              ],
+              "properties": {
+                "id": {
+                  "x-ref": "#/components/schemas/Id",
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "description": "URL-safe identifier",
+                  "examples": [
+                    "eukarya",
+                    "animalia",
+                    "chordata"
+                  ]
+                },
+                "name": {
+                  "type": "string",
+                  "examples": [
+                    "Animalia",
+                    "Chordata",
+                    "Mammalia"
+                  ]
+                },
+                "rank": {
+                  "type": "string",
+                  "enum": [
+                    "domain",
+                    "kingdom",
+                    "phylum",
+                    "class",
+                    "order",
+                    "family",
+                    "genus",
+                    "species"
+                  ]
+                },
+                "parentId": {
+                  "allOf": [
+                    {
+                      "x-ref": "#/components/schemas/Id",
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_.-]+$",
+                      "description": "URL-safe identifier",
+                      "examples": [
+                        "eukarya",
+                        "animalia",
+                        "chordata"
+                      ]
+                    }
+                  ],
+                  "nullable": true,
+                  "description": "ID of the parent taxon in the hierarchy"
+                },
+                "year": {
+                  "type": "integer",
+                  "description": "Year view this record belongs to"
+                },
+                "attributes": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NoContent": {
+        "description": "Resource deleted successfully"
+      },
+      "Error": {
+        "description": "Error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "x-ref": "#/components/schemas/Error",
+              "type": "object",
+              "required": [
+                "message"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "description": "Machine-readable error code"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Human-readable error message"
+                },
+                "details": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Id": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+$",
+        "description": "URL-safe identifier",
+        "examples": [
+          "eukarya",
+          "animalia",
+          "chordata"
+        ]
+      },
+      "Taxon": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "rank"
+        ],
+        "properties": {
+          "id": {
+            "x-ref": "#/components/schemas/Id",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+$",
+            "description": "URL-safe identifier",
+            "examples": [
+              "eukarya",
+              "animalia",
+              "chordata"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "examples": [
+              "Animalia",
+              "Chordata",
+              "Mammalia"
+            ]
+          },
+          "rank": {
+            "type": "string",
+            "enum": [
+              "domain",
+              "kingdom",
+              "phylum",
+              "class",
+              "order",
+              "family",
+              "genus",
+              "species"
+            ]
+          },
+          "parentId": {
+            "allOf": [
+              {
+                "x-ref": "#/components/schemas/Id",
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "URL-safe identifier",
+                "examples": [
+                  "eukarya",
+                  "animalia",
+                  "chordata"
+                ]
+              }
+            ],
+            "nullable": true,
+            "description": "ID of the parent taxon in the hierarchy"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Year view this record belongs to"
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TaxonCreate": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "description": "Rank and parent are implied by the endpoint. ID is server-assigned unless your implementation permits client-specified IDs.\n"
+      },
+      "TaxonUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "PaginatedTaxa": {
+        "type": "object",
+        "required": [
+          "items",
+          "page",
+          "pageSize",
+          "total"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "x-ref": "#/components/schemas/Taxon",
+              "type": "object",
+              "required": [
+                "id",
+                "name",
+                "rank"
+              ],
+              "properties": {
+                "id": {
+                  "x-ref": "#/components/schemas/Id",
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "description": "URL-safe identifier",
+                  "examples": [
+                    "eukarya",
+                    "animalia",
+                    "chordata"
+                  ]
+                },
+                "name": {
+                  "type": "string",
+                  "examples": [
+                    "Animalia",
+                    "Chordata",
+                    "Mammalia"
+                  ]
+                },
+                "rank": {
+                  "type": "string",
+                  "enum": [
+                    "domain",
+                    "kingdom",
+                    "phylum",
+                    "class",
+                    "order",
+                    "family",
+                    "genus",
+                    "species"
+                  ]
+                },
+                "parentId": {
+                  "allOf": [
+                    {
+                      "x-ref": "#/components/schemas/Id",
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_.-]+$",
+                      "description": "URL-safe identifier",
+                      "examples": [
+                        "eukarya",
+                        "animalia",
+                        "chordata"
+                      ]
+                    }
+                  ],
+                  "nullable": true,
+                  "description": "ID of the parent taxon in the hierarchy"
+                },
+                "year": {
+                  "type": "integer",
+                  "description": "Year view this record belongs to"
+                },
+                "attributes": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          "page": {
+            "type": "integer"
+          },
+          "pageSize": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Machine-readable error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    }
+  }
+}
