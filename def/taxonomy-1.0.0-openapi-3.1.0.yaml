@@ -63,6 +63,29 @@ paths:
         "200": { $ref: "#/components/responses/OkTaxon" }
         default: { $ref: "#/components/responses/Error" }
 
+  "/{year}/domain/{did}/translate":
+    get:
+      tags: [Domain]
+      summary: Translate a domain
+      operationId: translateDomain
+      parameters:
+        - $ref: "#/components/parameters/Year"
+        - name: id
+          in: path
+          required: true
+          description: Identifier of the domain
+          schema: { $ref: "#/components/schemas/Id" }
+      responses:
+        "200":
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  lang:
+                    type: object
+        default: { $ref: "#/components/responses/Error" }
+        
   ## Kingdom
   "/{year}/domain/{id}/kingdom":
     get:
@@ -81,30 +104,30 @@ paths:
       responses:
         "200": { $ref: "#/components/responses/PaginatedTaxaResponse" }
         default: { $ref: "#/components/responses/Error" }
-  #   post:
-  #     tags: [Kingdom]
-  #     summary: Create a kingdom within a domain
-  #     operationId: createKingdom
-  #     parameters:
-  #       - $ref: "#/components/parameters/Year"
-  #       - $ref: "#/components/parameters/DomainId"
-  #     requestBody: { $ref: "#/components/requestBodies/TaxonCreate" }
-  #     responses:
-  #       "201": { $ref: "#/components/responses/CreatedTaxon" }
-  #       default: { $ref: "#/components/responses/Error" }
+    post:
+      tags: [Kingdom]
+      summary: Create a kingdom within a domain
+      operationId: createKingdom
+      parameters:
+        - $ref: "#/components/parameters/Year"
+        - $ref: "#/components/parameters/DomainId"
+      requestBody: { $ref: "#/components/requestBodies/TaxonCreate" }
+      responses:
+        "201": { $ref: "#/components/responses/CreatedTaxon" }
+        default: { $ref: "#/components/responses/Error" }
 
-  # "/{year}/domain/{domain_id}/kingdom/{kingdom_id}":
-  #   get:
-  #     tags: [Kingdom]
-  #     summary: Get a kingdom
-  #     operationId: getKingdom
-  #     parameters:
-  #       - $ref: "#/components/parameters/Year"
-  #       - $ref: "#/components/parameters/DomainId"
-  #       - $ref: "#/components/parameters/KingdomId"
-  #     responses:
-  #       "200": { $ref: "#/components/responses/OkTaxon" }
-  #       default: { $ref: "#/components/responses/Error" }
+  "/{year}/domain/{domain_id}/kingdom/{kingdom_id}":
+    get:
+      tags: [Kingdom]
+      summary: Get a kingdom
+      operationId: getKingdom
+      parameters:
+        - $ref: "#/components/parameters/Year"
+        - $ref: "#/components/parameters/DomainId"
+        - $ref: "#/components/parameters/KingdomId"
+      responses:
+        "200": { $ref: "#/components/responses/OkTaxon" }
+        default: { $ref: "#/components/responses/Error" }
   #   patch:
   #     tags: [Kingdom]
   #     summary: Update a kingdom
@@ -129,7 +152,7 @@ paths:
   #       "204": { $ref: "#/components/responses/NoContent" }
   #       default: { $ref: "#/components/responses/Error" }
 
-  # ## Phylum
+  ## Phylum
   # "/{year}/domain/{domain_id}/kingdom/{kingdom_id}/phylum":
   #   get:
   #     tags: [Phylum]
@@ -157,19 +180,25 @@ paths:
   #       "201": { $ref: "#/components/responses/CreatedTaxon" }
   #       default: { $ref: "#/components/responses/Error" }
 
-  # "/{year}/domain/{domain_id}/kingdom/{kingdom_id}/phylum/{phylum_id}":
-  #   get:
-  #     tags: [Phylum]
-  #     summary: Get a phylum
-  #     operationId: getPhylum
-  #     parameters:
-  #       - $ref: "#/components/parameters/Year"
-  #       - $ref: "#/components/parameters/DomainId"
-  #       - $ref: "#/components/parameters/KingdomId"
-  #       - $ref: "#/components/parameters/PhylumId"
-  #     responses:
-  #       "200": { $ref: "#/components/responses/OkTaxon" }
-  #       default: { $ref: "#/components/responses/Error" }
+  "/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}":
+    get:
+      tags: [Phylum]
+      summary: Get a phylum
+      operationId: getPhylum
+      parameters:
+        - $ref: "#/components/parameters/Year"
+        - name: domain
+          in: path
+          required: true
+        - name: kid
+          in: path
+          required: true
+        - name: itemid
+          in: path
+          required: true
+      responses:
+        "200": { $ref: "#/components/responses/OkTaxon" }
+        default: { $ref: "#/components/responses/Error" }
   #   patch:
   #     tags: [Phylum]
   #     summary: Update a phylum

@@ -1,0 +1,40 @@
+# Guide
+
+guide: {
+
+  entity: domain: {  # name:cmp;pathiscmp:domain
+    path: '/{year}/domain': {  # ent:pathiscmp:domain
+      op: list: method: get  # array-prop:items
+    }
+    path: '/{year}/domain/{id}': {  # ent:pathiscmp:domain
+      op: load: method: get  # not-list
+      op: update: method: patch  # not-load
+    }
+  }
+
+  entity: domain_translate: {  # name:pathparent:domain
+    path: '/{year}/domain/{did}/translate': {  # ent:pathparent:domain
+      rename: param: { did:id }
+      op: load: method: get  # not-list
+    }
+  }
+
+  entity: kingdom: {  # name:cmp;pathiscmp:kingdom
+    path: '/{year}/domain/{domain_id}/kingdom/{kingdom_id}': {  # ent:pathiscmp:kingdom
+      rename: param: { kingdom_id:id }
+      op: load: method: get  # not-list
+    }
+    path: '/{year}/domain/{id}/kingdom': {  # ent:pathiscmp:kingdom
+      op: create: method: post  # not-load
+      op: list: method: get  # array-prop:items
+    }
+  }
+
+  entity: phylum: {  # name:cmp;pathiscmp:phylum
+    path: '/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}': {  # ent:pathiscmp:phylum
+      rename: param: { domain:domain_id, itemid:id, kid:kingdom_id }
+      op: load: method: get  # not-list
+    }
+  }
+
+}
