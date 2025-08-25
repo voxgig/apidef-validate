@@ -2,38 +2,40 @@
 
 guide: {
 
-  entity: domain: {  # name:cmp;pathiscmp:domain
-    path: '/{year}/domain': {  # ent:pathiscmp:domain
-      op: list: method: get  # array-prop:items
+  entity: domain: {
+    path: '/{year}/domain': {
+      op: list: method: *"GET"|string  # array-prop:items
     }
-    path: '/{year}/domain/{id}': {  # ent:pathiscmp:domain
-      op: load: method: get  # not-list
-      op: update: method: patch  # not-load
-    }
-  }
-
-  entity: domain_translate: {  # name:pathparent:domain
-    path: '/{year}/domain/{did}/translate': {  # ent:pathparent:domain
-      rename: param: { did:id }
-      op: load: method: get  # not-list
+    path: '/{year}/domain/{id}': {
+      op: load: method: *"GET"|string  # end-param
+      op: update: method: *"PATCH"|string  # not-load
     }
   }
 
-  entity: kingdom: {  # name:cmp;pathiscmp:kingdom
-    path: '/{year}/domain/{domain_id}/kingdom/{kingdom_id}': {  # ent:pathiscmp:kingdom
-      rename: param: { kingdom_id:id }
-      op: load: method: get  # not-list
-    }
-    path: '/{year}/domain/{id}/kingdom': {  # ent:pathiscmp:kingdom
-      op: create: method: post  # not-load
-      op: list: method: get  # array-prop:items
+  entity: domain_translate: {
+    path: '/{year}/domain/{did}/translate': {
+      op: load: method: *"GET"|string  # not-list
     }
   }
 
-  entity: phylum: {  # name:cmp;pathiscmp:phylum
-    path: '/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}': {  # ent:pathiscmp:phylum
-      rename: param: { domain:domain_id, itemid:id, kid:kingdom_id }
-      op: load: method: get  # not-list
+  entity: kingdom: {
+    path: '/{year}/domain/{domain_id}/kingdom/{kingdom_id}': {
+      rename: param: kingdom_id: *"id"|string
+      op: load: method: *"GET"|string  # end-param
+    }
+    path: '/{year}/domain/{id}/kingdom': {
+      FIX RENAME id to domain_id missing
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array-prop:items
+    }
+  }
+
+  entity: phylum: {
+    path: '/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}': {
+      rename: param: domain: *"domain_id"|string
+      rename: param: itemid: *"id"|string
+      rename: param: kid: *"kingdom_id"|string
+      op: load: method: *"GET"|string  # end-param
     }
   }
 

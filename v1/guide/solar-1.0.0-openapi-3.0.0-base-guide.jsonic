@@ -2,28 +2,31 @@
 
 guide: {
 
-  entity: moon: { # name:cmp;pathiscmp:moon
-    path: '/api/planet/{planet_id}/moon': op: { # ent:pathiscmp:moon
-      create: method: post # not-load
-      list: method: get # array
+  entity: moon: {
+    path: '/api/planet/{planet_id}/moon': {
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
     }
-    path: '/api/planet/{planet_id}/moon/{moon_id}': op: { # ent:pathiscmp:moon
-      load: method: get # not-list
-      remove: method: delete # not-load
-      update: method: put # not-load
+    path: '/api/planet/{planet_id}/moon/{moon_id}': {
+      rename: param: moon_id: *"id"|string
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
     }
   }
 
-  entity: planet: { # name:cmp;pathiscmp:planet
-    path: '/api/planet': op: { # ent:pathiscmp:planet
-      create: method: post # not-load
-      list: method: get # array
+  entity: planet: {
+    path: '/api/planet': {
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
     }
-    path: '/api/planet/{planet_id}': op: { # ent:pathiscmp:planet
-      load: method: get # not-list
-      remove: method: delete # not-load
-      update: method: put # not-load
+    path: '/api/planet/{planet_id}': {
+      rename: param: planet_id: *"id"|string
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
     }
   }
 
 }
+
