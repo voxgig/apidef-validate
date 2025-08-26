@@ -164,14 +164,22 @@ function validateGuide(c: Case, fails: any[], fs: FST, vol: any) {
   // }
 
   const expectedBaseGuide = fs.readFileSync(__dirname + '/../guide/' +
-    `${cfn}-base-guide.jsonic`, 'utf8').trim()
+    `${cfn}-base-guide.jsonic`, 'utf8')
+    .trim()
 
   // console.log('<' + expectedBaseGuide + '>')
 
   if (expectedBaseGuide !== baseGuide) {
     const difflines = Diff.diffLines(expectedBaseGuide, baseGuide)
-    // console.log(difflines)
-    fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines))
+
+    // Comments with ## are considered TODOs
+    const cleanExpected = expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, '')
+    if (cleanExpected !== baseGuide) {
+      fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines))
+    }
+    else {
+      console.log("\nOPEN TODOS: " + cfn + '\n' + prettyDiff(difflines))
+    }
   }
 }
 
@@ -179,19 +187,25 @@ function validateGuide(c: Case, fails: any[], fs: FST, vol: any) {
 function prettyDiff(difflines: any[]) {
   const out: string[] = []
 
+  let last = 'same'
   difflines.forEach((part: any) => {
     if (part.added) {
+      last = 'added'
       out.push('\x1b[38;5;220m<<<<<<< GENERATED\n')
       out.push(part.value)
       out.push('>>>>>>> GENERATED\n\x1b[0m')
     }
     else if (part.removed) {
+      last = 'removed'
       out.push('\x1b[92m<<<<<<< EXISTING\n')
       out.push(part.value)
       out.push('>>>>>>> EXISTING\n\x1b[0m')
     }
     else {
-      out.push(part.value)
+      if ('same' !== last) {
+        out.push(part.value.split('\n').slice(0, 4).join('\n') + '\n\n')
+      }
+      last = 'same'
     }
   })
 

@@ -3,38 +3,39 @@
 guide: {
 
   entity: domain: {
-    path: '/{year}/domain': {
+    path: '/{year}/domain': {  # ent:cmp=paginated_taxa;path=p/t/;cr=0.500;path-primary
       op: list: method: *"GET"|string  # array-prop:items
     }
-    path: '/{year}/domain/{id}': {
+    path: '/{year}/domain/{id}': {  # ent:cmp=taxon;path=t/p/;cr=1.833;path-primary
       op: load: method: *"GET"|string  # end-param
-      op: update: method: *"PATCH"|string  # not-load
+      op: patch: method: *"PATCH"|string  # not-load
     }
   }
 
   entity: domain_translate: {
-    path: '/{year}/domain/{did}/translate': {
+    path: '/{year}/domain/{did}/translate': {  # ent:no-cmp;path=t/p/t/
+      rename: param: did: *"id"|string  # filter-not-parent:domain_translate
       op: load: method: *"GET"|string  # not-list
     }
   }
 
   entity: kingdom: {
-    path: '/{year}/domain/{domain_id}/kingdom/{kingdom_id}': {
-      rename: param: kingdom_id: *"id"|string
+    path: '/{year}/domain/{domain_id}/kingdom/{kingdom_id}': {  # ent:cmp=taxon;path=t/p/;cr=1.833;path-primary
+      rename: param: kingdom_id: *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
     }
-    path: '/{year}/domain/{id}/kingdom': {
-      FIX RENAME id to domain_id missing
+    path: '/{year}/domain/{id}/kingdom': {  # ent:cmp=taxon;path=t/p/t/;cr=1.833;path-primary
+      rename: param: id: *"domain_id"|string  # parent:domain
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array-prop:items
     }
   }
 
   entity: phylum: {
-    path: '/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}': {
-      rename: param: domain: *"domain_id"|string
-      rename: param: itemid: *"id"|string
-      rename: param: kid: *"kingdom_id"|string
+    path: '/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}': {  # ent:cmp=taxon;path=t/p/;cr=1.833;path-primary
+      rename: param: domain: *"domain_id"|string  # non-primary
+      rename: param: itemid: *"id"|string  # end-id
+      rename: param: kid: *"kingdom_id"|string  # parent:kingdom
       op: load: method: *"GET"|string  # end-param
     }
   }
