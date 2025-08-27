@@ -45,6 +45,7 @@ describe('main', () => {
       { name: 'taxonomy', version: '1.0.0', format: 'yaml', spec: 'openapi-3.1.0' },
       { name: 'learnworlds', version: '2', format: 'yaml', spec: 'openapi-3.1.0' },
       { name: 'statuspage', version: '1.0.0', format: 'json', spec: 'openapi-3.0.0' },
+      { name: 'contentfulcma', version: '1.0.0', format: 'yaml', spec: 'openapi-3.0.0' },
 
     ]
 
@@ -55,6 +56,9 @@ describe('main', () => {
     const { fs, vol } = prepfs(cases)
 
     const fails: any[] = []
+    const testmetrics = {
+      todo: 0
+    }
 
     for (let c of cases) {
       try {
@@ -63,7 +67,7 @@ describe('main', () => {
         if (!bres.ok) {
           fails.push(JSON.stringify(bres, null, 2))
         }
-        validateGuide(c, fails, fs, vol)
+        validateGuide(c, fails, fs, vol, testmetrics)
       }
       catch (err: any) {
         console.error(err)
@@ -71,6 +75,8 @@ describe('main', () => {
       }
 
     }
+
+    console.log('TOTAL TODOS: ' + testmetrics.todo)
 
     if (0 < fails.length) {
       fail(fails.join('\n---\n'))
@@ -153,7 +159,10 @@ async function runBuild(c: Case, build: any) {
 
 
 
-function validateGuide(c: Case, fails: any[], fs: FST, vol: any) {
+function validateGuide(c: Case, fails: any[], fs: FST, vol: any, testmetrics: any) {
+  const todoarg = process.env.npm_config_todo
+  const showtodo = ('' + todoarg).match(/hide/i)
+
   const cfn = fullname(c)
 
   const volJSON = vol.toJSON()
@@ -173,12 +182,17 @@ function validateGuide(c: Case, fails: any[], fs: FST, vol: any) {
     const difflines = Diff.diffLines(expectedBaseGuide, baseGuide)
 
     // Comments with ## are considered TODOs
-    const cleanExpected = expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, '')
+    let todocount = 0
+    const cleanExpected = expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''))
+    testmetrics.todo += todocount
     if (cleanExpected !== baseGuide) {
       fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines))
     }
     else {
-      console.log("\nOPEN TODOS: " + cfn + '\n' + prettyDiff(difflines))
+      console.log("OPEN TODOS: " + cfn + ' ' + todocount)
+      if (!showtodo) {
+        console.log('\n' + prettyDiff(difflines) + '\n')
+      }
     }
   }
 }

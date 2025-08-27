@@ -17,12 +17,16 @@ const __2 = require("..");
             { name: 'taxonomy', version: '1.0.0', format: 'yaml', spec: 'openapi-3.1.0' },
             { name: 'learnworlds', version: '2', format: 'yaml', spec: 'openapi-3.1.0' },
             { name: 'statuspage', version: '1.0.0', format: 'json', spec: 'openapi-3.0.0' },
+            { name: 'contentfulcma', version: '1.0.0', format: 'yaml', spec: 'openapi-3.0.0' },
         ];
         if ('string' === typeof caseSelector) {
             cases = cases.filter(c => c.name.includes(caseSelector));
         }
         const { fs, vol } = prepfs(cases);
         const fails = [];
+        const testmetrics = {
+            todo: 0
+        };
         for (let c of cases) {
             try {
                 const build = await makeBuild(c, fs);
@@ -30,13 +34,14 @@ const __2 = require("..");
                 if (!bres.ok) {
                     fails.push(JSON.stringify(bres, null, 2));
                 }
-                validateGuide(c, fails, fs, vol);
+                validateGuide(c, fails, fs, vol, testmetrics);
             }
             catch (err) {
                 console.error(err);
                 fails.push(JSON.stringify({ ...err }, null, 2));
             }
         }
+        console.log('TOTAL TODOS: ' + testmetrics.todo);
         if (0 < fails.length) {
             (0, code_1.fail)(fails.join('\n---\n'));
         }
@@ -90,7 +95,9 @@ async function runBuild(c, build) {
     }, {});
     return bres;
 }
-function validateGuide(c, fails, fs, vol) {
+function validateGuide(c, fails, fs, vol, testmetrics) {
+    const todoarg = process.env.npm_config_todo;
+    const showtodo = ('' + todoarg).match(/hide/i);
     const cfn = fullname(c);
     const volJSON = vol.toJSON();
     const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim();
@@ -104,12 +111,17 @@ function validateGuide(c, fails, fs, vol) {
     if (expectedBaseGuide !== baseGuide) {
         const difflines = __1.Diff.diffLines(expectedBaseGuide, baseGuide);
         // Comments with ## are considered TODOs
-        const cleanExpected = expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, '');
+        let todocount = 0;
+        const cleanExpected = expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''));
+        testmetrics.todo += todocount;
         if (cleanExpected !== baseGuide) {
             fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines));
         }
         else {
-            console.log("\nOPEN TODOS: " + cfn + '\n' + prettyDiff(difflines));
+            console.log("OPEN TODOS: " + cfn + ' ' + todocount);
+            if (!showtodo) {
+                console.log('\n' + prettyDiff(difflines) + '\n');
+            }
         }
     }
 }
