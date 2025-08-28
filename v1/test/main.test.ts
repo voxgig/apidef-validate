@@ -41,12 +41,16 @@ describe('main', () => {
     const caseSelector = process.env.npm_config_case
 
     let cases: Case[] = [
-      { name: 'solar', version: '1.0.0', format: 'yaml', spec: 'openapi-3.0.0' },
-      { name: 'taxonomy', version: '1.0.0', format: 'yaml', spec: 'openapi-3.1.0' },
-      { name: 'learnworlds', version: '2', format: 'yaml', spec: 'openapi-3.1.0' },
-      { name: 'statuspage', version: '1.0.0', format: 'json', spec: 'openapi-3.0.0' },
-      { name: 'contentfulcma', version: '1.0.0', format: 'yaml', spec: 'openapi-3.0.0' },
+      { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
+      { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
+      { name: 'learnworlds', version: '2', spec: 'openapi-3.1.0', format: 'yaml' },
+      { name: 'statuspage', version: '1.0.0', spec: 'openapi-3.0.0', format: 'json' },
+      { name: 'contentfulcma', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
 
+      { name: 'cloudsmith', version: 'v1', spec: 'swagger-2.0', format: 'json' },
+      { name: 'pokeapi', version: '20220523', spec: 'openapi-3.0.0', format: 'yaml' },
+      { name: 'dingconnect', version: 'v1', spec: 'swagger-2.0', format: 'json' },
+      { name: 'codatplatform', version: '3.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
     ]
 
     if ('string' === typeof caseSelector) {
