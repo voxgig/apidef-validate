@@ -49,6 +49,8 @@ function makefs(vol) {
     const ufs = new unionfs_1.Union();
     const mem = (0, memfs_1.memfs)(vol);
     ufs.use(mem.fs).use(fs);
+    ufs.__mem__ = true;
+    ufs.__vol__ = mem.vol;
     return { fs: ufs, vol: mem.vol };
 }
 //# sourceMappingURL=main.js.map

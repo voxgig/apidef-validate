@@ -14,10 +14,13 @@ function main() {
 
 
 function makefs(vol: any): any {
-  const ufs = new Union()
+  const ufs: any = new Union()
   const mem = memfs(vol)
 
   ufs.use((mem.fs as any)).use(fs)
+
+  ufs.__mem__ = true
+  ufs.__vol__ = mem.vol
 
   return { fs: ufs, vol: mem.vol }
 }

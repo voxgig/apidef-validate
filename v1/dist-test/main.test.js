@@ -6,26 +6,58 @@ const code_1 = require("@hapi/code");
 const apidef_1 = require("@voxgig/apidef");
 const __1 = require("../..");
 const __2 = require("..");
+let cases = [
+    { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
+    { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
+    { name: 'learnworlds', version: '2', spec: 'openapi-3.1.0', format: 'yaml' },
+    { name: 'statuspage', version: '1.0.0', spec: 'openapi-3.0.0', format: 'json' },
+    { name: 'contentfulcma', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
+    { name: 'cloudsmith', version: 'v1', spec: 'swagger-2.0', format: 'json' },
+    { name: 'pokeapi', version: '20220523', spec: 'openapi-3.0.0', format: 'yaml' },
+    { name: 'dingconnect', version: 'v1', spec: 'swagger-2.0', format: 'json' },
+    { name: 'codatplatform', version: '3.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
+    { name: 'shortcut', version: 'v3', spec: 'openapi-3.0.0', format: 'json' },
+];
+const caseSelector = process.env.npm_config_case;
+if ('string' === typeof caseSelector) {
+    cases = cases.filter(c => c.name.includes(caseSelector));
+}
 (0, node_test_1.describe)('main', () => {
     (0, node_test_1.test)('happy', async () => {
         (0, code_1.expect)((0, __2.main)()).equal('main');
     });
-    (0, node_test_1.test)('core-case', async () => {
-        const caseSelector = process.env.npm_config_case;
-        let cases = [
-            { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
-            { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
-            { name: 'learnworlds', version: '2', spec: 'openapi-3.1.0', format: 'yaml' },
-            { name: 'statuspage', version: '1.0.0', spec: 'openapi-3.0.0', format: 'json' },
-            { name: 'contentfulcma', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
-            { name: 'cloudsmith', version: 'v1', spec: 'swagger-2.0', format: 'json' },
-            { name: 'pokeapi', version: '20220523', spec: 'openapi-3.0.0', format: 'yaml' },
-            { name: 'dingconnect', version: 'v1', spec: 'swagger-2.0', format: 'json' },
-            { name: 'codatplatform', version: '3.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
-        ];
-        if ('string' === typeof caseSelector) {
-            cases = cases.filter(c => c.name.includes(caseSelector));
+    (0, node_test_1.test)('guide-case', async () => {
+        const { fs } = prepfs(cases);
+        const fails = [];
+        const testmetrics = {
+            todo: 0
+        };
+        for (let c of cases) {
+            try {
+                const build = await makeBuild(c, fs);
+                const bres = await runBuild(c, build, {
+                    parse: true,
+                    guide: true,
+                    transformers: false,
+                    builders: false,
+                    generate: false,
+                });
+                if (!bres.ok) {
+                    fails.push(JSON.stringify(bres, null, 2));
+                }
+                // validateGuide(c, fails, fs, vol, testmetrics)
+            }
+            catch (err) {
+                console.error(err);
+                fails.push(JSON.stringify({ ...err }, null, 2));
+            }
         }
+        console.log('TOTAL TODOS: ' + testmetrics.todo);
+        if (0 < fails.length) {
+            (0, code_1.fail)(fails.join('\n---\n'));
+        }
+    });
+    (0, node_test_1.test)('model-case', async () => {
         const { fs, vol } = prepfs(cases);
         const fails = [];
         const testmetrics = {
@@ -34,11 +66,18 @@ const __2 = require("..");
         for (let c of cases) {
             try {
                 const build = await makeBuild(c, fs);
-                const bres = await runBuild(c, build);
+                const bres = await runBuild(c, build, {
+                    parse: true,
+                    guide: true,
+                    transformers: true,
+                    builders: true,
+                    generate: true,
+                });
                 if (!bres.ok) {
                     fails.push(JSON.stringify(bres, null, 2));
                 }
                 validateGuide(c, fails, fs, vol, testmetrics);
+                validateModel(c, fails, fs, vol, testmetrics);
             }
             catch (err) {
                 console.error(err);
@@ -57,10 +96,19 @@ function fullname(c) {
 function prepfs(cases) {
     const vol = {
         'model': {
-            'guide': cases.reduce((a, c) => (a[fullname(c) + '-guide.jsonic'] = 'guide:{}', a), {})
+            'guide': cases.reduce((a, c) => {
+                a[fullname(c) + '-guide.jsonic'] = `
+@"@voxgig/apidef/model/guide.jsonic"
+
+@"${fullname(c)}-base-guide.jsonic"
+
+guide:{}
+`;
+                return a;
+            }, {})
         }
     };
-    // console.dir(vol, { depth: null })
+    console.dir(vol, { depth: null });
     const ufs = (0, __1.makefs)(vol);
     return ufs;
 }
@@ -75,7 +123,7 @@ async function makeBuild(c, fs) {
     });
     return build;
 }
-async function runBuild(c, build) {
+async function runBuild(c, build, step) {
     const bres = await build({
         name: c.name,
         def: fullname(c) + '.' + c.format
@@ -85,13 +133,7 @@ async function runBuild(c, build) {
             buildargs: {
                 apidef: {
                     ctrl: {
-                        step: {
-                            parse: true,
-                            guide: true,
-                            transformers: false,
-                            builders: false,
-                            generate: false,
-                        }
+                        step
                     }
                 }
             }
@@ -105,9 +147,6 @@ function validateGuide(c, fails, fs, vol, testmetrics) {
     const cfn = fullname(c);
     const volJSON = vol.toJSON();
     const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim();
-    // if ('statuspage' === c.name) {
-    //   console.log('BASE:' + cfn + '<' + baseGuide + '>')
-    // }
     const expectedBaseGuide = fs.readFileSync(__dirname + '/../guide/' +
         `${cfn}-base-guide.jsonic`, 'utf8')
         .trim();
@@ -128,6 +167,42 @@ function validateGuide(c, fails, fs, vol, testmetrics) {
             }
         }
     }
+}
+function validateModel(c, fails, fs, vol, testmetrics) {
+    const todoarg = process.env.npm_config_todo;
+    const showtodo = ('' + todoarg).match(/hide/i);
+    const cfn = fullname(c);
+    const volJSON = vol.toJSON();
+    console.log('VALIDATE-MODEL', Object.keys(volJSON));
+    // console.dir(volJSON, { depth: null })
+    console.log(volJSON['/model/entity/solar-1.0.0-openapi-3.0.0-moon.jsonic']);
+    /*
+    const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim()
+  
+    const expectedBaseGuide = fs.readFileSync(__dirname + '/../guide/' +
+      `${cfn}-base-guide.jsonic`, 'utf8')
+      .trim()
+  
+    // console.log('<' + expectedBaseGuide + '>')
+  
+    if (expectedBaseGuide !== baseGuide) {
+      const difflines = Diff.diffLines(expectedBaseGuide, baseGuide)
+  
+      // Comments with ## are considered TODOs
+      let todocount = 0
+      const cleanExpected = expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''))
+      testmetrics.todo += todocount
+      if (cleanExpected !== baseGuide) {
+        fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines))
+      }
+      else {
+        console.log("OPEN TODOS: " + cfn + ' ' + todocount)
+        if (!showtodo) {
+          console.log('\n' + prettyDiff(difflines) + '\n')
+        }
+      }
+      }
+      */
 }
 function prettyDiff(difflines) {
     const out = [];

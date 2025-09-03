@@ -1,0 +1,477 @@
+# Guide
+
+guide: {
+
+  entity: bulk: {
+    path: '/api/v3/stories/bulk': {  # ent:no-cmp;path=t/;no-cmp
+      op: remove: method: *"DELETE"|string  # not-load
+    }
+  }
+
+  entity: category: {
+    path: '/api/v3/categories': {  # ent:cmp=category;path=t/;cr=0.282;path-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/categories/{category-public-id}': {  # ent:cmp=category;path=t/p/;cr=0.282;path-primary
+      rename: param: "category-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: comment: {
+    path: '/api/v3/epics/{epic-public-id}/comments/{comment-public-id}': {  # ent:no-cmp;path=t/p/;no-cmp
+      rename: param: "comment-public-id": *"id"|string  # end-id
+      rename: param: "epic-public-id": *"epic_id"|string  # parent:epic
+      op: remove: method: *"DELETE"|string  # not-load
+    }
+    path: '/api/v3/stories/{story-public-id}/comments/{comment-public-id}': {  # ent:no-cmp;path=t/p/;no-cmp
+      rename: param: "comment-public-id": *"id"|string  # end-id
+      rename: param: "story-public-id": *"story_id"|string  # parent:story
+      op: remove: method: *"DELETE"|string  # not-load
+    }
+  }
+
+  entity: comment_reaction: {
+    path: '/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions': {  # ent:no-cmp;path=t/p/t/
+      rename: param: "comment-public-id": *"id"|string  # filter-not-parent:comment_reaction
+      rename: param: "story-public-id": *"story_id"|string  # parent:story
+      op: remove: method: *"DELETE"|string  # not-load
+    }
+  }
+
+  entity: custom_field: {
+    path: '/api/v3/custom-fields': {  # ent:cmp=custom_field;path=t/;cr=0.038;path-primary
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/custom-fields/{custom-field-public-id}': {  # ent:cmp=custom_field;path=t/p/;cr=0.038;path-primary
+      rename: param: "custom-field-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: disable: {
+    path: '/api/v3/entity-templates/disable': {  # ent:no-cmp;path=t/;no-cmp
+      op: update: method: *"PUT"|string  # not-load
+    }
+    path: '/api/v3/iterations/disable': {  # ent:no-cmp;path=t/;no-cmp
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: doc_slim: {
+    path: '/api/v3/documents': {  # ent:cmp=doc_slim;path=t/;cr=0.026;cmp-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+  }
+
+  entity: enable: {
+    path: '/api/v3/entity-templates/enable': {  # ent:no-cmp;path=t/;no-cmp
+      op: update: method: *"PUT"|string  # not-load
+    }
+    path: '/api/v3/iterations/enable': {  # ent:no-cmp;path=t/;no-cmp
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: entity_template: {
+    path: '/api/v3/entity-templates': {  # ent:cmp=entity_template;path=t/;cr=0.051;path-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/entity-templates/{entity-template-public-id}': {  # ent:cmp=entity_template;path=t/p/;cr=0.051;path-primary
+      rename: param: "entity-template-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: epic: {
+    path: '/api/v3/epics': {  # ent:cmp=epic;path=t/;cr=0.038;path-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/epics/{epic-public-id}': {  # ent:cmp=epic;path=t/p/;cr=0.038;path-primary
+      rename: param: "epic-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+    path: '/api/v3/labels/{label-public-id}/epics': {  # ent:cmp=epic_slim;path=t/p/t/;cr=0.077;path-primary
+      rename: param: "label-public-id": *"label_id"|string  # parent:label
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/milestones/{milestone-public-id}/epics': {  # ent:cmp=epic_slim;path=t/p/t/;cr=0.077;path-primary
+      rename: param: "milestone-public-id": *"milestone_id"|string  # parent:milestone
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/objectives/{objective-public-id}/epics': {  # ent:cmp=epic_slim;path=t/p/t/;cr=0.077;path-primary
+      rename: param: "objective-public-id": *"objectif_id"|string  # parent:objectif
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/search/epics': {  # ent:cmp=epic_search_result;path=t/;cr=0.090;path-primary
+      op: list: method: *"GET"|string  # array-prop:data
+    }
+  }
+
+  entity: epic_paginated_result: {
+    path: '/api/v3/epics/paginated': {  # ent:cmp=epic_paginated_result;path=t/;cr=0.013;cmp-primary
+      op: list: method: *"GET"|string  # array-prop:data
+    }
+  }
+
+  entity: epic_unlink_productboard: {
+    path: '/api/v3/epics/{epic-public-id}/unlink-productboard': {  # ent:no-cmp;path=t/p/t/
+      rename: param: "epic-public-id": *"id"|string  # filter-not-parent:epic_unlink_productboard
+      op: create: method: *"POST"|string  # not-load
+    }
+  }
+
+  entity: epic_workflow: {
+    path: '/api/v3/epic-workflow': {  # ent:cmp=epic_workflow;path=t/;cr=0.013;path-primary
+      op: list: method: *"GET"|string  # array-prop:epic_states
+    }
+  }
+
+  entity: file: {
+    path: '/api/v3/files/{file-public-id}': {  # ent:no-cmp;path=t/p/;no-cmp
+      rename: param: "file-public-id": *"id"|string  # end-id
+      op: remove: method: *"DELETE"|string  # not-load
+    }
+  }
+
+  entity: group: {
+    path: '/api/v3/groups': {  # ent:cmp=group;path=t/;cr=0.051;path-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/groups/{group-public-id}': {  # ent:cmp=group;path=t/p/;cr=0.051;path-primary
+      rename: param: "group-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: health: {
+    path: '/api/v3/epics/{epic-public-id}/health': {  # ent:cmp=health;path=t/p/t/;cr=0.167;path-primary
+      rename: param: "epic-public-id": *"epic_id"|string  # parent:epic
+      op: create: method: *"POST"|string  # not-load
+      op: load: method: *"GET"|string  # not-list
+    }
+    path: '/api/v3/epics/{epic-public-id}/health-history': {  # ent:cmp=health;path=t/p/t/;cr=0.167;cmp-primary
+      rename: param: "epic-public-id": *"epic_id"|string  # parent:epic
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/health/{health-public-id}': {  # ent:cmp=health;path=t/p/;cr=0.167;path-primary
+      rename: param: "health-public-id": *"id"|string  # end-id
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: history: {
+    path: '/api/v3/stories/{story-public-id}/history': {  # ent:cmp=history;path=t/p/t/;cr=0.013;path-primary
+      rename: param: "story-public-id": *"story_id"|string  # parent:story
+      op: list: method: *"GET"|string  # array
+    }
+  }
+
+  entity: iteration: {
+    path: '/api/v3/iterations': {  # ent:cmp=iteration;path=t/;cr=0.038;path-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/iterations/{iteration-public-id}': {  # ent:cmp=iteration;path=t/p/;cr=0.038;path-primary
+      rename: param: "iteration-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+    path: '/api/v3/search/iterations': {  # ent:cmp=iteration_search_result;path=t/;cr=0.038;path-primary
+      op: list: method: *"GET"|string  # array-prop:data
+    }
+  }
+
+  entity: key_result: {
+    path: '/api/v3/key-results/{key-result-public-id}': {  # ent:cmp=key_result;path=t/p/;cr=0.026;path-primary
+      rename: param: "key-result-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: label: {
+    path: '/api/v3/labels': {  # ent:cmp=label;path=t/;cr=0.179;path-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/labels/{label-public-id}': {  # ent:cmp=label;path=t/p/;cr=0.179;path-primary
+      rename: param: "label-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: linked_file: {
+    path: '/api/v3/linked-files': {  # ent:cmp=linked_file;path=t/;cr=0.256;path-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/linked-files/{linked-file-public-id}': {  # ent:cmp=linked_file;path=t/p/;cr=0.256;path-primary
+      rename: param: "linked-file-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: member: {
+    path: '/api/v3/member': {  # ent:cmp=member_info;path=t/;cr=0.013;path-primary
+      op: load: method: *"GET"|string  # not-list
+    }
+    path: '/api/v3/members': {  # ent:cmp=member;path=t/;cr=0.026;path-primary
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/members/{member-public-id}': {  # ent:cmp=member;path=t/p/;cr=0.026;path-primary
+      rename: param: "member-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+    }
+  }
+
+  entity: milestone: {
+    path: '/api/v3/categories/{category-public-id}/milestones': {  # ent:cmp=milestone;path=t/p/t/;cr=0.077;path-primary
+      rename: param: "category-public-id": *"category_id"|string  # parent:category
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/categories/{category-public-id}/objectives': {  # ent:cmp=milestone;path=t/p/t/;cr=0.077;cmp-primary
+      rename: param: "category-public-id": *"category_id"|string  # parent:category
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/milestones': {  # ent:cmp=milestone;path=t/;cr=0.077;path-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/milestones/{milestone-public-id}': {  # ent:cmp=milestone;path=t/p/;cr=0.077;path-primary
+      rename: param: "milestone-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: objectif: {
+    path: '/api/v3/objectives/{objective-public-id}': {  # ent:no-cmp;path=t/p/;no-cmp
+      rename: param: "objective-public-id": *"id"|string  # end-id
+      op: remove: method: *"DELETE"|string  # not-load
+    }
+  }
+
+  entity: objective: {
+    path: '/api/v3/objectives': {  # ent:cmp=objective;path=t/;cr=0.051;cmp-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/objectives/{objective-public-id}': {  # ent:cmp=objective;path=t/p/;cr=0.051;cmp-primary
+      rename: param: "objective-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: objective_search_result: {
+    path: '/api/v3/search/milestones': {  # ent:cmp=objective_search_result;path=t/;cr=0.115;cmp-primary
+      op: list: method: *"GET"|string  # array-prop:data
+    }
+    path: '/api/v3/search/objectives': {  # ent:cmp=objective_search_result;path=t/;cr=0.115;cmp-primary
+      op: list: method: *"GET"|string  # array-prop:data
+    }
+  }
+
+  entity: project: {
+    path: '/api/v3/projects': {  # ent:cmp=project;path=t/;cr=0.051;path-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/projects/{project-public-id}': {  # ent:cmp=project;path=t/p/;cr=0.051;path-primary
+      rename: param: "project-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: repository: {
+    path: '/api/v3/repositories': {  # ent:cmp=repository;path=t/;cr=0.026;path-primary
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/repositories/{repo-public-id}': {  # ent:cmp=repository;path=t/p/;cr=0.026;path-primary
+      rename: param: "repo-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+    }
+  }
+
+  entity: search: {
+    path: '/api/v3/search': {  # ent:cmp=search_result;path=t/;cr=0.013;path-primary
+      op: load: method: *"GET"|string  # not-list
+    }
+  }
+
+  entity: story: {
+    path: '/api/v3/epics/{epic-public-id}/stories': {  # ent:cmp=story_slim;path=t/p/t/;cr=0.115;path-primary
+      rename: param: "epic-public-id": *"epic_id"|string  # parent:epic
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/external-link/stories': {  # ent:cmp=story_slim;path=t/;cr=0.115;path-primary
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/groups/{group-public-id}/stories': {  # ent:cmp=story_slim;path=t/p/t/;cr=0.115;path-primary
+      rename: param: "group-public-id": *"group_id"|string  # parent:group
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/iterations/{iteration-public-id}/stories': {  # ent:cmp=story_slim;path=t/p/t/;cr=0.115;path-primary
+      rename: param: "iteration-public-id": *"iteration_id"|string  # parent:iteration
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/labels/{label-public-id}/stories': {  # ent:cmp=story_slim;path=t/p/t/;cr=0.115;path-primary
+      rename: param: "label-public-id": *"label_id"|string  # parent:label
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/projects/{project-public-id}/stories': {  # ent:cmp=story_slim;path=t/p/t/;cr=0.115;path-primary
+      rename: param: "project-public-id": *"project_id"|string  # parent:project
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/search/stories': {  # ent:cmp=story_search_result;path=t/;cr=0.090;path-primary
+      op: list: method: *"GET"|string  # array-prop:data
+    }
+    path: '/api/v3/stories': {  # ent:cmp=story;path=t/;cr=0.051;path-primary
+      op: create: method: *"POST"|string  # not-load
+    }
+    path: '/api/v3/stories/from-template': {  # ent:cmp=story;path=t/;cr=0.051;cmp-primary
+      op: create: method: *"POST"|string  # not-load
+    }
+    path: '/api/v3/stories/{story-public-id}': {  # ent:cmp=story;path=t/p/;cr=0.051;path-primary
+      rename: param: "story-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: story_comment: {
+    path: '/api/v3/stories/{story-public-id}/comments': {  # ent:cmp=story_comment;path=t/p/t/;cr=0.192;cmp-primary
+      rename: param: "story-public-id": *"id"|string  # filter-not-parent:story_comment
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/stories/{story-public-id}/comments/{comment-public-id}': {  # ent:cmp=story_comment;path=t/p/;cr=0.192;cmp-primary
+      rename: param: "comment-public-id": *"id"|string  # end-id
+      rename: param: "story-public-id": *"story_id"|string  # parent:story
+      op: load: method: *"GET"|string  # end-param
+      op: update: method: *"PUT"|string  # not-load
+    }
+    path: '/api/v3/stories/{story-public-id}/comments/{comment-public-id}/unlink-from-slack': {  # ent:cmp=story_comment;path=t/p/t/;cr=0.192;cmp-primary
+      rename: param: "comment-public-id": *"comment_id"|string  # parent:comment
+      rename: param: "story-public-id": *"story_id"|string  # parent:story
+      op: create: method: *"POST"|string  # not-load
+    }
+  }
+
+  entity: story_link: {
+    path: '/api/v3/story-links': {  # ent:cmp=story_link;path=t/;cr=0.038;path-primary
+      op: create: method: *"POST"|string  # not-load
+    }
+    path: '/api/v3/story-links/{story-link-public-id}': {  # ent:cmp=story_link;path=t/p/;cr=0.038;path-primary
+      rename: param: "story-link-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: story_reaction: {
+    path: '/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions': {  # ent:cmp=story_reaction;path=t/p/t/;cr=0.218;cmp-primary
+      rename: param: "comment-public-id": *"comment_id"|string  # parent:comment
+      rename: param: "story-public-id": *"story_id"|string  # parent:story
+      op: create: method: *"POST"|string  # not-load
+    }
+  }
+
+  entity: story_slim: {
+    path: '/api/v3/stories/bulk': {  # ent:cmp=story_slim;path=t/;cr=0.115;cmp-primary
+      op: create: method: *"POST"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+    path: '/api/v3/stories/search': {  # ent:cmp=story_slim;path=t/;cr=0.115;cmp-primary
+      op: create: method: *"POST"|string  # not-load
+    }
+  }
+
+  entity: task: {
+    path: '/api/v3/stories/{story-public-id}/tasks': {  # ent:cmp=task;path=t/p/t/;cr=0.167;path-primary
+      rename: param: "story-public-id": *"story_id"|string  # parent:story
+      op: create: method: *"POST"|string  # not-load
+    }
+    path: '/api/v3/stories/{story-public-id}/tasks/{task-public-id}': {  # ent:cmp=task;path=t/p/;cr=0.167;path-primary
+      rename: param: "story-public-id": *"story_id"|string  # parent:story
+      rename: param: "task-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: threaded_comment: {
+    path: '/api/v3/epics/{epic-public-id}/comments': {  # ent:cmp=threaded_comment;path=t/p/t/;cr=0.372;cmp-primary
+      rename: param: "epic-public-id": *"epic_id"|string  # parent:epic
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/epics/{epic-public-id}/comments/{comment-public-id}': {  # ent:cmp=threaded_comment;path=t/p/;cr=0.372;cmp-primary
+      rename: param: "comment-public-id": *"id"|string  # end-id
+      rename: param: "epic-public-id": *"epic_id"|string  # parent:epic
+      op: create: method: *"POST"|string  # not-load
+      op: load: method: *"GET"|string  # end-param
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: uploaded_file: {
+    path: '/api/v3/files': {  # ent:cmp=uploaded_file;path=t/;cr=0.256;cmp-primary
+      op: create: method: *"POST"|string  # not-load
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/files/{file-public-id}': {  # ent:cmp=uploaded_file;path=t/p/;cr=0.256;cmp-primary
+      rename: param: "file-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: update: method: *"PUT"|string  # not-load
+    }
+  }
+
+  entity: webhook: {
+    path: '/api/v3/integrations/webhook': {  # ent:no-cmp;path=t/;no-cmp
+      op: create: method: *"POST"|string  # not-load
+    }
+    path: '/api/v3/integrations/webhook/{integration-public-id}': {  # ent:no-cmp;path=t/p/;no-cmp
+      rename: param: "integration-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+      op: remove: method: *"DELETE"|string  # not-load
+    }
+  }
+
+  entity: workflow: {
+    path: '/api/v3/workflows': {  # ent:cmp=workflow;path=t/;cr=0.026;path-primary
+      op: list: method: *"GET"|string  # array
+    }
+    path: '/api/v3/workflows/{workflow-public-id}': {  # ent:cmp=workflow;path=t/p/;cr=0.026;path-primary
+      rename: param: "workflow-public-id": *"id"|string  # end-id
+      op: load: method: *"GET"|string  # end-param
+    }
+  }
+
+}
