@@ -7,6 +7,8 @@ import { expect, fail } from '@hapi/code'
 
 import { ApiDef } from '@voxgig/apidef'
 
+import { each } from 'jostraca'
+
 import {
   makefs,
   Diff,
@@ -59,7 +61,7 @@ describe('main', () => {
 
 
   test('guide-case', async () => {
-    const { fs } = prepfs(cases)
+    const { fs, vol } = prepfs(cases)
 
     const fails: any[] = []
     const testmetrics = {
@@ -79,7 +81,7 @@ describe('main', () => {
         if (!bres.ok) {
           fails.push(JSON.stringify(bres, null, 2))
         }
-        // validateGuide(c, fails, fs, vol, testmetrics)
+        validateGuide(c, fails, bres, fs, vol, testmetrics)
       }
       catch (err: any) {
         console.error(err)
@@ -118,8 +120,8 @@ describe('main', () => {
         if (!bres.ok) {
           fails.push(JSON.stringify(bres, null, 2))
         }
-        validateGuide(c, fails, fs, vol, testmetrics)
-        validateModel(c, fails, fs, vol, testmetrics)
+        validateGuide(c, fails, bres, fs, vol, testmetrics)
+        validateModel(c, fails, bres, fs, vol, testmetrics)
       }
       catch (err: any) {
         console.error(err)
@@ -161,8 +163,6 @@ guide:{}
         }, {})
     }
   }
-
-  console.dir(vol, { depth: null })
 
   const ufs = makefs(vol)
   return ufs
@@ -211,7 +211,7 @@ async function runBuild(c: Case, build: any, step: any) {
 
 
 
-function validateGuide(c: Case, fails: any[], fs: FST, vol: any, testmetrics: any) {
+function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, testmetrics: any) {
   const todoarg = process.env.npm_config_todo
   const showtodo = ('' + todoarg).match(/hide/i)
 
@@ -246,7 +246,7 @@ function validateGuide(c: Case, fails: any[], fs: FST, vol: any, testmetrics: an
 }
 
 
-function validateModel(c: Case, fails: any[], fs: FST, vol: any, testmetrics: any) {
+function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, testmetrics: any) {
   const todoarg = process.env.npm_config_todo
   const showtodo = ('' + todoarg).match(/hide/i)
 
@@ -254,38 +254,35 @@ function validateModel(c: Case, fails: any[], fs: FST, vol: any, testmetrics: an
 
   const volJSON = vol.toJSON()
 
-  console.log('VALIDATE-MODEL', Object.keys(volJSON))
-  // console.dir(volJSON, { depth: null })
+  each(bres.apimodel.main.sdk.entity, (entity: any) => {
+    const efn = `${cfn}-${entity.name}`
+    const entitySrc = volJSON[`/model/entity/${efn}.jsonic`].trim()
 
-  console.log(volJSON['/model/entity/solar-1.0.0-openapi-3.0.0-moon.jsonic'])
+    const expectedEntitySrc =
+      fs.readFileSync(__dirname + '/../model/' + `${efn}.jsonic`, 'utf8')
+        .trim()
 
-  /*
-  const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim()
+    // console.log('<' + expectedEntitySrc + '>')
 
-  const expectedBaseGuide = fs.readFileSync(__dirname + '/../guide/' +
-    `${cfn}-base-guide.jsonic`, 'utf8')
-    .trim()
+    if (expectedEntitySrc !== entitySrc) {
+      const difflines = Diff.diffLines(expectedEntitySrc, entitySrc)
 
-  // console.log('<' + expectedBaseGuide + '>')
-
-  if (expectedBaseGuide !== baseGuide) {
-    const difflines = Diff.diffLines(expectedBaseGuide, baseGuide)
-
-    // Comments with ## are considered TODOs
-    let todocount = 0
-    const cleanExpected = expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''))
-    testmetrics.todo += todocount
-    if (cleanExpected !== baseGuide) {
-      fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines))
-    }
-    else {
-      console.log("OPEN TODOS: " + cfn + ' ' + todocount)
-      if (!showtodo) {
-        console.log('\n' + prettyDiff(difflines) + '\n')
+      // Comments with ## are considered TODOs
+      let todocount = 0
+      const cleanExpected =
+        expectedEntitySrc.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''))
+      testmetrics.todo += todocount
+      if (cleanExpected !== entitySrc) {
+        fails.push('MISMATCH:' + efn + '\n' + prettyDiff(difflines))
+      }
+      else {
+        console.log("OPEN TODOS: " + cfn + ' ' + todocount)
+        if (!showtodo) {
+          console.log('\n' + prettyDiff(difflines) + '\n')
+        }
       }
     }
-    }
-    */
+  })
 }
 
 

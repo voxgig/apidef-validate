@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const node_test_1 = require("node:test");
 const code_1 = require("@hapi/code");
 const apidef_1 = require("@voxgig/apidef");
+const jostraca_1 = require("jostraca");
 const __1 = require("../..");
 const __2 = require("..");
 let cases = [
@@ -27,7 +28,7 @@ if ('string' === typeof caseSelector) {
         (0, code_1.expect)((0, __2.main)()).equal('main');
     });
     (0, node_test_1.test)('guide-case', async () => {
-        const { fs } = prepfs(cases);
+        const { fs, vol } = prepfs(cases);
         const fails = [];
         const testmetrics = {
             todo: 0
@@ -45,7 +46,7 @@ if ('string' === typeof caseSelector) {
                 if (!bres.ok) {
                     fails.push(JSON.stringify(bres, null, 2));
                 }
-                // validateGuide(c, fails, fs, vol, testmetrics)
+                validateGuide(c, fails, bres, fs, vol, testmetrics);
             }
             catch (err) {
                 console.error(err);
@@ -76,8 +77,8 @@ if ('string' === typeof caseSelector) {
                 if (!bres.ok) {
                     fails.push(JSON.stringify(bres, null, 2));
                 }
-                validateGuide(c, fails, fs, vol, testmetrics);
-                validateModel(c, fails, fs, vol, testmetrics);
+                validateGuide(c, fails, bres, fs, vol, testmetrics);
+                validateModel(c, fails, bres, fs, vol, testmetrics);
             }
             catch (err) {
                 console.error(err);
@@ -108,7 +109,6 @@ guide:{}
             }, {})
         }
     };
-    console.dir(vol, { depth: null });
     const ufs = (0, __1.makefs)(vol);
     return ufs;
 }
@@ -141,7 +141,7 @@ async function runBuild(c, build, step) {
     }, {});
     return bres;
 }
-function validateGuide(c, fails, fs, vol, testmetrics) {
+function validateGuide(c, fails, bres, fs, vol, testmetrics) {
     const todoarg = process.env.npm_config_todo;
     const showtodo = ('' + todoarg).match(/hide/i);
     const cfn = fullname(c);
@@ -168,41 +168,34 @@ function validateGuide(c, fails, fs, vol, testmetrics) {
         }
     }
 }
-function validateModel(c, fails, fs, vol, testmetrics) {
+function validateModel(c, fails, bres, fs, vol, testmetrics) {
     const todoarg = process.env.npm_config_todo;
     const showtodo = ('' + todoarg).match(/hide/i);
     const cfn = fullname(c);
     const volJSON = vol.toJSON();
-    console.log('VALIDATE-MODEL', Object.keys(volJSON));
-    // console.dir(volJSON, { depth: null })
-    console.log(volJSON['/model/entity/solar-1.0.0-openapi-3.0.0-moon.jsonic']);
-    /*
-    const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim()
-  
-    const expectedBaseGuide = fs.readFileSync(__dirname + '/../guide/' +
-      `${cfn}-base-guide.jsonic`, 'utf8')
-      .trim()
-  
-    // console.log('<' + expectedBaseGuide + '>')
-  
-    if (expectedBaseGuide !== baseGuide) {
-      const difflines = Diff.diffLines(expectedBaseGuide, baseGuide)
-  
-      // Comments with ## are considered TODOs
-      let todocount = 0
-      const cleanExpected = expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''))
-      testmetrics.todo += todocount
-      if (cleanExpected !== baseGuide) {
-        fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines))
-      }
-      else {
-        console.log("OPEN TODOS: " + cfn + ' ' + todocount)
-        if (!showtodo) {
-          console.log('\n' + prettyDiff(difflines) + '\n')
+    (0, jostraca_1.each)(bres.apimodel.main.sdk.entity, (entity) => {
+        const efn = `${cfn}-${entity.name}`;
+        const entitySrc = volJSON[`/model/entity/${efn}.jsonic`].trim();
+        const expectedEntitySrc = fs.readFileSync(__dirname + '/../model/' + `${efn}.jsonic`, 'utf8')
+            .trim();
+        // console.log('<' + expectedEntitySrc + '>')
+        if (expectedEntitySrc !== entitySrc) {
+            const difflines = __1.Diff.diffLines(expectedEntitySrc, entitySrc);
+            // Comments with ## are considered TODOs
+            let todocount = 0;
+            const cleanExpected = expectedEntitySrc.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''));
+            testmetrics.todo += todocount;
+            if (cleanExpected !== entitySrc) {
+                fails.push('MISMATCH:' + efn + '\n' + prettyDiff(difflines));
+            }
+            else {
+                console.log("OPEN TODOS: " + cfn + ' ' + todocount);
+                if (!showtodo) {
+                    console.log('\n' + prettyDiff(difflines) + '\n');
+                }
+            }
         }
-      }
-      }
-      */
+    });
 }
 function prettyDiff(difflines) {
     const out = [];
