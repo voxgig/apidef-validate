@@ -1,0 +1,124 @@
+# Entity: repository_gpg_key
+
+main: sdk: entity: repository_gpg_key: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "repository_gpg_key"
+  op: {
+    create: {
+      alts: [
+        {
+          args: {
+            param: [
+              {
+                kind: "param"
+                name: "owner"
+                req: true
+                type: "`$ANY`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "data"
+                req: false
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{identifier}/gpg/"
+          parts: [
+            "repos"
+            "{owner}"
+            "{identifier}"
+            "gpg"
+          ]
+          select: {
+            param: {
+              identifier: true
+              owner: true
+            }
+          }
+        }
+        {
+          args: {
+            param: [
+              {
+                kind: "param"
+                name: "owner"
+                req: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{identifier}/gpg/regenerate/"
+          parts: [
+            "repos"
+            "{owner}"
+            "{identifier}"
+            "gpg"
+            "regenerate"
+          ]
+          select: {
+            param: {
+              identifier: true
+              owner: true
+            }
+          }
+        }
+      ]
+      name: "create"
+    }
+    load: {
+      alts: [
+        {
+          args: {
+            param: [
+              {
+                kind: "param"
+                name: "owner"
+                req: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{identifier}/gpg/"
+          parts: [
+            "repos"
+            "{owner}"
+            "{identifier}"
+            "gpg"
+          ]
+          select: {
+            param: {
+              identifier: true
+              owner: true
+            }
+          }
+        }
+      ]
+      name: "load"
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

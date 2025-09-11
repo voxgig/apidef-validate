@@ -1,0 +1,98 @@
+# Entity: user_authentication_token
+
+main: sdk: entity: user_authentication_token: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "user_authentication_token"
+  op: {
+    create: {
+      alts: [
+        {
+          method: "POST"
+          orig: "/user/tokens/"
+          parts: [
+            "user"
+            "tokens"
+          ]
+        }
+      ]
+      name: "create"
+    }
+    load: {
+      alts: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                req: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "page_size"
+                req: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/user/tokens/"
+          parts: [
+            "user"
+            "tokens"
+          ]
+        }
+      ]
+      name: "load"
+    }
+    update: {
+      alts: [
+        {
+          args: {
+            param: [
+              {
+                kind: "param"
+                name: "slug_perm"
+                req: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/user/tokens/{slug_perm}/refresh/"
+          parts: [
+            "user"
+            "tokens"
+            "{slug_perm}"
+            "refresh"
+          ]
+          select: {
+            param: {
+              slug_perm: true
+            }
+          }
+        }
+      ]
+      name: "update"
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "tokens"
+      ]
+    ]
+  }
+
+
+
+}

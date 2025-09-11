@@ -1,0 +1,332 @@
+# Entity: payment
+
+main: sdk: entity: payment: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "affiliate"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "billing_info"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$NULL`"
+          "`$OBJECT`"
+        ]
+      ]
+    }
+    {
+      name: "coupon"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$NULL`"
+          "`$STRING`"
+        ]
+      ]
+    }
+    {
+      name: "created"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "discount"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "gateway"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$NULL`"
+          "`$STRING`"
+        ]
+      ]
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "instructor"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "instructors_total_percentage"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$NULL`"
+          "`$NUMBER`"
+        ]
+      ]
+    }
+    {
+      name: "invoice"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$NULL`"
+          "`$STRING`"
+        ]
+      ]
+    }
+    {
+      name: "paid_at"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$NUMBER`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    {
+      name: "payment_plan_current_payment"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    {
+      name: "payment_plan_total_payment"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    {
+      name: "period"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$NULL`"
+          "`$STRING`"
+        ]
+      ]
+    }
+    {
+      name: "price"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "product"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "refund_at"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$NULL`"
+          "`$NUMBER`"
+        ]
+      ]
+    }
+    {
+      name: "tax_amount"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "tax_percentage"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "transaction_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "user_id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "payment"
+  op: {
+    list: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                req: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v2/affiliates/{id}/payments"
+          parts: [
+            "v2"
+            "affiliates"
+            "{affiliate_id}"
+            "payments"
+          ]
+          select: {
+            param: {
+              affiliate_id: true
+            }
+          }
+        }
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "product_type"
+                req: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "user_id"
+                req: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v2/payments"
+          parts: [
+            "v2"
+            "payments"
+          ]
+        }
+      ]
+      name: "list"
+    }
+    load: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v2/payments/{id}"
+          parts: [
+            "v2"
+            "payments"
+            "{id}"
+          ]
+          select: {
+            param: {
+              id: true
+            }
+          }
+        }
+      ]
+      name: "load"
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "affiliates"
+      ]
+    ]
+  }
+
+
+
+}

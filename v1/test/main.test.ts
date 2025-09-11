@@ -254,12 +254,20 @@ function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
   const volJSON = vol.toJSON()
 
+  fs.mkdirSync(__dirname + '/../model/' + `${cfn}`, { recursive: true })
+
   each(bres.apimodel.main.sdk.entity, (entity: any) => {
     const efn = `${cfn}-${entity.name}`
     const entitySrc = volJSON[`/model/entity/${efn}.jsonic`].trim()
 
+    const expectedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.jsonic`
+
+    if (!fs.existsSync(expectedSrcFile)) {
+      fs.writeFileSync(expectedSrcFile, entitySrc)
+    }
+
     const expectedEntitySrc =
-      fs.readFileSync(__dirname + '/../model/' + `${efn}.jsonic`, 'utf8')
+      fs.readFileSync(expectedSrcFile, 'utf8')
         .trim()
 
     // console.log('<' + expectedEntitySrc + '>')

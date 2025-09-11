@@ -1,0 +1,81 @@
+# Entity: payment_invoice_link
+
+main: sdk: entity: payment_invoice_link: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "expires_at"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "invoice"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "payment_invoice_link"
+  op: {
+    load: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v2/payments/{id}/invoice-link"
+          parts: [
+            "v2"
+            "payments"
+            "{id}"
+            "invoice-link"
+          ]
+          select: {
+            param: {
+              "$action": "invoice-link"
+              id: true
+            }
+          }
+        }
+      ]
+      name: "load"
+    }
+  }
+
+
+
+}

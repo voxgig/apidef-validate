@@ -1,0 +1,109 @@
+# Entity: repository_retention_rule
+
+main: sdk: entity: repository_retention_rule: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "repository_retention_rule"
+  op: {
+    load: {
+      alts: [
+        {
+          args: {
+            param: [
+              {
+                kind: "param"
+                name: "owner"
+                req: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                req: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/retention/"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "retention"
+          ]
+          select: {
+            param: {
+              owner: true
+              repo: true
+            }
+          }
+        }
+      ]
+      name: "load"
+    }
+    update: {
+      alts: [
+        {
+          args: {
+            param: [
+              {
+                kind: "param"
+                name: "owner"
+                req: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                req: true
+                type: "`$ANY`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "data"
+                req: false
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/repos/{owner}/{repo}/retention/"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "retention"
+          ]
+          select: {
+            param: {
+              owner: true
+              repo: true
+            }
+          }
+        }
+      ]
+      name: "update"
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

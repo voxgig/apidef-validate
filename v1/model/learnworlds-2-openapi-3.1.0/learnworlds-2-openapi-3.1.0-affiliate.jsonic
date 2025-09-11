@@ -1,0 +1,122 @@
+# Entity: affiliate
+
+main: sdk: entity: affiliate: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "commission_percentage"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "payment_method"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "payment_note"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "affiliate"
+  op: {
+    create: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/v2/affiliates/{id}"
+          parts: [
+            "v2"
+            "affiliates"
+            "{id}"
+          ]
+          select: {
+            param: {
+              id: true
+            }
+          }
+        }
+      ]
+      name: "create"
+    }
+    list: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                req: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v2/affiliates"
+          parts: [
+            "v2"
+            "affiliates"
+          ]
+        }
+      ]
+      name: "list"
+    }
+  }
+
+
+
+}

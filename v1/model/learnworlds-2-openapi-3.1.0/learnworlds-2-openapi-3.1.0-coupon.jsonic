@@ -1,0 +1,192 @@
+# Entity: coupon
+
+main: sdk: entity: coupon: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "bulk"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "code"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "expire"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    {
+      name: "prefix"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "quantity"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "times_used"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "coupon"
+  op: {
+    create: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/v2/promotions/{id}/coupons-bulk"
+          parts: [
+            "v2"
+            "promotions"
+            "{promotion_id}"
+            "coupons-bulk"
+          ]
+          select: {
+            param: {
+              promotion_id: true
+            }
+          }
+        }
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "pid"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/v2/promotions/{pid}/coupons"
+          parts: [
+            "v2"
+            "promotions"
+            "{promotion_id}"
+            "coupons"
+          ]
+          select: {
+            param: {
+              promotion_id: true
+            }
+          }
+        }
+      ]
+      name: "create"
+    }
+    list: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "pid"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v2/promotions/{pid}/coupons"
+          parts: [
+            "v2"
+            "promotions"
+            "{promotion_id}"
+            "coupons"
+          ]
+          select: {
+            param: {
+              promotion_id: true
+            }
+          }
+        }
+      ]
+      name: "list"
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "promotions"
+      ]
+    ]
+  }
+
+
+
+}

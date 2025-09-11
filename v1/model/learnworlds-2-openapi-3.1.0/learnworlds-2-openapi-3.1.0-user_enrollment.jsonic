@@ -1,0 +1,118 @@
+# Entity: user_enrollment
+
+main: sdk: entity: user_enrollment: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "duration"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "duration_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "justification"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    {
+      name: "price"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "product_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "product_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "send_enrollment_email"
+      req: false
+      type: [
+        "`$ONE`"
+        [
+          "`$BOOLEAN`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    {
+      name: "success"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "user_enrollment"
+  op: {
+    create: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/v2/users/{id}/enrollment"
+          parts: [
+            "v2"
+            "users"
+            "{id}"
+            "enrollment"
+          ]
+          select: {
+            param: {
+              "$action": "enrollment"
+              id: true
+            }
+          }
+        }
+      ]
+      name: "create"
+    }
+  }
+
+
+
+}

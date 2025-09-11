@@ -1,0 +1,305 @@
+# Entity: seat
+
+main: sdk: entity: seat: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "access"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "active"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "available_seat"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "created"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "got_seat_on"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "max_number_of_user"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "modified"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "number_of_seat"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "product"
+      op: {
+        create: {
+          req: true
+          type: "`$OBJECT`"
+        }
+        update: {
+          req: true
+          type: "`$OBJECT`"
+        }
+      }
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "seat_manager"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "tag"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "title"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "total_enrollment"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "seat"
+  op: {
+    create: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/v2/seats"
+          parts: [
+            "v2"
+            "seats"
+          ]
+        }
+      ]
+      name: "create"
+    }
+    list: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                req: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v2/seats"
+          parts: [
+            "v2"
+            "seats"
+          ]
+        }
+      ]
+      name: "list"
+    }
+    load: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v2/seats/{id}"
+          parts: [
+            "v2"
+            "seats"
+            "{id}"
+          ]
+          select: {
+            param: {
+              id: true
+            }
+          }
+        }
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: false
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v2/users/{id}/seats"
+          parts: [
+            "v2"
+            "users"
+            "{user_id}"
+            "seats"
+          ]
+          select: {
+            param: {
+              user_id: true
+            }
+          }
+        }
+      ]
+      name: "load"
+    }
+    update: {
+      alts: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                req: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            param: [
+              {
+                kind: "param"
+                name: "id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/v2/seats/{id}"
+          parts: [
+            "v2"
+            "seats"
+            "{id}"
+          ]
+          select: {
+            param: {
+              id: true
+            }
+          }
+        }
+      ]
+      name: "update"
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "users"
+      ]
+    ]
+  }
+
+
+
+}

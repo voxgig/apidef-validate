@@ -173,10 +173,15 @@ function validateModel(c, fails, bres, fs, vol, testmetrics) {
     const showtodo = ('' + todoarg).match(/hide/i);
     const cfn = fullname(c);
     const volJSON = vol.toJSON();
+    fs.mkdirSync(__dirname + '/../model/' + `${cfn}`, { recursive: true });
     (0, jostraca_1.each)(bres.apimodel.main.sdk.entity, (entity) => {
         const efn = `${cfn}-${entity.name}`;
         const entitySrc = volJSON[`/model/entity/${efn}.jsonic`].trim();
-        const expectedEntitySrc = fs.readFileSync(__dirname + '/../model/' + `${efn}.jsonic`, 'utf8')
+        const expectedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.jsonic`;
+        if (!fs.existsSync(expectedSrcFile)) {
+            fs.writeFileSync(expectedSrcFile, entitySrc);
+        }
+        const expectedEntitySrc = fs.readFileSync(expectedSrcFile, 'utf8')
             .trim();
         // console.log('<' + expectedEntitySrc + '>')
         if (expectedEntitySrc !== entitySrc) {
