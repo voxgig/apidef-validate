@@ -1,0 +1,106 @@
+# Entity: user
+
+main: sdk: entity: user: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "user"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "user"
+  op: {
+    create: {
+      alts: [
+        {
+          args: {
+            param: [
+              {
+                kind: "param"
+                name: "organization_id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/organizations/{organization_id}/users"
+          parts: [
+            "organizations"
+            "{organization_id}"
+            "users"
+          ]
+          select: {
+            param: {
+              organization_id: true
+            }
+          }
+        }
+      ]
+      name: "create"
+    }
+    list: {
+      alts: [
+        {
+          args: {
+            param: [
+              {
+                kind: "param"
+                name: "organization_id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                req: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                req: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/organizations/{organization_id}/users"
+          parts: [
+            "organizations"
+            "{organization_id}"
+            "users"
+          ]
+          select: {
+            param: {
+              organization_id: true
+            }
+          }
+        }
+      ]
+      name: "list"
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "organizations"
+      ]
+    ]
+  }
+
+
+
+}

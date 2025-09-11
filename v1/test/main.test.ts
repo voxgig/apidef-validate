@@ -308,9 +308,18 @@ function prettyDiff(difflines: any[]) {
     }
     else if (part.removed) {
       last = 'removed'
-      out.push('\x1b[92m<<<<<<< EXISTING\n')
-      out.push(part.value)
-      out.push('>>>>>>> EXISTING\n\x1b[0m')
+      if (part.value.trim().startsWith('###')) {
+        // ignore as comment
+        last = 'same'
+      }
+      else if (part.value.trim().startsWith('##')) {
+        out.push(`\x1b[93m####### TODO: ${part.value}\x1b[0m`)
+      }
+      else {
+        out.push('\x1b[92m<<<<<<< EXISTING\n')
+        out.push(part.value)
+        out.push('>>>>>>> EXISTING\n\x1b[0m')
+      }
     }
     else {
       if ('same' !== last) {

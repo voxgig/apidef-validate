@@ -1,0 +1,115 @@
+# Entity: component_group_uptime
+
+main: sdk: entity: component_group_uptime: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "major_outage"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "partial_outage"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "range_end"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "range_start"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "related_event"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "uptime_percentage"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "warning"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "component_group_uptime"
+  op: {
+    load: {
+      alts: [
+        {
+          args: {
+            param: [
+              {
+                kind: "param"
+                name: "page_id"
+                req: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "start"
+                req: false
+                type: "Any"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/pages/{page_id}/component-groups/{id}/uptime"
+          parts: [
+            "pages"
+            "{page_id}"
+            "component-groups"
+            "{id}"
+            "uptime"
+          ]
+          select: {
+            param: {
+              "$action": "uptime"
+              id: true
+              page_id: true
+            }
+          }
+        }
+      ]
+      name: "load"
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "pages"
+      ]
+    ]
+  }
+
+
+
+}

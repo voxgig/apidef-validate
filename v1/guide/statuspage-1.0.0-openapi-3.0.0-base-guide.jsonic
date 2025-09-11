@@ -8,19 +8,19 @@ guide: {
       op: list: method: *"GET"|string  # array
     }
     path: '/pages/{page_id}/components/{component_id}': {  # ent:cmp=component;path=t/p/;cr=0.463;path-primary
-      rename: param: component_id: *"id"|string  # end-id
+      rename: param: "component_id": *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
     path: '/pages/{page_id}/components/{component_id}/page_access_groups': {  # ent:cmp=component;path=t/p/t/;cr=0.463;cmp-primary
-      ## end-filter rename component_id:id ?
+      rename: param: "component_id": *"id"|string  # action-not-parent:component
       op: create: method: *"POST"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
     }
     path: '/pages/{page_id}/components/{component_id}/page_access_users': {  # ent:cmp=component;path=t/p/t/;cr=0.463;cmp-primary
-      ## end-filter rename component_id:id ?
+      rename: param: "component_id": *"id"|string  # action-not-parent:component
       op: create: method: *"POST"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
     }
@@ -40,7 +40,7 @@ guide: {
 
   entity: component_uptime: {
     path: '/pages/{page_id}/components/{component_id}/uptime': {  # ent:cmp=component_uptime;path=t/p/t/;cr=0.019;cmp-primary
-      rename: param: "component_id: *"id"|string  # filter-not-parent:component_uptime
+      rename: param: "component_id": *"id"|string  # action-not-parent:component_uptime
       op: load: method: *"GET"|string  # not-list
     }
   }
@@ -82,7 +82,7 @@ guide: {
       op: list: method: *"GET"|string  # array
     }
     path: '/pages/{page_id}/incidents/{incident_id}': {  # ent:cmp=incident;path=t/p/;cr=0.185;path-primary
-      rename: param: "incident_id: *"id"|string  # end-id
+      rename: param: "incident_id": *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
@@ -92,7 +92,7 @@ guide: {
 
   entity: incident_postmortem: {
     path: '/pages/{page_id}/incidents/{incident_id}/postmortem': {  # ent:no-cmp;path=t/p/t/
-      rename: param: "incident_id: *"id"|string  # filter-not-parent:incident_postmortem
+      rename: param: "incident_id": *"id"|string  # action-not-parent:incident_postmortem
       op: remove: method: *"DELETE"|string  # not-load
     }
   }
@@ -106,7 +106,7 @@ guide: {
 
   entity: incident_update: {
     path: '/pages/{page_id}/incidents/{incident_id}/incident_updates/{incident_update_id}': {  # ent:cmp=incident_update;path=t/p/;cr=0.241;path-primary
-      rename: param: "incident_update_id: *"id"|string  # end-id
+      rename: param: "incident_update_id": *"id"|string  # end-id
       op: patch: method: *"PATCH"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
@@ -117,14 +117,14 @@ guide: {
       op: load: method: *"GET"|string  # not-list
     }
     path: '/pages/{page_id}/metrics/{metric_id}': {  # ent:cmp=metric;path=t/p/;cr=0.167;path-primary
-      rename: param: "metric_id: *"id"|string  # end-id
+      rename: param: "metric_id": *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
     path: '/pages/{page_id}/metrics/{metric_id}/data': {  # ent:cmp=metric;path=t/p/t/;cr=0.167;cmp-primary
-      ## missing rename metric_id:id ?
+      rename: param: "metric_id": *"id"|string  # action-not-parent:metric
       op: remove: method: *"DELETE"|string  # not-load
     }
     path: '/pages/{page_id}/metrics_providers/{metrics_provider_id}/metrics': {  # ent:cmp=metric;path=t/p/t/;cr=0.167;path-primary
@@ -142,7 +142,7 @@ guide: {
       op: list: method: *"GET"|string  # array
     }
     path: '/pages/{page_id}/metrics_providers/{metrics_provider_id}': {  # ent:cmp=metrics_provider;path=t/p/;cr=0.111;path-primary
-      rename: param: "metrics_provider_id: *"id"|string  # end-id
+      rename: param: "metrics_provider_id": *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
@@ -155,7 +155,7 @@ guide: {
       op: list: method: *"GET"|string  # array
     }
     path: '/pages/{page_id}': {  # ent:cmp=page;path=t/p/;cr=0.074;path-primary
-      rename: param: "page_id: *"id"|string  # end-id
+      rename: param: "page_id": *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
@@ -168,22 +168,21 @@ guide: {
       op: list: method: *"GET"|string  # array
     }
     path: '/pages/{page_id}/page_access_groups/{page_access_group_id}': {  # ent:cmp=page_access_group;path=t/p/;cr=0.204;path-primary
-      rename: param: "page_access_group_id: *"id"|string  # end-id
+      rename: param: "page_access_group_id": *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
     path: '/pages/{page_id}/page_access_groups/{page_access_group_id}/components': {  # ent:cmp=page_access_group;path=t/p/t/;cr=0.204;cmp-primary
-      ## end-filter rename page_access_group_id:id ?
+      rename: param: "page_access_group_id": *"id"|string  # action-not-parent:page_access_group
       op: create: method: *"POST"|string  # not-load
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
     path: '/pages/{page_id}/page_access_groups/{page_access_group_id}/components/{component_id}': {  # ent:cmp=page_access_group;path=t/p/;cr=0.204;cmp-primary
-      ## NO RENAME! returns cmp=page_access_group, not component
-      rename: param: "component_id: *"id"|string  # end-id
+      rename: param: "page_access_group_id": *"id"|string  # id-not-parent
       op: remove: method: *"DELETE"|string  # not-load
     }
   }
@@ -194,42 +193,41 @@ guide: {
       op: list: method: *"GET"|string  # array
     }
     path: '/pages/{page_id}/page_access_users/{page_access_user_id}': {  # ent:cmp=page_access_user;path=t/p/;cr=0.278;path-primary
-      rename: param: "page_access_user_id: *"id"|string  # end-id
+      rename: param: "page_access_user_id": *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
     path: '/pages/{page_id}/page_access_users/{page_access_user_id}/components': {  # ent:cmp=page_access_user;path=t/p/t/;cr=0.278;cmp-primary
-      ## rename missing, or incorrect entity???
+      rename: param: "page_access_user_id": *"id"|string  # action-not-parent:page_access_user
       op: create: method: *"POST"|string  # not-load
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
     path: '/pages/{page_id}/page_access_users/{page_access_user_id}/components/{component_id}': {  # ent:cmp=page_access_user;path=t/p/;cr=0.278;cmp-primary
-      ## BAD RENAME, not a component? or is it?
-      rename: param: "component_id: *"id"|string  # end-id
+      rename: param: "page_access_user_id": *"id"|string  # id-not-parent
       op: remove: method: *"DELETE"|string  # not-load
     }
     path: '/pages/{page_id}/page_access_users/{page_access_user_id}/metrics': {  # ent:cmp=page_access_user;path=t/p/t/;cr=0.278;cmp-primary
-      ## missing rename
+      rename: param: "page_access_user_id": *"id"|string  # action-not-parent:page_access_user
       op: create: method: *"POST"|string  # not-load
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
     path: '/pages/{page_id}/page_access_users/{page_access_user_id}/metrics/{metric_id}': {  # ent:cmp=page_access_user;path=t/p/;cr=0.278;cmp-primary
-      ## what does this return? which ent actually?
-      rename: param: "metric_id: *"id"|string  # end-id
+      rename: param: "page_access_user_id": *"id"|string  # id-not-parent
       op: remove: method: *"DELETE"|string  # not-load
     }
   }
 
   entity: permission: {
     path: '/organizations/{organization_id}/permissions/{user_id}': {  # ent:cmp=permission;path=t/p/;cr=0.037;path-primary
-      ## bad rename? not a user
-      rename: param: "user_id: *"id"|string  # end-id
+      ### NOTE: rename user_id:id is correct!
+      ### That permission.id == use.id is a semantic meta fact
+      rename: param: "user_id": *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
       op: update: method: *"PUT"|string  # not-load
     }
@@ -281,7 +279,7 @@ guide: {
       op: list: method: *"GET"|string  # array
     }
     path: '/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}': {  # ent:cmp=subscriber;path=t/p/;cr=0.185;path-primary
-      rename: param: "subscriber_id: *"id"|string  # end-id
+      rename: param: "subscriber_id": *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
       op: remove: method: *"DELETE"|string  # not-load
     }
@@ -293,7 +291,7 @@ guide: {
       op: list: method: *"GET"|string  # array
     }
     path: '/pages/{page_id}/subscribers/{subscriber_id}': {  # ent:cmp=subscriber;path=t/p/;cr=0.185;path-primary
-      rename: param: "subscriber_id: *"id"|string  # end-id
+      rename: param: "subscriber_id": *"id"|string  # end-id
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
@@ -316,11 +314,11 @@ guide: {
 
   entity: subscriber_resend_confirmation: {
     path: '/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}/resend_confirmation': {  # ent:no-cmp;path=t/p/t/
-      rename: param: "subscriber_id: *"id"|string  # filter-not-parent:subscriber_resend_confirmation
+      rename: param: "subscriber_id": *"id"|string  # action-not-parent:subscriber_resend_confirmation
       op: create: method: *"POST"|string  # not-load
     }
     path: '/pages/{page_id}/subscribers/{subscriber_id}/resend_confirmation': {  # ent:no-cmp;path=t/p/t/
-      rename: param: "subscriber_id: *"id"|string  # filter-not-parent:subscriber_resend_confirmation
+      rename: param: "subscriber_id": *"id"|string  # action-not-parent:subscriber_resend_confirmation
       op: create: method: *"POST"|string  # not-load
     }
   }
@@ -337,7 +335,7 @@ guide: {
       op: list: method: *"GET"|string  # array
     }
     path: '/organizations/{organization_id}/users/{user_id}': {  # ent:cmp=user;path=t/p/;cr=0.056;path-primary
-      rename: param: "user_id: *"id"|string  # end-id
+      rename: param: "user_id": *"id"|string  # end-id
       op: remove: method: *"DELETE"|string  # not-load
     }
   }
