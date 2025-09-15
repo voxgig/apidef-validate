@@ -46,10 +46,10 @@ let cases: Case[] = [
   { name: 'shortcut', version: 'v3', spec: 'openapi-3.0.0', format: 'json' },
 ]
 
-const caseSelector = process.env.npm_config_case
+const caseSelector = (process.env.npm_config_case ?? '').split(',')
 
-if ('string' === typeof caseSelector) {
-  cases = cases.filter(c => c.name.includes(caseSelector))
+if (0 < caseSelector.length) {
+  cases = cases.filter(c => 0 < caseSelector.filter(cs => c.name.includes(cs)).length)
 }
 
 
@@ -298,33 +298,48 @@ function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 function prettyDiff(difflines: any[]) {
   const out: string[] = []
 
+  let prev: any = undefined
   let last = 'same'
   difflines.forEach((part: any) => {
     if (part.added) {
-      last = 'added'
+      if ('same' === last && prev) {
+        const prevlines = prev.value.split('\n')
+        out.push('\n' + prevlines.slice(prevlines.length - 4, prevlines.length).join('\n'))
+        prev = undefined
+      }
       out.push('\x1b[38;5;220m<<<<<<< GENERATED\n')
       out.push(part.value)
       out.push('>>>>>>> GENERATED\n\x1b[0m')
+      last = 'added'
     }
     else if (part.removed) {
-      last = 'removed'
       if (part.value.trim().startsWith('###')) {
         // ignore as comment
         last = 'same'
+        prev = part
       }
       else if (part.value.trim().startsWith('##')) {
         out.push(`\x1b[93m####### TODO: ${part.value}\x1b[0m`)
+        last = 'same'
+        prev = part
       }
       else {
+        if ('same' === last && prev) {
+          const prevlines = prev.value.split('\n')
+          out.push('\n' + prevlines.slice(prevlines.length - 4, prevlines.length).join('\n'))
+          prev = undefined
+        }
         out.push('\x1b[92m<<<<<<< EXISTING\n')
         out.push(part.value)
         out.push('>>>>>>> EXISTING\n\x1b[0m')
+        last = 'removed'
       }
     }
     else {
       if ('same' !== last) {
         out.push(part.value.split('\n').slice(0, 4).join('\n') + '\n\n')
       }
+      prev = part
       last = 'same'
     }
   })

@@ -3,10 +3,10 @@
 guide: {
 
   entity: domain: {
-    path: '/{year}/domain': {  # ent:cmp=paginated_taxa;path=p/t/;cr=0.500;path-primary
+    path: '/{year}/domain': {  # ent:cmp=paginated_taxa;path=p/t/;path-primary
       op: list: method: *"GET"|string  # array-prop:items
     }
-    path: '/{year}/domain/{id}': {  # ent:cmp=taxon;path=t/p/;cr=1.833;path-primary
+    path: '/{year}/domain/{id}': {  # ent:cmp=taxon;path=t/p/;path-primary
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
     }
@@ -20,11 +20,11 @@ guide: {
   }
 
   entity: kingdom: {
-    path: '/{year}/domain/{domain_id}/kingdom/{kingdom_id}': {  # ent:cmp=taxon;path=t/p/;cr=1.833;path-primary
-      rename: param: "kingdom_id": *"id"|string  # end-id
+    path: '/{year}/domain/{domain_id}/kingdom/{kingdom_id}': {  # ent:cmp=taxon;path=t/p/;path-primary
+      rename: param: "kingdom_id": *"id"|string  # end-id:GET:parent=true/kingdom:cmp=false/taxon
       op: load: method: *"GET"|string  # end-param
     }
-    path: '/{year}/domain/{id}/kingdom': {  # ent:cmp=taxon;path=t/p/t/;cr=1.833;path-primary
+    path: '/{year}/domain/{id}/kingdom': {  # ent:cmp=taxon;path=t/p/t/;path-primary
       rename: param: "id": *"domain_id"|string  # parent:domain
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array-prop:items
@@ -32,9 +32,9 @@ guide: {
   }
 
   entity: phylum: {
-    path: '/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}': {  # ent:cmp=taxon;path=t/p/;cr=1.833;path-primary
+    path: '/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}': {  # ent:cmp=taxon;path=t/p/;path-primary
       rename: param: "domain": *"domain_id"|string  # not-primary
-      rename: param: "itemid": *"id"|string  # end-id
+      rename: param: "itemid": *"id"|string  # end-id:GET:parent=true/phylum:cmp=false/taxon
       rename: param: "kid": *"kingdom_id"|string  # parent:kingdom
       op: load: method: *"GET"|string  # end-param
     }

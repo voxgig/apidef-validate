@@ -19,9 +19,9 @@ let cases = [
     { name: 'codatplatform', version: '3.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
     { name: 'shortcut', version: 'v3', spec: 'openapi-3.0.0', format: 'json' },
 ];
-const caseSelector = process.env.npm_config_case;
-if ('string' === typeof caseSelector) {
-    cases = cases.filter(c => c.name.includes(caseSelector));
+const caseSelector = (process.env.npm_config_case ?? '').split(',');
+if (0 < caseSelector.length) {
+    cases = cases.filter(c => 0 < caseSelector.filter(cs => c.name.includes(cs)).length);
 }
 (0, node_test_1.describe)('main', () => {
     (0, node_test_1.test)('happy', async () => {
@@ -204,33 +204,48 @@ function validateModel(c, fails, bres, fs, vol, testmetrics) {
 }
 function prettyDiff(difflines) {
     const out = [];
+    let prev = undefined;
     let last = 'same';
     difflines.forEach((part) => {
         if (part.added) {
-            last = 'added';
+            if ('same' === last && prev) {
+                const prevlines = prev.value.split('\n');
+                out.push('\n' + prevlines.slice(prevlines.length - 4, prevlines.length).join('\n'));
+                prev = undefined;
+            }
             out.push('\x1b[38;5;220m<<<<<<< GENERATED\n');
             out.push(part.value);
             out.push('>>>>>>> GENERATED\n\x1b[0m');
+            last = 'added';
         }
         else if (part.removed) {
-            last = 'removed';
             if (part.value.trim().startsWith('###')) {
                 // ignore as comment
                 last = 'same';
+                prev = part;
             }
             else if (part.value.trim().startsWith('##')) {
                 out.push(`\x1b[93m####### TODO: ${part.value}\x1b[0m`);
+                last = 'same';
+                prev = part;
             }
             else {
+                if ('same' === last && prev) {
+                    const prevlines = prev.value.split('\n');
+                    out.push('\n' + prevlines.slice(prevlines.length - 4, prevlines.length).join('\n'));
+                    prev = undefined;
+                }
                 out.push('\x1b[92m<<<<<<< EXISTING\n');
                 out.push(part.value);
                 out.push('>>>>>>> EXISTING\n\x1b[0m');
+                last = 'removed';
             }
         }
         else {
             if ('same' !== last) {
                 out.push(part.value.split('\n').slice(0, 4).join('\n') + '\n\n');
             }
+            prev = part;
             last = 'same';
         }
     });
