@@ -179,6 +179,9 @@ async function makeBuild(c: Case, fs: FST) {
     folder,
     debug: 'debug',
     outprefix,
+    why: {
+      show: true
+    }
   })
 
   return build
@@ -220,9 +223,13 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
   const volJSON = vol.toJSON()
   const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim()
 
-  const expectedBaseGuide = fs.readFileSync(__dirname + '/../guide/' +
-    `${cfn}-base-guide.jsonic`, 'utf8')
-    .trim()
+  const expectedBaseGuideFile = __dirname + '/../guide/' + `${cfn}-base-guide.jsonic`
+
+  if (!fs.existsSync(expectedBaseGuideFile)) {
+    fs.writeFileSync(expectedBaseGuideFile, baseGuide)
+  }
+
+  const expectedBaseGuide = fs.readFileSync(expectedBaseGuideFile, 'utf8').trim()
 
   // console.log('<' + expectedBaseGuide + '>')
 
@@ -231,7 +238,8 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
     // Comments with ## are considered TODOs
     let todocount = 0
-    const cleanExpected = expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''))
+    const cleanExpected =
+      expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''))
     testmetrics.todo += todocount
     if (cleanExpected !== baseGuide) {
       fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines))
@@ -297,6 +305,11 @@ function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
 function prettyDiff(difflines: any[]) {
   const out: string[] = []
+
+  if ('hide' === process.env.npm_config_prettydiff) {
+    return
+  }
+
 
   let prev: any = undefined
   let last = 'same'

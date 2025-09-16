@@ -120,6 +120,9 @@ async function makeBuild(c, fs) {
         folder,
         debug: 'debug',
         outprefix,
+        why: {
+            show: true
+        }
     });
     return build;
 }
@@ -147,9 +150,11 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
     const cfn = fullname(c);
     const volJSON = vol.toJSON();
     const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim();
-    const expectedBaseGuide = fs.readFileSync(__dirname + '/../guide/' +
-        `${cfn}-base-guide.jsonic`, 'utf8')
-        .trim();
+    const expectedBaseGuideFile = __dirname + '/../guide/' + `${cfn}-base-guide.jsonic`;
+    if (!fs.existsSync(expectedBaseGuideFile)) {
+        fs.writeFileSync(expectedBaseGuideFile, baseGuide);
+    }
+    const expectedBaseGuide = fs.readFileSync(expectedBaseGuideFile, 'utf8').trim();
     // console.log('<' + expectedBaseGuide + '>')
     if (expectedBaseGuide !== baseGuide) {
         const difflines = __1.Diff.diffLines(expectedBaseGuide, baseGuide);
@@ -204,6 +209,9 @@ function validateModel(c, fails, bres, fs, vol, testmetrics) {
 }
 function prettyDiff(difflines) {
     const out = [];
+    if ('hide' === process.env.npm_config_prettydiff) {
+        return;
+    }
     let prev = undefined;
     let last = 'same';
     difflines.forEach((part) => {
