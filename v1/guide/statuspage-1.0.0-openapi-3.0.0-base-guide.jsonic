@@ -3,60 +3,62 @@
 guide: {
 
   entity: component: {
-    path: '/pages/{page_id}/components': {  # ent:cmp=component;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/components': {  # ent:component:cmp=component;path=t/p/t/;path-primary
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/components/{component_id}': {  # ent:no-cmp;path=t/p/;no-cmp
+    path: '/pages/{page_id}/components/{component_id}': {  # ent:component:no-cmp;path=t/p/;entres=true/204,401,404/nores;path-primary
       rename: param: "component_id": *"id"|string  # end-id:GET:parent=true/component:cmp=false/component
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
-    path: '/pages/{page_id}/components/{component_id}/page_access_groups': {  # ent:cmp=component;path=t/p/t/;cmp-path
+    path: '/pages/{page_id}/components/{component_id}/page_access_groups': {  # ent:component:cmp=component;path=t/p/t/;cmp-path
+      action: "page_access_groups": kind: *"`$BOOLEAN`"|top  # ent:component:action-not-parent:component_id:POST
       rename: param: "component_id": *"id"|string  # action-not-parent:component
       op: create: method: *"POST"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
     }
-    path: '/pages/{page_id}/components/{component_id}/page_access_users': {  # ent:cmp=component;path=t/p/t/;cmp-path
+    path: '/pages/{page_id}/components/{component_id}/page_access_users': {  # ent:component:cmp=component;path=t/p/t/;cmp-path
+      action: "page_access_users": kind: *"`$BOOLEAN`"|top  # ent:component:action-not-parent:component_id:POST
       rename: param: "component_id": *"id"|string  # action-not-parent:component
       op: create: method: *"POST"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
     }
-    path: '/pages/{page_id}/page_access_groups/{page_access_group_id}/components': {  # ent:cmp=component;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/page_access_groups/{page_access_group_id}/components': {  # ent:component:cmp=component;path=t/p/t/;path-primary
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/components': {  # ent:cmp=component;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/components': {  # ent:component:cmp=component;path=t/p/t/;path-primary
       op: list: method: *"GET"|string  # array
     }
   }
 
   entity: component_group_uptime: {
-    path: '/pages/{page_id}/component-groups/{id}/uptime': {  # ent:cmp=component_group_uptime;path=t/p/t/;cmp-primary
+    path: '/pages/{page_id}/component-groups/{id}/uptime': {  # ent:component_group_uptime:cmp=component_group_uptime;path=t/p/t/;cmp-primary
       op: load: method: *"GET"|string  # not-list
     }
   }
 
   entity: component_uptime: {
-    path: '/pages/{page_id}/components/{component_id}/uptime': {  # ent:cmp=component_uptime;path=t/p/t/;cmp-primary
+    path: '/pages/{page_id}/components/{component_id}/uptime': {  # ent:component_uptime:cmp=component_uptime;path=t/p/t/;cmp-primary
       rename: param: "component_id": *"id"|string  # action-not-parent:component_uptime
       op: load: method: *"GET"|string  # not-list
     }
   }
 
   entity: data: {
-    path: '/pages/{page_id}/metrics/data': {  # ent:no-cmp;path=t/;no-cmp
+    path: '/pages/{page_id}/metrics/data': {  # ent:data:no-cmp;path=t/;entres=false/202,401,403,404,405;ent-act
       op: create: method: *"POST"|string  # not-load
     }
   }
 
   entity: group_component: {
-    path: '/pages/{page_id}/component-groups': {  # ent:cmp=group_component;path=t/p/t/;cmp-primary
+    path: '/pages/{page_id}/component-groups': {  # ent:group_component:cmp=group_component;path=t/p/t/;cmp-primary
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/component-groups/{id}': {  # ent:cmp=group_component;path=t/p/;cmp-primary
+    path: '/pages/{page_id}/component-groups/{id}': {  # ent:group_component:cmp=group_component;path=t/p/;cmp-primary
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
@@ -65,23 +67,23 @@ guide: {
   }
 
   entity: incident: {
-    path: '/pages/{page_id}/incidents': {  # ent:cmp=incident;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/incidents': {  # ent:incident:cmp=incident;path=t/p/t/;path-primary
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/incidents/active_maintenance': {  # ent:cmp=incident;path=t/;cmp-primary
+    path: '/pages/{page_id}/incidents/active_maintenance': {  # ent:incident:cmp=incident;path=t/;cmp-primary
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/incidents/scheduled': {  # ent:cmp=incident;path=t/;cmp-primary
+    path: '/pages/{page_id}/incidents/scheduled': {  # ent:incident:cmp=incident;path=t/;cmp-primary
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/incidents/unresolved': {  # ent:cmp=incident;path=t/;cmp-primary
+    path: '/pages/{page_id}/incidents/unresolved': {  # ent:incident:cmp=incident;path=t/;cmp-primary
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/incidents/upcoming': {  # ent:cmp=incident;path=t/;cmp-primary
+    path: '/pages/{page_id}/incidents/upcoming': {  # ent:incident:cmp=incident;path=t/;cmp-primary
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/incidents/{incident_id}': {  # ent:cmp=incident;path=t/p/;path-primary
+    path: '/pages/{page_id}/incidents/{incident_id}': {  # ent:incident:cmp=incident;path=t/p/;path-primary
       rename: param: "incident_id": *"id"|string  # end-id:GET:parent=true/incident:cmp=true/incident
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
@@ -90,22 +92,15 @@ guide: {
     }
   }
 
-  entity: incident_postmortem: {
-    path: '/pages/{page_id}/incidents/{incident_id}/postmortem': {  # ent:no-cmp;path=t/p/t/
-      rename: param: "incident_id": *"id"|string  # action-not-parent:incident_postmortem
-      op: remove: method: *"DELETE"|string  # not-load
-    }
-  }
-
   entity: incident_template: {
-    path: '/pages/{page_id}/incident_templates': {  # ent:cmp=incident_template;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/incident_templates': {  # ent:incident_template:cmp=incident_template;path=t/p/t/;path-primary
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array
     }
   }
 
   entity: incident_update: {
-    path: '/pages/{page_id}/incidents/{incident_id}/incident_updates/{incident_update_id}': {  # ent:cmp=incident_update;path=t/p/;path-primary
+    path: '/pages/{page_id}/incidents/{incident_id}/incident_updates/{incident_update_id}': {  # ent:incident_update:cmp=incident_update;path=t/p/;path-primary
       rename: param: "incident_update_id": *"id"|string  # end-id:PUT:parent=true/incident_update:cmp=true/incident_update
       op: patch: method: *"PATCH"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
@@ -113,35 +108,36 @@ guide: {
   }
 
   entity: metric: {
-    path: '/pages/{page_id}/metrics': {  # ent:cmp=metric;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/metrics': {  # ent:metric:cmp=metric;path=t/p/t/;path-primary
       op: load: method: *"GET"|string  # not-list
     }
-    path: '/pages/{page_id}/metrics/{metric_id}': {  # ent:cmp=metric;path=t/p/;path-primary
+    path: '/pages/{page_id}/metrics/{metric_id}': {  # ent:metric:cmp=metric;path=t/p/;path-primary
       rename: param: "metric_id": *"id"|string  # end-id:GET:parent=true/metric:cmp=true/metric
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
-    path: '/pages/{page_id}/metrics/{metric_id}/data': {  # ent:cmp=metric;path=t/p/t/;cmp-primary
+    path: '/pages/{page_id}/metrics/{metric_id}/data': {  # ent:metric:cmp=metric;path=t/p/t/;cmp-primary
+      action: "data": kind: *"`$BOOLEAN`"|top  # ent:metric:action-not-parent:metric_id:DELETE
       rename: param: "metric_id": *"id"|string  # action-not-parent:metric
       op: remove: method: *"DELETE"|string  # not-load
     }
-    path: '/pages/{page_id}/metrics_providers/{metrics_provider_id}/metrics': {  # ent:cmp=metric;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/metrics_providers/{metrics_provider_id}/metrics': {  # ent:metric:cmp=metric;path=t/p/t/;path-primary
       op: create: method: *"POST"|string  # not-load
       op: load: method: *"GET"|string  # not-list
     }
-    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/metrics': {  # ent:cmp=metric;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/metrics': {  # ent:metric:cmp=metric;path=t/p/t/;path-primary
       op: list: method: *"GET"|string  # array
     }
   }
 
   entity: metrics_provider: {
-    path: '/pages/{page_id}/metrics_providers': {  # ent:cmp=metrics_provider;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/metrics_providers': {  # ent:metrics_provider:cmp=metrics_provider;path=t/p/t/;path-primary
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/metrics_providers/{metrics_provider_id}': {  # ent:cmp=metrics_provider;path=t/p/;path-primary
+    path: '/pages/{page_id}/metrics_providers/{metrics_provider_id}': {  # ent:metrics_provider:cmp=metrics_provider;path=t/p/;path-primary
       rename: param: "metrics_provider_id": *"id"|string  # end-id:GET:parent=true/metrics_provider:cmp=true/metrics_provider
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
@@ -151,10 +147,10 @@ guide: {
   }
 
   entity: page: {
-    path: '/pages': {  # ent:cmp=page;path=t/;path-primary
+    path: '/pages': {  # ent:page:cmp=page;path=t/;path-primary
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}': {  # ent:cmp=page;path=t/p/;path-primary
+    path: '/pages/{page_id}': {  # ent:page:cmp=page;path=t/p/;path-primary
       rename: param: "page_id": *"id"|string  # end-id:GET:parent=false/null:cmp=true/page
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
@@ -163,70 +159,71 @@ guide: {
   }
 
   entity: page_access_group: {
-    path: '/pages/{page_id}/page_access_groups': {  # ent:cmp=page_access_group;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/page_access_groups': {  # ent:page_access_group:cmp=page_access_group;path=t/p/t/;path-primary
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/page_access_groups/{page_access_group_id}': {  # ent:cmp=page_access_group;path=t/p/;path-primary
+    path: '/pages/{page_id}/page_access_groups/{page_access_group_id}': {  # ent:page_access_group:cmp=page_access_group;path=t/p/;path-primary
       rename: param: "page_access_group_id": *"id"|string  # end-id:GET:parent=true/page_access_group:cmp=true/page_access_group
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
-    path: '/pages/{page_id}/page_access_groups/{page_access_group_id}/components': {  # ent:cmp=page_access_group;path=t/p/t/;cmp-primary
+    path: '/pages/{page_id}/page_access_groups/{page_access_group_id}/components': {  # ent:page_access_group:cmp=page_access_group;path=t/p/t/;cmp-primary
+      action: "components": kind: *"`$BOOLEAN`"|top  # ent:page_access_group:action-not-parent:page_access_group_id:POST
       rename: param: "page_access_group_id": *"id"|string  # action-not-parent:page_access_group
       op: create: method: *"POST"|string  # not-load
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
-    path: '/pages/{page_id}/page_access_groups/{page_access_group_id}/components/{component_id}': {  # ent:cmp=page_access_group;path=t/p/;cmp-primary
+    path: '/pages/{page_id}/page_access_groups/{page_access_group_id}/components/{component_id}': {  # ent:page_access_group:cmp=page_access_group;path=t/p/;cmp-primary
       rename: param: "page_access_group_id": *"id"|string  # id-not-parent
       op: remove: method: *"DELETE"|string  # not-load
     }
   }
 
   entity: page_access_user: {
-    path: '/pages/{page_id}/page_access_users': {  # ent:cmp=page_access_user;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/page_access_users': {  # ent:page_access_user:cmp=page_access_user;path=t/p/t/;path-primary
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/page_access_users/{page_access_user_id}': {  # ent:no-cmp;path=t/p/;no-cmp
+    path: '/pages/{page_id}/page_access_users/{page_access_user_id}': {  # ent:page_access_user:no-cmp;path=t/p/;entres=true/204,401,403,404/nores;path-primary
       rename: param: "page_access_user_id": *"id"|string  # end-id:GET:parent=true/page_access_user:cmp=true/page_access_user
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
-    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/components': {  # ent:cmp=page_access_user;path=t/p/t/;cmp-primary
+    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/components': {  # ent:page_access_user:cmp=page_access_user;path=t/p/t/;cmp-primary
+      action: "components": kind: *"`$BOOLEAN`"|top  # ent:page_access_user:action-not-parent:page_access_user_id:POST
       rename: param: "page_access_user_id": *"id"|string  # action-not-parent:page_access_user
       op: create: method: *"POST"|string  # not-load
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
-    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/components/{component_id}': {  # ent:cmp=page_access_user;path=t/p/;cmp-primary
+    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/components/{component_id}': {  # ent:page_access_user:cmp=page_access_user;path=t/p/;cmp-primary
       rename: param: "page_access_user_id": *"id"|string  # id-not-parent
       op: remove: method: *"DELETE"|string  # not-load
     }
-    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/metrics': {  # ent:cmp=page_access_user;path=t/p/t/;cmp-primary
+    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/metrics': {  # ent:page_access_user:cmp=page_access_user;path=t/p/t/;cmp-primary
+      action: "metrics": kind: *"`$BOOLEAN`"|top  # ent:page_access_user:action-not-parent:page_access_user_id:POST
       rename: param: "page_access_user_id": *"id"|string  # action-not-parent:page_access_user
       op: create: method: *"POST"|string  # not-load
       op: patch: method: *"PATCH"|string  # not-load
       op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
-    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/metrics/{metric_id}': {  # ent:cmp=page_access_user;path=t/p/;cmp-primary
+    path: '/pages/{page_id}/page_access_users/{page_access_user_id}/metrics/{metric_id}': {  # ent:page_access_user:cmp=page_access_user;path=t/p/;cmp-primary
       rename: param: "page_access_user_id": *"id"|string  # id-not-parent
       op: remove: method: *"DELETE"|string  # not-load
     }
   }
 
   entity: permission: {
-    path: '/organizations/{organization_id}/permissions/{user_id}': {  # ent:cmp=permission;path=t/p/;path-primary
-      ### NOTE: rename user_id:id is correct!
-      ### That permission.id == use.id is a semantic meta fact
+    path: '/organizations/{organization_id}/permissions/{user_id}': {  # ent:permission:cmp=permission;path=t/p/;path-primary
       rename: param: "user_id": *"id"|string  # end-id:GET:parent=true/permission:cmp=true/permission
       op: load: method: *"GET"|string  # end-param
       op: update: method: *"PUT"|string  # not-load
@@ -234,39 +231,39 @@ guide: {
   }
 
   entity: postmortem: {
-    path: '/pages/{page_id}/incidents/{incident_id}/postmortem': {  # ent:cmp=postmortem;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/incidents/{incident_id}/postmortem': {  # ent:postmortem:no-cmp;path=t/p/t/;entres=true/204,401,404/nores;path-primary
       op: load: method: *"GET"|string  # not-list
+      op: remove: method: *"DELETE"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
     }
-    path: '/pages/{page_id}/incidents/{incident_id}/postmortem/publish': {  # ent:cmp=postmortem;path=t/;cmp-primary
+    path: '/pages/{page_id}/incidents/{incident_id}/postmortem/publish': {  # ent:postmortem:cmp=postmortem;path=t/;cmp-primary
       op: update: method: *"PUT"|string  # not-load
     }
-    path: '/pages/{page_id}/incidents/{incident_id}/postmortem/revert': {  # ent:cmp=postmortem;path=t/;cmp-primary
+    path: '/pages/{page_id}/incidents/{incident_id}/postmortem/revert': {  # ent:postmortem:cmp=postmortem;path=t/;cmp-primary
       op: update: method: *"PUT"|string  # not-load
     }
   }
 
   entity: reactivate: {
-    path: '/pages/{page_id}/subscribers/reactivate': {  # ent:no-cmp;path=t/;no-cmp
+    path: '/pages/{page_id}/subscribers/reactivate': {  # ent:reactivate:no-cmp;path=t/;entres=false/201,400,401,404,422;ent-act
       op: create: method: *"POST"|string  # not-load
     }
   }
 
   entity: resend_confirmation: {
-    path: '/pages/{page_id}/subscribers/resend_confirmation': {  # ent:no-cmp;path=t/;no-cmp
+    path: '/pages/{page_id}/subscribers/resend_confirmation': {  # ent:resend_confirmation:no-cmp;path=t/;entres=false/201,400,401,404,422;ent-act
       op: create: method: *"POST"|string  # not-load
     }
   }
 
-  ## should ent just be metric?
   entity: single_metric_add_response: {
-    path: '/pages/{page_id}/metrics/{metric_id}/data': {  # ent:cmp=single_metric_add_response;path=t/p/t/;cmp-primary
+    path: '/pages/{page_id}/metrics/{metric_id}/data': {  # ent:single_metric_add_response:cmp=single_metric_add_response;path=t/p/t/;cmp-primary
       op: create: method: *"POST"|string  # not-load
     }
   }
 
   entity: status_embed_config: {
-    path: '/pages/{page_id}/status_embed_config': {  # ent:cmp=status_embed_config;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/status_embed_config': {  # ent:status_embed_config:cmp=status_embed_config;path=t/p/t/;path-primary
       op: load: method: *"GET"|string  # not-list
       op: patch: method: *"PATCH"|string  # not-load
       op: update: method: *"PUT"|string  # not-load
@@ -274,23 +271,23 @@ guide: {
   }
 
   entity: subscriber: {
-    path: '/pages/{page_id}/incidents/{incident_id}/subscribers': {  # ent:cmp=subscriber;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/incidents/{incident_id}/subscribers': {  # ent:subscriber:cmp=subscriber;path=t/p/t/;path-primary
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}': {  # ent:cmp=subscriber;path=t/p/;path-primary
+    path: '/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}': {  # ent:subscriber:cmp=subscriber;path=t/p/;path-primary
       rename: param: "subscriber_id": *"id"|string  # end-id:GET:parent=true/subscriber:cmp=true/subscriber
       op: load: method: *"GET"|string  # end-param
       op: remove: method: *"DELETE"|string  # not-load
     }
-    path: '/pages/{page_id}/subscribers': {  # ent:cmp=subscriber;path=t/p/t/;path-primary
+    path: '/pages/{page_id}/subscribers': {  # ent:subscriber:cmp=subscriber;path=t/p/t/;path-primary
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/subscribers/unsubscribed': {  # ent:cmp=subscriber;path=t/;cmp-primary
+    path: '/pages/{page_id}/subscribers/unsubscribed': {  # ent:subscriber:cmp=subscriber;path=t/;cmp-primary
       op: list: method: *"GET"|string  # array
     }
-    path: '/pages/{page_id}/subscribers/{subscriber_id}': {  # ent:cmp=subscriber;path=t/p/;path-primary
+    path: '/pages/{page_id}/subscribers/{subscriber_id}': {  # ent:subscriber:cmp=subscriber;path=t/p/;path-primary
       rename: param: "subscriber_id": *"id"|string  # end-id:GET:parent=true/subscriber:cmp=true/subscriber
       op: load: method: *"GET"|string  # end-param
       op: patch: method: *"PATCH"|string  # not-load
@@ -298,43 +295,41 @@ guide: {
     }
   }
 
-  ## ent name just subscriber_count?
   entity: subscriber_count_by_type: {
-    path: '/pages/{page_id}/subscribers/count': {  # ent:cmp=subscriber_count_by_type;path=t/;cmp-primary
+    path: '/pages/{page_id}/subscribers/count': {  # ent:subscriber_count_by_type:cmp=subscriber_count_by_type;path=t/;cmp-primary
       op: load: method: *"GET"|string  # not-list
     }
   }
 
-  ## ent name just subscriber_count?
   entity: subscriber_count_by_type_and_state: {
-    path: '/pages/{page_id}/subscribers/histogram_by_state': {  # ent:cmp=subscriber_count_by_type_and_state;path=t/;cmp-primary
+    path: '/pages/{page_id}/subscribers/histogram_by_state': {  # ent:subscriber_count_by_type_and_state:cmp=subscriber_count_by_type_and_state;path=t/;cmp-primary
       op: load: method: *"GET"|string  # not-list
     }
   }
 
   entity: subscriber_resend_confirmation: {
-    path: '/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}/resend_confirmation': {  # ent:no-cmp;path=t/p/t/
+    path: '/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}/resend_confirmation': {  # ent:subscriber_resend_confirmation:no-cmp;path=t/p/t/;entres=false/201;ent-act
       rename: param: "subscriber_id": *"id"|string  # action-not-parent:subscriber_resend_confirmation
       op: create: method: *"POST"|string  # not-load
     }
-    path: '/pages/{page_id}/subscribers/{subscriber_id}/resend_confirmation': {  # ent:no-cmp;path=t/p/t/
+    path: '/pages/{page_id}/subscribers/{subscriber_id}/resend_confirmation': {  # ent:subscriber_resend_confirmation:no-cmp;path=t/p/t/;entres=false/201,401,404;ent-act
       rename: param: "subscriber_id": *"id"|string  # action-not-parent:subscriber_resend_confirmation
       op: create: method: *"POST"|string  # not-load
     }
   }
 
   entity: unsubscribe: {
-    path: '/pages/{page_id}/subscribers/unsubscribe': {  # ent:no-cmp;path=t/;no-cmp
+    path: '/pages/{page_id}/subscribers/unsubscribe': {  # ent:unsubscribe:no-cmp;path=t/;entres=false/201,400,401,404,422;ent-act
       op: create: method: *"POST"|string  # not-load
     }
   }
 
   entity: user: {
-    path: '/organizations/{organization_id}/users': {  # ent:cmp=user;path=t/p/t/;path-primary
+    path: '/organizations/{organization_id}/users': {  # ent:user:cmp=user;path=t/p/t/;path-primary
       op: create: method: *"POST"|string  # not-load
       op: list: method: *"GET"|string  # array
     }
-    path: '/organizations/{organization_id}/users/{user_id}': {  # ent:cmp=user;path=t/p/;path-primary
+    path: '/organizations/{organization_id}/users/{user_id}': {  # ent:user:cmp=user;path=t/p/;path-primary
       rename: param: "user_id": *"id"|string  # end-id:DELETE:parent=true/user:cmp=true/user
       op: remove: method: *"DELETE"|string  # not-load
     }
