@@ -350,7 +350,7 @@ function prettyDiff(difflines: any[]) {
     }
     else {
       if ('same' !== last) {
-        out.push(part.value.split('\n').slice(0, 4).join('\n') + '\n\n')
+        out.push(part.value.split('\n').slice(0, 4).join('\n') + '\n--- --- ---\n')
       }
       prev = part
       last = 'same'
