@@ -1,42 +1,45 @@
 # Guide
 
 guide: {
+  metrics: count: entity: 4
+  metrics: count: path: 6
+  metrics: count: method: 8
 
   entity: domain: {
-    path: '/{year}/domain': {  # ent:domain:no-cmp;path=p/t/;entres=true/200,default/get;path-primary
-      op: list: method: *"GET"|string  # array-prop:items;ent=domain
+    path: "/{year}/domain": {  # ent:domain:no-cmp;path=p/t/;entres=true/200,default/get;path-primary
+      op: list: method: *GET|string  # array-prop:items;ent=domain
     }
-    path: '/{year}/domain/{id}': {  # ent:domain:no-cmp;path=t/p/;entres=true/200,default/putish;path-primary
-      op: load: method: *"GET"|string  # end-param;ent=domain
-      op: patch: method: *"PATCH"|string  # not-load;ent=domain
+    path: "/{year}/domain/{id}": {  # ent:domain:no-cmp;path=t/p/;entres=true/200,default/putish;path-primary
+      op: load: method: *GET|string  # end-param;ent=domain
+      op: patch: method: *PATCH|string  # not-load;ent=domain
     }
   }
 
   entity: domain_revoke: {
-    path: '/{year}/domain/{did}/revoke': {  # ent:domain_revoke:no-cmp;path=t/p/t/;entres=false/200,default;part-ent
+    path: "/{year}/domain/{did}/revoke": {  # ent:domain_revoke:no-cmp;path=t/p/t/;entres=false/200,default;part-ent
       rename: param: "did": *"id"|string  # action-not-parent:domain_revoke
-      op: create: method: *"POST"|string  # not-load;ent=domain_revoke
+      op: create: method: *POST|string  # not-load;ent=domain_revoke
     }
   }
 
   entity: kingdom: {
-    path: '/{year}/domain/{domain_id}/kingdom/{kingdom_id}': {  # ent:kingdom:no-cmp;path=t/p/;entres=true/200,default/get;path-primary
+    path: "/{year}/domain/{domain_id}/kingdom/{kingdom_id}": {  # ent:kingdom:no-cmp;path=t/p/;entres=true/200,default/get;path-primary
       rename: param: "kingdom_id": *"id"|string  # end-id:GET:parent=true/kingdom:cmp=false/undefined
-      op: load: method: *"GET"|string  # end-param;ent=kingdom
+      op: load: method: *GET|string  # end-param;ent=kingdom
     }
-    path: '/{year}/domain/{id}/kingdom': {  # ent:kingdom:no-cmp;path=t/p/t/;entres=true/201,default/post;path-primary;prob-ent-prefix
+    path: "/{year}/domain/{id}/kingdom": {  # ent:kingdom:no-cmp;path=t/p/t/;entres=true/201,default/post;path-primary;prob-ent-prefix
       rename: param: "id": *"domain_id"|string  # parent:domain
-      op: create: method: *"POST"|string  # not-load;ent=kingdom
-      op: list: method: *"GET"|string  # array-prop:items;ent=kingdom
+      op: create: method: *POST|string  # not-load;ent=kingdom
+      op: list: method: *GET|string  # array-prop:items;ent=kingdom
     }
   }
 
   entity: phylum: {
-    path: '/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}': {  # ent:phylum:no-cmp;path=t/p/;entres=true/200,default/get;path-primary
+    path: "/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}": {  # ent:phylum:no-cmp;path=t/p/;entres=true/200,default/get;path-primary
       rename: param: "domain": *"domain_id"|string  # not-primary
       rename: param: "itemid": *"id"|string  # end-id:GET:parent=true/phylum:cmp=false/undefined
       rename: param: "kid": *"kingdom_id"|string  # parent:kingdom
-      op: load: method: *"GET"|string  # end-param;ent=phylum
+      op: load: method: *GET|string  # end-param;ent=phylum
     }
   }
 

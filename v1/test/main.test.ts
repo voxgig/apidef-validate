@@ -5,7 +5,7 @@ import { test, describe } from 'node:test'
 
 import { expect, fail } from '@hapi/code'
 
-import { ApiDef } from '@voxgig/apidef'
+import { ApiDef, formatJSONIC } from '@voxgig/apidef'
 
 import { each } from 'jostraca'
 
@@ -44,6 +44,9 @@ let cases: Case[] = [
   { name: 'dingconnect', version: 'v1', spec: 'swagger-2.0', format: 'json' },
   { name: 'codatplatform', version: '3.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
   { name: 'shortcut', version: 'v3', spec: 'openapi-3.0.0', format: 'json' },
+
+  { name: 'github', version: '1.1.4', spec: 'openapi-3.0.3', format: 'yaml' },
+  { name: 'gitlab', version: 'v4', spec: 'swagger-2.0', format: 'yaml' },
 ]
 
 const caseSelector = (process.env.npm_config_case ?? '').split(',')
@@ -78,16 +81,16 @@ describe('main', () => {
           builders: false,
           generate: false,
         })
-        if (!bres.ok) {
-          fails.push(JSON.stringify(bres, null, 2))
+        if (!bres?.ok) {
+          fails.push(formatJSONIC(bres || 'NO RESULT', { maxlines: 111, exclude: ['fs'] }))
         }
-        validateGuide(c, fails, bres, fs, vol, testmetrics)
+        else {
+          validateGuide(c, fails, bres, fs, vol, testmetrics)
+        }
       }
       catch (err: any) {
-        console.error(err)
-        fails.push(JSON.stringify({ ...err }, null, 2))
+        fails.push(formatJSONIC(err, { maxlines: 555 }))
       }
-
     }
 
     console.log('TOTAL TODOS: ' + testmetrics.todo)
@@ -117,17 +120,18 @@ describe('main', () => {
           builders: true,
           generate: true,
         })
-        if (!bres.ok) {
-          fails.push(JSON.stringify(bres, null, 2))
+
+        if (!bres?.ok) {
+          fails.push(formatJSONIC(bres || 'NO RESULT', { maxlines: 111, exclude: ['fs'] }))
         }
-        validateGuide(c, fails, bres, fs, vol, testmetrics)
-        validateModel(c, fails, bres, fs, vol, testmetrics)
+        else {
+          validateGuide(c, fails, bres, fs, vol, testmetrics)
+          validateModel(c, fails, bres, fs, vol, testmetrics)
+        }
       }
       catch (err: any) {
-        console.error(err)
-        fails.push(JSON.stringify({ ...err }, null, 2))
+        fails.push(formatJSONIC(err, { maxlines: 555 }))
       }
-
     }
 
     console.log('TOTAL TODOS: ' + testmetrics.todo)
