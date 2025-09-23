@@ -1,12 +1,17 @@
 "use strict";
 /* Copyright (c) 2025 Voxgig Ltd, MIT License */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const node_path_1 = __importDefault(require("node:path"));
 const node_test_1 = require("node:test");
 const code_1 = require("@hapi/code");
 const apidef_1 = require("@voxgig/apidef");
 const jostraca_1 = require("jostraca");
 const __1 = require("../..");
 const __2 = require("..");
+const TOP_FOLDER = node_path_1.default.join(__dirname, '..');
 let cases = [
     { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
     { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
@@ -37,6 +42,7 @@ if (0 < caseSelector.length) {
         };
         for (let c of cases) {
             try {
+                await prepCaseGuide(c, fs);
                 const build = await makeBuild(c, fs);
                 const bres = await runBuild(c, build, {
                     parse: true,
@@ -69,6 +75,7 @@ if (0 < caseSelector.length) {
         };
         for (let c of cases) {
             try {
+                await prepCaseGuide(c, fs);
                 const build = await makeBuild(c, fs);
                 const bres = await runBuild(c, build, {
                     parse: true,
@@ -101,23 +108,50 @@ function fullname(c) {
 function prepfs(cases) {
     const vol = {
         'model': {
-            'guide': cases.reduce((a, c) => {
-                a[fullname(c) + '-guide.jsonic'] = `
+            'guide': {}
+            /*
+        
+              cases.reduce((a: any, c: Case) => {
+                  a[fullname(c) + '-guide.jsonic'] = `
+        @"@voxgig/apidef/model/guide.jsonic"
+        
+        @"${fullname(c)}-base-guide.jsonic"
+        
+        guide:{}
+        `
+                  return a
+                  }, {})
+                          */
+        }
+    };
+    const ufs = (0, __1.makefs)(vol);
+    return ufs;
+}
+async function prepCaseGuide(c, fs) {
+    const guideFileName = fullname(c) + '-guide.jsonic';
+    const realGuideFilePath = node_path_1.default.join(TOP_FOLDER, 'guide', guideFileName);
+    const virtualGuideFilePath = node_path_1.default.join('/model', 'guide', guideFileName);
+    let guideFileSrc = '';
+    if (fs.existsSync(realGuideFilePath)) {
+        guideFileSrc = fs.readFileSync(realGuideFilePath).toString('utf8');
+    }
+    else {
+        guideFileSrc = `
 @"@voxgig/apidef/model/guide.jsonic"
 
 @"${fullname(c)}-base-guide.jsonic"
 
 guide:{}
 `;
-                return a;
-            }, {})
-        }
-    };
-    const ufs = (0, __1.makefs)(vol);
-    return ufs;
+        fs.writeFileSync(realGuideFilePath, guideFileSrc);
+    }
+    // Ensure guilde file is in virtual fs
+    fs.writeFileSync(virtualGuideFilePath, guideFileSrc);
+    console.log('PREP', realGuideFilePath, virtualGuideFilePath);
 }
 async function makeBuild(c, fs) {
     let folder = '/model';
+    // let folder = TOP_FOLDER
     let outprefix = fullname(c) + '-';
     const build = await apidef_1.ApiDef.makeBuild({
         fs,
@@ -154,7 +188,7 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
     const cfn = fullname(c);
     const volJSON = vol.toJSON();
     const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim();
-    const expectedBaseGuideFile = __dirname + '/../guide/' + `${cfn}-base-guide.jsonic`;
+    const expectedBaseGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.jsonic`);
     if (!fs.existsSync(expectedBaseGuideFile)) {
         fs.writeFileSync(expectedBaseGuideFile, baseGuide);
     }
@@ -167,6 +201,32 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
         const cleanExpected = expectedBaseGuide.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''));
         testmetrics.todo += todocount;
         if (cleanExpected !== baseGuide) {
+            fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines));
+        }
+        else {
+            console.log("OPEN TODOS: " + cfn + ' ' + todocount);
+            if (!showtodo) {
+                console.log('\n' + prettyDiff(difflines) + '\n');
+            }
+        }
+    }
+    const finalGuide = (0, apidef_1.formatJSONIC)(bres.guide).trim();
+    const expectedFinalGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.jsonic`).trim();
+    if (!fs.existsSync(expectedFinalGuideFile)) {
+        fs.writeFileSync(expectedFinalGuideFile, finalGuide);
+    }
+    const expectedFinalGuide = fs.readFileSync(expectedFinalGuideFile, 'utf8').trim();
+    printMismatch(expectedFinalGuide, finalGuide, testmetrics, fails, cfn, showtodo);
+}
+function printMismatch(expected, found, testmetrics, fails, cfn, showtodo) {
+    // console.log('<' + expectedBaseGuide + '>')
+    if (expected !== found) {
+        const difflines = __1.Diff.diffLines(expected, found);
+        // Comments with ## are considered TODOs
+        let todocount = 0;
+        const cleanExpected = expected.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''));
+        testmetrics.todo += todocount;
+        if (cleanExpected !== found) {
             fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines));
         }
         else {

@@ -1,6 +1,7 @@
 /* Copyright (c) 2025 Voxgig Ltd, MIT License */
 
 import * as Fs from 'node:fs'
+import Path from 'node:path'
 import { test, describe } from 'node:test'
 
 import { expect, fail } from '@hapi/code'
@@ -30,6 +31,9 @@ type Case = {
   spec: string
   format: string
 }
+
+
+const TOP_FOLDER = Path.join(__dirname, '..')
 
 
 let cases: Case[] = [
@@ -73,6 +77,8 @@ describe('main', () => {
 
     for (let c of cases) {
       try {
+        await prepCaseGuide(c, fs)
+
         const build = await makeBuild(c, fs)
         const bres = await runBuild(c, build, {
           parse: true,
@@ -112,6 +118,8 @@ describe('main', () => {
 
     for (let c of cases) {
       try {
+        await prepCaseGuide(c, fs)
+
         const build = await makeBuild(c, fs)
         const bres = await runBuild(c, build, {
           parse: true,
@@ -154,17 +162,23 @@ function fullname(c: Case) {
 function prepfs(cases: Case[]) {
   const vol = {
     'model': {
-      'guide':
+      'guide': {
+
+      }
+
+      /*
+  
         cases.reduce((a: any, c: Case) => {
-          a[fullname(c) + '-guide.jsonic'] = `
-@"@voxgig/apidef/model/guide.jsonic"
-
-@"${fullname(c)}-base-guide.jsonic"
-
-guide:{}
-`
-          return a
-        }, {})
+            a[fullname(c) + '-guide.jsonic'] = `
+  @"@voxgig/apidef/model/guide.jsonic"
+  
+  @"${fullname(c)}-base-guide.jsonic"
+  
+  guide:{}
+  `
+            return a
+            }, {})
+                    */
     }
   }
 
@@ -174,8 +188,37 @@ guide:{}
 
 
 
+async function prepCaseGuide(c: Case, fs: FST) {
+  const guideFileName = fullname(c) + '-guide.jsonic'
+  const realGuideFilePath = Path.join(TOP_FOLDER, 'guide', guideFileName)
+  const virtualGuideFilePath = Path.join('/model', 'guide', guideFileName)
+
+  let guideFileSrc = ''
+
+  if (fs.existsSync(realGuideFilePath)) {
+    guideFileSrc = fs.readFileSync(realGuideFilePath).toString('utf8')
+  }
+  else {
+    guideFileSrc = `
+@"@voxgig/apidef/model/guide.jsonic"
+
+@"${fullname(c)}-base-guide.jsonic"
+
+guide:{}
+`
+    fs.writeFileSync(realGuideFilePath, guideFileSrc)
+  }
+
+  // Ensure guilde file is in virtual fs
+  fs.writeFileSync(virtualGuideFilePath, guideFileSrc)
+
+  console.log('PREP', realGuideFilePath, virtualGuideFilePath)
+}
+
+
 async function makeBuild(c: Case, fs: FST) {
   let folder = '/model'
+  // let folder = TOP_FOLDER
   let outprefix = fullname(c) + '-'
 
   const build = await ApiDef.makeBuild({
@@ -227,13 +270,15 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
   const volJSON = vol.toJSON()
   const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim()
 
-  const expectedBaseGuideFile = __dirname + '/../guide/' + `${cfn}-base-guide.jsonic`
+
+  const expectedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.jsonic`)
 
   if (!fs.existsSync(expectedBaseGuideFile)) {
     fs.writeFileSync(expectedBaseGuideFile, baseGuide)
   }
 
   const expectedBaseGuide = fs.readFileSync(expectedBaseGuideFile, 'utf8').trim()
+
 
   // console.log('<' + expectedBaseGuide + '>')
 
@@ -255,7 +300,55 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
       }
     }
   }
+
+
+  const finalGuide = formatJSONIC(bres.guide).trim()
+
+  const expectedFinalGuideFile =
+    Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.jsonic`).trim()
+
+  if (!fs.existsSync(expectedFinalGuideFile)) {
+    fs.writeFileSync(expectedFinalGuideFile, finalGuide)
+  }
+
+  const expectedFinalGuide = fs.readFileSync(expectedFinalGuideFile, 'utf8').trim()
+
+  printMismatch(expectedFinalGuide, finalGuide, testmetrics, fails, cfn, showtodo)
 }
+
+
+function printMismatch(
+  expected: string,
+  found: string,
+  testmetrics: any,
+  fails: any[],
+  cfn: string,
+  showtodo: any
+) {
+  // console.log('<' + expectedBaseGuide + '>')
+
+  if (expected !== found) {
+    const difflines = Diff.diffLines(expected, found)
+
+    // Comments with ## are considered TODOs
+    let todocount = 0
+    const cleanExpected =
+      expected.replace(/[^\n#]*##[^\n]*\n/g, () => (todocount++, ''))
+    testmetrics.todo += todocount
+    if (cleanExpected !== found) {
+      fails.push('MISMATCH:' + cfn + '\n' + prettyDiff(difflines))
+    }
+    else {
+      console.log("OPEN TODOS: " + cfn + ' ' + todocount)
+      if (!showtodo) {
+        console.log('\n' + prettyDiff(difflines) + '\n')
+      }
+    }
+  }
+
+}
+
+
 
 
 function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, testmetrics: any) {
