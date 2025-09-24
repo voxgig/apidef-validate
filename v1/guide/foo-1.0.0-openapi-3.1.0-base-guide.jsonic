@@ -1,0 +1,48 @@
+# Guide
+
+guide: {
+  metrics: count: entity: 5
+  metrics: count: path: 7
+  metrics: count: method: 10
+
+  entity: bar: {
+    path: "/bar": {  # ent:bar:cmp=bar;path=t/;path-primary
+      op: list: method: *GET|string  # array;ent=bar
+    }
+  }
+
+  entity: bax: {
+    path: "/bax/{baxid}": {  # ent:bax:cmp=bax;path=t/p/;path-primary
+      rename: param: "baxid": *"id"|string  # end-id:GET:parent=false/null:cmp=false/bax
+      op: load: method: *GET|string  # end-param;ent=bax
+    }
+  }
+
+  entity: foo: {
+    path: "/foo": {  # ent:foo:cmp=foo;path=t/;path-primary
+      op: create: method: *POST|string  # not-load;ent=foo
+      op: list: method: *GET|string  # array;ent=foo
+    }
+    path: "/foo/{id}": {  # ent:foo:no-cmp;path=t/p/;entres=true/204/nores;cmp-found-delete
+      op: load: method: *GET|string  # end-param;ent=foo
+      op: remove: method: *DELETE|string  # not-load;ent=foo
+      op: update: method: *PUT|string  # not-load;ent=foo
+    }
+  }
+
+  entity: foo_fax: {
+    path: "/foo/{id}/fax": {  # ent:foo_fax:no-cmp;path=t/p/t/;entres=false/200;part-ent
+      op: create: method: *POST|string  # not-load;ent=foo_fax
+    }
+  }
+
+  entity: zed: {
+    path: "/zed": {  # ent:zed:cmp=zed;path=t/;path-primary
+      op: list: method: *GET|string  # array;ent=zed
+    }
+    path: "/zed/{id}": {  # ent:zed:cmp=zed;path=t/p/;path-primary
+      op: load: method: *GET|string  # end-param;ent=zed
+    }
+  }
+
+}

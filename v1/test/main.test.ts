@@ -39,6 +39,8 @@ const TOP_FOLDER = Path.join(__dirname, '..')
 let cases: Case[] = [
   { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
   { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
+  { name: 'foo', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
+
   { name: 'learnworlds', version: '2', spec: 'openapi-3.1.0', format: 'yaml' },
   { name: 'statuspage', version: '1.0.0', spec: 'openapi-3.0.0', format: 'json' },
   { name: 'contentfulcma', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
