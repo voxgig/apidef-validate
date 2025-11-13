@@ -1,5 +1,6 @@
 {
   "openapi": "3.1.0",
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
     "title": "Foo API",
     "version": "1.0.0",
@@ -79,6 +80,7 @@
     "/foo/{id}": {
       "parameters": [
         {
+          "x-ref": "#/components/parameters/Id",
           "in": "path",
           "name": "id",
           "required": true,
@@ -163,6 +165,7 @@
     "/foo/{id}/fax": {
       "parameters": [
         {
+          "x-ref": "#/components/parameters/Id",
           "in": "path",
           "name": "id",
           "required": true,
@@ -217,7 +220,8 @@
                   "type": "array",
                   "items": {
                     "x-ref": "#/components/schemas/Bar",
-                    "type": "object"
+                    "type": "object",
+                    "additionalProperties": true
                   }
                 }
               }
@@ -227,6 +231,17 @@
       }
     },
     "/bax/{baxid}": {
+      "parameters": [
+        {
+          "x-ref": "#/components/parameters/BaxId",
+          "in": "path",
+          "name": "baxid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
       "get": {
         "responses": {
           "200": {
@@ -237,7 +252,8 @@
                   "type": "array",
                   "items": {
                     "x-ref": "#/components/schemas/Bax",
-                    "type": "object"
+                    "type": "object",
+                    "additionalProperties": true
                   }
                 }
               }
@@ -277,6 +293,7 @@
     "/zed/{id}": {
       "parameters": [
         {
+          "x-ref": "#/components/parameters/Id",
           "in": "path",
           "name": "id",
           "required": true,
@@ -308,9 +325,162 @@
           }
         }
       }
+    },
+    "/taf/{id}/": {
+      "parameters": [
+        {
+          "x-ref": "#/components/parameters/Id",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "taf": {
+                      "x-ref": "#/components/schemas/Taf",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "taf": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "taf": {
+                    "x-ref": "#/components/schemas/Taf",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "taf": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "taf": {
+                      "x-ref": "#/components/schemas/Taf",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "taf": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qaz": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "x-ref": "#/components/schemas/Qaz",
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/yike": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "x-ref": "#/components/schemas/Yike",
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
+    "parameters": {
+      "Id": {
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "BaxId": {
+        "in": "path",
+        "name": "baxid",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
     "schemas": {
       "Foo": {
         "type": "object",
@@ -324,10 +494,12 @@
         }
       },
       "Bar": {
-        "type": "object"
+        "type": "object",
+        "additionalProperties": true
       },
       "Bax": {
-        "type": "object"
+        "type": "object",
+        "additionalProperties": true
       },
       "Zed": {
         "type": "object",
@@ -339,6 +511,25 @@
             "type": "integer"
           }
         }
+      },
+      "Taf": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "taf": {
+            "type": "integer"
+          }
+        }
+      },
+      "Qaz": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "Yike": {
+        "type": "object",
+        "additionalProperties": true
       }
     }
   }
