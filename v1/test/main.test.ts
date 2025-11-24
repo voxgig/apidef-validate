@@ -38,6 +38,7 @@ const TOP_FOLDER = Path.join(__dirname, '..')
 
 let cases: Case[] = [
   { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
+  { name: 'petstore', version: '1.0.7', spec: 'swagger-2.0', format: 'json' },
   { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
   { name: 'foo', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
 
@@ -55,7 +56,8 @@ let cases: Case[] = [
   { name: 'gitlab', version: 'v4', spec: 'swagger-2.0', format: 'yaml' },
 ]
 
-const caseSelector = (process.env.npm_config_case ?? '').split(',')
+// const caseSelector = (process.env.npm_config_case ?? '').split(',')
+const caseSelector = (process.env.TEST_CASE ?? '').split(',')
 
 if (0 < caseSelector.length) {
   cases = cases.filter(c => 0 < caseSelector.filter(cs => c.name.includes(cs)).length)

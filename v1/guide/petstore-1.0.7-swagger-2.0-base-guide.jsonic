@@ -1,0 +1,79 @@
+# Guide
+
+guide: {
+  metrics: count: entity: 4
+  metrics: count: path: 14
+  metrics: count: method: 20
+
+  entity: inventory: {
+    path: "/store/inventory": {  # ent:inventory;no-cmp;path=t/;entres=true/200/get;path-primary
+      op: load: method: *GET  # not-list
+    }
+  }
+
+  entity: order: {
+    path: "/store/order": {  # ent:order;path=t/;path-primary
+      op: create: method: *POST  # not-load
+    }
+    path: "/store/order/{orderId}": {  # ent:order;no-cmp;path=t/p/;entres=false/400,404;ent-act
+      rename: param: "orderId": *"id"  # end-id;GET;parent=true/order;cmp=false
+      op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
+    }
+  }
+
+  entity: pet: {
+    path: "/pet": {  # ent:pet;path=t/;path-primary
+      op: create: method: *POST  # not-load
+      op: update: method: *PUT  # not-load
+    }
+    path: "/pet/findByStatus": {  # ent:pet;path=t/;cmp-primary
+      action: "findByStatus": {}  # ent;pet;no-param;findByStatus;GET
+      op: list: method: *GET  # array
+    }
+    path: "/pet/findByTags": {  # ent:pet;path=t/;cmp-primary
+      action: "findByTags": {}  # ent;pet;no-param;findByTags;GET
+      op: list: method: *GET  # array
+    }
+    path: "/pet/{petId}": {  # ent:pet;path=t/p/;path-primary
+      rename: param: "petId": *"id"  # end-id;GET;parent=true/pet;cmp=false
+      op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *POST  # id-present
+    }
+    path: "/pet/{petId}/uploadImage": {  # ent:pet;path=t/p/t/;cmp-primary;has-cmp
+      action: "uploadImage": {}  # ent;pet;ent-param;uploadImage;POST
+      rename: param: "petId": *"id"  # id-parent-ent
+      op: update: method: *POST  # id-present
+    }
+  }
+
+  entity: user: {
+    path: "/user": {  # ent:user;path=t/;path-primary
+      op: create: method: *POST  # not-load
+    }
+    path: "/user/createWithArray": {  # ent:user;path=t/;cmp-primary
+      action: "createWithArray": {}  # ent;user;no-param;createWithArray;POST
+      op: create: method: *POST  # not-load
+    }
+    path: "/user/createWithList": {  # ent:user;path=t/;cmp-primary
+      action: "createWithList": {}  # ent;user;no-param;createWithList;POST
+      op: create: method: *POST  # not-load
+    }
+    path: "/user/login": {  # ent:user;path=t/;cmp-primary
+      action: "login": {}  # ent;user;no-param;login;GET
+      op: load: method: *GET  # not-list
+    }
+    path: "/user/logout": {  # ent:user;path=t/;cmp-primary
+      action: "logout": {}  # ent;user;no-param;logout;GET
+      op: load: method: *GET  # no-schema
+    }
+    path: "/user/{username}": {  # ent:user;path=t/p/;path-primary
+      rename: param: "username": *"id"  # end-id;GET;parent=true/user;cmp=false
+      op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+  }
+
+}
