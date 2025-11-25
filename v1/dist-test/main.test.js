@@ -191,6 +191,8 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
     const cfn = fullname(c);
     const volJSON = vol.toJSON();
     const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim();
+    const generatedBaseGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.gen.jsonic`);
+    fs.writeFileSync(generatedBaseGuideFile, baseGuide);
     const expectedBaseGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.jsonic`);
     if (!fs.existsSync(expectedBaseGuideFile)) {
         fs.writeFileSync(expectedBaseGuideFile, baseGuide);
@@ -214,6 +216,12 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
         }
     }
     const finalGuide = (0, apidef_1.formatJSONIC)(bres.guide).trim();
+    /*
+    const generatedFinalGuideFile =
+      Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.gen.jsonic`).trim()
+  
+    fs.writeFileSync(generatedFinalGuideFile, finalGuide)
+    */
     const expectedFinalGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.jsonic`).trim();
     if (!fs.existsSync(expectedFinalGuideFile)) {
         fs.writeFileSync(expectedFinalGuideFile, finalGuide);

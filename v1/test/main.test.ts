@@ -275,6 +275,10 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
   const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim()
 
 
+  const generatedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.gen.jsonic`)
+  fs.writeFileSync(generatedBaseGuideFile, baseGuide)
+
+
   const expectedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.jsonic`)
 
   if (!fs.existsSync(expectedBaseGuideFile)) {
@@ -307,6 +311,14 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
 
   const finalGuide = formatJSONIC(bres.guide).trim()
+
+  /*
+  const generatedFinalGuideFile =
+    Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.gen.jsonic`).trim()
+
+  fs.writeFileSync(generatedFinalGuideFile, finalGuide)
+  */
+
 
   const expectedFinalGuideFile =
     Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.jsonic`).trim()
