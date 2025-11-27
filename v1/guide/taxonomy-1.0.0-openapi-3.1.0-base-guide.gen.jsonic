@@ -6,35 +6,35 @@ guide: {
   metrics: count: method: 8
 
   entity: domain: {
-    path: "/{year}/domain": {  # ent=domain;orig=Domain;tag=domain;cmp/resolve=domain;path=p/t/;path-primary
+    path: "/{year}/domain": {  # ent=domain;orig=PaginatedTaxa;cmp/resolve=paginated_taxa;path=p/t/;path-over-cmp
       op: list: method: *GET  # array-prop:items
     }
-    path: "/{year}/domain/{did}/revoke": {  # ent=domain;orig=Domain;tag=domain;cmp/resolve=domain;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Domain
-      action: "revoke": {}  # ent;domain;ent-param;revoke;POST
+    path: "/{year}/domain/{did}/revoke": {  # ent=domain;orig=PaginatedTaxa;tag=domain;cmp/resolve=domain;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Domain
+      action: "revoke": {}  # ent;domain;ent-param-2nd-last;revoke;POST
       rename: param: "did": *"id"  # id-parent-ent
-      op: update: method: *POST  # id-present
+      op: create: method: *POST  # not-load
     }
-    path: "/{year}/domain/{id}": {  # ent=domain;orig=Domain;tag=domain;cmp/resolve=domain;path=t/p/;path-primary
+    path: "/{year}/domain/{id}": {  # ent=domain;orig=PaginatedTaxa;cmp/resolve=taxon;path=t/p/;path-over-cmp
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
   }
 
   entity: kingdom: {
-    path: "/{year}/domain/{domain_id}/kingdom/{kingdom_id}": {  # ent=kingdom;orig=Kingdom;tag=kingdom;cmp/resolve=kingdom;path=t/p/;path-primary
+    path: "/{year}/domain/{domain_id}/kingdom/{kingdom_id}": {  # ent=kingdom;orig=Taxon;cmp/resolve=taxon;path=t/p/;path-over-cmp
       rename: param: "kingdom_id": *"id"  # end-id;GET;parent=true/kingdom;cmp=false
       op: load: method: *GET  # end-param
     }
-    path: "/{year}/domain/{id}/kingdom": {  # ent=kingdom;orig=Kingdom;tag=kingdom;cmp/resolve=kingdom;path=t/p/t/;path-primary;has-cmp=Kingdom
+    path: "/{year}/domain/{id}/kingdom": {  # ent=kingdom;orig=Taxon;cmp/resolve=taxon;path=t/p/t/;path-over-cmp;has-cmp=Taxon
       rename: param: "id": *"domain_id"  # parent:domain
+      op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:items
-      op: update: method: *POST  # id-present
     }
   }
 
   entity: phylum: {
-    path: "/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}": {  # ent=phylum;orig=Phylum;tag=phylum;cmp/resolve=phylum;path=t/p/;path-primary
-      rename: param: "domain": *"domain_id"  # not-primary
+    path: "/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}": {  # ent=phylum;orig=Taxon;cmp/resolve=taxon;path=t/p/;path-over-cmp
+      rename: param: "domain": *"domain_id"  # parent:domain
       rename: param: "itemid": *"id"  # end-id;GET;parent=true/phylum;cmp=false
       rename: param: "kid": *"kingdom_id"  # parent:kingdom
       op: load: method: *GET  # end-param

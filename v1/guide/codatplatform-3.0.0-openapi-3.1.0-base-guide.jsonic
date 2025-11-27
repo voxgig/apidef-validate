@@ -1,209 +1,229 @@
 # Guide
 
 guide: {
-  metrics: count: entity: 23
+  metrics: count: entity: 22
   metrics: count: path: 34
   metrics: count: method: 50
 
-  entity: all: {
-    path: "/companies/{companyId}/data/all": {  # ent:all:no-cmp;path=t/;entres=true/204,400,401,402,403,404,429,500,503/nores;path-primary
-      op: create: method: *POST|string  # not-load;ent=all
-    }
-  }
-
   entity: api_key: {
-    path: "/apiKeys": {  # ent:api_key;path=t/;path-primary
+    path: "/apiKeys": {  # ent=api_key;orig=ApiKeys;cmp/resolve=api_key_detail;path=t/;path-primary
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:results
-    }
-    path: "/apiKeys/{apiKeyId}": {  # ent:api_key;no-cmp;path=t/p/;entres=true/204,401,402,403,404,429,500,503/nores;path-primary-delete
-      rename: param: "apiKeyId": *"id"  # end-id;DELETE;parent=true/api_key;cmp=false
-      op: remove: method: *DELETE  # not-load
     }
   }
 
   entity: branding: {
-    path: "/integrations/{platformKey}/branding": {  # ent:branding;path=t/p/t/;path-primary;has-cmp
+    path: "/integrations/{platformKey}/branding": {  # ent=branding;orig=Branding;cmp/resolve=branding;path=t/p/t/;path-primary;has-cmp=Branding
       op: load: method: *GET  # not-list
     }
   }
 
   entity: company: {
-    path: "/companies": {  # ent:company:cmp=company;path=t/;path-primary
-      op: create: method: *POST|string  # not-load;ent=company
-      op: list: method: *GET|string  # array-prop:results;ent=company
+    path: "/companies": {  # ent=company;orig=Companies;cmp/resolve=company;path=t/;path-primary
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array-prop:results
     }
-    path: "/companies/{companyId}": {  # ent:company:no-cmp;path=t/p/;entres=true/204,401,402,403,404,429,500,503/nores;path-primary-delete
-      rename: param: "companyId": *"id"|string  # end-id:GET:parent=false/null:cmp=false/company
-      op: load: method: *GET|string  # end-param;ent=company
-      op: patch: method: *PATCH|string  # not-load;ent=company
-      op: remove: method: *DELETE|string  # not-load;ent=company
-      op: update: method: *PUT|string  # not-load;ent=company
+    path: "/companies/{companyId}": {  # ent=company;orig=Companies;tag=company;cmp/resolve=company;path=t/p/;path-primary
+      rename: param: "companyId": *"id"  # end-id;GET;parent=true/company;cmp=false
+      op: load: method: *GET  # end-param
+      op: patch: method: *PATCH  # not-load
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+    path: "/companies/{companyId}/products/{productIdentifier}": {  # ent=company;orig=Companies;tag=company;cmp/resolve=company;path=t/p/;cmp-primary;cmp-infreq
+      rename: param: "companyId": *"id"  # id-parent-ent
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+    path: "/companies/{companyId}/products/{productIdentifier}/refresh": {  # ent=company;orig=Companies;tag=company;cmp/resolve=company;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Companies
+      rename: param: "companyId": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
     }
   }
 
   entity: company_access_token: {
-    path: "/companies/{companyId}/accessToken": {  # ent:company_access_token:cmp=company_access_token;path=t/p/t/;cmp-primary;has-cmp
-      op: load: method: *GET|string  # not-list;ent=company_access_token
+    path: "/companies/{companyId}/accessToken": {  # ent=company_access_token;orig=CompanyAccessToken;cmp/resolve=company_access_token;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=CompanyAccessToken
+      rename: param: "companyId": *"id"  # action-parent:company_access_token
+      op: load: method: *GET  # not-list
     }
   }
 
   entity: connection: {
-    path: "/companies/{companyId}/connections": {  # ent:connection:cmp=connection;path=t/p/t/;path-primary;has-cmp
-      op: create: method: *POST|string  # not-load;ent=connection
-      op: list: method: *GET|string  # array-prop:results;ent=connection
+    path: "/companies/{companyId}/connections": {  # ent=connection;orig=Connections;cmp/resolve=connection;path=t/p/t/;path-primary;has-cmp=Connection
+      rename: param: "companyId": *"company_id"  # parent:company
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array-prop:results
     }
-    path: "/companies/{companyId}/connections/{connectionId}": {  # ent:connection:no-cmp;path=t/p/;entres=false/200,401,402,403,404,429,500,503;ent-act
-      rename: param: "connectionId": *"id"|string  # end-id:GET:parent=true/connection:cmp=false/connection
-      op: load: method: *GET|string  # end-param;ent=connection
-      op: patch: method: *PATCH|string  # not-load;ent=connection
-      op: remove: method: *DELETE|string  # not-load;ent=connection
+    path: "/companies/{companyId}/connections/{connectionId}": {  # ent=connection;orig=Connections;tag=connection;cmp/resolve=connection;path=t/p/;path-primary
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "connectionId": *"id"  # end-id;GET;parent=true/connection;cmp=false
+      op: load: method: *GET  # end-param
+      op: patch: method: *PATCH  # not-load
+      op: remove: method: *DELETE  # not-load
     }
-    path: "/companies/{companyId}/connections/{connectionId}/authorization": {  # ent:connection:cmp=connection;path=t/p/t/;cmp-path;has-cmp
-      op: update: method: *PUT|string  # not-load;ent=connection
+    path: "/companies/{companyId}/connections/{connectionId}/authorization": {  # ent=connection;orig=Connections;cmp/resolve=connection;path=t/p/t/;cmp-path;cmp-inpath;has-cmp=Connection
+      action: "authorization": {}  # ent;connection;ent-param-2nd-last;authorization;PUT
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "connectionId": *"id"  # id-parent-ent
+      op: update: method: *PUT  # not-load
     }
   }
 
   entity: connection_management_access_token: {
-    path: "/companies/{companyId}/connectionManagement/accessToken": {  # ent:connection_management_access_token:cmp=connection_management_access_token;path=t/;cmp-primary
-      op: load: method: *GET|string  # not-list;ent=connection_management_access_token
+    path: "/companies/{companyId}/connectionManagement/accessToken": {  # ent=connection_management_access_token;orig=ConnectionManagementAccessToken;cmp/resolve=connection_management_access_token;path=t/;cmp-primary;cmp-infreq
+      rename: param: "companyId": *"company_id"  # parent:company
+      op: load: method: *GET  # not-list
     }
   }
 
   entity: connection_management_allowed_origin: {
-    path: "/connectionManagement/corsSettings": {  # ent:connection_management_allowed_origin:cmp=connection_management_allowed_origin;path=t/;cmp-primary
-      op: create: method: *POST|string  # not-load;ent=connection_management_allowed_origin
-      op: list: method: *GET|string  # array-prop:allowedOrigins;ent=connection_management_allowed_origin
+    path: "/connectionManagement/corsSettings": {  # ent=connection_management_allowed_origin;orig=ConnectionManagementAllowedOrigins;cmp/resolve=connection_management_allowed_origin;path=t/;cmp-primary;cmp-infreq
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array-prop:allowedOrigins
     }
-    path: "/corsSettings": {  # ent:connection_management_allowed_origin:cmp=connection_management_allowed_origin;path=t/;cmp-primary
-      op: create: method: *POST|string  # not-load;ent=connection_management_allowed_origin
-      op: list: method: *GET|string  # array-prop:allowedOrigins;ent=connection_management_allowed_origin
+    path: "/corsSettings": {  # ent=connection_management_allowed_origin;orig=ConnectionManagementAllowedOrigins;cmp/resolve=connection_management_allowed_origin;path=t/;cmp-primary;cmp-infreq
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array-prop:allowedOrigins
     }
   }
 
   entity: custom: {
-    path: "/companies/{companyId}/connections/{connectionId}/data/custom/{customDataIdentifier}": {  # ent:custom:cmp=custom_data_type_record;path=t/p/;path-primary
-      rename: param: "connectionId": *"connection_id"|string  # not-primary
-      rename: param: "customDataIdentifier": *"id"|string  # end-id:GET:parent=true/custom:cmp=false/custom_data_type_record
-      op: load: method: *GET|string  # end-param;ent=custom
+    path: "/companies/{companyId}/connections/{connectionId}/data/custom/{customDataIdentifier}": {  # ent=custom;orig=CustomDataTypeRecords;cmp/resolve=custom_data_type_record;path=t/p/;path-primary
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "connectionId": *"connection_id"  # parent:connection
+      rename: param: "customDataIdentifier": *"id"  # end-id;GET;parent=true/custom;cmp=false
+      op: load: method: *GET  # end-param
     }
-    path: "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}": {  # ent:custom:cmp=custom_data_type_configuration;path=t/p/;path-primary
-      rename: param: "customDataIdentifier": *"id"|string  # end-id:GET:parent=true/custom:cmp=false/custom_data_type_record
-      op: load: method: *GET|string  # end-param;ent=custom
-      op: update: method: *PUT|string  # not-load;ent=custom
+    path: "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}": {  # ent=custom;orig=CustomDataTypeRecords;cmp/resolve=custom_data_type_configuration;path=t/p/;path-primary
+      rename: param: "customDataIdentifier": *"id"  # end-id;GET;parent=true/custom;cmp=false
+      op: load: method: *GET  # end-param
+      op: update: method: *PUT  # not-load
     }
   }
 
   entity: data_status: {
-    path: "/companies/{companyId}/dataStatus": {  # ent:data_status:no-cmp;path=t/p/t/;entres=true/200,401,402,403,404,429,500,503/get;path-primary;prob-ent-last
-      op: load: method: *GET|string  # not-list;ent=data_status
-    }
-  }
-
-  entity: data_type_supplemental_data_config: {
-    path: "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {  # ent:data_type_supplemental_data_config:no-cmp;path=t/p/t/;entres=false/200,401,402,403,404,429,500,503;part-ent
-      op: update: method: *PUT|string  # not-load;ent=data_type_supplemental_data_config
+    path: "/companies/{companyId}/dataStatus": {  # ent=data_status;orig=DataStatuses;cmp/resolve=data_status;path=t/p/t/;path-primary;has-cmp=DataStatuses
+      rename: param: "companyId": *"company_id"  # parent:company
+      op: load: method: *GET  # not-list
     }
   }
 
   entity: integration: {
-    path: "/integrations": {  # ent:integration:cmp=integration;path=t/;path-primary
-      op: list: method: *GET|string  # array-prop:results;ent=integration
+    path: "/integrations": {  # ent=integration;orig=Integrations;cmp/resolve=integration;path=t/;path-primary
+      op: list: method: *GET  # array-prop:results
     }
-    path: "/integrations/{platformKey}": {  # ent:integration:cmp=integration;path=t/p/;path-primary
-      rename: param: "platformKey": *"id"|string  # end-id:GET:parent=false/null:cmp=false/integration
-      op: load: method: *GET|string  # end-param;ent=integration
-    }
-  }
-
-  entity: product: {
-    path: "/companies/{companyId}/products/{productIdentifier}": {  # ent:product:no-cmp;path=t/p/;entres=true/204,401,402,403,404,429,500,503/nores;path-primary-delete
-      rename: param: "productIdentifier": *"id"|string  # end-id:PUT:parent=true/product:cmp=false/undefined
-      op: remove: method: *DELETE|string  # not-load;ent=product
-      op: update: method: *PUT|string  # not-load;ent=product
-    }
-  }
-
-  entity: product_refresh: {
-    path: "/companies/{companyId}/products/{productIdentifier}/refresh": {  # ent:product_refresh:no-cmp;path=t/p/t/;entres=false/202,400,401,402,403,404,429,500,503;part-ent
-      op: create: method: *POST|string  # not-load;ent=product_refresh
+    path: "/integrations/{platformKey}": {  # ent=integration;orig=Integrations;cmp/resolve=integration;path=t/p/;path-primary
+      rename: param: "platformKey": *"id"  # end-id;GET;parent=true/integration;cmp=false
+      op: load: method: *GET  # end-param
     }
   }
 
   entity: profile: {
-    path: "/profile": {  # ent:profile:cmp=profile;path=t/;path-primary
-      op: list: method: *GET|string  # array-prop:whiteListUrls;ent=profile
-      op: update: method: *PUT|string  # not-load;ent=profile
+    path: "/profile": {  # ent=profile;orig=Profile;cmp/resolve=profile;path=t/;path-primary
+      op: list: method: *GET  # array-prop:whiteListUrls
+      op: update: method: *PUT  # not-load
     }
   }
 
   entity: pull_operation: {
-    path: "/companies/{companyId}/connections/{connectionId}/data/queue/custom/{customDataIdentifier}": {  # ent:pull_operation:cmp=pull_operation;path=t/p/;cmp-primary
-      rename: param: "connectionId": *"connection_id"|string  # not-primary
-      op: create: method: *POST|string  # not-load;ent=pull_operation
+    path: "/companies/{companyId}/connections/{connectionId}/data/queue/custom/{customDataIdentifier}": {  # ent=pull_operation;orig=PullOperation;cmp/resolve=pull_operation;path=t/p/;cmp-primary;cmp-infreq
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "connectionId": *"connection_id"  # parent:connection
+      op: create: method: *POST  # not-load
     }
-    path: "/companies/{companyId}/data/history": {  # ent:pull_operation:cmp=pull_operation;path=t/;cmp-primary
-      op: list: method: *GET|string  # array-prop:results;ent=pull_operation
+    path: "/companies/{companyId}/data/history": {  # ent=pull_operation;orig=PullOperation;cmp/resolve=pull_operation;path=t/;cmp-primary;cmp-infreq
+      rename: param: "companyId": *"company_id"  # parent:company
+      op: list: method: *GET  # array-prop:results
     }
-    path: "/companies/{companyId}/data/history/{datasetId}": {  # ent:pull_operation:cmp=pull_operation;path=t/p/;cmp-primary
-      op: load: method: *GET|string  # end-param;ent=pull_operation
+    path: "/companies/{companyId}/data/history/{datasetId}": {  # ent=pull_operation;orig=PullOperation;cmp/resolve=pull_operation;path=t/p/;cmp-primary;cmp-infreq
+      rename: param: "companyId": *"company_id"  # parent:company
+      op: load: method: *GET  # end-param
     }
-    path: "/companies/{companyId}/data/queue/{dataType}": {  # ent:pull_operation:cmp=pull_operation;path=t/p/;cmp-primary
-      op: create: method: *POST|string  # not-load;ent=pull_operation
+    path: "/companies/{companyId}/data/queue/{dataType}": {  # ent=pull_operation;orig=PullOperation;cmp/resolve=pull_operation;path=t/p/;cmp-primary;cmp-infreq
+      rename: param: "companyId": *"company_id"  # parent:company
+      op: create: method: *POST  # not-load
     }
   }
 
   entity: push: {
-    path: "/companies/{companyId}/push": {  # ent:push:cmp=push_operation;path=t/p/t/;path-primary;has-cmp
-      op: list: method: *GET|string  # array-prop:results;ent=push
+    path: "/companies/{companyId}/push": {  # ent=push;orig=PushOperations;cmp/resolve=push_operation;path=t/p/t/;path-primary;has-cmp=PushOperations
+      rename: param: "companyId": *"company_id"  # parent:company
+      op: list: method: *GET  # array-prop:results
     }
-    path: "/companies/{companyId}/push/{pushOperationKey}": {  # ent:push:cmp=push_operation;path=t/p/;path-primary
-      rename: param: "pushOperationKey": *"id"|string  # end-id:GET:parent=true/push:cmp=false/push_operation
-      op: load: method: *GET|string  # end-param;ent=push
+    path: "/companies/{companyId}/push/{pushOperationKey}": {  # ent=push;orig=PushOperations;cmp/resolve=push_operation;path=t/p/;path-primary
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "pushOperationKey": *"id"  # end-id;GET;parent=true/push;cmp=false
+      op: load: method: *GET  # end-param
     }
   }
 
   entity: push_option: {
-    path: "/companies/{companyId}/connections/{connectionId}/options/{dataType}": {  # ent:push_option:cmp=push_option;path=t/p/;cmp-primary
-      rename: param: "connectionId": *"connection_id"|string  # not-primary
-      rename: param: "dataType": *"id"|string  # end-id:GET:parent=true/option:cmp=false/push_option
-      op: load: method: *GET|string  # end-param;ent=push_option
+    path: "/companies/{companyId}/connections/{connectionId}/options/{dataType}": {  # ent=push_option;orig=PushOption;cmp/resolve=push_option;path=t/p/;cmp-primary;cmp-infreq
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "connectionId": *"connection_id"  # parent:connection
+      rename: param: "dataType": *"id"  # end-id;GET;parent=true/option;cmp=false
+      op: load: method: *GET  # end-param
+    }
+  }
+
+  entity: refresh_data: {
+    path: "/companies/{companyId}/data/all": {  # ent=refresh_data;orig=Refresh data;tag=refresh_data;cmp/resolve=refresh_data;path=t/;cmp-primary;cmp-infreq
+      rename: param: "companyId": *"company_id"  # parent:company
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: setting: {
+    path: "/apiKeys/{apiKeyId}": {  # ent=setting;orig=Settings;tag=setting;cmp/resolve=setting;path=t/p/;cmp-primary;cmp-infreq
+      op: remove: method: *DELETE  # not-load
+    }
+    path: "/profile/syncSettings": {  # ent=setting;orig=Settings;tag=setting;cmp/resolve=setting;path=t/;cmp-primary;cmp-infreq
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: supplemental_data: {
+    path: "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {  # ent=supplemental_data;orig=Supplemental data;tag=supplemental_data;cmp/resolve=supplemental_data;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Supplemental data
+      rename: param: "dataType": *"data_type_id"  # parent:data_type
+      op: update: method: *PUT  # not-load
     }
   }
 
   entity: supplemental_data_config: {
-    path: "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {  # ent:supplemental_data_config:cmp=supplemental_data_configuration;path=t/p/t/;path-primary;has-cmp
-      op: load: method: *GET|string  # not-list;ent=supplemental_data_config
+    path: "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {  # ent=supplemental_data_config;orig=SupplementalDataConfiguration;cmp/resolve=supplemental_data_configuration;path=t/p/t/;path-primary;has-cmp=SupplementalDataConfiguration
+      rename: param: "dataType": *"data_type_id"  # parent:data_type
+      op: load: method: *GET  # not-list
     }
   }
 
   entity: sync_setting: {
-    path: "/profile/syncSettings": {  # ent:sync_setting:no-cmp;path=t/;entres=true/204,401,402,403,429,500,503/nores;path-primary
-      op: create: method: *POST|string  # not-load;ent=sync_setting
-      op: list: method: *GET|string  # array-prop:settings;ent=sync_setting
+    path: "/profile/syncSettings": {  # ent=sync_setting;orig=SyncSettings;cmp/resolve=sync_setting;path=t/;path-primary
+      op: list: method: *GET  # array-prop:settings
     }
   }
 
   entity: validation: {
-    path: "/companies/{companyId}/sync/{datasetId}/validation": {  # ent:validation:cmp=validation_result;path=t/p/t/;path-primary;has-cmp
-      op: list: method: *GET|string  # array-prop:errors;array-prop:warnings;ent=validation
+    path: "/companies/{companyId}/sync/{datasetId}/validation": {  # ent=validation;orig=ValidationResult;cmp/resolve=validation_result;path=t/p/t/;path-primary;has-cmp=ValidationResult
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "datasetId": *"sync_id"  # parent:sync
+      op: list: method: *GET  # array-prop:errors;array-prop:warnings
     }
   }
 
   entity: webhook: {
-    path: "/webhooks": {  # ent:webhook:cmp=webhook_consumer;path=t/;path-primary
-      op: create: method: *POST|string  # not-load;ent=webhook
-      op: list: method: *GET|string  # array-prop:results;ent=webhook
+    path: "/webhooks": {  # ent=webhook;orig=WebhookConsumer/definitions/webhookConsumers;cmp/resolve=webhook_consumer;path=t/;path-primary
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array-prop:results
     }
-    path: "/webhooks/{webhookId}": {  # ent:webhook:no-cmp;path=t/p/;entres=true/204,401,402,403,404,429,500,503/nores;path-primary-delete
-      rename: param: "webhookId": *"id"|string  # end-id:DELETE:parent=false/null:cmp=false/undefined
-      op: remove: method: *DELETE|string  # not-load;ent=webhook
+    path: "/webhooks/{webhookId}": {  # ent=webhook;orig=WebhookConsumer/definitions/webhookConsumers;tag=webhook;cmp/resolve=webhook;path=t/p/;path-primary
+      rename: param: "webhookId": *"id"  # end-id;DELETE;parent=true/webhook;cmp=false
+      op: remove: method: *DELETE  # not-load
     }
   }
 
   entity: webhook_zapier_key: {
-    path: "/webhooks/integrationKeys/zapier": {  # ent:webhook_zapier_key:cmp=webhook_zapier_key;path=t/;cmp-primary
-      op: create: method: *POST|string  # not-load;ent=webhook_zapier_key
+    path: "/webhooks/integrationKeys/zapier": {  # ent=webhook_zapier_key;orig=WebhookZapierKey;cmp/resolve=webhook_zapier_key;path=t/;cmp-primary;cmp-infreq
+      op: create: method: *POST  # not-load
     }
   }
 
