@@ -71,6 +71,7 @@ if (0 < caseSelector.length) {
         }
     });
     (0, node_test_1.test)('model-case', async () => {
+        // console.log('MODEL-CASES', cases)
         const { fs, vol } = prepfs(cases);
         const fails = [];
         const testmetrics = {
@@ -78,6 +79,7 @@ if (0 < caseSelector.length) {
         };
         for (let c of cases) {
             try {
+                // console.log('MODEL-CASE', c)
                 await prepCaseGuide(c, fs);
                 const build = await makeBuild(c, fs);
                 const bres = await runBuild(c, build, {
@@ -87,6 +89,7 @@ if (0 < caseSelector.length) {
                     builders: true,
                     generate: true,
                 });
+                // console.log('BRES', c, bres)
                 if (!bres?.ok) {
                     fails.push((0, apidef_1.formatJSONIC)(bres || 'NO RESULT', { maxlines: 111, exclude: ['fs'] }));
                 }
@@ -96,6 +99,7 @@ if (0 < caseSelector.length) {
                 }
             }
             catch (err) {
+                console.log('ERR', err);
                 fails.push((0, apidef_1.formatJSONIC)(err, { maxlines: 555 }));
             }
         }
@@ -256,7 +260,10 @@ function validateModel(c, fails, bres, fs, vol, testmetrics) {
     fs.mkdirSync(__dirname + '/../model/' + `${cfn}`, { recursive: true });
     (0, jostraca_1.each)(bres.apimodel.main.sdk.entity, (entity) => {
         const efn = `${cfn}-${entity.name}`;
+        console.log('EFN', efn);
         const entitySrc = volJSON[`/model/entity/${efn}.jsonic`].trim();
+        const generatedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.gen.jsonic`;
+        fs.writeFileSync(generatedSrcFile, entitySrc);
         const expectedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.jsonic`;
         if (!fs.existsSync(expectedSrcFile)) {
             fs.writeFileSync(expectedSrcFile, entitySrc);

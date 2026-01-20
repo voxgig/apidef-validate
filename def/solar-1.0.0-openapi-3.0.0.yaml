@@ -3,6 +3,7 @@ info:
   title: Solar System API
   version: 1.0.0
 paths:
+  
   /api/planet:
     get:
       summary: List planets
@@ -30,6 +31,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Planet'
+                
   /api/planet/{planet_id}:
     get:
       summary: Get planet
@@ -78,6 +80,40 @@ paths:
       responses:
         '204':
           description: No Content
+          
+  /api/planet/{planet_id}/terraform:
+    post:
+      summary: Terraform planet
+      parameters:
+        - name: planet_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  type: boolean
+                stop:
+                  type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  state:
+                    type: string
+                    
   /api/planet/{planet_id}/moon:
     get:
       summary: List moons of planet
@@ -117,6 +153,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Moon'
+                
   /api/planet/{planet_id}/moon/{moon_id}:
     get:
       summary: Get moon
@@ -180,6 +217,7 @@ paths:
       responses:
         '204':
           description: No Content
+          
 components:
   schemas:
     Planet:
@@ -219,6 +257,3 @@ components:
         diameter:
           type: number
           format: float
-
-
-
