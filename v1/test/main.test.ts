@@ -54,6 +54,8 @@ let cases: Case[] = [
 
   { name: 'github', version: '1.1.4', spec: 'openapi-3.0.3', format: 'yaml' },
   { name: 'gitlab', version: 'v4', spec: 'swagger-2.0', format: 'yaml' },
+
+  { name: '4chan', version: '1.0', spec: 'openapi-3.0.0', format: 'yaml' },
 ]
 
 // const caseSelector = (process.env.npm_config_case ?? '').split(',')
