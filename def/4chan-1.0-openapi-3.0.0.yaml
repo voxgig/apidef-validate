@@ -30,7 +30,7 @@ paths:
                   boards:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Board'
+                      $ref: '#/components/schemas/BoardResponse'
   /{board}/threads.json:
     get:
       operationId: getThreadList
@@ -48,7 +48,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ThreadListPage'
+                  $ref: '#/components/schemas/ThreadListPageResponse'
   /{board}/catalog.json:
     get:
       operationId: getCatalog
@@ -66,7 +66,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CatalogPage'
+                  $ref: '#/components/schemas/CatalogPageResponse'
   /{board}/archive.json:
     get:
       operationId: getArchive
@@ -118,7 +118,7 @@ paths:
                         posts:
                           type: array
                           items:
-                            $ref: '#/components/schemas/Post'
+                            $ref: '#/components/schemas/PostResponse'
   /{board}/thread/{thread_id}.json:
     get:
       operationId: getThread
@@ -143,7 +143,7 @@ paths:
                   posts:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Post'
+                      $ref: '#/components/schemas/PostResponse'
 components:
   parameters:
     board:
@@ -154,7 +154,7 @@ components:
       schema:
         type: string
   schemas:
-    Board:
+    BoardResponse:
       type: object
       required:
         - board
@@ -283,7 +283,7 @@ components:
         min_image_height:
           type: integer
           description: Minimum image height in pixels.
-    ThreadListPage:
+    ThreadListPageResponse:
       type: object
       properties:
         page:
@@ -292,8 +292,8 @@ components:
         threads:
           type: array
           items:
-            $ref: '#/components/schemas/ThreadSummary'
-    ThreadSummary:
+            $ref: '#/components/schemas/ThreadSummaryResponse'
+    ThreadSummaryResponse:
       type: object
       required:
         - 'no'
@@ -309,7 +309,7 @@ components:
         replies:
           type: integer
           description: Number of replies in the thread.
-    CatalogPage:
+    CatalogPageResponse:
       type: object
       properties:
         page:
@@ -318,10 +318,10 @@ components:
         threads:
           type: array
           items:
-            $ref: '#/components/schemas/CatalogThread'
-    CatalogThread:
+            $ref: '#/components/schemas/CatalogThreadResponse'
+    CatalogThreadResponse:
       allOf:
-        - $ref: '#/components/schemas/Post'
+        - $ref: '#/components/schemas/PostResponse'
         - type: object
           properties:
             omitted_posts:
@@ -334,8 +334,8 @@ components:
               type: array
               description: Most recent replies to the thread.
               items:
-                $ref: '#/components/schemas/Post'
-    Post:
+                $ref: '#/components/schemas/PostResponse'
+    PostResponse:
       type: object
       required:
         - 'no'
