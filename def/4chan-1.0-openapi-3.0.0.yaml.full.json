@@ -1,0 +1,2792 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "4chan API",
+    "description": "Read-only JSON API for accessing 4chan board and thread data.",
+    "version": "1.0",
+    "contact": {
+      "email": "api@4chan.org"
+    },
+    "license": {
+      "name": "4chan API Terms of Service",
+      "url": "https://github.com/4chan/4chan-API"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.4cdn.org",
+      "description": "4chan API server"
+    }
+  ],
+  "paths": {
+    "/boards.json": {
+      "get": {
+        "operationId": "getBoards",
+        "summary": "Get all boards",
+        "description": "Returns a list of all boards and their attributes.",
+        "responses": {
+          "200": {
+            "description": "List of boards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "boards": {
+                      "type": "array",
+                      "items": {
+                        "x-ref": "#/components/schemas/BoardResponse",
+                        "type": "object",
+                        "required": [
+                          "board",
+                          "title",
+                          "ws_board",
+                          "per_page",
+                          "pages",
+                          "max_filesize",
+                          "max_webm_filesize",
+                          "max_comment_chars",
+                          "max_webm_duration",
+                          "bump_limit",
+                          "image_limit",
+                          "cooldowns",
+                          "meta_description"
+                        ],
+                        "properties": {
+                          "board": {
+                            "type": "string",
+                            "description": "The directory the board is located in."
+                          },
+                          "title": {
+                            "type": "string",
+                            "description": "The readable title at the top of the board."
+                          },
+                          "ws_board": {
+                            "type": "integer",
+                            "description": "Whether the board is worksafe. 1 for yes, 0 for no.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "per_page": {
+                            "type": "integer",
+                            "description": "Number of threads displayed per index page."
+                          },
+                          "pages": {
+                            "type": "integer",
+                            "description": "Number of index pages on the board."
+                          },
+                          "max_filesize": {
+                            "type": "integer",
+                            "description": "Maximum file upload size in bytes (non-webm)."
+                          },
+                          "max_webm_filesize": {
+                            "type": "integer",
+                            "description": "Maximum webm file upload size in bytes."
+                          },
+                          "max_comment_chars": {
+                            "type": "integer",
+                            "description": "Maximum number of characters allowed in a post comment."
+                          },
+                          "max_webm_duration": {
+                            "type": "integer",
+                            "description": "Maximum webm duration in seconds."
+                          },
+                          "bump_limit": {
+                            "type": "integer",
+                            "description": "Maximum replies before a thread stops being bumped."
+                          },
+                          "image_limit": {
+                            "type": "integer",
+                            "description": "Maximum number of image replies per thread."
+                          },
+                          "cooldowns": {
+                            "type": "object",
+                            "description": "Post cooldown times in seconds.",
+                            "properties": {
+                              "threads": {
+                                "type": "integer",
+                                "description": "Cooldown for creating new threads in seconds."
+                              },
+                              "replies": {
+                                "type": "integer",
+                                "description": "Cooldown for posting replies in seconds."
+                              },
+                              "images": {
+                                "type": "integer",
+                                "description": "Cooldown for posting images in seconds."
+                              }
+                            }
+                          },
+                          "meta_description": {
+                            "type": "string",
+                            "description": "SEO meta description for the board."
+                          },
+                          "spoilers": {
+                            "type": "integer",
+                            "description": "Whether the board supports spoilers. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "custom_spoilers": {
+                            "type": "integer",
+                            "description": "Number of custom spoiler images available."
+                          },
+                          "is_archived": {
+                            "type": "integer",
+                            "description": "Whether the board has an archive. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "board_flags": {
+                            "type": "object",
+                            "description": "Map of board flag codes to flag names.",
+                            "additionalProperties": {
+                              "type": "string"
+                            }
+                          },
+                          "country_flags": {
+                            "type": "integer",
+                            "description": "Whether country flags are enabled. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "user_ids": {
+                            "type": "integer",
+                            "description": "Whether poster ID tags are shown. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "oekaki": {
+                            "type": "integer",
+                            "description": "Whether oekaki drawing is available. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "sjis_tags": {
+                            "type": "integer",
+                            "description": "Whether SJIS tags are available. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "code_tags": {
+                            "type": "integer",
+                            "description": "Whether code syntax highlighting is available. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "math_tags": {
+                            "type": "integer",
+                            "description": "Whether math/TeX markup is available. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "text_only": {
+                            "type": "integer",
+                            "description": "Whether image posting is disabled. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "forced_anon": {
+                            "type": "integer",
+                            "description": "Whether the name field is disabled. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "webm_audio": {
+                            "type": "integer",
+                            "description": "Whether webm files with audio are allowed. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "require_subject": {
+                            "type": "integer",
+                            "description": "Whether OP posts require a subject. 1 for yes.",
+                            "enum": [
+                              0,
+                              1
+                            ]
+                          },
+                          "min_image_width": {
+                            "type": "integer",
+                            "description": "Minimum image width in pixels."
+                          },
+                          "min_image_height": {
+                            "type": "integer",
+                            "description": "Minimum image height in pixels."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "key$": "/boards.json"
+    },
+    "/{board}/archive.json": {
+      "get": {
+        "operationId": "getArchive",
+        "summary": "Get archived thread IDs",
+        "description": "Returns a list of all closed threads in a board archive. Archived threads no longer receive posts. Not all boards have an archive.",
+        "parameters": [
+          {
+            "x-ref": "#/components/parameters/board",
+            "name": "board",
+            "in": "path",
+            "required": true,
+            "description": "The board directory (e.g. \"po\", \"g\", \"tv\").",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of archived thread OP numbers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "description": "Archived thread OP number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "key$": "/{board}/archive.json"
+    },
+    "/{board}/catalog.json": {
+      "get": {
+        "operationId": "getCatalog",
+        "summary": "Get board catalog",
+        "description": "Returns a JSON representation of a board catalog, which includes all OPs and their preview replies.",
+        "parameters": [
+          {
+            "x-ref": "#/components/parameters/board",
+            "name": "board",
+            "in": "path",
+            "required": true,
+            "description": "The board directory (e.g. \"po\", \"g\", \"tv\").",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Board catalog grouped by page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "x-ref": "#/components/schemas/CatalogPageResponse",
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "type": "integer",
+                        "description": "The page number."
+                      },
+                      "threads": {
+                        "type": "array",
+                        "items": {
+                          "x-ref": "#/components/schemas/CatalogThreadResponse",
+                          "allOf": [
+                            {
+                              "x-ref": "#/components/schemas/PostResponse",
+                              "type": "object",
+                              "required": [
+                                "no",
+                                "resto",
+                                "now",
+                                "time",
+                                "name"
+                              ],
+                              "properties": {
+                                "no": {
+                                  "type": "integer",
+                                  "description": "Numeric post ID."
+                                },
+                                "resto": {
+                                  "type": "integer",
+                                  "description": "For replies, the thread ID being replied to. For OP posts, this is 0."
+                                },
+                                "sticky": {
+                                  "type": "integer",
+                                  "description": "Whether the thread is pinned. 1 if pinned. OP only.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "closed": {
+                                  "type": "integer",
+                                  "description": "Whether the thread is closed. 1 if closed. OP only.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "now": {
+                                  "type": "string",
+                                  "description": "Date and time in MM/DD/YY(Day)HH:MM format (EST/EDT)."
+                                },
+                                "time": {
+                                  "type": "integer",
+                                  "description": "UNIX timestamp of post creation."
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "description": "Poster's name. Defaults to Anonymous."
+                                },
+                                "trip": {
+                                  "type": "string",
+                                  "description": "Tripcode, in format !tripcode or !!securetripcode."
+                                },
+                                "id": {
+                                  "type": "string",
+                                  "description": "Poster's ID, 8 characters. Only on boards with IDs enabled."
+                                },
+                                "capcode": {
+                                  "type": "string",
+                                  "description": "Capcode of the poster.",
+                                  "enum": [
+                                    "mod",
+                                    "admin",
+                                    "admin_highlight",
+                                    "manager",
+                                    "developer",
+                                    "founder"
+                                  ]
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "description": "ISO 3166-1 alpha-2 country code, or XX for unknown."
+                                },
+                                "country_name": {
+                                  "type": "string",
+                                  "description": "Full country name."
+                                },
+                                "board_flag": {
+                                  "type": "string",
+                                  "description": "Board-specific flag code."
+                                },
+                                "flag_name": {
+                                  "type": "string",
+                                  "description": "Board-specific flag name."
+                                },
+                                "sub": {
+                                  "type": "string",
+                                  "description": "Subject of the thread. OP only."
+                                },
+                                "com": {
+                                  "type": "string",
+                                  "description": "Comment body (HTML escaped)."
+                                },
+                                "tim": {
+                                  "type": "integer",
+                                  "description": "Renamed filename (UNIX timestamp + microtime)."
+                                },
+                                "filename": {
+                                  "type": "string",
+                                  "description": "Original filename as uploaded."
+                                },
+                                "ext": {
+                                  "type": "string",
+                                  "description": "File extension.",
+                                  "enum": [
+                                    ".jpg",
+                                    ".png",
+                                    ".gif",
+                                    ".pdf",
+                                    ".swf",
+                                    ".webm"
+                                  ]
+                                },
+                                "fsize": {
+                                  "type": "integer",
+                                  "description": "File size in bytes."
+                                },
+                                "md5": {
+                                  "type": "string",
+                                  "description": "Base64-encoded MD5 hash of the file."
+                                },
+                                "w": {
+                                  "type": "integer",
+                                  "description": "Image width in pixels."
+                                },
+                                "h": {
+                                  "type": "integer",
+                                  "description": "Image height in pixels."
+                                },
+                                "tn_w": {
+                                  "type": "integer",
+                                  "description": "Thumbnail width in pixels."
+                                },
+                                "tn_h": {
+                                  "type": "integer",
+                                  "description": "Thumbnail height in pixels."
+                                },
+                                "filedeleted": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if the file has been deleted.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "spoiler": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if the image is spoilered.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "custom_spoiler": {
+                                  "type": "integer",
+                                  "description": "Custom spoiler ID, from 1 to 10.",
+                                  "minimum": 1,
+                                  "maximum": 10
+                                },
+                                "replies": {
+                                  "type": "integer",
+                                  "description": "Total reply count. OP only."
+                                },
+                                "images": {
+                                  "type": "integer",
+                                  "description": "Total image reply count. OP only."
+                                },
+                                "bumplimit": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if bump limit has been reached. OP only.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "imagelimit": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if image limit has been reached. OP only.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "tag": {
+                                  "type": "string",
+                                  "description": "SWF category tag. /f/ board only, OP only."
+                                },
+                                "semantic_url": {
+                                  "type": "string",
+                                  "description": "SEO-friendly URL slug for the thread. OP only."
+                                },
+                                "since4pass": {
+                                  "type": "integer",
+                                  "description": "Year the poster's 4chan Pass was purchased."
+                                },
+                                "unique_ips": {
+                                  "type": "integer",
+                                  "description": "Number of unique posters in the thread. OP only."
+                                },
+                                "m_img": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if a mobile-optimized image exists.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "archived": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if the thread has been archived. OP only.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "archived_on": {
+                                  "type": "integer",
+                                  "description": "UNIX timestamp when the thread was archived. OP only."
+                                },
+                                "last_modified": {
+                                  "type": "integer",
+                                  "description": "UNIX timestamp of last thread modification. OP only."
+                                }
+                              }
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "omitted_posts": {
+                                  "type": "integer",
+                                  "description": "Number of posts not shown in preview."
+                                },
+                                "omitted_images": {
+                                  "type": "integer",
+                                  "description": "Number of image replies not shown in preview."
+                                },
+                                "last_replies": {
+                                  "type": "array",
+                                  "description": "Most recent replies to the thread.",
+                                  "items": {
+                                    "x-ref": "#/components/schemas/PostResponse",
+                                    "type": "object",
+                                    "required": [
+                                      "no",
+                                      "resto",
+                                      "now",
+                                      "time",
+                                      "name"
+                                    ],
+                                    "properties": {
+                                      "no": {
+                                        "type": "integer",
+                                        "description": "Numeric post ID."
+                                      },
+                                      "resto": {
+                                        "type": "integer",
+                                        "description": "For replies, the thread ID being replied to. For OP posts, this is 0."
+                                      },
+                                      "sticky": {
+                                        "type": "integer",
+                                        "description": "Whether the thread is pinned. 1 if pinned. OP only.",
+                                        "enum": [
+                                          1
+                                        ]
+                                      },
+                                      "closed": {
+                                        "type": "integer",
+                                        "description": "Whether the thread is closed. 1 if closed. OP only.",
+                                        "enum": [
+                                          1
+                                        ]
+                                      },
+                                      "now": {
+                                        "type": "string",
+                                        "description": "Date and time in MM/DD/YY(Day)HH:MM format (EST/EDT)."
+                                      },
+                                      "time": {
+                                        "type": "integer",
+                                        "description": "UNIX timestamp of post creation."
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "description": "Poster's name. Defaults to Anonymous."
+                                      },
+                                      "trip": {
+                                        "type": "string",
+                                        "description": "Tripcode, in format !tripcode or !!securetripcode."
+                                      },
+                                      "id": {
+                                        "type": "string",
+                                        "description": "Poster's ID, 8 characters. Only on boards with IDs enabled."
+                                      },
+                                      "capcode": {
+                                        "type": "string",
+                                        "description": "Capcode of the poster.",
+                                        "enum": [
+                                          "mod",
+                                          "admin",
+                                          "admin_highlight",
+                                          "manager",
+                                          "developer",
+                                          "founder"
+                                        ]
+                                      },
+                                      "country": {
+                                        "type": "string",
+                                        "description": "ISO 3166-1 alpha-2 country code, or XX for unknown."
+                                      },
+                                      "country_name": {
+                                        "type": "string",
+                                        "description": "Full country name."
+                                      },
+                                      "board_flag": {
+                                        "type": "string",
+                                        "description": "Board-specific flag code."
+                                      },
+                                      "flag_name": {
+                                        "type": "string",
+                                        "description": "Board-specific flag name."
+                                      },
+                                      "sub": {
+                                        "type": "string",
+                                        "description": "Subject of the thread. OP only."
+                                      },
+                                      "com": {
+                                        "type": "string",
+                                        "description": "Comment body (HTML escaped)."
+                                      },
+                                      "tim": {
+                                        "type": "integer",
+                                        "description": "Renamed filename (UNIX timestamp + microtime)."
+                                      },
+                                      "filename": {
+                                        "type": "string",
+                                        "description": "Original filename as uploaded."
+                                      },
+                                      "ext": {
+                                        "type": "string",
+                                        "description": "File extension.",
+                                        "enum": [
+                                          ".jpg",
+                                          ".png",
+                                          ".gif",
+                                          ".pdf",
+                                          ".swf",
+                                          ".webm"
+                                        ]
+                                      },
+                                      "fsize": {
+                                        "type": "integer",
+                                        "description": "File size in bytes."
+                                      },
+                                      "md5": {
+                                        "type": "string",
+                                        "description": "Base64-encoded MD5 hash of the file."
+                                      },
+                                      "w": {
+                                        "type": "integer",
+                                        "description": "Image width in pixels."
+                                      },
+                                      "h": {
+                                        "type": "integer",
+                                        "description": "Image height in pixels."
+                                      },
+                                      "tn_w": {
+                                        "type": "integer",
+                                        "description": "Thumbnail width in pixels."
+                                      },
+                                      "tn_h": {
+                                        "type": "integer",
+                                        "description": "Thumbnail height in pixels."
+                                      },
+                                      "filedeleted": {
+                                        "type": "integer",
+                                        "description": "Set to 1 if the file has been deleted.",
+                                        "enum": [
+                                          1
+                                        ]
+                                      },
+                                      "spoiler": {
+                                        "type": "integer",
+                                        "description": "Set to 1 if the image is spoilered.",
+                                        "enum": [
+                                          1
+                                        ]
+                                      },
+                                      "custom_spoiler": {
+                                        "type": "integer",
+                                        "description": "Custom spoiler ID, from 1 to 10.",
+                                        "minimum": 1,
+                                        "maximum": 10
+                                      },
+                                      "replies": {
+                                        "type": "integer",
+                                        "description": "Total reply count. OP only."
+                                      },
+                                      "images": {
+                                        "type": "integer",
+                                        "description": "Total image reply count. OP only."
+                                      },
+                                      "bumplimit": {
+                                        "type": "integer",
+                                        "description": "Set to 1 if bump limit has been reached. OP only.",
+                                        "enum": [
+                                          1
+                                        ]
+                                      },
+                                      "imagelimit": {
+                                        "type": "integer",
+                                        "description": "Set to 1 if image limit has been reached. OP only.",
+                                        "enum": [
+                                          1
+                                        ]
+                                      },
+                                      "tag": {
+                                        "type": "string",
+                                        "description": "SWF category tag. /f/ board only, OP only."
+                                      },
+                                      "semantic_url": {
+                                        "type": "string",
+                                        "description": "SEO-friendly URL slug for the thread. OP only."
+                                      },
+                                      "since4pass": {
+                                        "type": "integer",
+                                        "description": "Year the poster's 4chan Pass was purchased."
+                                      },
+                                      "unique_ips": {
+                                        "type": "integer",
+                                        "description": "Number of unique posters in the thread. OP only."
+                                      },
+                                      "m_img": {
+                                        "type": "integer",
+                                        "description": "Set to 1 if a mobile-optimized image exists.",
+                                        "enum": [
+                                          1
+                                        ]
+                                      },
+                                      "archived": {
+                                        "type": "integer",
+                                        "description": "Set to 1 if the thread has been archived. OP only.",
+                                        "enum": [
+                                          1
+                                        ]
+                                      },
+                                      "archived_on": {
+                                        "type": "integer",
+                                        "description": "UNIX timestamp when the thread was archived. OP only."
+                                      },
+                                      "last_modified": {
+                                        "type": "integer",
+                                        "description": "UNIX timestamp of last thread modification. OP only."
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "key$": "/{board}/catalog.json"
+    },
+    "/{board}/thread/{thread_id}.json": {
+      "get": {
+        "operationId": "getThread",
+        "summary": "Get a thread",
+        "description": "Returns a full list of posts in a single thread.",
+        "parameters": [
+          {
+            "x-ref": "#/components/parameters/board",
+            "name": "board",
+            "in": "path",
+            "required": true,
+            "description": "The board directory (e.g. \"po\", \"g\", \"tv\").",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "description": "The OP post number of the thread.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thread with all posts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "posts": {
+                      "type": "array",
+                      "items": {
+                        "x-ref": "#/components/schemas/PostResponse",
+                        "type": "object",
+                        "required": [
+                          "no",
+                          "resto",
+                          "now",
+                          "time",
+                          "name"
+                        ],
+                        "properties": {
+                          "no": {
+                            "type": "integer",
+                            "description": "Numeric post ID."
+                          },
+                          "resto": {
+                            "type": "integer",
+                            "description": "For replies, the thread ID being replied to. For OP posts, this is 0."
+                          },
+                          "sticky": {
+                            "type": "integer",
+                            "description": "Whether the thread is pinned. 1 if pinned. OP only.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "closed": {
+                            "type": "integer",
+                            "description": "Whether the thread is closed. 1 if closed. OP only.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "now": {
+                            "type": "string",
+                            "description": "Date and time in MM/DD/YY(Day)HH:MM format (EST/EDT)."
+                          },
+                          "time": {
+                            "type": "integer",
+                            "description": "UNIX timestamp of post creation."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Poster's name. Defaults to Anonymous."
+                          },
+                          "trip": {
+                            "type": "string",
+                            "description": "Tripcode, in format !tripcode or !!securetripcode."
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "Poster's ID, 8 characters. Only on boards with IDs enabled."
+                          },
+                          "capcode": {
+                            "type": "string",
+                            "description": "Capcode of the poster.",
+                            "enum": [
+                              "mod",
+                              "admin",
+                              "admin_highlight",
+                              "manager",
+                              "developer",
+                              "founder"
+                            ]
+                          },
+                          "country": {
+                            "type": "string",
+                            "description": "ISO 3166-1 alpha-2 country code, or XX for unknown."
+                          },
+                          "country_name": {
+                            "type": "string",
+                            "description": "Full country name."
+                          },
+                          "board_flag": {
+                            "type": "string",
+                            "description": "Board-specific flag code."
+                          },
+                          "flag_name": {
+                            "type": "string",
+                            "description": "Board-specific flag name."
+                          },
+                          "sub": {
+                            "type": "string",
+                            "description": "Subject of the thread. OP only."
+                          },
+                          "com": {
+                            "type": "string",
+                            "description": "Comment body (HTML escaped)."
+                          },
+                          "tim": {
+                            "type": "integer",
+                            "description": "Renamed filename (UNIX timestamp + microtime)."
+                          },
+                          "filename": {
+                            "type": "string",
+                            "description": "Original filename as uploaded."
+                          },
+                          "ext": {
+                            "type": "string",
+                            "description": "File extension.",
+                            "enum": [
+                              ".jpg",
+                              ".png",
+                              ".gif",
+                              ".pdf",
+                              ".swf",
+                              ".webm"
+                            ]
+                          },
+                          "fsize": {
+                            "type": "integer",
+                            "description": "File size in bytes."
+                          },
+                          "md5": {
+                            "type": "string",
+                            "description": "Base64-encoded MD5 hash of the file."
+                          },
+                          "w": {
+                            "type": "integer",
+                            "description": "Image width in pixels."
+                          },
+                          "h": {
+                            "type": "integer",
+                            "description": "Image height in pixels."
+                          },
+                          "tn_w": {
+                            "type": "integer",
+                            "description": "Thumbnail width in pixels."
+                          },
+                          "tn_h": {
+                            "type": "integer",
+                            "description": "Thumbnail height in pixels."
+                          },
+                          "filedeleted": {
+                            "type": "integer",
+                            "description": "Set to 1 if the file has been deleted.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "spoiler": {
+                            "type": "integer",
+                            "description": "Set to 1 if the image is spoilered.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "custom_spoiler": {
+                            "type": "integer",
+                            "description": "Custom spoiler ID, from 1 to 10.",
+                            "minimum": 1,
+                            "maximum": 10
+                          },
+                          "replies": {
+                            "type": "integer",
+                            "description": "Total reply count. OP only."
+                          },
+                          "images": {
+                            "type": "integer",
+                            "description": "Total image reply count. OP only."
+                          },
+                          "bumplimit": {
+                            "type": "integer",
+                            "description": "Set to 1 if bump limit has been reached. OP only.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "imagelimit": {
+                            "type": "integer",
+                            "description": "Set to 1 if image limit has been reached. OP only.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "tag": {
+                            "type": "string",
+                            "description": "SWF category tag. /f/ board only, OP only."
+                          },
+                          "semantic_url": {
+                            "type": "string",
+                            "description": "SEO-friendly URL slug for the thread. OP only."
+                          },
+                          "since4pass": {
+                            "type": "integer",
+                            "description": "Year the poster's 4chan Pass was purchased."
+                          },
+                          "unique_ips": {
+                            "type": "integer",
+                            "description": "Number of unique posters in the thread. OP only."
+                          },
+                          "m_img": {
+                            "type": "integer",
+                            "description": "Set to 1 if a mobile-optimized image exists.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "archived": {
+                            "type": "integer",
+                            "description": "Set to 1 if the thread has been archived. OP only.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "archived_on": {
+                            "type": "integer",
+                            "description": "UNIX timestamp when the thread was archived. OP only."
+                          },
+                          "last_modified": {
+                            "type": "integer",
+                            "description": "UNIX timestamp of last thread modification. OP only."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "key$": "/{board}/thread/{thread_id}.json"
+    },
+    "/{board}/threads.json": {
+      "get": {
+        "operationId": "getThreadList",
+        "summary": "Get thread list",
+        "description": "Returns a summarized list of all threads on a board including thread numbers, their modification time and reply count.",
+        "parameters": [
+          {
+            "x-ref": "#/components/parameters/board",
+            "name": "board",
+            "in": "path",
+            "required": true,
+            "description": "The board directory (e.g. \"po\", \"g\", \"tv\").",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thread list grouped by page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "x-ref": "#/components/schemas/ThreadListPageResponse",
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "type": "integer",
+                        "description": "The page number."
+                      },
+                      "threads": {
+                        "type": "array",
+                        "items": {
+                          "x-ref": "#/components/schemas/ThreadSummaryResponse",
+                          "type": "object",
+                          "required": [
+                            "no",
+                            "last_modified",
+                            "replies"
+                          ],
+                          "properties": {
+                            "no": {
+                              "type": "integer",
+                              "description": "The OP ID of the thread."
+                            },
+                            "last_modified": {
+                              "type": "integer",
+                              "description": "UNIX timestamp of last thread modification."
+                            },
+                            "replies": {
+                              "type": "integer",
+                              "description": "Number of replies in the thread."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "key$": "/{board}/threads.json"
+    },
+    "/{board}/{page}.json": {
+      "get": {
+        "operationId": "getIndex",
+        "summary": "Get board index page",
+        "description": "Returns threads and their preview replies from a specified index page. Index pages start at 1, and the maximum number of pages varies by board.",
+        "parameters": [
+          {
+            "x-ref": "#/components/parameters/board",
+            "name": "board",
+            "in": "path",
+            "required": true,
+            "description": "The board directory (e.g. \"po\", \"g\", \"tv\").",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "description": "Index page number (starts at 1).",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Index page with threads and preview replies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "threads": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "posts": {
+                            "type": "array",
+                            "items": {
+                              "x-ref": "#/components/schemas/PostResponse",
+                              "type": "object",
+                              "required": [
+                                "no",
+                                "resto",
+                                "now",
+                                "time",
+                                "name"
+                              ],
+                              "properties": {
+                                "no": {
+                                  "type": "integer",
+                                  "description": "Numeric post ID."
+                                },
+                                "resto": {
+                                  "type": "integer",
+                                  "description": "For replies, the thread ID being replied to. For OP posts, this is 0."
+                                },
+                                "sticky": {
+                                  "type": "integer",
+                                  "description": "Whether the thread is pinned. 1 if pinned. OP only.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "closed": {
+                                  "type": "integer",
+                                  "description": "Whether the thread is closed. 1 if closed. OP only.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "now": {
+                                  "type": "string",
+                                  "description": "Date and time in MM/DD/YY(Day)HH:MM format (EST/EDT)."
+                                },
+                                "time": {
+                                  "type": "integer",
+                                  "description": "UNIX timestamp of post creation."
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "description": "Poster's name. Defaults to Anonymous."
+                                },
+                                "trip": {
+                                  "type": "string",
+                                  "description": "Tripcode, in format !tripcode or !!securetripcode."
+                                },
+                                "id": {
+                                  "type": "string",
+                                  "description": "Poster's ID, 8 characters. Only on boards with IDs enabled."
+                                },
+                                "capcode": {
+                                  "type": "string",
+                                  "description": "Capcode of the poster.",
+                                  "enum": [
+                                    "mod",
+                                    "admin",
+                                    "admin_highlight",
+                                    "manager",
+                                    "developer",
+                                    "founder"
+                                  ]
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "description": "ISO 3166-1 alpha-2 country code, or XX for unknown."
+                                },
+                                "country_name": {
+                                  "type": "string",
+                                  "description": "Full country name."
+                                },
+                                "board_flag": {
+                                  "type": "string",
+                                  "description": "Board-specific flag code."
+                                },
+                                "flag_name": {
+                                  "type": "string",
+                                  "description": "Board-specific flag name."
+                                },
+                                "sub": {
+                                  "type": "string",
+                                  "description": "Subject of the thread. OP only."
+                                },
+                                "com": {
+                                  "type": "string",
+                                  "description": "Comment body (HTML escaped)."
+                                },
+                                "tim": {
+                                  "type": "integer",
+                                  "description": "Renamed filename (UNIX timestamp + microtime)."
+                                },
+                                "filename": {
+                                  "type": "string",
+                                  "description": "Original filename as uploaded."
+                                },
+                                "ext": {
+                                  "type": "string",
+                                  "description": "File extension.",
+                                  "enum": [
+                                    ".jpg",
+                                    ".png",
+                                    ".gif",
+                                    ".pdf",
+                                    ".swf",
+                                    ".webm"
+                                  ]
+                                },
+                                "fsize": {
+                                  "type": "integer",
+                                  "description": "File size in bytes."
+                                },
+                                "md5": {
+                                  "type": "string",
+                                  "description": "Base64-encoded MD5 hash of the file."
+                                },
+                                "w": {
+                                  "type": "integer",
+                                  "description": "Image width in pixels."
+                                },
+                                "h": {
+                                  "type": "integer",
+                                  "description": "Image height in pixels."
+                                },
+                                "tn_w": {
+                                  "type": "integer",
+                                  "description": "Thumbnail width in pixels."
+                                },
+                                "tn_h": {
+                                  "type": "integer",
+                                  "description": "Thumbnail height in pixels."
+                                },
+                                "filedeleted": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if the file has been deleted.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "spoiler": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if the image is spoilered.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "custom_spoiler": {
+                                  "type": "integer",
+                                  "description": "Custom spoiler ID, from 1 to 10.",
+                                  "minimum": 1,
+                                  "maximum": 10
+                                },
+                                "replies": {
+                                  "type": "integer",
+                                  "description": "Total reply count. OP only."
+                                },
+                                "images": {
+                                  "type": "integer",
+                                  "description": "Total image reply count. OP only."
+                                },
+                                "bumplimit": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if bump limit has been reached. OP only.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "imagelimit": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if image limit has been reached. OP only.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "tag": {
+                                  "type": "string",
+                                  "description": "SWF category tag. /f/ board only, OP only."
+                                },
+                                "semantic_url": {
+                                  "type": "string",
+                                  "description": "SEO-friendly URL slug for the thread. OP only."
+                                },
+                                "since4pass": {
+                                  "type": "integer",
+                                  "description": "Year the poster's 4chan Pass was purchased."
+                                },
+                                "unique_ips": {
+                                  "type": "integer",
+                                  "description": "Number of unique posters in the thread. OP only."
+                                },
+                                "m_img": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if a mobile-optimized image exists.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "archived": {
+                                  "type": "integer",
+                                  "description": "Set to 1 if the thread has been archived. OP only.",
+                                  "enum": [
+                                    1
+                                  ]
+                                },
+                                "archived_on": {
+                                  "type": "integer",
+                                  "description": "UNIX timestamp when the thread was archived. OP only."
+                                },
+                                "last_modified": {
+                                  "type": "integer",
+                                  "description": "UNIX timestamp of last thread modification. OP only."
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "key$": "/{board}/{page}.json"
+    }
+  },
+  "components": {
+    "parameters": {
+      "board": {
+        "name": "board",
+        "in": "path",
+        "required": true,
+        "description": "The board directory (e.g. \"po\", \"g\", \"tv\").",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "schemas": {
+      "BoardResponse": {
+        "type": "object",
+        "required": [
+          "board",
+          "title",
+          "ws_board",
+          "per_page",
+          "pages",
+          "max_filesize",
+          "max_webm_filesize",
+          "max_comment_chars",
+          "max_webm_duration",
+          "bump_limit",
+          "image_limit",
+          "cooldowns",
+          "meta_description"
+        ],
+        "properties": {
+          "board": {
+            "type": "string",
+            "description": "The directory the board is located in."
+          },
+          "title": {
+            "type": "string",
+            "description": "The readable title at the top of the board."
+          },
+          "ws_board": {
+            "type": "integer",
+            "description": "Whether the board is worksafe. 1 for yes, 0 for no.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of threads displayed per index page."
+          },
+          "pages": {
+            "type": "integer",
+            "description": "Number of index pages on the board."
+          },
+          "max_filesize": {
+            "type": "integer",
+            "description": "Maximum file upload size in bytes (non-webm)."
+          },
+          "max_webm_filesize": {
+            "type": "integer",
+            "description": "Maximum webm file upload size in bytes."
+          },
+          "max_comment_chars": {
+            "type": "integer",
+            "description": "Maximum number of characters allowed in a post comment."
+          },
+          "max_webm_duration": {
+            "type": "integer",
+            "description": "Maximum webm duration in seconds."
+          },
+          "bump_limit": {
+            "type": "integer",
+            "description": "Maximum replies before a thread stops being bumped."
+          },
+          "image_limit": {
+            "type": "integer",
+            "description": "Maximum number of image replies per thread."
+          },
+          "cooldowns": {
+            "type": "object",
+            "description": "Post cooldown times in seconds.",
+            "properties": {
+              "threads": {
+                "type": "integer",
+                "description": "Cooldown for creating new threads in seconds."
+              },
+              "replies": {
+                "type": "integer",
+                "description": "Cooldown for posting replies in seconds."
+              },
+              "images": {
+                "type": "integer",
+                "description": "Cooldown for posting images in seconds."
+              }
+            }
+          },
+          "meta_description": {
+            "type": "string",
+            "description": "SEO meta description for the board."
+          },
+          "spoilers": {
+            "type": "integer",
+            "description": "Whether the board supports spoilers. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "custom_spoilers": {
+            "type": "integer",
+            "description": "Number of custom spoiler images available."
+          },
+          "is_archived": {
+            "type": "integer",
+            "description": "Whether the board has an archive. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "board_flags": {
+            "type": "object",
+            "description": "Map of board flag codes to flag names.",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "country_flags": {
+            "type": "integer",
+            "description": "Whether country flags are enabled. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "user_ids": {
+            "type": "integer",
+            "description": "Whether poster ID tags are shown. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "oekaki": {
+            "type": "integer",
+            "description": "Whether oekaki drawing is available. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "sjis_tags": {
+            "type": "integer",
+            "description": "Whether SJIS tags are available. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "code_tags": {
+            "type": "integer",
+            "description": "Whether code syntax highlighting is available. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "math_tags": {
+            "type": "integer",
+            "description": "Whether math/TeX markup is available. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "text_only": {
+            "type": "integer",
+            "description": "Whether image posting is disabled. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "forced_anon": {
+            "type": "integer",
+            "description": "Whether the name field is disabled. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "webm_audio": {
+            "type": "integer",
+            "description": "Whether webm files with audio are allowed. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "require_subject": {
+            "type": "integer",
+            "description": "Whether OP posts require a subject. 1 for yes.",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "min_image_width": {
+            "type": "integer",
+            "description": "Minimum image width in pixels."
+          },
+          "min_image_height": {
+            "type": "integer",
+            "description": "Minimum image height in pixels."
+          }
+        }
+      },
+      "ThreadListPageResponse": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "The page number."
+          },
+          "threads": {
+            "type": "array",
+            "items": {
+              "x-ref": "#/components/schemas/ThreadSummaryResponse",
+              "type": "object",
+              "required": [
+                "no",
+                "last_modified",
+                "replies"
+              ],
+              "properties": {
+                "no": {
+                  "type": "integer",
+                  "description": "The OP ID of the thread."
+                },
+                "last_modified": {
+                  "type": "integer",
+                  "description": "UNIX timestamp of last thread modification."
+                },
+                "replies": {
+                  "type": "integer",
+                  "description": "Number of replies in the thread."
+                }
+              }
+            }
+          }
+        }
+      },
+      "ThreadSummaryResponse": {
+        "type": "object",
+        "required": [
+          "no",
+          "last_modified",
+          "replies"
+        ],
+        "properties": {
+          "no": {
+            "type": "integer",
+            "description": "The OP ID of the thread."
+          },
+          "last_modified": {
+            "type": "integer",
+            "description": "UNIX timestamp of last thread modification."
+          },
+          "replies": {
+            "type": "integer",
+            "description": "Number of replies in the thread."
+          }
+        }
+      },
+      "CatalogPageResponse": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "The page number."
+          },
+          "threads": {
+            "type": "array",
+            "items": {
+              "x-ref": "#/components/schemas/CatalogThreadResponse",
+              "allOf": [
+                {
+                  "x-ref": "#/components/schemas/PostResponse",
+                  "type": "object",
+                  "required": [
+                    "no",
+                    "resto",
+                    "now",
+                    "time",
+                    "name"
+                  ],
+                  "properties": {
+                    "no": {
+                      "type": "integer",
+                      "description": "Numeric post ID."
+                    },
+                    "resto": {
+                      "type": "integer",
+                      "description": "For replies, the thread ID being replied to. For OP posts, this is 0."
+                    },
+                    "sticky": {
+                      "type": "integer",
+                      "description": "Whether the thread is pinned. 1 if pinned. OP only.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "closed": {
+                      "type": "integer",
+                      "description": "Whether the thread is closed. 1 if closed. OP only.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "now": {
+                      "type": "string",
+                      "description": "Date and time in MM/DD/YY(Day)HH:MM format (EST/EDT)."
+                    },
+                    "time": {
+                      "type": "integer",
+                      "description": "UNIX timestamp of post creation."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Poster's name. Defaults to Anonymous."
+                    },
+                    "trip": {
+                      "type": "string",
+                      "description": "Tripcode, in format !tripcode or !!securetripcode."
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Poster's ID, 8 characters. Only on boards with IDs enabled."
+                    },
+                    "capcode": {
+                      "type": "string",
+                      "description": "Capcode of the poster.",
+                      "enum": [
+                        "mod",
+                        "admin",
+                        "admin_highlight",
+                        "manager",
+                        "developer",
+                        "founder"
+                      ]
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "ISO 3166-1 alpha-2 country code, or XX for unknown."
+                    },
+                    "country_name": {
+                      "type": "string",
+                      "description": "Full country name."
+                    },
+                    "board_flag": {
+                      "type": "string",
+                      "description": "Board-specific flag code."
+                    },
+                    "flag_name": {
+                      "type": "string",
+                      "description": "Board-specific flag name."
+                    },
+                    "sub": {
+                      "type": "string",
+                      "description": "Subject of the thread. OP only."
+                    },
+                    "com": {
+                      "type": "string",
+                      "description": "Comment body (HTML escaped)."
+                    },
+                    "tim": {
+                      "type": "integer",
+                      "description": "Renamed filename (UNIX timestamp + microtime)."
+                    },
+                    "filename": {
+                      "type": "string",
+                      "description": "Original filename as uploaded."
+                    },
+                    "ext": {
+                      "type": "string",
+                      "description": "File extension.",
+                      "enum": [
+                        ".jpg",
+                        ".png",
+                        ".gif",
+                        ".pdf",
+                        ".swf",
+                        ".webm"
+                      ]
+                    },
+                    "fsize": {
+                      "type": "integer",
+                      "description": "File size in bytes."
+                    },
+                    "md5": {
+                      "type": "string",
+                      "description": "Base64-encoded MD5 hash of the file."
+                    },
+                    "w": {
+                      "type": "integer",
+                      "description": "Image width in pixels."
+                    },
+                    "h": {
+                      "type": "integer",
+                      "description": "Image height in pixels."
+                    },
+                    "tn_w": {
+                      "type": "integer",
+                      "description": "Thumbnail width in pixels."
+                    },
+                    "tn_h": {
+                      "type": "integer",
+                      "description": "Thumbnail height in pixels."
+                    },
+                    "filedeleted": {
+                      "type": "integer",
+                      "description": "Set to 1 if the file has been deleted.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "spoiler": {
+                      "type": "integer",
+                      "description": "Set to 1 if the image is spoilered.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "custom_spoiler": {
+                      "type": "integer",
+                      "description": "Custom spoiler ID, from 1 to 10.",
+                      "minimum": 1,
+                      "maximum": 10
+                    },
+                    "replies": {
+                      "type": "integer",
+                      "description": "Total reply count. OP only."
+                    },
+                    "images": {
+                      "type": "integer",
+                      "description": "Total image reply count. OP only."
+                    },
+                    "bumplimit": {
+                      "type": "integer",
+                      "description": "Set to 1 if bump limit has been reached. OP only.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "imagelimit": {
+                      "type": "integer",
+                      "description": "Set to 1 if image limit has been reached. OP only.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "SWF category tag. /f/ board only, OP only."
+                    },
+                    "semantic_url": {
+                      "type": "string",
+                      "description": "SEO-friendly URL slug for the thread. OP only."
+                    },
+                    "since4pass": {
+                      "type": "integer",
+                      "description": "Year the poster's 4chan Pass was purchased."
+                    },
+                    "unique_ips": {
+                      "type": "integer",
+                      "description": "Number of unique posters in the thread. OP only."
+                    },
+                    "m_img": {
+                      "type": "integer",
+                      "description": "Set to 1 if a mobile-optimized image exists.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "archived": {
+                      "type": "integer",
+                      "description": "Set to 1 if the thread has been archived. OP only.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "archived_on": {
+                      "type": "integer",
+                      "description": "UNIX timestamp when the thread was archived. OP only."
+                    },
+                    "last_modified": {
+                      "type": "integer",
+                      "description": "UNIX timestamp of last thread modification. OP only."
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "omitted_posts": {
+                      "type": "integer",
+                      "description": "Number of posts not shown in preview."
+                    },
+                    "omitted_images": {
+                      "type": "integer",
+                      "description": "Number of image replies not shown in preview."
+                    },
+                    "last_replies": {
+                      "type": "array",
+                      "description": "Most recent replies to the thread.",
+                      "items": {
+                        "x-ref": "#/components/schemas/PostResponse",
+                        "type": "object",
+                        "required": [
+                          "no",
+                          "resto",
+                          "now",
+                          "time",
+                          "name"
+                        ],
+                        "properties": {
+                          "no": {
+                            "type": "integer",
+                            "description": "Numeric post ID."
+                          },
+                          "resto": {
+                            "type": "integer",
+                            "description": "For replies, the thread ID being replied to. For OP posts, this is 0."
+                          },
+                          "sticky": {
+                            "type": "integer",
+                            "description": "Whether the thread is pinned. 1 if pinned. OP only.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "closed": {
+                            "type": "integer",
+                            "description": "Whether the thread is closed. 1 if closed. OP only.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "now": {
+                            "type": "string",
+                            "description": "Date and time in MM/DD/YY(Day)HH:MM format (EST/EDT)."
+                          },
+                          "time": {
+                            "type": "integer",
+                            "description": "UNIX timestamp of post creation."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Poster's name. Defaults to Anonymous."
+                          },
+                          "trip": {
+                            "type": "string",
+                            "description": "Tripcode, in format !tripcode or !!securetripcode."
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "Poster's ID, 8 characters. Only on boards with IDs enabled."
+                          },
+                          "capcode": {
+                            "type": "string",
+                            "description": "Capcode of the poster.",
+                            "enum": [
+                              "mod",
+                              "admin",
+                              "admin_highlight",
+                              "manager",
+                              "developer",
+                              "founder"
+                            ]
+                          },
+                          "country": {
+                            "type": "string",
+                            "description": "ISO 3166-1 alpha-2 country code, or XX for unknown."
+                          },
+                          "country_name": {
+                            "type": "string",
+                            "description": "Full country name."
+                          },
+                          "board_flag": {
+                            "type": "string",
+                            "description": "Board-specific flag code."
+                          },
+                          "flag_name": {
+                            "type": "string",
+                            "description": "Board-specific flag name."
+                          },
+                          "sub": {
+                            "type": "string",
+                            "description": "Subject of the thread. OP only."
+                          },
+                          "com": {
+                            "type": "string",
+                            "description": "Comment body (HTML escaped)."
+                          },
+                          "tim": {
+                            "type": "integer",
+                            "description": "Renamed filename (UNIX timestamp + microtime)."
+                          },
+                          "filename": {
+                            "type": "string",
+                            "description": "Original filename as uploaded."
+                          },
+                          "ext": {
+                            "type": "string",
+                            "description": "File extension.",
+                            "enum": [
+                              ".jpg",
+                              ".png",
+                              ".gif",
+                              ".pdf",
+                              ".swf",
+                              ".webm"
+                            ]
+                          },
+                          "fsize": {
+                            "type": "integer",
+                            "description": "File size in bytes."
+                          },
+                          "md5": {
+                            "type": "string",
+                            "description": "Base64-encoded MD5 hash of the file."
+                          },
+                          "w": {
+                            "type": "integer",
+                            "description": "Image width in pixels."
+                          },
+                          "h": {
+                            "type": "integer",
+                            "description": "Image height in pixels."
+                          },
+                          "tn_w": {
+                            "type": "integer",
+                            "description": "Thumbnail width in pixels."
+                          },
+                          "tn_h": {
+                            "type": "integer",
+                            "description": "Thumbnail height in pixels."
+                          },
+                          "filedeleted": {
+                            "type": "integer",
+                            "description": "Set to 1 if the file has been deleted.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "spoiler": {
+                            "type": "integer",
+                            "description": "Set to 1 if the image is spoilered.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "custom_spoiler": {
+                            "type": "integer",
+                            "description": "Custom spoiler ID, from 1 to 10.",
+                            "minimum": 1,
+                            "maximum": 10
+                          },
+                          "replies": {
+                            "type": "integer",
+                            "description": "Total reply count. OP only."
+                          },
+                          "images": {
+                            "type": "integer",
+                            "description": "Total image reply count. OP only."
+                          },
+                          "bumplimit": {
+                            "type": "integer",
+                            "description": "Set to 1 if bump limit has been reached. OP only.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "imagelimit": {
+                            "type": "integer",
+                            "description": "Set to 1 if image limit has been reached. OP only.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "tag": {
+                            "type": "string",
+                            "description": "SWF category tag. /f/ board only, OP only."
+                          },
+                          "semantic_url": {
+                            "type": "string",
+                            "description": "SEO-friendly URL slug for the thread. OP only."
+                          },
+                          "since4pass": {
+                            "type": "integer",
+                            "description": "Year the poster's 4chan Pass was purchased."
+                          },
+                          "unique_ips": {
+                            "type": "integer",
+                            "description": "Number of unique posters in the thread. OP only."
+                          },
+                          "m_img": {
+                            "type": "integer",
+                            "description": "Set to 1 if a mobile-optimized image exists.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "archived": {
+                            "type": "integer",
+                            "description": "Set to 1 if the thread has been archived. OP only.",
+                            "enum": [
+                              1
+                            ]
+                          },
+                          "archived_on": {
+                            "type": "integer",
+                            "description": "UNIX timestamp when the thread was archived. OP only."
+                          },
+                          "last_modified": {
+                            "type": "integer",
+                            "description": "UNIX timestamp of last thread modification. OP only."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "CatalogThreadResponse": {
+        "allOf": [
+          {
+            "x-ref": "#/components/schemas/PostResponse",
+            "type": "object",
+            "required": [
+              "no",
+              "resto",
+              "now",
+              "time",
+              "name"
+            ],
+            "properties": {
+              "no": {
+                "type": "integer",
+                "description": "Numeric post ID."
+              },
+              "resto": {
+                "type": "integer",
+                "description": "For replies, the thread ID being replied to. For OP posts, this is 0."
+              },
+              "sticky": {
+                "type": "integer",
+                "description": "Whether the thread is pinned. 1 if pinned. OP only.",
+                "enum": [
+                  1
+                ]
+              },
+              "closed": {
+                "type": "integer",
+                "description": "Whether the thread is closed. 1 if closed. OP only.",
+                "enum": [
+                  1
+                ]
+              },
+              "now": {
+                "type": "string",
+                "description": "Date and time in MM/DD/YY(Day)HH:MM format (EST/EDT)."
+              },
+              "time": {
+                "type": "integer",
+                "description": "UNIX timestamp of post creation."
+              },
+              "name": {
+                "type": "string",
+                "description": "Poster's name. Defaults to Anonymous."
+              },
+              "trip": {
+                "type": "string",
+                "description": "Tripcode, in format !tripcode or !!securetripcode."
+              },
+              "id": {
+                "type": "string",
+                "description": "Poster's ID, 8 characters. Only on boards with IDs enabled."
+              },
+              "capcode": {
+                "type": "string",
+                "description": "Capcode of the poster.",
+                "enum": [
+                  "mod",
+                  "admin",
+                  "admin_highlight",
+                  "manager",
+                  "developer",
+                  "founder"
+                ]
+              },
+              "country": {
+                "type": "string",
+                "description": "ISO 3166-1 alpha-2 country code, or XX for unknown."
+              },
+              "country_name": {
+                "type": "string",
+                "description": "Full country name."
+              },
+              "board_flag": {
+                "type": "string",
+                "description": "Board-specific flag code."
+              },
+              "flag_name": {
+                "type": "string",
+                "description": "Board-specific flag name."
+              },
+              "sub": {
+                "type": "string",
+                "description": "Subject of the thread. OP only."
+              },
+              "com": {
+                "type": "string",
+                "description": "Comment body (HTML escaped)."
+              },
+              "tim": {
+                "type": "integer",
+                "description": "Renamed filename (UNIX timestamp + microtime)."
+              },
+              "filename": {
+                "type": "string",
+                "description": "Original filename as uploaded."
+              },
+              "ext": {
+                "type": "string",
+                "description": "File extension.",
+                "enum": [
+                  ".jpg",
+                  ".png",
+                  ".gif",
+                  ".pdf",
+                  ".swf",
+                  ".webm"
+                ]
+              },
+              "fsize": {
+                "type": "integer",
+                "description": "File size in bytes."
+              },
+              "md5": {
+                "type": "string",
+                "description": "Base64-encoded MD5 hash of the file."
+              },
+              "w": {
+                "type": "integer",
+                "description": "Image width in pixels."
+              },
+              "h": {
+                "type": "integer",
+                "description": "Image height in pixels."
+              },
+              "tn_w": {
+                "type": "integer",
+                "description": "Thumbnail width in pixels."
+              },
+              "tn_h": {
+                "type": "integer",
+                "description": "Thumbnail height in pixels."
+              },
+              "filedeleted": {
+                "type": "integer",
+                "description": "Set to 1 if the file has been deleted.",
+                "enum": [
+                  1
+                ]
+              },
+              "spoiler": {
+                "type": "integer",
+                "description": "Set to 1 if the image is spoilered.",
+                "enum": [
+                  1
+                ]
+              },
+              "custom_spoiler": {
+                "type": "integer",
+                "description": "Custom spoiler ID, from 1 to 10.",
+                "minimum": 1,
+                "maximum": 10
+              },
+              "replies": {
+                "type": "integer",
+                "description": "Total reply count. OP only."
+              },
+              "images": {
+                "type": "integer",
+                "description": "Total image reply count. OP only."
+              },
+              "bumplimit": {
+                "type": "integer",
+                "description": "Set to 1 if bump limit has been reached. OP only.",
+                "enum": [
+                  1
+                ]
+              },
+              "imagelimit": {
+                "type": "integer",
+                "description": "Set to 1 if image limit has been reached. OP only.",
+                "enum": [
+                  1
+                ]
+              },
+              "tag": {
+                "type": "string",
+                "description": "SWF category tag. /f/ board only, OP only."
+              },
+              "semantic_url": {
+                "type": "string",
+                "description": "SEO-friendly URL slug for the thread. OP only."
+              },
+              "since4pass": {
+                "type": "integer",
+                "description": "Year the poster's 4chan Pass was purchased."
+              },
+              "unique_ips": {
+                "type": "integer",
+                "description": "Number of unique posters in the thread. OP only."
+              },
+              "m_img": {
+                "type": "integer",
+                "description": "Set to 1 if a mobile-optimized image exists.",
+                "enum": [
+                  1
+                ]
+              },
+              "archived": {
+                "type": "integer",
+                "description": "Set to 1 if the thread has been archived. OP only.",
+                "enum": [
+                  1
+                ]
+              },
+              "archived_on": {
+                "type": "integer",
+                "description": "UNIX timestamp when the thread was archived. OP only."
+              },
+              "last_modified": {
+                "type": "integer",
+                "description": "UNIX timestamp of last thread modification. OP only."
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "omitted_posts": {
+                "type": "integer",
+                "description": "Number of posts not shown in preview."
+              },
+              "omitted_images": {
+                "type": "integer",
+                "description": "Number of image replies not shown in preview."
+              },
+              "last_replies": {
+                "type": "array",
+                "description": "Most recent replies to the thread.",
+                "items": {
+                  "x-ref": "#/components/schemas/PostResponse",
+                  "type": "object",
+                  "required": [
+                    "no",
+                    "resto",
+                    "now",
+                    "time",
+                    "name"
+                  ],
+                  "properties": {
+                    "no": {
+                      "type": "integer",
+                      "description": "Numeric post ID."
+                    },
+                    "resto": {
+                      "type": "integer",
+                      "description": "For replies, the thread ID being replied to. For OP posts, this is 0."
+                    },
+                    "sticky": {
+                      "type": "integer",
+                      "description": "Whether the thread is pinned. 1 if pinned. OP only.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "closed": {
+                      "type": "integer",
+                      "description": "Whether the thread is closed. 1 if closed. OP only.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "now": {
+                      "type": "string",
+                      "description": "Date and time in MM/DD/YY(Day)HH:MM format (EST/EDT)."
+                    },
+                    "time": {
+                      "type": "integer",
+                      "description": "UNIX timestamp of post creation."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Poster's name. Defaults to Anonymous."
+                    },
+                    "trip": {
+                      "type": "string",
+                      "description": "Tripcode, in format !tripcode or !!securetripcode."
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Poster's ID, 8 characters. Only on boards with IDs enabled."
+                    },
+                    "capcode": {
+                      "type": "string",
+                      "description": "Capcode of the poster.",
+                      "enum": [
+                        "mod",
+                        "admin",
+                        "admin_highlight",
+                        "manager",
+                        "developer",
+                        "founder"
+                      ]
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "ISO 3166-1 alpha-2 country code, or XX for unknown."
+                    },
+                    "country_name": {
+                      "type": "string",
+                      "description": "Full country name."
+                    },
+                    "board_flag": {
+                      "type": "string",
+                      "description": "Board-specific flag code."
+                    },
+                    "flag_name": {
+                      "type": "string",
+                      "description": "Board-specific flag name."
+                    },
+                    "sub": {
+                      "type": "string",
+                      "description": "Subject of the thread. OP only."
+                    },
+                    "com": {
+                      "type": "string",
+                      "description": "Comment body (HTML escaped)."
+                    },
+                    "tim": {
+                      "type": "integer",
+                      "description": "Renamed filename (UNIX timestamp + microtime)."
+                    },
+                    "filename": {
+                      "type": "string",
+                      "description": "Original filename as uploaded."
+                    },
+                    "ext": {
+                      "type": "string",
+                      "description": "File extension.",
+                      "enum": [
+                        ".jpg",
+                        ".png",
+                        ".gif",
+                        ".pdf",
+                        ".swf",
+                        ".webm"
+                      ]
+                    },
+                    "fsize": {
+                      "type": "integer",
+                      "description": "File size in bytes."
+                    },
+                    "md5": {
+                      "type": "string",
+                      "description": "Base64-encoded MD5 hash of the file."
+                    },
+                    "w": {
+                      "type": "integer",
+                      "description": "Image width in pixels."
+                    },
+                    "h": {
+                      "type": "integer",
+                      "description": "Image height in pixels."
+                    },
+                    "tn_w": {
+                      "type": "integer",
+                      "description": "Thumbnail width in pixels."
+                    },
+                    "tn_h": {
+                      "type": "integer",
+                      "description": "Thumbnail height in pixels."
+                    },
+                    "filedeleted": {
+                      "type": "integer",
+                      "description": "Set to 1 if the file has been deleted.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "spoiler": {
+                      "type": "integer",
+                      "description": "Set to 1 if the image is spoilered.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "custom_spoiler": {
+                      "type": "integer",
+                      "description": "Custom spoiler ID, from 1 to 10.",
+                      "minimum": 1,
+                      "maximum": 10
+                    },
+                    "replies": {
+                      "type": "integer",
+                      "description": "Total reply count. OP only."
+                    },
+                    "images": {
+                      "type": "integer",
+                      "description": "Total image reply count. OP only."
+                    },
+                    "bumplimit": {
+                      "type": "integer",
+                      "description": "Set to 1 if bump limit has been reached. OP only.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "imagelimit": {
+                      "type": "integer",
+                      "description": "Set to 1 if image limit has been reached. OP only.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "SWF category tag. /f/ board only, OP only."
+                    },
+                    "semantic_url": {
+                      "type": "string",
+                      "description": "SEO-friendly URL slug for the thread. OP only."
+                    },
+                    "since4pass": {
+                      "type": "integer",
+                      "description": "Year the poster's 4chan Pass was purchased."
+                    },
+                    "unique_ips": {
+                      "type": "integer",
+                      "description": "Number of unique posters in the thread. OP only."
+                    },
+                    "m_img": {
+                      "type": "integer",
+                      "description": "Set to 1 if a mobile-optimized image exists.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "archived": {
+                      "type": "integer",
+                      "description": "Set to 1 if the thread has been archived. OP only.",
+                      "enum": [
+                        1
+                      ]
+                    },
+                    "archived_on": {
+                      "type": "integer",
+                      "description": "UNIX timestamp when the thread was archived. OP only."
+                    },
+                    "last_modified": {
+                      "type": "integer",
+                      "description": "UNIX timestamp of last thread modification. OP only."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PostResponse": {
+        "type": "object",
+        "required": [
+          "no",
+          "resto",
+          "now",
+          "time",
+          "name"
+        ],
+        "properties": {
+          "no": {
+            "type": "integer",
+            "description": "Numeric post ID."
+          },
+          "resto": {
+            "type": "integer",
+            "description": "For replies, the thread ID being replied to. For OP posts, this is 0."
+          },
+          "sticky": {
+            "type": "integer",
+            "description": "Whether the thread is pinned. 1 if pinned. OP only.",
+            "enum": [
+              1
+            ]
+          },
+          "closed": {
+            "type": "integer",
+            "description": "Whether the thread is closed. 1 if closed. OP only.",
+            "enum": [
+              1
+            ]
+          },
+          "now": {
+            "type": "string",
+            "description": "Date and time in MM/DD/YY(Day)HH:MM format (EST/EDT)."
+          },
+          "time": {
+            "type": "integer",
+            "description": "UNIX timestamp of post creation."
+          },
+          "name": {
+            "type": "string",
+            "description": "Poster's name. Defaults to Anonymous."
+          },
+          "trip": {
+            "type": "string",
+            "description": "Tripcode, in format !tripcode or !!securetripcode."
+          },
+          "id": {
+            "type": "string",
+            "description": "Poster's ID, 8 characters. Only on boards with IDs enabled."
+          },
+          "capcode": {
+            "type": "string",
+            "description": "Capcode of the poster.",
+            "enum": [
+              "mod",
+              "admin",
+              "admin_highlight",
+              "manager",
+              "developer",
+              "founder"
+            ]
+          },
+          "country": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country code, or XX for unknown."
+          },
+          "country_name": {
+            "type": "string",
+            "description": "Full country name."
+          },
+          "board_flag": {
+            "type": "string",
+            "description": "Board-specific flag code."
+          },
+          "flag_name": {
+            "type": "string",
+            "description": "Board-specific flag name."
+          },
+          "sub": {
+            "type": "string",
+            "description": "Subject of the thread. OP only."
+          },
+          "com": {
+            "type": "string",
+            "description": "Comment body (HTML escaped)."
+          },
+          "tim": {
+            "type": "integer",
+            "description": "Renamed filename (UNIX timestamp + microtime)."
+          },
+          "filename": {
+            "type": "string",
+            "description": "Original filename as uploaded."
+          },
+          "ext": {
+            "type": "string",
+            "description": "File extension.",
+            "enum": [
+              ".jpg",
+              ".png",
+              ".gif",
+              ".pdf",
+              ".swf",
+              ".webm"
+            ]
+          },
+          "fsize": {
+            "type": "integer",
+            "description": "File size in bytes."
+          },
+          "md5": {
+            "type": "string",
+            "description": "Base64-encoded MD5 hash of the file."
+          },
+          "w": {
+            "type": "integer",
+            "description": "Image width in pixels."
+          },
+          "h": {
+            "type": "integer",
+            "description": "Image height in pixels."
+          },
+          "tn_w": {
+            "type": "integer",
+            "description": "Thumbnail width in pixels."
+          },
+          "tn_h": {
+            "type": "integer",
+            "description": "Thumbnail height in pixels."
+          },
+          "filedeleted": {
+            "type": "integer",
+            "description": "Set to 1 if the file has been deleted.",
+            "enum": [
+              1
+            ]
+          },
+          "spoiler": {
+            "type": "integer",
+            "description": "Set to 1 if the image is spoilered.",
+            "enum": [
+              1
+            ]
+          },
+          "custom_spoiler": {
+            "type": "integer",
+            "description": "Custom spoiler ID, from 1 to 10.",
+            "minimum": 1,
+            "maximum": 10
+          },
+          "replies": {
+            "type": "integer",
+            "description": "Total reply count. OP only."
+          },
+          "images": {
+            "type": "integer",
+            "description": "Total image reply count. OP only."
+          },
+          "bumplimit": {
+            "type": "integer",
+            "description": "Set to 1 if bump limit has been reached. OP only.",
+            "enum": [
+              1
+            ]
+          },
+          "imagelimit": {
+            "type": "integer",
+            "description": "Set to 1 if image limit has been reached. OP only.",
+            "enum": [
+              1
+            ]
+          },
+          "tag": {
+            "type": "string",
+            "description": "SWF category tag. /f/ board only, OP only."
+          },
+          "semantic_url": {
+            "type": "string",
+            "description": "SEO-friendly URL slug for the thread. OP only."
+          },
+          "since4pass": {
+            "type": "integer",
+            "description": "Year the poster's 4chan Pass was purchased."
+          },
+          "unique_ips": {
+            "type": "integer",
+            "description": "Number of unique posters in the thread. OP only."
+          },
+          "m_img": {
+            "type": "integer",
+            "description": "Set to 1 if a mobile-optimized image exists.",
+            "enum": [
+              1
+            ]
+          },
+          "archived": {
+            "type": "integer",
+            "description": "Set to 1 if the thread has been archived. OP only.",
+            "enum": [
+              1
+            ]
+          },
+          "archived_on": {
+            "type": "integer",
+            "description": "UNIX timestamp when the thread was archived. OP only."
+          },
+          "last_modified": {
+            "type": "integer",
+            "description": "UNIX timestamp of last thread modification. OP only."
+          }
+        }
+      }
+    }
+  }
+}
