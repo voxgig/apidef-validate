@@ -1,0 +1,521 @@
+# Entity: company
+
+main: kit: entity: company: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_by_user_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "data_connection"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "last_sync"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "link"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "name"
+      op: {
+        patch: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "page_number"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "page_size"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "product"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "redirect"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "reference_parent_company"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "reference_subsidiary_company"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "result"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "tag"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "total_result"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "company"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "product_identifier"
+                orig: "product_identifier"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/companies/{companyId}/products/{productIdentifier}/refresh"
+          parts: [
+            "companies"
+            "{id}"
+            "products"
+            "{productIdentifier}"
+            "refresh"
+          ]
+          rename: {
+            param: {
+              companyId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+              "product_identifier"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/companies/{companyId}/data/all"
+          parts: [
+            "companies"
+            "{company_id}"
+            "data"
+            "all"
+          ]
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+          select: {
+            "$action": "data_all"
+            exist: [
+              "company_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "POST"
+          orig: "/companies"
+          parts: [
+            "companies"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "page_size"
+                orig: "page_size"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "query"
+                orig: "query"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "tag"
+                orig: "tag"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/companies"
+          parts: [
+            "companies"
+          ]
+          select: {
+            exist: [
+              "order_by"
+              "page"
+              "page_size"
+              "query"
+              "tag"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/companies/{companyId}"
+          parts: [
+            "companies"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              companyId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    patch: {
+      name: "patch"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/companies/{companyId}"
+          parts: [
+            "companies"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              companyId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "product_identifier"
+                orig: "product_identifier"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/companies/{companyId}/products/{productIdentifier}"
+          parts: [
+            "companies"
+            "{id}"
+            "products"
+            "{productIdentifier}"
+          ]
+          rename: {
+            param: {
+              companyId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+              "product_identifier"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/companies/{companyId}"
+          parts: [
+            "companies"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              companyId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "product_identifier"
+                orig: "product_identifier"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/companies/{companyId}/products/{productIdentifier}"
+          parts: [
+            "companies"
+            "{id}"
+            "products"
+            "{productIdentifier}"
+          ]
+          rename: {
+            param: {
+              companyId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+              "product_identifier"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/companies/{companyId}"
+          parts: [
+            "companies"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              companyId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "companies"
+      ]
+      [
+        "products"
+      ]
+    ]
+  }
+
+
+
+}

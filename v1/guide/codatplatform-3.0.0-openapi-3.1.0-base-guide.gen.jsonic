@@ -1,9 +1,21 @@
 # Guide
 
 guide: {
-  metrics: count: entity: 22
+  metrics: count: entity: 30
   metrics: count: path: 34
   metrics: count: method: 50
+
+  entity: access_token: {
+    path: "/companies/{companyId}/connectionManagement/accessToken": {  # ent=access_token;no-desc;path=t/;entres=false/;ent-act
+      rename: param: "companyId": *"company_id"  # parent:company
+    }
+  }
+
+  entity: all: {
+    path: "/companies/{companyId}/data/all": {  # ent=all;no-desc;path=t/;entres=false/;ent-act
+      rename: param: "companyId": *"company_id"  # parent:company
+    }
+  }
 
   entity: api_key: {
     path: "/apiKeys": {  # ent=api_key;orig=ApiKeys;cmp/resolve=api_key_detail;path=t/;path-primary
@@ -30,6 +42,10 @@ guide: {
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
+    path: "/companies/{companyId}/dataStatus": {  # ent=company;orig=Companies;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "data_status": {}  # ent;company;ent-param-2nd-last;dataStatus;PARAMETERS
+      rename: param: "companyId": *"id"  # id-parent-ent
+    }
     path: "/companies/{companyId}/products/{productIdentifier}": {  # ent=company;orig=Companies;tag=company;cmp/resolve=company;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "companyId": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
@@ -38,6 +54,10 @@ guide: {
     path: "/companies/{companyId}/products/{productIdentifier}/refresh": {  # ent=company;orig=Companies;tag=company;cmp/resolve=company;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Companies
       rename: param: "companyId": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
+    }
+    path: "/companies/{companyId}/push": {  # ent=company;orig=Companies;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "push": {}  # ent;company;ent-param-2nd-last;push;PARAMETERS
+      rename: param: "companyId": *"id"  # id-parent-ent
     }
   }
 
@@ -62,7 +82,7 @@ guide: {
       op: remove: method: *DELETE  # not-load
     }
     path: "/companies/{companyId}/connections/{connectionId}/authorization": {  # ent=connection;orig=Connections;cmp/resolve=connection;path=t/p/t/;cmp-path;cmp-inpath;has-cmp=Connection
-      action: "authorization": {}  # ent;connection;ent-param-2nd-last;authorization;PUT
+      action: "authorization": {}  # ent;connection;ent-param-2nd-last;authorization;PARAMETERS
       rename: param: "companyId": *"company_id"  # parent:company
       rename: param: "connectionId": *"id"  # id-parent-ent
       op: update: method: *PUT  # not-load
@@ -88,14 +108,19 @@ guide: {
   }
 
   entity: custom: {
-    path: "/companies/{companyId}/connections/{connectionId}/data/custom/{customDataIdentifier}": {  # ent=custom;orig=CustomDataTypeRecords;cmp/resolve=custom_data_type_record;path=t/p/;path-primary
+    path: "/companies/{companyId}/connections/{connectionId}/data/custom/{customDataIdentifier}": {  # ent=custom;cmp/resolve=custom_data_type_record;path=t/p/;path-primary
       rename: param: "companyId": *"company_id"  # parent:company
       rename: param: "connectionId": *"connection_id"  # parent:connection
-      rename: param: "customDataIdentifier": *"id"  # end-id;GET;parent=true/custom;cmp=false
+      rename: param: "customDataIdentifier": *"id"  # end-id;PARAMETERS;parent=true/custom;cmp=false
       op: load: method: *GET  # end-param
     }
-    path: "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}": {  # ent=custom;orig=CustomDataTypeRecords;cmp/resolve=custom_data_type_configuration;path=t/p/;path-primary
-      rename: param: "customDataIdentifier": *"id"  # end-id;GET;parent=true/custom;cmp=false
+    path: "/companies/{companyId}/connections/{connectionId}/data/queue/custom/{customDataIdentifier}": {  # ent=custom;no-desc;path=t/p/;entres=false/;ent-act
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "connectionId": *"connection_id"  # parent:connection
+      rename: param: "customDataIdentifier": *"id"  # end-id;PARAMETERS;parent=true/custom;cmp=false
+    }
+    path: "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}": {  # ent=custom;cmp/resolve=custom_data_type_configuration;path=t/p/;path-primary
+      rename: param: "customDataIdentifier": *"id"  # end-id;PARAMETERS;parent=true/custom;cmp=false
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
@@ -108,13 +133,52 @@ guide: {
     }
   }
 
+  entity: data_type: {
+    path: "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {  # ent=data_type;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "supplemental_data_config": {}  # ent;data_type;no-param;supplementalDataConfig;PARAMETERS
+      rename: param: "dataType": *"id"  # id-parent-ent
+    }
+  }
+
+  entity: history: {
+    path: "/companies/{companyId}/data/history": {  # ent=history;no-desc;path=t/;entres=false/;ent-act
+      rename: param: "companyId": *"company_id"  # parent:company
+    }
+    path: "/companies/{companyId}/data/history/{datasetId}": {  # ent=history;no-desc;path=t/p/;entres=false/;ent-act
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "datasetId": *"id"  # end-id;PARAMETERS;parent=true/history;cmp=false
+    }
+  }
+
   entity: integration: {
     path: "/integrations": {  # ent=integration;orig=Integrations;cmp/resolve=integration;path=t/;path-primary
       op: list: method: *GET  # array-prop:results
     }
     path: "/integrations/{platformKey}": {  # ent=integration;orig=Integrations;cmp/resolve=integration;path=t/p/;path-primary
-      rename: param: "platformKey": *"id"  # end-id;GET;parent=true/integration;cmp=false
+      rename: param: "platformKey": *"id"  # end-id;PARAMETERS;parent=true/integration;cmp=false
       op: load: method: *GET  # end-param
+    }
+    path: "/integrations/{platformKey}/branding": {  # ent=integration;orig=Integrations;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "branding": {}  # ent;integration;ent-param-2nd-last;branding;PARAMETERS
+    }
+  }
+
+  entity: option: {
+    path: "/companies/{companyId}/connections/{connectionId}/options/{dataType}": {  # ent=option;no-desc;path=t/p/;entres=false/;ent-act
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "connectionId": *"connection_id"  # parent:connection
+      rename: param: "dataType": *"id"  # end-id;PARAMETERS;parent=true/option;cmp=false
+    }
+  }
+
+  entity: product: {
+    path: "/companies/{companyId}/products/{productIdentifier}": {  # ent=product;no-desc;path=t/p/;entres=false/;ent-act
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "productIdentifier": *"id"  # end-id;PARAMETERS;parent=true/product;cmp=false
+    }
+    path: "/companies/{companyId}/products/{productIdentifier}/refresh": {  # ent=product;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "refresh": {}  # ent;product;ent-param-2nd-last;refresh;PARAMETERS
+      rename: param: "companyId": *"company_id"  # parent:company
     }
   }
 
@@ -152,7 +216,7 @@ guide: {
     }
     path: "/companies/{companyId}/push/{pushOperationKey}": {  # ent=push;orig=PushOperations;cmp/resolve=push_operation;path=t/p/;path-primary
       rename: param: "companyId": *"company_id"  # parent:company
-      rename: param: "pushOperationKey": *"id"  # end-id;GET;parent=true/push;cmp=false
+      rename: param: "pushOperationKey": *"id"  # end-id;PARAMETERS;parent=true/push;cmp=false
       op: load: method: *GET  # end-param
     }
   }
@@ -163,6 +227,13 @@ guide: {
       rename: param: "connectionId": *"connection_id"  # parent:connection
       rename: param: "dataType": *"id"  # end-id;GET;parent=true/option;cmp=false
       op: load: method: *GET  # end-param
+    }
+  }
+
+  entity: queue: {
+    path: "/companies/{companyId}/data/queue/{dataType}": {  # ent=queue;no-desc;path=t/p/;entres=false/;ent-act
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "dataType": *"id"  # end-id;PARAMETERS;parent=true/queue;cmp=false
     }
   }
 
@@ -196,6 +267,14 @@ guide: {
     }
   }
 
+  entity: sync: {
+    path: "/companies/{companyId}/sync/{datasetId}/validation": {  # ent=sync;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "validation": {}  # ent;sync;ent-param-2nd-last;validation;PARAMETERS
+      rename: param: "companyId": *"company_id"  # parent:company
+      rename: param: "datasetId": *"id"  # id-parent-ent
+    }
+  }
+
   entity: sync_setting: {
     path: "/profile/syncSettings": {  # ent=sync_setting;orig=SyncSettings;cmp/resolve=sync_setting;path=t/;path-primary
       op: list: method: *GET  # array-prop:settings
@@ -216,7 +295,7 @@ guide: {
       op: list: method: *GET  # array-prop:results
     }
     path: "/webhooks/{webhookId}": {  # ent=webhook;orig=WebhookConsumer/definitions/webhookConsumers;tag=webhook;cmp/resolve=webhook;path=t/p/;path-primary
-      rename: param: "webhookId": *"id"  # end-id;DELETE;parent=true/webhook;cmp=false
+      rename: param: "webhookId": *"id"  # end-id;PARAMETERS;parent=true/webhook;cmp=false
       op: remove: method: *DELETE  # not-load
     }
   }

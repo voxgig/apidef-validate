@@ -1,0 +1,206 @@
+# Entity: network_configuration
+
+main: kit: entity: network_configuration: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "compute_service"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_on"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "network_settings_id"
+      op: {
+        create: {
+          req: true
+          type: "`$ARRAY`"
+        }
+      }
+      req: false
+      type: "`$ARRAY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "network_configuration"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/orgs/{org}/settings/network-configurations"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "settings"
+            "network-configurations"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "network_configuration_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/settings/network-configurations/{network_configuration_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "settings"
+            "network-configurations"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              network_configuration_id: "id"
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "network_configuration_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/orgs/{org}/settings/network-configurations/{network_configuration_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "settings"
+            "network-configurations"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              network_configuration_id: "id"
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,173 @@
+# Entity: api_insights_route_stat
+
+main: kit: entity: api_insights_route_stat: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "api_route"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "http_method"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "last_rate_limited_timestamp"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "last_request_timestamp"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "rate_limited_request_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "total_request_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_insights_route_stat"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "actor_id"
+                orig: "actor_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "actor_type"
+                orig: "actor_type"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "org"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "api_route_substring"
+                orig: "api_route_substring"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "direction"
+                orig: "direction"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "max_timestamp"
+                orig: "max_timestamp"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "min_timestamp"
+                orig: "min_timestamp"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "sort"
+                orig: "sort"
+                reqd: false
+                type: "`$ARRAY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/insights/api/route-stats/{actor_type}/{actor_id}"
+          parts: [
+            "orgs"
+            "{org}"
+            "insights"
+            "api"
+            "route-stats"
+            "{actor_type}"
+            "{actor_id}"
+          ]
+          select: {
+            exist: [
+              "actor_id"
+              "actor_type"
+              "api_route_substring"
+              "direction"
+              "max_timestamp"
+              "min_timestamp"
+              "org"
+              "page"
+              "per_page"
+              "sort"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+        "route-stats"
+        "{actor_type}"
+      ]
+    ]
+  }
+
+
+
+}

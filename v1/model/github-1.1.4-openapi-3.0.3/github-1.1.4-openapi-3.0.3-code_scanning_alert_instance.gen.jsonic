@@ -1,0 +1,169 @@
+# Entity: code_scanning_alert_instance
+
+main: kit: entity: code_scanning_alert_instance: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "analysis_key"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "category"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "classification"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "commit_sha"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "environment"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "fixed_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "location"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "message"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "ref"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "state"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_scanning_alert_instance"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "alert_number"
+                orig: "alert_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "pr"
+                orig: "pr"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "ref"
+                orig: "ref"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "alerts"
+            "{alert_number}"
+            "instances"
+          ]
+          select: {
+            exist: [
+              "alert_number"
+              "owner"
+              "page"
+              "per_page"
+              "pr"
+              "ref"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "alerts"
+      ]
+    ]
+  }
+
+
+
+}

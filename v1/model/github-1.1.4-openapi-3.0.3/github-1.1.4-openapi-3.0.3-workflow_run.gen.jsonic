@@ -1,0 +1,352 @@
+# Entity: workflow_run
+
+main: kit: entity: workflow_run: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "actor"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "artifacts_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "cancel_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "check_suite_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "check_suite_node_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "check_suite_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "conclusion"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "display_title"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "event"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "head_branch"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "head_commit"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "head_repository"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "head_repository_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "head_sha"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "html_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "jobs_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "logs_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "node_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "path"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "previous_attempt_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "pull_request"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "referenced_workflow"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "repository"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "rerun_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "run_attempt"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "run_number"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "run_started_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "status"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "triggering_actor"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "workflow_id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "workflow_url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "workflow_run"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "attempt_number"
+                orig: "attempt_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "run_id"
+                orig: "run_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "exclude_pull_request"
+                orig: "exclude_pull_request"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "actions"
+            "runs"
+            "{run_id}"
+            "attempts"
+            "{attempt_number}"
+          ]
+          select: {
+            exist: [
+              "attempt_number"
+              "exclude_pull_request"
+              "owner"
+              "repo"
+              "run_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "run_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "exclude_pull_request"
+                orig: "exclude_pull_request"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/actions/runs/{run_id}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "actions"
+            "runs"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              run_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "exclude_pull_request"
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+      [
+        "repos"
+        "{owner}"
+        "runs"
+        "attempts"
+      ]
+    ]
+  }
+
+
+
+}

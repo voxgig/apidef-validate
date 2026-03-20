@@ -1,0 +1,68 @@
+# Entity: api_entities_avatar
+
+main: kit: entity: api_entities_avatar: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "avatar_url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_avatar"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "email"
+                orig: "email"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "size"
+                orig: "size"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/avatar"
+          parts: [
+            "api"
+            "v4"
+            "avatar"
+          ]
+          select: {
+            exist: [
+              "email"
+              "size"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

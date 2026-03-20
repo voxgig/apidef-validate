@@ -1,0 +1,124 @@
+# Entity: dependabot_public_key
+
+main: kit: entity: dependabot_public_key: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "key"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "key_id"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "dependabot_public_key"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/dependabot/secrets/public-key"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "dependabot"
+            "secrets"
+            "public-key"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/dependabot/secrets/public-key"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "dependabot"
+            "secrets"
+            "public-key"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,7 +1,7 @@
 # Guide
 
 guide: {
-  metrics: count: entity: 38
+  metrics: count: entity: 36
   metrics: count: path: 78
   metrics: count: method: 132
 
@@ -30,11 +30,9 @@ guide: {
       rename: param: "story-public-id": *"story_id"  # parent:story
       op: remove: method: *DELETE  # not-load
     }
-  }
-
-  entity: comment_reaction: {
-    path: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions": {  # ent=comment_reaction;no-desc;path=t/p/t/;entres=false/;part-ent
-      rename: param: "comment-public-id": *"id"  # action-parent:comment_reaction
+    path: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions": {  # ent=comment;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "reaction": {}  # ent;comment;ent-param-2nd-last;reactions;DELETE
+      rename: param: "comment-public-id": *"id"  # id-parent-ent
       rename: param: "story-public-id": *"story_id"  # parent:story
       op: remove: method: *DELETE  # not-load
     }
@@ -101,6 +99,11 @@ guide: {
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
+    path: "/api/v3/epics/{epic-public-id}/unlink-productboard": {  # ent=epic;orig=EpicSlim;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "unlink_productboard": {}  # ent;epic;ent-param-2nd-last;unlink-productboard;POST
+      rename: param: "epic-public-id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
+    }
     path: "/api/v3/labels/{label-public-id}/epics": {  # ent=epic;orig=EpicSlim;cmp/resolve=epic_slim;path=t/p/t/;path-primary;has-cmp=EpicSlim
       rename: param: "label-public-id": *"label_id"  # parent:label
       op: list: method: *GET  # array
@@ -121,13 +124,6 @@ guide: {
   entity: epic_paginated_result: {
     path: "/api/v3/epics/paginated": {  # ent=epic_paginated_result;orig=EpicPaginatedResults;cmp/resolve=epic_paginated_result;path=t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array-prop:data
-    }
-  }
-
-  entity: epic_unlink_productboard: {
-    path: "/api/v3/epics/{epic-public-id}/unlink-productboard": {  # ent=epic_unlink_productboard;no-desc;path=t/p/t/;entres=false/;part-ent
-      rename: param: "epic-public-id": *"id"  # action-parent:epic_unlink_productboard
-      op: create: method: *POST  # not-load
     }
   }
 

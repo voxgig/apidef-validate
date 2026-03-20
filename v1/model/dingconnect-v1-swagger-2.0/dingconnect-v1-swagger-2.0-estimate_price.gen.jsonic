@@ -1,0 +1,80 @@
+# Entity: estimate_price
+
+main: kit: entity: estimate_price: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "error_code"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "item"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "result_code"
+      req: true
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "estimate_price"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "xc_orrelation_id"
+                orig: "xc_orrelation_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "requested_estimation"
+                orig: "requested_estimation"
+                reqd: true
+                type: "`$ARRAY`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/V1/EstimatePrices"
+          parts: [
+            "api"
+            "V1"
+            "EstimatePrices"
+          ]
+          select: {
+            exist: [
+              "requested_estimation"
+              "xc_orrelation_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

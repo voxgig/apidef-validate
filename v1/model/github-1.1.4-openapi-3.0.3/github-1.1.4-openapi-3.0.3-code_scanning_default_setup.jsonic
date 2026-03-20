@@ -1,0 +1,104 @@
+# Entity: code_scanning_default_setup
+
+main: kit: entity: code_scanning_default_setup: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "language"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "query_suite"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "schedule"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "state"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "threat_model"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_scanning_default_setup"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/code-scanning/default-setup"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "default-setup"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

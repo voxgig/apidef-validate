@@ -1,0 +1,90 @@
+# Entity: actions_cache_usage_by_repository
+
+main: kit: entity: actions_cache_usage_by_repository: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "active_caches_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "active_caches_size_in_byte"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "full_name"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "actions_cache_usage_by_repository"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/actions/cache/usage"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "actions"
+            "cache"
+            "usage"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

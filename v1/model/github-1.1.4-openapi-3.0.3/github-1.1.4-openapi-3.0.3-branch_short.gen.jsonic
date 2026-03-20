@@ -1,0 +1,99 @@
+# Entity: branch_short
+
+main: kit: entity: branch_short: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "commit"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "protected"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "branch_short"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "commit_sha"
+                orig: "commit_sha"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "commits"
+            "{commit_sha}"
+            "branches-where-head"
+          ]
+          select: {
+            exist: [
+              "commit_sha"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "commits"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,143 @@
+# Entity: unleash_api
+
+main: kit: entity: unleash_api: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "unleash_api"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "project_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "app_name"
+                orig: "app_name"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "instance_id"
+                orig: "instance_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/feature_flags/unleash/{project_id}/features"
+          parts: [
+            "api"
+            "v4"
+            "feature_flags"
+            "unleash"
+            "{id}"
+            "features"
+          ]
+          rename: {
+            param: {
+              project_id: "id"
+            }
+          }
+          select: {
+            "$action": "features"
+            exist: [
+              "app_name"
+              "id"
+              "instance_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "unleash_id"
+                orig: "project_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "app_name"
+                orig: "app_name"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "instance_id"
+                orig: "instance_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/feature_flags/unleash/{project_id}/client/features"
+          parts: [
+            "api"
+            "v4"
+            "feature_flags"
+            "unleash"
+            "{unleash_id}"
+            "client"
+            "features"
+          ]
+          rename: {
+            param: {
+              project_id: "unleash_id"
+            }
+          }
+          select: {
+            exist: [
+              "app_name"
+              "instance_id"
+              "unleash_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "unleash"
+      ]
+    ]
+  }
+
+
+
+}

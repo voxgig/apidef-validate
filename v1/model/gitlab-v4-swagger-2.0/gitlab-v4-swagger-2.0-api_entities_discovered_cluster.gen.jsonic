@@ -1,0 +1,65 @@
+# Entity: api_entities_discovered_cluster
+
+main: kit: entity: api_entities_discovered_cluster: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "group"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "project"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_discovered_cluster"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "group_id"
+                orig: "group_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/discover-cert-based-clusters"
+          parts: [
+            "api"
+            "v4"
+            "discover-cert-based-clusters"
+          ]
+          select: {
+            exist: [
+              "group_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

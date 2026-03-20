@@ -1,0 +1,86 @@
+# Entity: enterprise_team_membership
+
+main: kit: entity: enterprise_team_membership: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "enterprise_team_membership"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "enterprise_team"
+                orig: "enterprise_team"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "username"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"
+          parts: [
+            "enterprises"
+            "{enterprise}"
+            "teams"
+            "{team_id}"
+            "memberships"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "enterprise-team": "team_id"
+              username: "id"
+            }
+          }
+          select: {
+            exist: [
+              "enterprise"
+              "enterprise_team"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "enterprises"
+        "teams"
+      ]
+    ]
+  }
+
+
+
+}

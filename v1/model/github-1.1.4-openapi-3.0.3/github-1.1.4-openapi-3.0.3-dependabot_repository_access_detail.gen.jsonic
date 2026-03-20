@@ -1,0 +1,92 @@
+# Entity: dependabot_repository_access_detail
+
+main: kit: entity: dependabot_repository_access_detail: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "accessible_repository"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "default_level"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "dependabot_repository_access_detail"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/organizations/{org}/dependabot/repository-access"
+          parts: [
+            "organizations"
+            "{org}"
+            "dependabot"
+            "repository-access"
+          ]
+          select: {
+            exist: [
+              "org"
+              "page"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "organizations"
+      ]
+    ]
+  }
+
+
+
+}

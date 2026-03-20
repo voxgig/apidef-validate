@@ -1,0 +1,172 @@
+# Entity: personal_access_token
+
+main: kit: entity: personal_access_token: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "personal_access_token"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/users/me/access_tokens"
+          parts: [
+            "users"
+            "me"
+            "access_tokens"
+          ]
+          select: {
+            exist: [
+              "content_type"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "token_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/users/me/access_tokens/{token_id}"
+          parts: [
+            "users"
+            "me"
+            "access_tokens"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              token_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "GET"
+          orig: "/users/me/access_tokens"
+          parts: [
+            "users"
+            "me"
+            "access_tokens"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "xc_ontentful_version"
+                orig: "xc_ontentful_version"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "access_token_id"
+                orig: "token_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/users/me/access_tokens/{token_id}/revoked"
+          parts: [
+            "users"
+            "me"
+            "access_tokens"
+            "{access_token_id}"
+            "revoked"
+          ]
+          rename: {
+            param: {
+              token_id: "access_token_id"
+            }
+          }
+          select: {
+            exist: [
+              "access_token_id"
+              "content_type"
+              "xc_ontentful_version"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "access_tokens"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,96 @@
+# Entity: org_private_registry_configuration_with
+
+main: kit: entity: org_private_registry_configuration_with: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "encrypted_value"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "key_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "registry_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "selected_repository_id"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "username"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "visibility"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "org_private_registry_configuration_with"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/orgs/{org}/private-registries"
+          parts: [
+            "orgs"
+            "{id}"
+            "private-registries"
+          ]
+          rename: {
+            param: {
+              org: "id"
+            }
+          }
+          select: {
+            "$action": "private-registries"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

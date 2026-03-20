@@ -1,0 +1,639 @@
+# Entity: code_security_configuration
+
+main: kit: entity: code_security_configuration: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "advanced_security"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "code_scanning_default_setup"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "code_scanning_default_setup_option"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "code_scanning_delagated_alert_dismissal"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "code_scanning_delegated_alert_dismissal"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "code_scanning_option"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "code_security"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "configuration"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dependabot_alert"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dependabot_security_update"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dependency_graph"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dependency_graph_autosubmit_action"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dependency_graph_autosubmit_action_option"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "description"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "enforcement"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "html_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "private_vulnerability_reporting"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_protection"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_delegated_alert_dismissal"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_delegated_bypass"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_delegated_bypass_option"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "secret_scanning_generic_secret"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_non_provider_pattern"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_push_protection"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_validity_check"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "status"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "target_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_security_configuration"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/enterprises/{enterprise}/code-security/configurations"
+          parts: [
+            "enterprises"
+            "{enterprise}"
+            "code-security"
+            "configurations"
+          ]
+          select: {
+            exist: [
+              "enterprise"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/orgs/{org}/code-security/configurations"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "code-security"
+            "configurations"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "target_type"
+                orig: "target_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/code-security/configurations"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "code-security"
+            "configurations"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "after"
+              "before"
+              "org_id"
+              "per_page"
+              "target_type"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/enterprises/{enterprise}/code-security/configurations"
+          parts: [
+            "enterprises"
+            "{enterprise}"
+            "code-security"
+            "configurations"
+          ]
+          select: {
+            exist: [
+              "after"
+              "before"
+              "enterprise"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}"
+          parts: [
+            "enterprises"
+            "{enterprise}"
+            "code-security"
+            "configurations"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              configuration_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "enterprise"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/code-security/configurations/{configuration_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "code-security"
+            "configurations"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              configuration_id: "id"
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/code-security-configuration"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-security-configuration"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}"
+          parts: [
+            "enterprises"
+            "{enterprise}"
+            "code-security"
+            "configurations"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              configuration_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "enterprise"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/orgs/{org}/code-security/configurations/{configuration_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "code-security"
+            "configurations"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              configuration_id: "id"
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "enterprises"
+      ]
+      [
+        "orgs"
+      ]
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

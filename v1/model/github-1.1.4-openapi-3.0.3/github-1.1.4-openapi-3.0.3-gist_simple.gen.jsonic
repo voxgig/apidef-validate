@@ -1,0 +1,164 @@
+# Entity: gist_simple
+
+main: kit: entity: gist_simple: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "comment"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "comments_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "commits_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "file"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "forks_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "git_pull_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "git_push_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "html_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "node_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "owner"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "public"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "user"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "gist_simple"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "gist_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/gists/{gist_id}/forks"
+          parts: [
+            "gists"
+            "{id}"
+            "forks"
+          ]
+          rename: {
+            param: {
+              gist_id: "id"
+            }
+          }
+          select: {
+            "$action": "forks"
+            exist: [
+              "id"
+              "page"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,134 @@
+# Entity: runner_application
+
+main: kit: entity: runner_application: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "architecture"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "download_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "filename"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "os"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "runner_application"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/actions/runners/downloads"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "actions"
+            "runners"
+            "downloads"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/actions/runners/downloads"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "runners"
+            "downloads"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

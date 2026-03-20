@@ -1,0 +1,143 @@
+# Entity: entries_collection
+
+main: kit: entity: entries_collection: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "entries_collection"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "xc_ontentful_content_type"
+                orig: "xc_ontentful_content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "environment_id"
+                orig: "environment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/spaces/{space_id}/environments/{environment_id}/entries"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "environments"
+            "{environment_id}"
+            "entries"
+          ]
+          select: {
+            exist: [
+              "content_type"
+              "environment_id"
+              "space_id"
+              "xc_ontentful_content_type"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "environment_id"
+                orig: "environment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "tag_key"
+                orig: "tag_key"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/spaces/{space_id}/environments/{environment_id}/entries"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "environments"
+            "{environment_id}"
+            "entries"
+          ]
+          select: {
+            exist: [
+              "environment_id"
+              "space_id"
+              "tag_key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "spaces"
+        "environments"
+      ]
+    ]
+  }
+
+
+
+}

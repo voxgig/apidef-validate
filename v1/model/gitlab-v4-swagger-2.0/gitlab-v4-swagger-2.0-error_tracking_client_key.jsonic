@@ -1,0 +1,78 @@
+# Entity: error_tracking_client_key
+
+main: kit: entity: error_tracking_client_key: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "error_tracking_client_key"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "key_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/projects/{id}/error_tracking/client_keys/{key_id}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "error_tracking"
+            "client_keys"
+            "project_id"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+              key_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+      ]
+    ]
+  }
+
+
+
+}

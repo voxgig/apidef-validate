@@ -1,0 +1,202 @@
+# Entity: license
+
+main: kit: entity: license: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "body"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "condition"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "description"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "featured"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "html_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "implementation"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "key"
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "limitation"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "name"
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "node_id"
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "permission"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "spdx_id"
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "license"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "featured"
+                orig: "featured"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/licenses"
+          parts: [
+            "licenses"
+          ]
+          select: {
+            exist: [
+              "featured"
+              "page"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "licenses"
+                orig: "licenses"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/licenses/{license}"
+          parts: [
+            "licenses"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              license: "id"
+            }
+          }
+          select: {
+            exist: [
+              "licenses"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

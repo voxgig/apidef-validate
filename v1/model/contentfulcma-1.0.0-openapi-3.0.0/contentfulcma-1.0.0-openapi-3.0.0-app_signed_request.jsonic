@@ -1,0 +1,86 @@
+# Entity: app_signed_request
+
+main: kit: entity: app_signed_request: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "app_signed_request"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "app_instalation_id"
+                orig: "app_definition_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "organization_id"
+                orig: "organization_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/organizations/{organization_id}/app_instalations/{app_definition_id}/signed_request"
+          parts: [
+            "organizations"
+            "{organization_id}"
+            "app_instalations"
+            "{app_instalation_id}"
+            "signed_request"
+          ]
+          rename: {
+            param: {
+              app_definition_id: "app_instalation_id"
+            }
+          }
+          select: {
+            exist: [
+              "app_instalation_id"
+              "content_type"
+              "organization_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "organizations"
+        "app_instalations"
+      ]
+    ]
+  }
+
+
+
+}

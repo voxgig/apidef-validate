@@ -1,0 +1,93 @@
+# Entity: merged_upstream
+
+main: kit: entity: merged_upstream: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "base_branch"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "branch"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "merge_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "message"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "merged_upstream"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{repo}/merge-upstream"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "merge-upstream"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

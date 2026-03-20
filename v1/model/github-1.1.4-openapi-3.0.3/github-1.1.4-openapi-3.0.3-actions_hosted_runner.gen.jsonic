@@ -1,0 +1,251 @@
+# Entity: actions_hosted_runner
+
+main: kit: entity: actions_hosted_runner: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "enable_static_ip"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "image"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "image_detail"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "last_active_on"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "machine_size_detail"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "maximum_runner"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "name"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "platform"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "public_ip"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "public_ip_enabled"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "runner_group_id"
+      op: {
+        create: {
+          req: true
+          type: "`$INTEGER`"
+        }
+      }
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "size"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "status"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "actions_hosted_runner"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/orgs/{org}/actions/hosted-runners"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "hosted-runners"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "hosted_runner_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/actions/hosted-runners/{hosted_runner_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "hosted-runners"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              hosted_runner_id: "id"
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "hosted_runner_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/orgs/{org}/actions/hosted-runners/{hosted_runner_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "hosted-runners"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              hosted_runner_id: "id"
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

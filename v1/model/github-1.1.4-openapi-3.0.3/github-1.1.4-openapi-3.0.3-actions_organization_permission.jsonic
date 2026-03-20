@@ -1,0 +1,94 @@
+# Entity: actions_organization_permission
+
+main: kit: entity: actions_organization_permission: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "allowed_action"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "enabled_repository"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "selected_actions_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "selected_repositories_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "sha_pinning_required"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "actions_organization_permission"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/actions/permissions"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "permissions"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

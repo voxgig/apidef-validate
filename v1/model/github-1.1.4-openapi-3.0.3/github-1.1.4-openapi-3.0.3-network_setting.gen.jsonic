@@ -1,0 +1,104 @@
+# Entity: network_setting
+
+main: kit: entity: network_setting: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "network_configuration_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "region"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "subnet_id"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "network_setting"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "network_settings_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/settings/network-settings/{network_settings_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "settings"
+            "network-settings"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              network_settings_id: "id"
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

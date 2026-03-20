@@ -1,0 +1,172 @@
+# Entity: ruleset_version_with_state
+
+main: kit: entity: ruleset_version_with_state: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "actor"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "state"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "version_id"
+      req: true
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "ruleset_version_with_state"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "ruleset_id"
+                orig: "ruleset_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "version_id"
+                orig: "version_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/rulesets/{ruleset_id}/history/{version_id}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "rulesets"
+            "{ruleset_id}"
+            "history"
+            "{version_id}"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+              "ruleset_id"
+              "version_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "ruleset_id"
+                orig: "ruleset_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "version_id"
+                orig: "version_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/rulesets/{ruleset_id}/history/{version_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "rulesets"
+            "{ruleset_id}"
+            "history"
+            "{version_id}"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "ruleset_id"
+              "version_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+        "rulesets"
+        "history"
+      ]
+      [
+        "repos"
+        "{owner}"
+        "rulesets"
+        "history"
+      ]
+    ]
+  }
+
+
+
+}

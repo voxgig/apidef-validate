@@ -1,0 +1,265 @@
+# Entity: collaborator
+
+main: kit: entity: collaborator: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "avatar_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "events_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "followers_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "following_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "gists_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "gravatar_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "html_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "login"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "node_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "organizations_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "permission"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "received_events_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "repos_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "role_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "site_admin"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "starred_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "subscriptions_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "collaborator"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "affiliation"
+                orig: "affiliation"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "permission"
+                orig: "permission"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/collaborators"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "collaborators"
+          ]
+          select: {
+            exist: [
+              "affiliation"
+              "owner"
+              "page"
+              "per_page"
+              "permission"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "project_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "affiliation"
+                orig: "affiliation"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/projects/{project_id}/collaborators"
+          parts: [
+            "projects"
+            "{project_id}"
+            "collaborators"
+          ]
+          select: {
+            exist: [
+              "affiliation"
+              "page"
+              "per_page"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+      ]
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

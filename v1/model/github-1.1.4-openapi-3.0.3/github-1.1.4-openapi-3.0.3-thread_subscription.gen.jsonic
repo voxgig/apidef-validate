@@ -1,0 +1,142 @@
+# Entity: thread_subscription
+
+main: kit: entity: thread_subscription: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "ignored"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "reason"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "repository_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "subscribed"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "thread_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "thread_subscription"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "thread_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/notifications/threads/{thread_id}/subscription"
+          parts: [
+            "notifications"
+            "threads"
+            "{id}"
+            "subscription"
+          ]
+          rename: {
+            param: {
+              thread_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "thread_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/notifications/threads/{thread_id}/subscription"
+          parts: [
+            "notifications"
+            "threads"
+            "{id}"
+            "subscription"
+          ]
+          rename: {
+            param: {
+              thread_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

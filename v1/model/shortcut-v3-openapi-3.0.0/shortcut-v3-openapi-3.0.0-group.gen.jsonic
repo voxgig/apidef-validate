@@ -1,0 +1,310 @@
+# Entity: group
+
+main: kit: entity: group: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "app_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "archived"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "color"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "color_key"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "default_workflow_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "description"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "display_icon"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "display_icon_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "entity_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "global_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "member_id"
+      op: {
+        create: {
+          req: false
+          type: "`$ARRAY`"
+        }
+        update: {
+          req: false
+          type: "`$ARRAY`"
+        }
+      }
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "mention_name"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "num_epics_started"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_stories_backlog"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_stories_started"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_story"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "workflow_id"
+      op: {
+        create: {
+          req: false
+          type: "`$ARRAY`"
+        }
+        update: {
+          req: false
+          type: "`$ARRAY`"
+        }
+      }
+      req: true
+      type: "`$ARRAY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "group"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          method: "POST"
+          orig: "/api/v3/groups"
+          parts: [
+            "api"
+            "v3"
+            "groups"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          method: "GET"
+          orig: "/api/v3/groups"
+          parts: [
+            "api"
+            "v3"
+            "groups"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "group_public_id"
+                orig: "group_public_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/groups/{group-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "groups"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "group-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "group_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "group_public_id"
+                orig: "group_public_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v3/groups/{group-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "groups"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "group-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "group_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

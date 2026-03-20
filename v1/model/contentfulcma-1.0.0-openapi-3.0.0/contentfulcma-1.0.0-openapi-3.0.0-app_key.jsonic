@@ -1,0 +1,246 @@
+# Entity: app_key
+
+main: kit: entity: app_key: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "app_key"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "app_definition_id"
+                orig: "app_definition_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "organization_id"
+                orig: "organization_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys"
+          parts: [
+            "organizations"
+            "{organization_id}"
+            "app_definitions"
+            "{app_definition_id}"
+            "keys"
+          ]
+          select: {
+            exist: [
+              "app_definition_id"
+              "content_type"
+              "organization_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "app_definition_id"
+                orig: "app_definition_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "organization_id"
+                orig: "organization_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys"
+          parts: [
+            "organizations"
+            "{organization_id}"
+            "app_definitions"
+            "{app_definition_id}"
+            "keys"
+          ]
+          select: {
+            exist: [
+              "app_definition_id"
+              "content_type"
+              "organization_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "app_definition_id"
+                orig: "app_definition_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "key_kid"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "organization_id"
+                orig: "organization_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys/{key_kid}"
+          parts: [
+            "organizations"
+            "{organization_id}"
+            "app_definitions"
+            "{app_definition_id}"
+            "keys"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              key_kid: "id"
+            }
+          }
+          select: {
+            exist: [
+              "app_definition_id"
+              "id"
+              "organization_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "app_definition_id"
+                orig: "app_definition_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "key_kid"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "organization_id"
+                orig: "organization_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys/{key_kid}"
+          parts: [
+            "organizations"
+            "{organization_id}"
+            "app_definitions"
+            "{app_definition_id}"
+            "keys"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              key_kid: "id"
+            }
+          }
+          select: {
+            exist: [
+              "app_definition_id"
+              "id"
+              "organization_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "organizations"
+        "app_definitions"
+      ]
+    ]
+  }
+
+
+
+}

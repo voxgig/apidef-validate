@@ -1,0 +1,119 @@
+# Entity: combined_billing_usage
+
+main: kit: entity: combined_billing_usage: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "days_left_in_billing_cycle"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "estimated_paid_storage_for_month"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "estimated_storage_for_month"
+      req: true
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "combined_billing_usage"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/settings/billing/shared-storage"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "settings"
+            "billing"
+            "shared-storage"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "username"
+                orig: "username"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/users/{username}/settings/billing/shared-storage"
+          parts: [
+            "users"
+            "{username}"
+            "settings"
+            "billing"
+            "shared-storage"
+          ]
+          select: {
+            exist: [
+              "username"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "users"
+      ]
+    ]
+  }
+
+
+
+}

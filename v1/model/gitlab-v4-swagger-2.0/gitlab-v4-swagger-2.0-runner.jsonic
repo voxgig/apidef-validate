@@ -1,0 +1,211 @@
+# Entity: runner
+
+main: kit: entity: runner: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "runner"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_runners_verify"
+                orig: "post_api_v4_runners_verify"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/runners/verify"
+          parts: [
+            "api"
+            "v4"
+            "runners"
+            "verify"
+          ]
+          select: {
+            "$action": "verify"
+            exist: [
+              "post_api_v4_runners_verify"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "runner_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/projects/{id}/runners/{runner_id}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "runners"
+            "project_id"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+              runner_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "system_id"
+                orig: "system_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "token"
+                orig: "token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/runners/managers"
+          parts: [
+            "api"
+            "v4"
+            "runners"
+            "managers"
+          ]
+          select: {
+            "$action": "manager"
+            exist: [
+              "system_id"
+              "token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/runners/{id}"
+          parts: [
+            "api"
+            "v4"
+            "runners"
+            "{id}"
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "token"
+                orig: "token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/runners"
+          parts: [
+            "api"
+            "v4"
+            "runners"
+          ]
+          select: {
+            exist: [
+              "token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+      ]
+    ]
+  }
+
+
+
+}

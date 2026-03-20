@@ -1,0 +1,118 @@
+# Entity: classroom_assignment_grade
+
+main: kit: entity: classroom_assignment_grade: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "assignment_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "assignment_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "github_username"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "group_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "points_available"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "points_awarded"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "roster_identifier"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "starter_code_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "student_repository_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "student_repository_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "submission_timestamp"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "classroom_assignment_grade"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "assignment_id"
+                orig: "assignment_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/assignments/{assignment_id}/grades"
+          parts: [
+            "assignments"
+            "{assignment_id}"
+            "grades"
+          ]
+          select: {
+            exist: [
+              "assignment_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "assignments"
+      ]
+    ]
+  }
+
+
+
+}

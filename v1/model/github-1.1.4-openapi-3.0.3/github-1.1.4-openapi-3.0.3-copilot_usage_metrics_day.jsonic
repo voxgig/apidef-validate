@@ -1,0 +1,222 @@
+# Entity: copilot_usage_metrics_day
+
+main: kit: entity: copilot_usage_metrics_day: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "copilot_dotcom_chat"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "copilot_dotcom_pull_request"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "copilot_ide_chat"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "copilot_ide_code_completion"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "date"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "total_active_user"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "total_engaged_user"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "copilot_usage_metrics_day"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "team_id"
+                orig: "team_slug"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "since"
+                orig: "since"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "until"
+                orig: "until"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/team/{team_slug}/copilot/metrics"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "team"
+            "{team_id}"
+            "copilot"
+            "metrics"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+              team_slug: "team_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "page"
+              "per_page"
+              "since"
+              "team_id"
+              "until"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "since"
+                orig: "since"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "until"
+                orig: "until"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/copilot/metrics"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "copilot"
+            "metrics"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "page"
+              "per_page"
+              "since"
+              "until"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "orgs"
+        "team"
+      ]
+    ]
+  }
+
+
+
+}

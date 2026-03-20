@@ -1,0 +1,111 @@
+# Entity: api_entities_bulk_imports_entity_failure
+
+main: kit: entity: api_entities_bulk_imports_entity_failure: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "correlation_id_value"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "exception_class"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "exception_message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "relation"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "source_title"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "source_url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_bulk_imports_entity_failure"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "bulk_import_id"
+                orig: "import_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "entity_id"
+                orig: "entity_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/bulk_imports/{import_id}/entities/{entity_id}/failures"
+          parts: [
+            "api"
+            "v4"
+            "bulk_imports"
+            "{bulk_import_id}"
+            "entities"
+            "{entity_id}"
+            "failures"
+          ]
+          rename: {
+            param: {
+              import_id: "bulk_import_id"
+            }
+          }
+          select: {
+            exist: [
+              "bulk_import_id"
+              "entity_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "bulk_imports"
+        "entities"
+      ]
+    ]
+  }
+
+
+
+}

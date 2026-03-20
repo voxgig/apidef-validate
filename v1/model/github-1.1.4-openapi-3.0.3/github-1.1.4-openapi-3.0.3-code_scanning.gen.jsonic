@@ -1,0 +1,169 @@
+# Entity: code_scanning
+
+main: kit: entity: code_scanning: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "checkout_uri"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "commit_sha"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "ref"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "sarif"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "started_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "tool_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "validate"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_scanning"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{repo}/code-scanning/sarifs"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "sarifs"
+          ]
+          select: {
+            "$action": "sarif"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "language"
+                orig: "language"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "codeql"
+            "databases"
+            "{language}"
+          ]
+          select: {
+            exist: [
+              "language"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+      [
+        "repos"
+        "{owner}"
+        "databases"
+      ]
+    ]
+  }
+
+
+
+}

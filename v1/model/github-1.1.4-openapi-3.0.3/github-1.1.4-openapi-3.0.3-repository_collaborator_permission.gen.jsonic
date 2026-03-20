@@ -1,0 +1,99 @@
+# Entity: repository_collaborator_permission
+
+main: kit: entity: repository_collaborator_permission: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "permission"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "role_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "user"
+      req: true
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "repository_collaborator_permission"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "username"
+                orig: "username"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/collaborators/{username}/permission"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "collaborators"
+            "{username}"
+            "permission"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+              "username"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "collaborators"
+      ]
+    ]
+  }
+
+
+
+}

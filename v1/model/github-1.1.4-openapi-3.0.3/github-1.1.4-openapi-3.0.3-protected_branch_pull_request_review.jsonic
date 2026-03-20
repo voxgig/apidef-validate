@@ -1,0 +1,196 @@
+# Entity: protected_branch_pull_request_review
+
+main: kit: entity: protected_branch_pull_request_review: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "bypass_pull_request_allowance"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "dismiss_stale_review"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "dismissal_restriction"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "require_code_owner_review"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "require_last_push_approval"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "required_approving_review_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "protected_branch_pull_request_review"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "branch_id"
+                orig: "branch"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "branches"
+            "{branch_id}"
+            "protection"
+            "required_pull_request_reviews"
+          ]
+          rename: {
+            param: {
+              branch: "branch_id"
+            }
+          }
+          select: {
+            exist: [
+              "branch_id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "branch_id"
+                orig: "branch"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "branches"
+            "{branch_id}"
+            "protection"
+            "required_pull_request_reviews"
+          ]
+          rename: {
+            param: {
+              branch: "branch_id"
+            }
+          }
+          select: {
+            exist: [
+              "branch_id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "branches"
+      ]
+    ]
+  }
+
+
+
+}

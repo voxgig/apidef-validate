@@ -1,0 +1,383 @@
+# Entity: story_comment
+
+main: kit: entity: story_comment: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "app_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "author_id"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "blocker"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "created_at"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "deleted"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "entity_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "external_id"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "group_mention_id"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "linked_to_slack"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "member_mention_id"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "mention_id"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "parent_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "position"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "reaction"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "story_id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "text"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "unblocks_parent"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "updated_at"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "story_comment"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "comment_public_id"
+                orig: "comment_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "story_public_id"
+                orig: "story_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/unlink-from-slack"
+          parts: [
+            "api"
+            "v3"
+            "stories"
+            "{story_id}"
+            "comments"
+            "{comment_id}"
+            "unlink-from-slack"
+          ]
+          rename: {
+            param: {
+              "comment-public-id": "comment_id"
+              "story-public-id": "story_id"
+            }
+          }
+          select: {
+            exist: [
+              "comment_public_id"
+              "story_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "story_public_id"
+                orig: "story_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v3/stories/{story-public-id}/comments"
+          parts: [
+            "api"
+            "v3"
+            "stories"
+            "{id}"
+            "comments"
+          ]
+          rename: {
+            param: {
+              "story-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "story_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "story_public_id"
+                orig: "story_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/stories/{story-public-id}/comments"
+          parts: [
+            "api"
+            "v3"
+            "stories"
+            "{id}"
+            "comments"
+          ]
+          rename: {
+            param: {
+              "story-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "story_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "comment_public_id"
+                orig: "comment_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "story_public_id"
+                orig: "story_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "stories"
+            "{story_id}"
+            "comments"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "comment-public-id": "id"
+              "story-public-id": "story_id"
+            }
+          }
+          select: {
+            exist: [
+              "comment_public_id"
+              "story_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "comment_public_id"
+                orig: "comment_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "story_public_id"
+                orig: "story_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "stories"
+            "{story_id}"
+            "comments"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "comment-public-id": "id"
+              "story-public-id": "story_id"
+            }
+          }
+          select: {
+            exist: [
+              "comment_public_id"
+              "story_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "stories"
+      ]
+      [
+        "stories"
+        "comments"
+      ]
+    ]
+  }
+
+
+
+}

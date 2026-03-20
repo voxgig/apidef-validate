@@ -1,0 +1,251 @@
+# Entity: api_entities_terraform_module_version
+
+main: kit: entity: api_entities_terraform_module_version: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "provider"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "root"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "source"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "submodule"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "version"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_terraform_module_version"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "module_name"
+                orig: "module_name"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "module_system"
+                orig: "module_system"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "v1_id"
+                orig: "module_namespace"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/versions"
+          parts: [
+            "api"
+            "v4"
+            "packages"
+            "terraform"
+            "modules"
+            "v1"
+            "{v1_id}"
+            "{module_name}"
+            "{module_system}"
+            "versions"
+          ]
+          rename: {
+            param: {
+              module_namespace: "v1_id"
+            }
+          }
+          select: {
+            exist: [
+              "module_name"
+              "module_system"
+              "v1_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "module_name"
+                orig: "module_name"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "module_system"
+                orig: "module_system"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "v1_id"
+                orig: "module_namespace"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "module_version"
+                orig: "module_version"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/*module_version"
+          parts: [
+            "api"
+            "v4"
+            "packages"
+            "terraform"
+            "modules"
+            "v1"
+            "{v1_id}"
+            "{module_name}"
+            "{module_system}"
+            "*module_version"
+          ]
+          rename: {
+            param: {
+              module_namespace: "v1_id"
+            }
+          }
+          select: {
+            exist: [
+              "module_name"
+              "module_system"
+              "module_version"
+              "v1_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "module_name"
+                orig: "module_name"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "module_namespace"
+                orig: "module_namespace"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "module_system"
+                orig: "module_system"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}"
+          parts: [
+            "api"
+            "v4"
+            "packages"
+            "terraform"
+            "modules"
+            "v1"
+            "{module_namespace}"
+            "{module_name}"
+            "{module_system}"
+          ]
+          select: {
+            exist: [
+              "module_name"
+              "module_namespace"
+              "module_system"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "v1"
+        "{module_namespace}"
+        "{module_name}"
+      ]
+      [
+        "v1"
+        "{v1_id}"
+        "{module_name}"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,84 @@
+# Entity: project_collaborator_permission
+
+main: kit: entity: project_collaborator_permission: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "permission"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "user"
+      req: true
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "project_collaborator_permission"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "project_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "username"
+                orig: "username"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/projects/{project_id}/collaborators/{username}/permission"
+          parts: [
+            "projects"
+            "{project_id}"
+            "collaborators"
+            "{username}"
+            "permission"
+          ]
+          select: {
+            exist: [
+              "project_id"
+              "username"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+        "collaborators"
+      ]
+    ]
+  }
+
+
+
+}

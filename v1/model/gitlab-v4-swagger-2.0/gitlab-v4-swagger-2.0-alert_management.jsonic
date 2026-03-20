@@ -1,0 +1,146 @@
+# Entity: alert_management
+
+main: kit: entity: alert_management: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "alert_management"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "alert_management_alert_id"
+                orig: "alert_iid"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images/authorize"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "alert_management_alerts"
+            "{alert_management_alert_id}"
+            "metric_images"
+            "authorize"
+          ]
+          rename: {
+            param: {
+              alert_iid: "alert_management_alert_id"
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "alert_management_alert_id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "alert_management_alert_id"
+                orig: "alert_iid"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "metric_image_id"
+                orig: "metric_image_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images/{metric_image_id}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "alert_management_alerts"
+            "{alert_management_alert_id}"
+            "metric_images"
+            "{metric_image_id}"
+          ]
+          rename: {
+            param: {
+              alert_iid: "alert_management_alert_id"
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "alert_management_alert_id"
+              "metric_image_id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+        "alert_management_alerts"
+      ]
+      [
+        "projects"
+        "alert_management_alerts"
+        "metric_images"
+      ]
+    ]
+  }
+
+
+
+}

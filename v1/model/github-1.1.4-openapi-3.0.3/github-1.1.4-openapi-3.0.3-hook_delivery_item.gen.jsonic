@@ -1,0 +1,271 @@
+# Entity: hook_delivery_item
+
+main: kit: entity: hook_delivery_item: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "action"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "delivered_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "duration"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "event"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "guid"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "installation_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "redelivery"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "repository_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "status"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "status_code"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "throttled_at"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "hook_delivery_item"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "hook_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "cursor"
+                orig: "cursor"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/hooks/{hook_id}/deliveries"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "hooks"
+            "{id}"
+            "deliveries"
+          ]
+          rename: {
+            param: {
+              hook_id: "id"
+            }
+          }
+          select: {
+            "$action": "deliveries"
+            exist: [
+              "cursor"
+              "id"
+              "owner"
+              "per_page"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "hook_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "cursor"
+                orig: "cursor"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/hooks/{hook_id}/deliveries"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "hooks"
+            "{id}"
+            "deliveries"
+          ]
+          rename: {
+            param: {
+              hook_id: "id"
+              org: "org_id"
+            }
+          }
+          select: {
+            "$action": "deliveries"
+            exist: [
+              "cursor"
+              "id"
+              "org_id"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "cursor"
+                orig: "cursor"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/app/hook/deliveries"
+          parts: [
+            "app"
+            "hook"
+            "deliveries"
+          ]
+          select: {
+            exist: [
+              "cursor"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

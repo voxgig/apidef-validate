@@ -1,0 +1,173 @@
+# Entity: ci_variable
+
+main: kit: entity: ci_variable: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "ci_variable"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "key"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "filter_environment_scope"
+                orig: "filter_environment_scope"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/projects/{id}/variables/{key}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "variables"
+            "project_id"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+              key: "id"
+            }
+          }
+          select: {
+            exist: [
+              "filter_environment_scope"
+              "id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "group_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/groups/{id}/variables/{key}"
+          parts: [
+            "api"
+            "v4"
+            "groups"
+            "{group_id}"
+            "variables"
+            "group_id"
+          ]
+          rename: {
+            param: {
+              id: "group_id"
+              key: "id"
+            }
+          }
+          select: {
+            exist: [
+              "group_id"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/admin/ci/variables/{key}"
+          parts: [
+            "api"
+            "v4"
+            "admin"
+            "ci"
+            "variables"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              key: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "groups"
+      ]
+      [
+        "projects"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,125 @@
+# Entity: push_option
+
+main: kit: entity: push_option: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "display_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "option"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "property"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "required"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "validation"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "push_option"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "connection_id"
+                orig: "connection_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "data_type"
+                orig: "data_type"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/companies/{companyId}/connections/{connectionId}/options/{dataType}"
+          parts: [
+            "companies"
+            "{company_id}"
+            "connections"
+            "{connection_id}"
+            "options"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              companyId: "company_id"
+              connectionId: "connection_id"
+              dataType: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+              "connection_id"
+              "data_type"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "companies"
+        "connections"
+      ]
+    ]
+  }
+
+
+
+}

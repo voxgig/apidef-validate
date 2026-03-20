@@ -1,0 +1,52 @@
+# Entity: user
+
+main: kit: entity: user: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "user"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/users/me"
+          parts: [
+            "users"
+            "me"
+          ]
+          select: {
+            "$action": "me"
+            exist: [
+              "content_type"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

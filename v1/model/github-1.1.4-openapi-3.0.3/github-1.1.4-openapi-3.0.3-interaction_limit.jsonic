@@ -1,0 +1,142 @@
+# Entity: interaction_limit
+
+main: kit: entity: interaction_limit: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "expires_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "expiry"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "limit"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "origin"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "interaction_limit"
+  op: {
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/repos/{owner}/{repo}/interaction-limits"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "interaction-limits"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/orgs/{org}/interaction-limits"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "interaction-limits"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "PUT"
+          orig: "/user/interaction-limits"
+          parts: [
+            "user"
+            "interaction-limits"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

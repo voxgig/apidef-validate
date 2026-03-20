@@ -1,0 +1,147 @@
+# Entity: pull_request_simple
+
+main: kit: entity: pull_request_simple: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "reviewer"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "team_reviewer"
+      req: false
+      type: "`$ARRAY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "pull_request_simple"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "pull_number"
+                orig: "pull_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "pulls"
+            "{pull_number}"
+            "requested_reviewers"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "pull_number"
+                orig: "pull_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "pulls"
+            "{pull_number}"
+            "requested_reviewers"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "pulls"
+      ]
+    ]
+  }
+
+
+
+}

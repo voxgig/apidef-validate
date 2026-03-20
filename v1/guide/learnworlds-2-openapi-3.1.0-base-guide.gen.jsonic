@@ -1,27 +1,32 @@
 # Guide
 
 guide: {
-  metrics: count: entity: 31
+  metrics: count: entity: 42
   metrics: count: path: 72
   metrics: count: method: 91
 
+  entity: active: {
+    path: "/v2/installments/active": {  # ent=active;no-desc;path=t/;entres=false/;ent-act
+    }
+  }
+
   entity: affiliate: {
-    path: "/v2/affiliates": {  # ent=affiliate;orig=Affiliates;tag=affiliate;cmp/resolve=affiliate;path=t/;path-primary
+    path: "/v2/affiliates": {  # ent=affiliate;orig=Affiliates;no-desc;path=t/;entres=false/;ent-act
       op: list: method: *GET  # array-prop:data
     }
     path: "/v2/affiliates/{id}": {  # ent=affiliate;orig=Affiliates;tag=affiliate;cmp/resolve=affiliate;path=t/p/;path-primary
       op: create: method: *POST  # not-load
     }
     path: "/v2/affiliates/{id}/customers": {  # ent=affiliate;orig=Affiliates;tag=affiliate;cmp/resolve=affiliate;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Affiliates
-      action: "customer": {}  # ent;affiliate;ent-param-2nd-last;customers;GET
+      action: "customer": {}  # ent;affiliate;ent-param-2nd-last;customers;PARAMETERS
       op: list: method: *GET  # array-prop:data
     }
-    path: "/v2/affiliates/{id}/leads": {  # ent=affiliate;orig=Affiliates;tag=affiliate;cmp/resolve=affiliate;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Affiliates
+    path: "/v2/affiliates/{id}/leads": {  # ent=affiliate;orig=Affiliates;no-desc;path=t/p/t/;entres=false/;prob-ent-act
       action: "lead": {}  # ent;affiliate;ent-param-2nd-last;leads;GET
       op: list: method: *GET  # array-prop:data
     }
     path: "/v2/affiliates/{id}/payments": {  # ent=affiliate;orig=Affiliates;tag=affiliate;cmp/resolve=affiliate;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Affiliates
-      action: "payment": {}  # ent;affiliate;ent-param-2nd-last;payments;GET
+      action: "payment": {}  # ent;affiliate;ent-param-2nd-last;payments;PARAMETERS
       op: list: method: *GET  # array-prop:data
     }
     path: "/v2/affiliates/{id}/payouts/completed": {  # ent=affiliate;orig=Affiliates;tag=affiliate;cmp/resolve=affiliate;path=t/;cmp-primary;cmp-infreq
@@ -39,22 +44,32 @@ guide: {
   }
 
   entity: assessment: {
-    path: "/v2/assessments/{id}/responses": {  # ent=assessment;orig=Assessments;tag=assessment;cmp/resolve=assessment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Assessments
-      action: "response": {}  # ent;assessment;ent-param-2nd-last;responses;GET
+    path: "/v2/assessments/{id}/responses": {  # ent=assessment;tag=assessment;cmp/resolve=assessment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Assessments
+      action: "response": {}  # ent;assessment;ent-param-2nd-last;responses;PARAMETERS
       op: list: method: *GET  # array-prop:data
     }
-    path: "/v2/forms/{id}/responses": {  # ent=assessment;orig=Assessments;tag=assessment;cmp/resolve=assessment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Assessments
+    path: "/v2/forms/{id}/responses": {  # ent=assessment;tag=assessment;cmp/resolve=assessment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Assessments
       rename: param: "id": *"form_id"  # parent:form
       op: list: method: *GET  # array-prop:data
     }
   }
 
   entity: bundle: {
-    path: "/v2/bundles": {  # ent=bundle;orig=Bundles;tag=bundle;cmp/resolve=bundle;path=t/;path-primary
+    path: "/v2/bundles": {  # ent=bundle;orig=Bundles;no-desc;path=t/;entres=false/;ent-act
       op: list: method: *GET  # array-prop:data
     }
     path: "/v2/bundles/{id}": {  # ent=bundle;orig=Bundles;cmp/resolve=bundle;path=t/p/;path-primary
       op: load: method: *GET  # end-param
+    }
+  }
+
+  entity: by_product: {
+    path: "/v2/users/by-product": {  # ent=by_product;no-desc;path=t/;entres=false/;ent-act
+    }
+  }
+
+  entity: by_segment: {
+    path: "/v2/users/by-segment": {  # ent=by_segment;no-desc;path=t/;entres=false/;ent-act
     }
   }
 
@@ -65,7 +80,7 @@ guide: {
   }
 
   entity: certificate: {
-    path: "/v2/certificates": {  # ent=certificate;orig=Certificates;tag=certificate;cmp/resolve=certificate;path=t/;path-primary
+    path: "/v2/certificates": {  # ent=certificate;orig=Certificates;no-desc;path=t/;entres=false/;ent-act
       op: list: method: *GET  # array-prop:data
     }
     path: "/v2/certificates/{id}": {  # ent=certificate;orig=Certificates;tag=certificate;cmp/resolve=certificate;path=t/p/;path-primary
@@ -117,6 +132,12 @@ guide: {
     }
   }
 
+  entity: completed: {
+    path: "/v2/affiliates/{id}/payouts/completed": {  # ent=completed;no-desc;path=t/;entres=false/;ent-act
+      rename: param: "id": *"affiliate_id"  # parent:affiliate
+    }
+  }
+
   entity: coupon: {
     path: "/v2/promotions/{id}/coupons-bulk": {  # ent=coupon;orig=Coupon;cmp/resolve=coupon;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Coupon
       rename: param: "id": *"promotion_id"  # parent:promotion
@@ -125,6 +146,11 @@ guide: {
     path: "/v2/promotions/{pid}/coupons": {  # ent=coupon;orig=Coupon;cmp/resolve=coupon;path=t/p/t/;path-primary;has-cmp=Coupon
       rename: param: "pid": *"promotion_id"  # parent:promotion
       op: create: method: *POST  # not-load
+    }
+    path: "/v2/promotions/{pid}/coupons/{cid}/usage": {  # ent=coupon;orig=Coupon;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "usage": {}  # ent;coupon;ent-param-2nd-last;usage;PARAMETERS
+      rename: param: "cid": *"id"  # id-parent-ent
+      rename: param: "pid": *"promotion_id"  # parent:promotion
     }
   }
 
@@ -137,7 +163,7 @@ guide: {
   }
 
   entity: course: {
-    path: "/v2/courses": {  # ent=course;orig=Courses;cmp/resolve=course;path=t/;path-primary
+    path: "/v2/courses": {  # ent=course;orig=Courses;no-desc;path=t/;entres=false/;ent-act
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:data
     }
@@ -145,13 +171,37 @@ guide: {
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
+    path: "/v2/courses/{id}/analytics": {  # ent=course;orig=Courses;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "analytics": {}  # ent;course;ent-param-2nd-last;analytics;PARAMETERS
+    }
+    path: "/v2/courses/{id}/contents": {  # ent=course;orig=Courses;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "content": {}  # ent;course;ent-param-2nd-last;contents;PARAMETERS
+    }
     path: "/v2/courses/{id}/grades": {  # ent=course;orig=Courses;tag=course;cmp/resolve=course;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Courses
-      action: "grade": {}  # ent;course;ent-param-2nd-last;grades;GET
+      action: "grade": {}  # ent;course;ent-param-2nd-last;grades;PARAMETERS
       op: list: method: *GET  # array-prop:data
     }
+    path: "/v2/courses/{id}/sections": {  # ent=course;orig=Courses;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "section": {}  # ent;course;ent-param-2nd-last;sections;PARAMETERS
+    }
     path: "/v2/courses/{id}/users": {  # ent=course;orig=Courses;tag=course;cmp/resolve=course;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Courses
-      action: "user": {}  # ent;course;ent-param-2nd-last;users;GET
+      action: "user": {}  # ent;course;ent-param-2nd-last;users;PARAMETERS
       op: list: method: *GET  # array-prop:data
+    }
+    path: "/v2/users/{id}/courses/{cid}/complete": {  # ent=course;orig=Courses;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "complete": {}  # ent;course;ent-param-2nd-last;complete;PARAMETERS
+      rename: param: "cid": *"id"  # id-parent-ent
+      rename: param: "id": *"user_id"  # parent:user
+    }
+    path: "/v2/users/{id}/courses/{cid}/progress": {  # ent=course;orig=Courses;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "progress": {}  # ent;course;ent-param-2nd-last;progress;PARAMETERS
+      rename: param: "cid": *"id"  # id-parent-ent
+      rename: param: "id": *"user_id"  # parent:user
+    }
+    path: "/v2/users/{id}/courses/{cid}/reset": {  # ent=course;orig=Courses;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "reset": {}  # ent;course;ent-param-2nd-last;reset;PARAMETERS
+      rename: param: "cid": *"id"  # id-parent-ent
+      rename: param: "id": *"user_id"  # parent:user
     }
   }
 
@@ -171,9 +221,26 @@ guide: {
     }
   }
 
+  entity: due: {
+    path: "/v2/affiliates/{id}/payouts/due": {  # ent=due;no-desc;path=t/;entres=false/;ent-act
+      rename: param: "id": *"affiliate_id"  # parent:affiliate
+    }
+  }
+
+  entity: event: {
+    path: "/v2/school/events": {  # ent=event;no-desc;path=t/;entres=false/;ent-act
+    }
+  }
+
   entity: event_log: {
-    path: "/v2/event-logs": {  # ent=event_log;orig=Event logs;tag=event_log;cmp/resolve=event_log;path=t/;path-primary
+    path: "/v2/event-logs": {  # ent=event_log;orig=Event logs;no-desc;path=t/;entres=false/;ent-act
       op: list: method: *GET  # array-prop:data
+    }
+  }
+
+  entity: form: {
+    path: "/v2/forms/{id}/responses": {  # ent=form;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "response": {}  # ent;form;ent-param-2nd-last;responses;PARAMETERS
     }
   }
 
@@ -185,7 +252,7 @@ guide: {
   }
 
   entity: lead: {
-    path: "/v2/leads": {  # ent=lead;orig=Leads;tag=lead;cmp/resolve=lead;path=t/;path-primary
+    path: "/v2/leads": {  # ent=lead;orig=Leads;no-desc;path=t/;entres=false/;ent-act
       op: list: method: *GET  # array-prop:data
     }
   }
@@ -202,28 +269,36 @@ guide: {
   }
 
   entity: payment: {
-    path: "/v2/payments": {  # ent=payment;orig=Payments;tag=payment;cmp/resolve=payment;path=t/;path-primary
+    path: "/v2/payments": {  # ent=payment;orig=Payments;no-desc;path=t/;entres=false/;ent-act
       op: list: method: *GET  # array-prop:data
     }
     path: "/v2/payments/{id}": {  # ent=payment;orig=Payments;cmp/resolve=payment;path=t/p/;path-primary
       op: load: method: *GET  # end-param
     }
     path: "/v2/payments/{id}/invoice-link": {  # ent=payment;orig=Payments;tag=payment;cmp/resolve=payment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Payments
-      action: "invoice_link": {}  # ent;payment;ent-param-2nd-last;invoice-link;GET
+      action: "invoice_link": {}  # ent;payment;ent-param-2nd-last;invoice-link;PARAMETERS
       op: load: method: *GET  # not-list
     }
   }
 
+  entity: post: {
+    path: "/v2/community/posts/{id}": {  # ent=post;no-desc;path=t/p/;entres=false/;ent-act
+    }
+  }
+
   entity: promotion: {
-    path: "/v2/promotions": {  # ent=promotion;orig=Promotions;tag=promotion;cmp/resolve=promotion;path=t/;path-primary
+    path: "/v2/promotions": {  # ent=promotion;orig=Promotions;no-desc;path=t/;entres=false/;ent-act
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:data
     }
     path: "/v2/promotions/{id}": {  # ent=promotion;orig=Promotions;cmp/resolve=promotion;path=t/p/;path-primary
       op: load: method: *GET  # end-param
     }
+    path: "/v2/promotions/{id}/coupons-bulk": {  # ent=promotion;orig=Promotions;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "coupons_bulk": {}  # ent;promotion;ent-param-2nd-last;coupons-bulk;PARAMETERS
+    }
     path: "/v2/promotions/{pid}/coupons": {  # ent=promotion;orig=Promotions;tag=promotion;cmp/resolve=promotion;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Promotions
-      action: "coupon": {}  # ent;promotion;ent-param-2nd-last;coupons;GET
+      action: "coupon": {}  # ent;promotion;ent-param-2nd-last;coupons;PARAMETERS
       rename: param: "pid": *"id"  # id-parent-ent
       op: list: method: *GET  # array-prop:data
     }
@@ -236,22 +311,52 @@ guide: {
     }
   }
 
+  entity: score: {
+    path: "/v2/assessments/scores/{id}/review": {  # ent=score;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "review": {}  # ent;score;ent-param-2nd-last;review;PARAMETERS
+    }
+  }
+
   entity: seat: {
     path: "/v2/seats": {  # ent=seat;orig=SeatResponse;cmp/resolve=seat;path=t/;path-primary
       op: create: method: *POST  # not-load
     }
-    path: "/v2/seats/{id}": {  # ent=seat;orig=SeatResponse;cmp/resolve=seat_response;path=t/p/;path-primary
+    path: "/v2/seats/{id}": {  # ent=seat;orig=SeatResponse;cmp/resolve=seat;path=t/p/;path-primary
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
+    }
+    path: "/v2/seats/{id}/users": {  # ent=seat;orig=SeatResponse;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "user": {}  # ent;seat;ent-param-2nd-last;users;PARAMETERS
+    }
+  }
+
+  entity: segment: {
+    path: "/v2/users/segments": {  # ent=segment;no-desc;path=t/;entres=false/;ent-act
+    }
+  }
+
+  entity: space: {
+    path: "/v2/community/spaces/{id}": {  # ent=space;no-desc;path=t/p/;entres=false/;ent-act
+    }
+    path: "/v2/community/spaces/{id}/users": {  # ent=space;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "user": {}  # ent;space;ent-param-2nd-last;users;PARAMETERS
     }
   }
 
   entity: subscription_plan: {
-    path: "/v2/subscription-plans": {  # ent=subscription_plan;orig=Subscription plans;tag=subscription_plan;cmp/resolve=subscription_plan;path=t/;path-primary
+    path: "/v2/subscription-plans": {  # ent=subscription_plan;orig=Subscription plans;no-desc;path=t/;entres=false/;ent-act
       op: list: method: *GET  # array-prop:data
     }
     path: "/v2/subscription-plans/{id}": {  # ent=subscription_plan;orig=Subscription plans;cmp/resolve=subscription_plan;path=t/p/;path-primary
       op: load: method: *GET  # end-param
+    }
+  }
+
+  entity: unit: {
+    path: "/v2/courses/{id}/units/{uid}/analytics": {  # ent=unit;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "analytics": {}  # ent;unit;ent-param-2nd-last;analytics;PARAMETERS
+      rename: param: "id": *"course_id"  # parent:course
+      rename: param: "uid": *"id"  # id-parent-ent
     }
   }
 
@@ -260,6 +365,12 @@ guide: {
       rename: param: "id": *"course_id"  # parent:course
       rename: param: "uid": *"id"  # action-parent:unit_analytics
       op: load: method: *GET  # not-list
+    }
+  }
+
+  entity: upcoming: {
+    path: "/v2/affiliates/{id}/payouts/upcoming": {  # ent=upcoming;no-desc;path=t/;entres=false/;ent-act
+      rename: param: "id": *"affiliate_id"  # parent:affiliate
     }
   }
 
@@ -277,88 +388,109 @@ guide: {
   }
 
   entity: user: {
-    path: "/v2/seats/{id}/users": {  # ent=user;orig=User;cmp/resolve=user;path=t/p/t/;path-primary;has-cmp=User
+    path: "/v2/assessments/scores/{id}/review": {  # ent=user;orig=UserResponse;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=UserResponse
+      rename: param: "id": *"score_id"  # parent:score
+      op: create: method: *POST  # not-load
+    }
+    path: "/v2/community/spaces/{id}/users/{uid}": {  # ent=user;orig=UserResponse;no-desc;path=t/p/;entres=false/;ent-act
+      rename: param: "id": *"space_id"  # parent:space
+      rename: param: "uid": *"id"  # end-id;PARAMETERS;parent=true/user;cmp=false
+    }
+    path: "/v2/seats/{id}/users": {  # ent=user;orig=UserResponse;cmp/resolve=user;path=t/p/t/;path-primary;has-cmp=User
       rename: param: "id": *"seat_id"  # parent:seat
       op: list: method: *GET  # array
     }
-    path: "/v2/user_groups/{id}/users": {  # ent=user;orig=User;cmp/resolve=user;path=t/p/t/;path-primary;has-cmp=User
+    path: "/v2/seats/{id}/users/{uid}": {  # ent=user;orig=UserResponse;no-desc;path=t/p/;entres=false/;ent-act
+      rename: param: "id": *"seat_id"  # parent:seat
+      rename: param: "uid": *"id"  # end-id;PARAMETERS;parent=true/user;cmp=false
+    }
+    path: "/v2/user_groups/{id}/users": {  # ent=user;orig=UserResponse;cmp/resolve=user;path=t/p/t/;path-primary;has-cmp=User
       rename: param: "id": *"user_group_id"  # parent:user_group
       op: list: method: *GET  # array
     }
-    path: "/v2/user_groups/{id}/users/{uid}": {  # ent=user;orig=User;tag=user_group;cmp/resolve=user_group;path=t/p/;path-primary
+    path: "/v2/user_groups/{id}/users/{uid}": {  # ent=user;orig=UserResponse;tag=user_group;cmp/resolve=user_group;path=t/p/;path-primary
       rename: param: "id": *"user_group_id"  # parent:user_group
-      rename: param: "uid": *"id"  # end-id;POST;parent=true/user;cmp=false
+      rename: param: "uid": *"id"  # end-id;PARAMETERS;parent=true/user;cmp=false
       op: create: method: *POST  # not-load
       op: remove: method: *DELETE  # not-load
     }
-    path: "/v2/users": {  # ent=user;orig=User;cmp/resolve=user;path=t/;path-primary
+    path: "/v2/users": {  # ent=user;orig=UserResponse;no-desc;path=t/;entres=false/;ent-act
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:data
     }
-    path: "/v2/users/by-product": {  # ent=user;orig=User;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
+    path: "/v2/users/by-product": {  # ent=user;orig=UserResponse;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
       action: "by_product": {}  # ent;user;no-param;by-product;GET
       op: list: method: *GET  # array-prop:data
     }
-    path: "/v2/users/by-segment": {  # ent=user;orig=User;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
+    path: "/v2/users/by-segment": {  # ent=user;orig=UserResponse;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
       action: "by_segment": {}  # ent;user;no-param;by-segment;GET
       op: list: method: *GET  # array-prop:data
     }
-    path: "/v2/users/segments": {  # ent=user;orig=User;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
+    path: "/v2/users/segments": {  # ent=user;orig=UserResponse;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
       action: "segment": {}  # ent;user;no-param;segments;GET
       op: list: method: *GET  # array-prop:data
     }
-    path: "/v2/users/{id}": {  # ent=user;orig=User;cmp/resolve=user;path=t/p/;path-primary
+    path: "/v2/users/{id}": {  # ent=user;orig=UserResponse;cmp/resolve=user;path=t/p/;path-primary
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
-    path: "/v2/users/{id}/courses": {  # ent=user;orig=User;tag=user;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Users
-      action: "course": {}  # ent;user;ent-param-2nd-last;courses;GET
+    path: "/v2/users/{id}/courses": {  # ent=user;orig=UserResponse;tag=user;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Users
+      action: "course": {}  # ent;user;ent-param-2nd-last;courses;PARAMETERS
       op: list: method: *GET  # array-prop:data
     }
-    path: "/v2/users/{id}/enrollment": {  # ent=user;orig=User;tag=user;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Users
-      action: "enrollment": {}  # ent;user;ent-param-2nd-last;enrollment;POST
+    path: "/v2/users/{id}/enrollment": {  # ent=user;orig=UserResponse;tag=user;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Users
+      action: "enrollment": {}  # ent;user;ent-param-2nd-last;enrollment;PARAMETERS
       op: create: method: *POST  # not-load
       op: remove: method: *DELETE  # not-load
     }
-    path: "/v2/users/{id}/products": {  # ent=user;orig=User;tag=user;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Users
-      action: "product": {}  # ent;user;ent-param-2nd-last;products;GET
+    path: "/v2/users/{id}/products": {  # ent=user;orig=UserResponse;tag=user;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Users
+      action: "product": {}  # ent;user;ent-param-2nd-last;products;PARAMETERS
       op: list: method: *GET  # array-prop:data
     }
-    path: "/v2/users/{id}/seats": {  # ent=user;orig=User;tag=user;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Users
-      action: "seat": {}  # ent;user;ent-param-2nd-last;seats;GET
+    path: "/v2/users/{id}/progress": {  # ent=user;orig=UserResponse;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "progress": {}  # ent;user;ent-param-2nd-last;progress;PARAMETERS
+    }
+    path: "/v2/users/{id}/seats": {  # ent=user;orig=UserResponse;tag=user;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Users
+      action: "seat": {}  # ent;user;ent-param-2nd-last;seats;PARAMETERS
       op: load: method: *GET  # not-list
     }
-    path: "/v2/users/{id}/suspend": {  # ent=user;orig=User;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=User
-      action: "suspend": {}  # ent;user;ent-param-2nd-last;suspend;PUT
+    path: "/v2/users/{id}/suspend": {  # ent=user;orig=UserResponse;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=User
+      action: "suspend": {}  # ent;user;ent-param-2nd-last;suspend;PARAMETERS
       op: update: method: *PUT  # not-load
     }
-    path: "/v2/users/{id}/tags": {  # ent=user;orig=User;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=User
-      action: "tag": {}  # ent;user;ent-param-2nd-last;tags;PUT
+    path: "/v2/users/{id}/tags": {  # ent=user;orig=UserResponse;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=User
+      action: "tag": {}  # ent;user;ent-param-2nd-last;tags;PARAMETERS
       op: update: method: *PUT  # not-load
     }
-    path: "/v2/users/{id}/unsuspend": {  # ent=user;orig=User;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=User
-      action: "unsuspend": {}  # ent;user;ent-param-2nd-last;unsuspend;PUT
+    path: "/v2/users/{id}/unsuspend": {  # ent=user;orig=UserResponse;cmp/resolve=user;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=User
+      action: "unsuspend": {}  # ent;user;ent-param-2nd-last;unsuspend;PARAMETERS
       op: update: method: *PUT  # not-load
+    }
+    path: "/v2/users/{id}/user-groups": {  # ent=user;orig=UserResponse;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "user_group": {}  # ent;user;ent-param-2nd-last;user-groups;PARAMETERS
+    }
+    path: "/v2/users/{id}/user-role": {  # ent=user;orig=UserResponse;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "user_role": {}  # ent;user;ent-param-2nd-last;user-role;PARAMETERS
     }
   }
 
   entity: user_group: {
-    path: "/v2/user_groups": {  # ent=user_group;orig=User groups;cmp/resolve=user_group;path=t/;path-primary
+    path: "/v2/user_groups": {  # ent=user_group;orig=User groups;no-desc;path=t/;entres=false/;ent-act
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:data
     }
-    path: "/v2/user_groups/{id}": {  # ent=user_group;orig=User groups;cmp/resolve=user_group_response;path=t/p/;path-primary
+    path: "/v2/user_groups/{id}": {  # ent=user_group;orig=User groups;cmp/resolve=user_group;path=t/p/;path-primary
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
+    }
+    path: "/v2/user_groups/{id}/users": {  # ent=user_group;orig=User groups;no-desc;path=t/p/t/;entres=false/;prob-ent-act
+      action: "user": {}  # ent;user_group;ent-param-2nd-last;users;PARAMETERS
     }
     path: "/v2/users/{id}/user-groups": {  # ent=user_group;orig=User groups;cmp/resolve=user_group_response_copy;path=t/p/t/;path-primary;has-cmp=UserGroupResponse_copy
       op: list: method: *GET  # array
     }
-  }
-
-  entity: user_group_response: {
-    path: "/v2/users/{id}/user-role": {  # ent=user_group_response;orig=UserGroupResponse;cmp/resolve=user_group_response;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=UserGroupResponse
-      action: "user-role": {}  # ent;user_group_response;action-not-parent;id;PUT
+    path: "/v2/users/{id}/user-role": {  # ent=user_group;orig=User groups;cmp/resolve=user_group;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=UserGroupResponse
+      action: "user-role": {}  # ent;user_group;action-not-parent;id;PUT
       op: update: method: *PUT  # not-load
     }
   }
@@ -371,25 +503,18 @@ guide: {
     }
   }
 
-  entity: user_response: {
-    path: "/v2/assessments/scores/{id}/review": {  # ent=user_response;orig=UserResponse;cmp/resolve=user_response;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=UserResponse
-      rename: param: "id": *"score_id"  # parent:score
-      op: create: method: *POST  # not-load
-    }
-  }
-
   entity: user_role: {
-    path: "/v2/user-roles": {  # ent=user_role;orig=User roles;tag=user_role;cmp/resolve=user_role;path=t/;path-primary
+    path: "/v2/user-roles": {  # ent=user_role;orig=User roles;no-desc;path=t/;entres=false/;ent-act
       op: list: method: *GET  # array-prop:data
     }
-    path: "/v2/users/{id}/user-role": {  # ent=user_role;orig=User roles;cmp/resolve=user_role_user_response;path=t/p/t/;path-primary;has-cmp=UserRoleUserResponse
+    path: "/v2/users/{id}/user-role": {  # ent=user_role;orig=User roles;cmp/resolve=user_role_user;path=t/p/t/;path-primary;has-cmp=UserRoleUserResponse
       op: list: method: *GET  # array-prop:assigned_courses;array-prop:assigned_seat_offering_ids;array-prop:assigned_user_group_ids
       op: list: transform: res: *("`body.user_role`")|top
     }
   }
 
   entity: user_subscription: {
-    path: "/v2/user-subscriptions": {  # ent=user_subscription;orig=User subscriptions;tag=user_subscription;cmp/resolve=user_subscription;path=t/;path-primary
+    path: "/v2/user-subscriptions": {  # ent=user_subscription;orig=User subscriptions;no-desc;path=t/;entres=false/;ent-act
       op: list: method: *GET  # array-prop:data
     }
   }

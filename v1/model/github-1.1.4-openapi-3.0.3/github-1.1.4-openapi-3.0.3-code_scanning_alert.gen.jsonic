@@ -1,0 +1,237 @@
+# Entity: code_scanning_alert
+
+main: kit: entity: code_scanning_alert: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "create_request"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "dismissal_approved_by"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "dismissed_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "dismissed_by"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "dismissed_comment"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dismissed_reason"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "fixed_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "html_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "instances_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "most_recent_instance"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "number"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "rule"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "state"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "tool"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_scanning_alert"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "alert_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "alerts"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              alert_number: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "alert_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "alerts"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              alert_number: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

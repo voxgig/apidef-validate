@@ -1,0 +1,178 @@
+# Entity: org_membership
+
+main: kit: entity: org_membership: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "direct_membership"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "enterprise_teams_providing_indirect_membership"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "organization"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "organization_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "permission"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "role"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "state"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "user"
+      req: true
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "org_membership"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "username"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/memberships/{username}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "memberships"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+              username: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "username"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/orgs/{org}/memberships/{username}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "memberships"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+              username: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

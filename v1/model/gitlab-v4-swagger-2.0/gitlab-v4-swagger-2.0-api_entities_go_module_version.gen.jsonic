@@ -1,0 +1,103 @@
+# Entity: api_entities_go_module_version
+
+main: kit: entity: api_entities_go_module_version: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "time"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "version"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_go_module_version"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "module_version"
+                orig: "module_version"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "module_name"
+                orig: "module_name"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/projects/{id}/packages/go/*module_name/@v/{module_version}.info"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "packages"
+            "go"
+            "*module_name"
+            "@v"
+            "{module_version}.info"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "module_name"
+              "module_version"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+        "@v"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,91 @@
+# Entity: code_scanning_analysis_deletion
+
+main: kit: entity: code_scanning_analysis_deletion: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_scanning_analysis_deletion"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "analysis_id"
+                orig: "analysis_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "confirm_delete"
+                orig: "confirm_delete"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "analyses"
+            "{analysis_id}"
+          ]
+          select: {
+            exist: [
+              "analysis_id"
+              "confirm_delete"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "analyses"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,584 @@
+# Entity: app
+
+main: kit: entity: app: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "client_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "client_secret"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "event"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "external_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "html_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "installation"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "node_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "owner"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "pem"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "permission"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "repository"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "slug"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "total_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "webhook_secret"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "app"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "code"
+                orig: "code"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/app-manifests/{code}/conversions"
+          parts: [
+            "app-manifests"
+            "{code}"
+            "conversions"
+          ]
+          select: {
+            exist: [
+              "code"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "delivery_id"
+                orig: "delivery_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/app/hook/deliveries/{delivery_id}/attempts"
+          parts: [
+            "app"
+            "hook"
+            "deliveries"
+            "{delivery_id}"
+            "attempts"
+          ]
+          select: {
+            exist: [
+              "delivery_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "installation_id"
+                orig: "installation_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/user/installations/{installation_id}/repositories"
+          parts: [
+            "user"
+            "installations"
+            "{installation_id}"
+            "repositories"
+          ]
+          select: {
+            exist: [
+              "installation_id"
+              "page"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/installation/repositories"
+          parts: [
+            "installation"
+            "repositories"
+          ]
+          select: {
+            exist: [
+              "page"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/user/installations"
+          parts: [
+            "user"
+            "installations"
+          ]
+          select: {
+            exist: [
+              "page"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "installation_id"
+                orig: "installation_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "repository_id"
+                orig: "repository_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/user/installations/{installation_id}/repositories/{repository_id}"
+          parts: [
+            "user"
+            "installations"
+            "{installation_id}"
+            "repositories"
+            "{repository_id}"
+          ]
+          select: {
+            exist: [
+              "installation_id"
+              "repository_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "application_id"
+                orig: "client_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/applications/{client_id}/grant"
+          parts: [
+            "applications"
+            "{application_id}"
+            "grant"
+          ]
+          rename: {
+            param: {
+              client_id: "application_id"
+            }
+          }
+          select: {
+            exist: [
+              "application_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "application_id"
+                orig: "client_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/applications/{client_id}/token"
+          parts: [
+            "applications"
+            "{application_id}"
+            "token"
+          ]
+          rename: {
+            param: {
+              client_id: "application_id"
+            }
+          }
+          select: {
+            exist: [
+              "application_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "installation_id"
+                orig: "installation_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/app/installations/{installation_id}"
+          parts: [
+            "app"
+            "installations"
+            "{installation_id}"
+          ]
+          select: {
+            exist: [
+              "installation_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "installation_id"
+                orig: "installation_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/app/installations/{installation_id}/suspended"
+          parts: [
+            "app"
+            "installations"
+            "{installation_id}"
+            "suspended"
+          ]
+          select: {
+            exist: [
+              "installation_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "DELETE"
+          orig: "/installation/token"
+          parts: [
+            "installation"
+            "token"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "installation_id"
+                orig: "installation_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "repository_id"
+                orig: "repository_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/user/installations/{installation_id}/repositories/{repository_id}"
+          parts: [
+            "user"
+            "installations"
+            "{installation_id}"
+            "repositories"
+            "{repository_id}"
+          ]
+          select: {
+            exist: [
+              "installation_id"
+              "repository_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "installation_id"
+                orig: "installation_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/app/installations/{installation_id}/suspended"
+          parts: [
+            "app"
+            "installations"
+            "{installation_id}"
+            "suspended"
+          ]
+          select: {
+            exist: [
+              "installation_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "app-manifests"
+      ]
+      [
+        "deliveries"
+      ]
+      [
+        "applications"
+      ]
+      [
+        "installations"
+      ]
+      [
+        "installations"
+        "repositories"
+      ]
+    ]
+  }
+
+
+
+}

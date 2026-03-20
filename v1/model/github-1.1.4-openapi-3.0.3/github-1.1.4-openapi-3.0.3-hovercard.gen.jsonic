@@ -1,0 +1,86 @@
+# Entity: hovercard
+
+main: kit: entity: hovercard: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "context"
+      req: false
+      type: "`$ARRAY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "hovercard"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "username"
+                orig: "username"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "subject_id"
+                orig: "subject_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "subject_type"
+                orig: "subject_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/users/{username}/hovercard"
+          parts: [
+            "users"
+            "{username}"
+            "hovercard"
+          ]
+          select: {
+            exist: [
+              "subject_id"
+              "subject_type"
+              "username"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "users"
+      ]
+    ]
+  }
+
+
+
+}

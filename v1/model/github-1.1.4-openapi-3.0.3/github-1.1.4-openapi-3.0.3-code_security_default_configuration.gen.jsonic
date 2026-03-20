@@ -1,0 +1,114 @@
+# Entity: code_security_default_configuration
+
+main: kit: entity: code_security_default_configuration: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "configuration"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "default_for_new_repo"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_security_default_configuration"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/enterprises/{enterprise}/code-security/configurations/defaults"
+          parts: [
+            "enterprises"
+            "{enterprise}"
+            "code-security"
+            "configurations"
+            "defaults"
+          ]
+          select: {
+            exist: [
+              "enterprise"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/code-security/configurations/defaults"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "code-security"
+            "configurations"
+            "defaults"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "enterprises"
+      ]
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

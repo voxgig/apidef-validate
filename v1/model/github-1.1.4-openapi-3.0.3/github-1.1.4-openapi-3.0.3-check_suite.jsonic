@@ -1,0 +1,225 @@
+# Entity: check_suite
+
+main: kit: entity: check_suite: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "after"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "app"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "before"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "check_runs_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "conclusion"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "head_branch"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "head_commit"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "head_sha"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "latest_check_runs_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "node_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "pull_request"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "repository"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "rerequestable"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "runs_rerequestable"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "status"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "check_suite"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{repo}/check-suites"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "check-suites"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "check_suite_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/check-suites/{check_suite_id}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "check-suites"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              check_suite_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

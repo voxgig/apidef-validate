@@ -1,0 +1,203 @@
+# Entity: job
+
+main: kit: entity: job: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "check_run_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "completed_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "conclusion"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "head_branch"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "head_sha"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "html_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "label"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "node_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "run_attempt"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "run_id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "run_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "runner_group_id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "runner_group_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "runner_id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "runner_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "started_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "status"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "step"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "workflow_name"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "job"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "job_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/actions/jobs/{job_id}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "actions"
+            "jobs"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              job_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

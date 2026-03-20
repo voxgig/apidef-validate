@@ -1,0 +1,125 @@
+# Entity: branch_restriction_policy
+
+main: kit: entity: branch_restriction_policy: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "app"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "apps_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "team"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "teams_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "user"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "users_url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "branch_restriction_policy"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "branch_id"
+                orig: "branch"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/branches/{branch}/protection/restrictions"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "branches"
+            "{branch_id}"
+            "protection"
+            "restrictions"
+          ]
+          rename: {
+            param: {
+              branch: "branch_id"
+            }
+          }
+          select: {
+            exist: [
+              "branch_id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "branches"
+      ]
+    ]
+  }
+
+
+
+}

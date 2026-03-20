@@ -1,0 +1,162 @@
+# Entity: cluster
+
+main: kit: entity: cluster: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "cluster"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "group_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "cluster_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/groups/{id}/clusters/{cluster_id}"
+          parts: [
+            "api"
+            "v4"
+            "groups"
+            "{group_id}"
+            "clusters"
+            "group_id"
+          ]
+          rename: {
+            param: {
+              cluster_id: "id"
+              id: "group_id"
+            }
+          }
+          select: {
+            exist: [
+              "group_id"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "cluster_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/projects/{id}/clusters/{cluster_id}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "clusters"
+            "project_id"
+          ]
+          rename: {
+            param: {
+              cluster_id: "id"
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "cluster_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/admin/clusters/{cluster_id}"
+          parts: [
+            "api"
+            "v4"
+            "admin"
+            "clusters"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              cluster_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "groups"
+      ]
+      [
+        "projects"
+      ]
+    ]
+  }
+
+
+
+}

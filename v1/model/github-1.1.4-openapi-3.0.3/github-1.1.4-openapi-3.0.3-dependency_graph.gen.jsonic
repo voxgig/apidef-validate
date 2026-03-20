@@ -1,0 +1,115 @@
+# Entity: dependency_graph
+
+main: kit: entity: dependency_graph: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "detector"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "job"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "manifest"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "metadata"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "ref"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "scanned"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "sha"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "version"
+      req: true
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "dependency_graph"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{repo}/dependency-graph/snapshots"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "dependency-graph"
+            "snapshots"
+          ]
+          select: {
+            "$action": "snapshot"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

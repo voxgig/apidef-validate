@@ -1,0 +1,224 @@
+# Entity: code_scanning_variant_analysi
+
+main: kit: entity: code_scanning_variant_analysi: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "actions_workflow_run_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "actor"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "completed_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "controller_repo"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "failure_reason"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "language"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "query_language"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "query_pack"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "query_pack_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "repository"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "repository_list"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "repository_owner"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "scanned_repository"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "skipped_repository"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "status"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_scanning_variant_analysi"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{repo}/code-scanning/codeql/variant-analyses"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "codeql"
+            "variant-analyses"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "codeql_variant_analysis_id"
+                orig: "codeql_variant_analysis_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/code-scanning/codeql/variant-analyses/{codeql_variant_analysis_id}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "codeql"
+            "variant-analyses"
+            "{codeql_variant_analysis_id}"
+          ]
+          select: {
+            exist: [
+              "codeql_variant_analysis_id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+      [
+        "repos"
+        "{owner}"
+        "variant-analyses"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,70 @@
+# Entity: personal_access_token
+
+main: kit: entity: personal_access_token: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "personal_access_token"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/personal_access_tokens/{id}"
+          parts: [
+            "api"
+            "v4"
+            "personal_access_tokens"
+            "{id}"
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "DELETE"
+          orig: "/api/v4/personal_access_tokens/self"
+          parts: [
+            "api"
+            "v4"
+            "personal_access_tokens"
+            "self"
+          ]
+          select: {
+            "$action": "self"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

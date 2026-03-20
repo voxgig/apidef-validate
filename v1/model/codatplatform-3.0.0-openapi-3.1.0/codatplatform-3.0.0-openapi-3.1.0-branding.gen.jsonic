@@ -1,0 +1,78 @@
+# Entity: branding
+
+main: kit: entity: branding: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "button"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "logo"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "source_id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "branding"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "platform_key"
+                orig: "platform_key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/integrations/{platformKey}/branding"
+          parts: [
+            "integrations"
+            "{platformKey}"
+            "branding"
+          ]
+          select: {
+            exist: [
+              "platform_key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "integrations"
+      ]
+    ]
+  }
+
+
+
+}

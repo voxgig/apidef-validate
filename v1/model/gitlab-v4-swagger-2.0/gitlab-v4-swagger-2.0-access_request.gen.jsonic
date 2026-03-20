@@ -1,0 +1,126 @@
+# Entity: access_request
+
+main: kit: entity: access_request: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "access_request"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "group_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "user_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/groups/{id}/access_requests/{user_id}"
+          parts: [
+            "api"
+            "v4"
+            "groups"
+            "{group_id}"
+            "access_requests"
+            "group_id"
+          ]
+          rename: {
+            param: {
+              id: "group_id"
+              user_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "group_id"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "user_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/projects/{id}/access_requests/{user_id}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "access_requests"
+            "project_id"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+              user_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "groups"
+      ]
+      [
+        "projects"
+      ]
+    ]
+  }
+
+
+
+}

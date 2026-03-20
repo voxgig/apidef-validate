@@ -1,0 +1,87 @@
+# Entity: app_access_token
+
+main: kit: entity: app_access_token: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "app_access_token"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "app_installation_id"
+                orig: "app_definition_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "environment_id"
+                orig: "environment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/spaces/{space_id}/environments/{environment_id}/app_installations/{app_definition_id}/access_tokens"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "environments"
+            "{environment_id}"
+            "app_installations"
+            "{app_installation_id}"
+            "access_tokens"
+          ]
+          rename: {
+            param: {
+              app_definition_id: "app_installation_id"
+            }
+          }
+          select: {
+            exist: [
+              "app_installation_id"
+              "environment_id"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "spaces"
+        "environments"
+        "app_installations"
+      ]
+    ]
+  }
+
+
+
+}

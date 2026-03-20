@@ -1,0 +1,104 @@
+# Entity: copilot_organization_detail
+
+main: kit: entity: copilot_organization_detail: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "cli"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "ide_chat"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "plan_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "platform_chat"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "public_code_suggestion"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "seat_breakdown"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "seat_management_setting"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "copilot_organization_detail"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/copilot/billing"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "copilot"
+            "billing"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

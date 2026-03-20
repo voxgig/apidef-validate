@@ -1,0 +1,361 @@
+# Entity: code_security
+
+main: kit: entity: code_security: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "configuration"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "default_for_new_repo"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "scope"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "selected_repository_id"
+      req: false
+      type: "`$ARRAY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_security"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "configuration_id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}/attach"
+          parts: [
+            "enterprises"
+            "{enterprise}"
+            "code-security"
+            "configurations"
+            "{configuration_id}"
+            "attach"
+          ]
+          select: {
+            exist: [
+              "configuration_id"
+              "enterprise"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "configuration_id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/orgs/{org}/code-security/configurations/{configuration_id}/attach"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "code-security"
+            "configurations"
+            "{configuration_id}"
+            "attach"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "configuration_id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "configuration_id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}"
+          parts: [
+            "enterprises"
+            "{enterprise}"
+            "code-security"
+            "configurations"
+            "{configuration_id}"
+          ]
+          select: {
+            exist: [
+              "configuration_id"
+              "enterprise"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "configuration_id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/orgs/{org}/code-security/configurations/{configuration_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "code-security"
+            "configurations"
+            "{configuration_id}"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "configuration_id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/orgs/{org}/code-security/configurations/detach"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "code-security"
+            "configurations"
+            "detach"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "configuration_id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}/defaults"
+          parts: [
+            "enterprises"
+            "{enterprise}"
+            "code-security"
+            "configurations"
+            "{configuration_id}"
+            "defaults"
+          ]
+          select: {
+            exist: [
+              "configuration_id"
+              "enterprise"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "configuration_id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/orgs/{org}/code-security/configurations/{configuration_id}/defaults"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "code-security"
+            "configurations"
+            "{configuration_id}"
+            "defaults"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "configuration_id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "enterprises"
+        "configurations"
+      ]
+      [
+        "orgs"
+        "configurations"
+      ]
+    ]
+  }
+
+
+
+}

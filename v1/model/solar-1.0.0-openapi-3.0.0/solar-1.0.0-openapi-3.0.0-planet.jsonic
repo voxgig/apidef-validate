@@ -1,29 +1,49 @@
 # Entity: planet
 
-main: sdk: entity: planet: {
+main: kit: entity: planet: {
 
   alias: field: {}
 
   fields: [
     {
       name: "diameter"
-      req: false
+      req: true
       type: "`$NUMBER`"
     }
     {
       name: "id"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "kind"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "ok"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "start"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "state"
       req: false
       type: "`$STRING`"
+    }
+    {
+      name: "stop"
+      req: false
+      type: "`$BOOLEAN`"
     }
   ]
 
@@ -35,7 +55,44 @@ main: sdk: entity: planet: {
   name: "planet"
   op: {
     create: {
-      alts: [
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "planet_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/planet/{planet_id}/terraform"
+          parts: [
+            "api"
+            "planet"
+            "{id}"
+            "terraform"
+          ]
+          rename: {
+            param: {
+              planet_id: "id"
+            }
+          }
+          select: {
+            "$action": "terraform"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           method: "POST"
           orig: "/api/planet"
@@ -43,12 +100,16 @@ main: sdk: entity: planet: {
             "api"
             "planet"
           ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
         }
       ]
-      name: "create"
     }
     list: {
-      alts: [
+      name: "list"
+      targets: [
         {
           method: "GET"
           orig: "/api/planet"
@@ -56,19 +117,24 @@ main: sdk: entity: planet: {
             "api"
             "planet"
           ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
         }
       ]
-      name: "list"
     }
     load: {
-      alts: [
+      name: "load"
+      targets: [
         {
           args: {
-            param: [
+            params: [
               {
                 kind: "param"
-                name: "planet_id"
-                req: true
+                name: "id"
+                orig: "planet_id"
+                reqd: true
                 type: "`$STRING`"
               }
             ]
@@ -80,24 +146,73 @@ main: sdk: entity: planet: {
             "planet"
             "{id}"
           ]
-          select: {
+          rename: {
             param: {
-              id: true
+              planet_id: "id"
             }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
           }
         }
       ]
-      name: "load"
     }
-    update: {
-      alts: [
+    remove: {
+      name: "remove"
+      targets: [
         {
           args: {
-            param: [
+            params: [
               {
                 kind: "param"
-                name: "planet_id"
-                req: true
+                name: "id"
+                orig: "planet_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/planet/{planet_id}"
+          parts: [
+            "api"
+            "planet"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              planet_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "planet_id"
+                reqd: true
                 type: "`$STRING`"
               }
             ]
@@ -109,14 +224,22 @@ main: sdk: entity: planet: {
             "planet"
             "{id}"
           ]
-          select: {
+          rename: {
             param: {
-              id: true
+              planet_id: "id"
             }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
           }
         }
       ]
-      name: "update"
     }
   }
 

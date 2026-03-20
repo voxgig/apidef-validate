@@ -1,0 +1,383 @@
+# Entity: pet
+
+main: kit: entity: pet: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "category"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "code"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "photo_url"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "status"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "tag"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "type"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "pet"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "pet_id"
+                orig: "pet_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "additional_metadata"
+                orig: "additional_metadata"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "file"
+                orig: "file"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/pet/{petId}/uploadImage"
+          parts: [
+            "pet"
+            "{id}"
+            "uploadImage"
+          ]
+          rename: {
+            param: {
+              petId: "id"
+            }
+          }
+          select: {
+            "$action": "upload_image"
+            exist: [
+              "additional_metadata"
+              "file"
+              "pet_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "pet_id"
+                orig: "pet_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "name"
+                orig: "name"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "status"
+                orig: "status"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/pet/{petId}"
+          parts: [
+            "pet"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              petId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "name"
+              "pet_id"
+              "status"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "body"
+                orig: "body"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/pet"
+          parts: [
+            "pet"
+          ]
+          select: {
+            exist: [
+              "body"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "status"
+                orig: "status"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/pet/findByStatus"
+          parts: [
+            "pet"
+            "findByStatus"
+          ]
+          select: {
+            "$action": "find_by_status"
+            exist: [
+              "status"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "tag"
+                orig: "tag"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/pet/findByTags"
+          parts: [
+            "pet"
+            "findByTags"
+          ]
+          select: {
+            "$action": "find_by_tag"
+            exist: [
+              "tag"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "pet_id"
+                orig: "pet_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/pet/{petId}"
+          parts: [
+            "pet"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              petId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "pet_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "api_key"
+                orig: "api_key"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "pet_id"
+                orig: "pet_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/pet/{petId}"
+          parts: [
+            "pet"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              petId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "api_key"
+              "pet_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "body"
+                orig: "body"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/pet"
+          parts: [
+            "pet"
+          ]
+          select: {
+            exist: [
+              "body"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

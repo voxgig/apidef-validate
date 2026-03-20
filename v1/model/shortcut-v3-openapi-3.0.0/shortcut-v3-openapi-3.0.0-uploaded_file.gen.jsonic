@@ -1,0 +1,298 @@
+# Entity: uploaded_file
+
+main: kit: entity: uploaded_file: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "content_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "entity_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "external_id"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "filename"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "group_mention_id"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "member_mention_id"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "mention_id"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "name"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "size"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "story_id"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "thumbnail_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "uploader_id"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "uploaded_file"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          method: "POST"
+          orig: "/api/v3/files"
+          parts: [
+            "api"
+            "v3"
+            "files"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          method: "GET"
+          orig: "/api/v3/files"
+          parts: [
+            "api"
+            "v3"
+            "files"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "file_public_id"
+                orig: "file_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/files/{file-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "files"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "file-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "file_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "file_public_id"
+                orig: "file_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v3/files/{file-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "files"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "file-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "file_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "file_public_id"
+                orig: "file_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v3/files/{file-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "files"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "file-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "file_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

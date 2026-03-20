@@ -1,0 +1,74 @@
+# Entity: migration
+
+main: kit: entity: migration: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "migration"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "timestamp"
+                orig: "timestamp"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_admin_migrations_timestamp_mark"
+                orig: "post_api_v4_admin_migrations_timestamp_mark"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/admin/migrations/{timestamp}/mark"
+          parts: [
+            "api"
+            "v4"
+            "admin"
+            "migrations"
+            "{timestamp}"
+            "mark"
+          ]
+          select: {
+            "$action": "mark"
+            exist: [
+              "post_api_v4_admin_migrations_timestamp_mark"
+              "timestamp"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "migrations"
+      ]
+    ]
+  }
+
+
+
+}

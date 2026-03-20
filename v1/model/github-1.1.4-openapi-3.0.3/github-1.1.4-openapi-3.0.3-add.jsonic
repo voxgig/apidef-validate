@@ -1,0 +1,85 @@
+# Entity: add
+
+main: kit: entity: add: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "username"
+      req: true
+      type: "`$ARRAY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "add"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "enterprise_team"
+                orig: "enterprise_team"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/add"
+          parts: [
+            "enterprises"
+            "{enterprise}"
+            "teams"
+            "{team_id}"
+            "memberships"
+            "add"
+          ]
+          rename: {
+            param: {
+              "enterprise-team": "team_id"
+            }
+          }
+          select: {
+            exist: [
+              "enterprise"
+              "enterprise_team"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "enterprises"
+        "teams"
+      ]
+    ]
+  }
+
+
+
+}

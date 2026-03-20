@@ -1,0 +1,99 @@
+# Entity: code_scanning_sarifs_status
+
+main: kit: entity: code_scanning_sarifs_status: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "analyses_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "error"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "processing_status"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_scanning_sarifs_status"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "sarif_id"
+                orig: "sarif_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "sarifs"
+            "{sarif_id}"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+              "sarif_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "sarifs"
+      ]
+    ]
+  }
+
+
+
+}

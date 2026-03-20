@@ -1,0 +1,119 @@
+# Entity: page_deployment
+
+main: kit: entity: page_deployment: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "artifact_id"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "artifact_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "environment"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "oidc_token"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "page_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "pages_build_version"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "preview_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "status_url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "page_deployment"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{repo}/pages/deployments"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "pages"
+            "deployments"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

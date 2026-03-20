@@ -1,0 +1,89 @@
+# Entity: api_entities_clusters_agent_token_with_token
+
+main: kit: entity: api_entities_clusters_agent_token_with_token: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_clusters_agent_token_with_token"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cluster_agent_id"
+                orig: "agent_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_projects_id_cluster_agents_agent_id_token"
+                orig: "post_api_v4_projects_id_cluster_agents_agent_id_token"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/projects/{id}/cluster_agents/{agent_id}/tokens"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "cluster_agents"
+            "{cluster_agent_id}"
+            "tokens"
+          ]
+          rename: {
+            param: {
+              agent_id: "cluster_agent_id"
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "cluster_agent_id"
+              "post_api_v4_projects_id_cluster_agents_agent_id_token"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+        "cluster_agents"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,217 @@
+# Entity: story_link
+
+main: kit: entity: story_link: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "entity_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "object_id"
+      op: {
+        update: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "subject_id"
+      op: {
+        update: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "subject_workflow_state_id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "verb"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "story_link"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          method: "POST"
+          orig: "/api/v3/story-links"
+          parts: [
+            "api"
+            "v3"
+            "story-links"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "story_link_public_id"
+                orig: "story_link_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/story-links/{story-link-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "story-links"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "story-link-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "story_link_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "story_link_public_id"
+                orig: "story_link_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v3/story-links/{story-link-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "story-links"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "story-link-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "story_link_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "story_link_public_id"
+                orig: "story_link_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v3/story-links/{story-link-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "story-links"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "story-link-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "story_link_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,142 @@
+# Entity: app_upload
+
+main: kit: entity: app_upload: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "app_upload"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "app_upload_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "organization_id"
+                orig: "organization_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/organizations/{organization_id}/app_uploads/{app_upload_id}"
+          parts: [
+            "organizations"
+            "{organization_id}"
+            "app_uploads"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              app_upload_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "content_type"
+              "id"
+              "organization_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "app_upload_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "organization_id"
+                orig: "organization_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/organizations/{organization_id}/app_uploads/{app_upload_id}"
+          parts: [
+            "organizations"
+            "{organization_id}"
+            "app_uploads"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              app_upload_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "content_type"
+              "id"
+              "organization_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "organizations"
+      ]
+    ]
+  }
+
+
+
+}

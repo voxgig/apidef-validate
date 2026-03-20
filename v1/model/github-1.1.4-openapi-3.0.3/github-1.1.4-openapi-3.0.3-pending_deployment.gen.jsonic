@@ -1,0 +1,110 @@
+# Entity: pending_deployment
+
+main: kit: entity: pending_deployment: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "current_user_can_approve"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "environment"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "reviewer"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "wait_timer"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "wait_timer_started_at"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "pending_deployment"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "run_id"
+                orig: "run_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "actions"
+            "runs"
+            "{run_id}"
+            "pending_deployments"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+              "run_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "runs"
+      ]
+    ]
+  }
+
+
+
+}

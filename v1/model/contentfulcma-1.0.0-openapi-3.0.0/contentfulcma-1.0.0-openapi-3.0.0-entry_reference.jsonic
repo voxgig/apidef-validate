@@ -1,0 +1,86 @@
+# Entity: entry_reference
+
+main: kit: entity: entry_reference: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "entry_reference"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "environment_id"
+                orig: "environment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "entry_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/references"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "environments"
+            "{environment_id}"
+            "entries"
+            "{id}"
+            "references"
+          ]
+          rename: {
+            param: {
+              entry_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "environment_id"
+              "id"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "spaces"
+        "environments"
+      ]
+    ]
+  }
+
+
+
+}

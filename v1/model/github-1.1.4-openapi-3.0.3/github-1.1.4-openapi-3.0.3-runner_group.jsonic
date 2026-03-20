@@ -1,0 +1,269 @@
+# Entity: runner_group
+
+main: kit: entity: runner_group: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "allows_public_repository"
+      op: {
+        create: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "default"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "hosted_runners_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "inherited"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "inherited_allows_public_repository"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "network_configuration_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "restricted_to_workflow"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "runner"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "runners_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "selected_repositories_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "selected_repository_id"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "selected_workflow"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "visibility"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "workflow_restrictions_read_only"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "runner_group"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/orgs/{org}/actions/runner-groups"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "runner-groups"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "runner_group_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/actions/runner-groups/{runner_group_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "runner-groups"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+              runner_group_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "runner_group_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/orgs/{org}/actions/runner-groups/{runner_group_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "runner-groups"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+              runner_group_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

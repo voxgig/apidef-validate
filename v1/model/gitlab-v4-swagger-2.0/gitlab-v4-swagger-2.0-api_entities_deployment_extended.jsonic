@@ -1,0 +1,259 @@
+# Entity: api_entities_deployment_extended
+
+main: kit: entity: api_entities_deployment_extended: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "approval"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "approval_summary"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "deployable"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "environment"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "iid"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "pending_approval_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "ref"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "sha"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "status"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "user"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_deployment_extended"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_projects_id_deployment"
+                orig: "post_api_v4_projects_id_deployment"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/projects/{id}/deployments"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "deployments"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "post_api_v4_projects_id_deployment"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "deployment_id"
+                orig: "deployment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/projects/{id}/deployments/{deployment_id}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "deployments"
+            "{deployment_id}"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "deployment_id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "deployment_id"
+                orig: "deployment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "put_api_v4_projects_id_deployments_deployment_id"
+                orig: "put_api_v4_projects_id_deployments_deployment_id"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v4/projects/{id}/deployments/{deployment_id}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "deployments"
+            "{deployment_id}"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "deployment_id"
+              "project_id"
+              "put_api_v4_projects_id_deployments_deployment_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+      ]
+      [
+        "projects"
+        "deployments"
+      ]
+    ]
+  }
+
+
+
+}

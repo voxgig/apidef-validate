@@ -1,0 +1,67 @@
+# Entity: markdown
+
+main: kit: entity: markdown: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "context"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "mode"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "text"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "markdown"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          method: "POST"
+          orig: "/markdown"
+          parts: [
+            "markdown"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "POST"
+          orig: "/markdown/raw"
+          parts: [
+            "markdown"
+            "raw"
+          ]
+          select: {
+            "$action": "raw"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

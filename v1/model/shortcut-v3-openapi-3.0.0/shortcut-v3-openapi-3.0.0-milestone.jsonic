@@ -1,0 +1,429 @@
+# Entity: milestone
+
+main: kit: entity: milestone: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "after_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "app_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "archived"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "before_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "category"
+      op: {
+        create: {
+          req: false
+          type: "`$ARRAY`"
+        }
+        update: {
+          req: false
+          type: "`$ARRAY`"
+        }
+      }
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "completed"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "completed_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "completed_at_override"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "entity_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "global_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "key_result_id"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "name"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "position"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "started"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "started_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "started_at_override"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "stat"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "state"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "milestone"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          method: "POST"
+          orig: "/api/v3/milestones"
+          parts: [
+            "api"
+            "v3"
+            "milestones"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "category_public_id"
+                orig: "category_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/categories/{category-public-id}/milestones"
+          parts: [
+            "api"
+            "v3"
+            "categories"
+            "{category_id}"
+            "milestones"
+          ]
+          rename: {
+            param: {
+              "category-public-id": "category_id"
+            }
+          }
+          select: {
+            exist: [
+              "category_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "category_public_id"
+                orig: "category_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/categories/{category-public-id}/objectives"
+          parts: [
+            "api"
+            "v3"
+            "categories"
+            "{category_id}"
+            "objectives"
+          ]
+          rename: {
+            param: {
+              "category-public-id": "category_id"
+            }
+          }
+          select: {
+            exist: [
+              "category_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "GET"
+          orig: "/api/v3/milestones"
+          parts: [
+            "api"
+            "v3"
+            "milestones"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "milestone_public_id"
+                orig: "milestone_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/milestones/{milestone-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "milestones"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "milestone-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "milestone_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "milestone_public_id"
+                orig: "milestone_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v3/milestones/{milestone-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "milestones"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "milestone-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "milestone_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "milestone_public_id"
+                orig: "milestone_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v3/milestones/{milestone-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "milestones"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "milestone-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "milestone_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "categories"
+      ]
+    ]
+  }
+
+
+
+}

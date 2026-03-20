@@ -1,0 +1,170 @@
+# Entity: file_commit
+
+main: kit: entity: file_commit: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "author"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "branch"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "commit"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "committer"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "content"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "message"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "sha"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "file_commit"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "path"
+                orig: "path"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/repos/{owner}/{repo}/contents/{path}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "contents"
+            "{path}"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "path"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "path"
+                orig: "path"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/repos/{owner}/{repo}/contents/{path}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "contents"
+            "{path}"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "path"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "contents"
+      ]
+    ]
+  }
+
+
+
+}

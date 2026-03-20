@@ -1,0 +1,125 @@
+# Entity: comment
+
+main: kit: entity: comment: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "comment"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "comment_public_id"
+                orig: "comment_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "story_public_id"
+                orig: "story_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "stories"
+            "{story_id}"
+            "comments"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "comment-public-id": "id"
+              "story-public-id": "story_id"
+            }
+          }
+          select: {
+            exist: [
+              "comment_public_id"
+              "story_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "comment_public_id"
+                orig: "comment_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "story_public_id"
+                orig: "story_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions"
+          parts: [
+            "api"
+            "v3"
+            "stories"
+            "{story_id}"
+            "comments"
+            "{id}"
+            "reactions"
+          ]
+          rename: {
+            param: {
+              "comment-public-id": "id"
+              "story-public-id": "story_id"
+            }
+          }
+          select: {
+            "$action": "reaction"
+            exist: [
+              "comment_public_id"
+              "story_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "stories"
+      ]
+    ]
+  }
+
+
+
+}

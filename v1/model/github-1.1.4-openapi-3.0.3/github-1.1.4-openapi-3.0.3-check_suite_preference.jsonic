@@ -1,0 +1,89 @@
+# Entity: check_suite_preference
+
+main: kit: entity: check_suite_preference: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "auto_trigger_check"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "preference"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "repository"
+      req: true
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "check_suite_preference"
+  op: {
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/repos/{owner}/{repo}/check-suites/preferences"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "check-suites"
+            "preferences"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

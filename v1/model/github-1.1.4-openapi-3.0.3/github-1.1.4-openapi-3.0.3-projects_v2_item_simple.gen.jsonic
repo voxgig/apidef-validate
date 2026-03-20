@@ -1,0 +1,132 @@
+# Entity: projects_v2_item_simple
+
+main: kit: entity: projects_v2_item_simple: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "type"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "projects_v2_item_simple"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_number"
+                orig: "project_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/orgs/{org}/projectsV2/{project_number}/items"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "projectsV2"
+            "{project_number}"
+            "items"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "project_number"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_number"
+                orig: "project_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "username"
+                orig: "username"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/users/{username}/projectsV2/{project_number}/items"
+          parts: [
+            "users"
+            "{username}"
+            "projectsV2"
+            "{project_number}"
+            "items"
+          ]
+          select: {
+            exist: [
+              "project_number"
+              "username"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+        "projectsV2"
+      ]
+      [
+        "users"
+        "projectsV2"
+      ]
+    ]
+  }
+
+
+
+}

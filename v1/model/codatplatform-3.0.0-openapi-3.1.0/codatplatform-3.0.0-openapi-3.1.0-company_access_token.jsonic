@@ -1,0 +1,75 @@
+# Entity: company_access_token
+
+main: kit: entity: company_access_token: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "access_token"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "expires_in"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "token_type"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "company_access_token"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/companies/{companyId}/accessToken"
+          parts: [
+            "companies"
+            "{id}"
+            "accessToken"
+          ]
+          rename: {
+            param: {
+              companyId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

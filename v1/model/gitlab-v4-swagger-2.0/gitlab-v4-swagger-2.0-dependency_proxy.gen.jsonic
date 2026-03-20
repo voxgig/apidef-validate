@@ -1,0 +1,69 @@
+# Entity: dependency_proxy
+
+main: kit: entity: dependency_proxy: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "dependency_proxy"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "group_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/groups/{id}/dependency_proxy/cache"
+          parts: [
+            "api"
+            "v4"
+            "groups"
+            "{group_id}"
+            "dependency_proxy"
+            "cache"
+          ]
+          rename: {
+            param: {
+              id: "group_id"
+            }
+          }
+          select: {
+            "$action": "cache"
+            exist: [
+              "group_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "groups"
+      ]
+    ]
+  }
+
+
+
+}

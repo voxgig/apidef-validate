@@ -1,0 +1,86 @@
+# Entity: oidc_custom_sub_repo
+
+main: kit: entity: oidc_custom_sub_repo: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "include_claim_key"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "use_default"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "oidc_custom_sub_repo"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/actions/oidc/customization/sub"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "actions"
+            "oidc"
+            "customization"
+            "sub"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

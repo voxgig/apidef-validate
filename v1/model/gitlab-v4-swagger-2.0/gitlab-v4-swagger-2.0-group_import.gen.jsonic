@@ -1,0 +1,100 @@
+# Entity: group_import
+
+main: kit: entity: group_import: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "group_import"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "file"
+                orig: "file"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "name"
+                orig: "name"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "organization_id"
+                orig: "organization_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "parent_id"
+                orig: "parent_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "path"
+                orig: "path"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/groups/import"
+          parts: [
+            "api"
+            "v4"
+            "groups"
+            "import"
+          ]
+          select: {
+            exist: [
+              "file"
+              "name"
+              "organization_id"
+              "parent_id"
+              "path"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "POST"
+          orig: "/api/v4/groups/import/authorize"
+          parts: [
+            "api"
+            "v4"
+            "groups"
+            "import"
+            "authorize"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

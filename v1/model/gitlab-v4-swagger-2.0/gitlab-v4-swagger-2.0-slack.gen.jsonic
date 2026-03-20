@@ -1,0 +1,54 @@
+# Entity: slack
+
+main: kit: entity: slack: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "slack"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_slack_trigger"
+                orig: "post_api_v4_slack_trigger"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/slack/trigger"
+          parts: [
+            "api"
+            "v4"
+            "slack"
+            "trigger"
+          ]
+          select: {
+            "$action": "trigger"
+            exist: [
+              "post_api_v4_slack_trigger"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

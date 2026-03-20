@@ -1,0 +1,279 @@
+# Entity: api_entities_personal_snippet
+
+main: kit: entity: api_entities_personal_snippet: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "author"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "file"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "file_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "http_url_to_repo"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "imported"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "imported_from"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "project_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "raw_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "repository_storage"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "ssh_url_to_repo"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "title"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "visibility"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "web_url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_personal_snippet"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_snippet"
+                orig: "post_api_v4_snippet"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/snippets"
+          parts: [
+            "api"
+            "v4"
+            "snippets"
+          ]
+          select: {
+            exist: [
+              "post_api_v4_snippet"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "created_after"
+                orig: "created_after"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "created_before"
+                orig: "created_before"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/snippets/public"
+          parts: [
+            "api"
+            "v4"
+            "snippets"
+            "public"
+          ]
+          select: {
+            exist: [
+              "created_after"
+              "created_before"
+              "page"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/snippets/{id}"
+          parts: [
+            "api"
+            "v4"
+            "snippets"
+            "{id}"
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "put_api_v4_snippets_id"
+                orig: "put_api_v4_snippets_id"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v4/snippets/{id}"
+          parts: [
+            "api"
+            "v4"
+            "snippets"
+            "{id}"
+          ]
+          select: {
+            exist: [
+              "id"
+              "put_api_v4_snippets_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

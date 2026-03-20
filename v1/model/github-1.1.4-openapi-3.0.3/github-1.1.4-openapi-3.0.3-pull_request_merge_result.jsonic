@@ -1,0 +1,120 @@
+# Entity: pull_request_merge_result
+
+main: kit: entity: pull_request_merge_result: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "commit_message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "commit_title"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "merge_method"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "merged"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "message"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "sha"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "pull_request_merge_result"
+  op: {
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "pull_number"
+                orig: "pull_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/merge"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "pulls"
+            "{pull_number}"
+            "merge"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "pulls"
+      ]
+    ]
+  }
+
+
+
+}

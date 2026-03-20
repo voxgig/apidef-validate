@@ -1,0 +1,251 @@
+# Entity: custom_field
+
+main: kit: entity: custom_field: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "after_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "before_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "canonical_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "enabled"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "entity_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "field_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "fixed_position"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "icon_set_identifier"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "position"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "story_type"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "value"
+      req: false
+      type: "`$ARRAY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "custom_field"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          method: "GET"
+          orig: "/api/v3/custom-fields"
+          parts: [
+            "api"
+            "v3"
+            "custom-fields"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "custom_field_public_id"
+                orig: "custom_field_public_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/custom-fields/{custom-field-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "custom-fields"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "custom-field-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "custom_field_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "custom_field_public_id"
+                orig: "custom_field_public_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v3/custom-fields/{custom-field-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "custom-fields"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "custom-field-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "custom_field_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "custom_field_public_id"
+                orig: "custom_field_public_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v3/custom-fields/{custom-field-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "custom-fields"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "custom-field-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "custom_field_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

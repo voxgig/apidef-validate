@@ -1,0 +1,247 @@
+# Entity: authorization
+
+main: kit: entity: authorization: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "access_token"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "app"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "expires_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "fingerprint"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "hashed_token"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "installation"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "note"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "note_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "permission"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "repository"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "repository_id"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "scope"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "target"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "target_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "token"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "token_last_eight"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "user"
+      req: true
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "authorization"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "application_id"
+                orig: "client_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/applications/{client_id}/token"
+          parts: [
+            "applications"
+            "{application_id}"
+            "token"
+          ]
+          rename: {
+            param: {
+              client_id: "application_id"
+            }
+          }
+          select: {
+            exist: [
+              "application_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "application_id"
+                orig: "client_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/applications/{client_id}/token/scoped"
+          parts: [
+            "applications"
+            "{application_id}"
+            "token"
+            "scoped"
+          ]
+          rename: {
+            param: {
+              client_id: "application_id"
+            }
+          }
+          select: {
+            exist: [
+              "application_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "application_id"
+                orig: "client_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/applications/{client_id}/token"
+          parts: [
+            "applications"
+            "{application_id}"
+            "token"
+          ]
+          rename: {
+            param: {
+              client_id: "application_id"
+            }
+          }
+          select: {
+            exist: [
+              "application_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "applications"
+      ]
+    ]
+  }
+
+
+
+}

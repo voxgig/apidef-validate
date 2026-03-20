@@ -1,0 +1,80 @@
+# Entity: lookup_bill
+
+main: kit: entity: lookup_bill: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "error_code"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "item"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "result_code"
+      req: true
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "lookup_bill"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "xc_orrelation_id"
+                orig: "xc_orrelation_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "request"
+                orig: "request"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/V1/LookupBills"
+          parts: [
+            "api"
+            "V1"
+            "LookupBills"
+          ]
+          select: {
+            exist: [
+              "request"
+              "xc_orrelation_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

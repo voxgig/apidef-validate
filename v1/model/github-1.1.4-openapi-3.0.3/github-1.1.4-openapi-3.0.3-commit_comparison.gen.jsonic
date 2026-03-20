@@ -1,0 +1,166 @@
+# Entity: commit_comparison
+
+main: kit: entity: commit_comparison: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "ahead_by"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "base_commit"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "behind_by"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "commit"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "diff_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "file"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "html_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "merge_base_commit"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "patch_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "permalink_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "status"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "total_commit"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "commit_comparison"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "basehead"
+                orig: "basehead"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/compare/{basehead}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "compare"
+            "{basehead}"
+          ]
+          select: {
+            exist: [
+              "basehead"
+              "owner"
+              "page"
+              "per_page"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "compare"
+      ]
+    ]
+  }
+
+
+
+}

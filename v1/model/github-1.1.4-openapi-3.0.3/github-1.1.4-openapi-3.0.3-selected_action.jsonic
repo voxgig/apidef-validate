@@ -1,0 +1,129 @@
+# Entity: selected_action
+
+main: kit: entity: selected_action: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "github_owned_allowed"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "patterns_allowed"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "verified_allowed"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "selected_action"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/actions/permissions/selected-actions"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "actions"
+            "permissions"
+            "selected-actions"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/actions/permissions/selected-actions"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "permissions"
+            "selected-actions"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

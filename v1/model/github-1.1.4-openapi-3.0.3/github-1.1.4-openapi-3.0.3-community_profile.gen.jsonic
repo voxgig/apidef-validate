@@ -1,0 +1,104 @@
+# Entity: community_profile
+
+main: kit: entity: community_profile: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "content_reports_enabled"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "description"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "documentation"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "file"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "health_percentage"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "community_profile"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/community/profile"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "community"
+            "profile"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

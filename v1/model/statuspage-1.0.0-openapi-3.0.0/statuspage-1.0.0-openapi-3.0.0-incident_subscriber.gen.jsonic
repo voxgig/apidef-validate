@@ -1,0 +1,82 @@
+# Entity: incident_subscriber
+
+main: kit: entity: incident_subscriber: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "incident_subscriber"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "incident_id"
+                orig: "incident_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "page_id"
+                orig: "page_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "subscriber_id"
+                orig: "subscriber_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}/resend_confirmation"
+          parts: [
+            "pages"
+            "{page_id}"
+            "incidents"
+            "{incident_id}"
+            "subscribers"
+            "{subscriber_id}"
+            "resend_confirmation"
+          ]
+          select: {
+            exist: [
+              "incident_id"
+              "page_id"
+              "subscriber_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "pages"
+        "incidents"
+        "subscribers"
+      ]
+    ]
+  }
+
+
+
+}

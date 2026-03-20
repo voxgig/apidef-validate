@@ -1,0 +1,89 @@
+# Entity: pages_deployment_status
+
+main: kit: entity: pages_deployment_status: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "status"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "pages_deployment_status"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "pages_deployment_id"
+                orig: "pages_deployment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "pages"
+            "deployments"
+            "{pages_deployment_id}"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "pages_deployment_id"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "deployments"
+      ]
+    ]
+  }
+
+
+
+}

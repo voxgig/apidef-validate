@@ -1,0 +1,589 @@
+# Entity: dependabot
+
+main: kit: entity: dependabot: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "default_level"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "repository"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "repository_ids_to_add"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "repository_ids_to_remove"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "secret"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "selected_repository_id"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "total_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "dependabot"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "secret_name"
+                orig: "secret_name"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/dependabot/secrets/{secret_name}/repositories"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "dependabot"
+            "secrets"
+            "{secret_name}"
+            "repositories"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "page"
+              "per_page"
+              "secret_name"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/dependabot/secrets"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "dependabot"
+            "secrets"
+          ]
+          select: {
+            "$action": "secret"
+            exist: [
+              "owner"
+              "page"
+              "per_page"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/dependabot/secrets"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "dependabot"
+            "secrets"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            "$action": "secret"
+            exist: [
+              "org_id"
+              "page"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    patch: {
+      name: "patch"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/organizations/{org}/dependabot/repository-access"
+          parts: [
+            "organizations"
+            "{org}"
+            "dependabot"
+            "repository-access"
+          ]
+          select: {
+            "$action": "repository_access"
+            exist: [
+              "org"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repository_id"
+                orig: "repository_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "secret_id"
+                orig: "secret_name"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "dependabot"
+            "secrets"
+            "{secret_id}"
+            "repositories"
+            "{repository_id}"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+              secret_name: "secret_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "repository_id"
+              "secret_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "secret_name"
+                orig: "secret_name"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/repos/{owner}/{repo}/dependabot/secrets/{secret_name}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "dependabot"
+            "secrets"
+            "{secret_name}"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+              "secret_name"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "secret_name"
+                orig: "secret_name"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/orgs/{org}/dependabot/secrets/{secret_name}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "dependabot"
+            "secrets"
+            "{secret_name}"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "secret_name"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repository_id"
+                orig: "repository_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "secret_id"
+                orig: "secret_name"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "dependabot"
+            "secrets"
+            "{secret_id}"
+            "repositories"
+            "{repository_id}"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+              secret_name: "secret_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "repository_id"
+              "secret_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "secret_name"
+                orig: "secret_name"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/orgs/{org}/dependabot/secrets/{secret_name}/repositories"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "dependabot"
+            "secrets"
+            "{secret_name}"
+            "repositories"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "secret_name"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/organizations/{org}/dependabot/repository-access/default-level"
+          parts: [
+            "organizations"
+            "{org}"
+            "dependabot"
+            "repository-access"
+            "default-level"
+          ]
+          select: {
+            exist: [
+              "org"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "organizations"
+      ]
+      [
+        "orgs"
+      ]
+      [
+        "orgs"
+        "secrets"
+      ]
+      [
+        "repos"
+        "{owner}"
+      ]
+      [
+        "orgs"
+        "secrets"
+        "repositories"
+      ]
+      [
+        "repos"
+        "{owner}"
+        "secrets"
+      ]
+    ]
+  }
+
+
+
+}

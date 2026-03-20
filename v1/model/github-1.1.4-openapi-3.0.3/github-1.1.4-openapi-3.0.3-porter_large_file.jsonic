@@ -1,0 +1,94 @@
+# Entity: porter_large_file
+
+main: kit: entity: porter_large_file: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "oid"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "path"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "ref_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "size"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "porter_large_file"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/import/large_files"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "import"
+            "large_files"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

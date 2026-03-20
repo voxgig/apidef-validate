@@ -1,0 +1,134 @@
+# Entity: workflow
+
+main: kit: entity: workflow: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "auto_assign_owner"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "default_state_id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "description"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "entity_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "project_id"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "state"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "team_id"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "workflow"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          method: "GET"
+          orig: "/api/v3/workflows"
+          parts: [
+            "api"
+            "v3"
+            "workflows"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "workflow_public_id"
+                orig: "workflow_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/workflows/{workflow-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "workflows"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "workflow-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "workflow_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

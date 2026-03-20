@@ -1,0 +1,216 @@
+# Entity: push
+
+main: kit: entity: push: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "change"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "company_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "completed_on_utc"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "data_connection_key"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "data_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "error_message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "push_operation_key"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "requested_on_utc"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "status"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "status_code"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "timeout_in_minute"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "timeout_in_second"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "validation"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "push"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "page_size"
+                orig: "page_size"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "query"
+                orig: "query"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/companies/{companyId}/push"
+          parts: [
+            "companies"
+            "{company_id}"
+            "push"
+          ]
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+              "order_by"
+              "page"
+              "page_size"
+              "query"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "push_operation_key"
+                orig: "push_operation_key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/companies/{companyId}/push/{pushOperationKey}"
+          parts: [
+            "companies"
+            "{company_id}"
+            "push"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              companyId: "company_id"
+              pushOperationKey: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+              "push_operation_key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "companies"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,152 @@
+# Entity: diff_entry
+
+main: kit: entity: diff_entry: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "addition"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "blob_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "change"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "contents_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "deletion"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "filename"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "patch"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "raw_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "sha"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "status"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "diff_entry"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "pull_number"
+                orig: "pull_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/files"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "pulls"
+            "{pull_number}"
+            "files"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "page"
+              "per_page"
+              "pull_number"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "pulls"
+      ]
+    ]
+  }
+
+
+
+}

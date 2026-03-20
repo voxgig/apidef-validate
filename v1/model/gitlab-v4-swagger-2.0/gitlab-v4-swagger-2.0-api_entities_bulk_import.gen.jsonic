@@ -1,0 +1,531 @@
+# Entity: api_entities_bulk_import
+
+main: kit: entity: api_entities_bulk_import: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "bulk_import_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "destination_full_path"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "destination_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "destination_namespace"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "destination_slug"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "entity_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "failure"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "has_failure"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "migrate_membership"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "migrate_project"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "namespace_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "parent_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "project_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "source_full_path"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "source_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "source_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "stat"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "status"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_bulk_import"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "configuration_access_token"
+                orig: "configuration_access_token"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "configuration_url"
+                orig: "configuration_url"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "entities_destination_name"
+                orig: "entities_destination_name"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "entities_destination_namespace"
+                orig: "entities_destination_namespace"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "entities_destination_slug"
+                orig: "entities_destination_slug"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "entities_migrate_membership"
+                orig: "entities_migrate_membership"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "entities_migrate_project"
+                orig: "entities_migrate_project"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "entities_source_full_path"
+                orig: "entities_source_full_path"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "entities_source_type"
+                orig: "entities_source_type"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/bulk_imports"
+          parts: [
+            "api"
+            "v4"
+            "bulk_imports"
+          ]
+          select: {
+            exist: [
+              "configuration_access_token"
+              "configuration_url"
+              "entities_destination_name"
+              "entities_destination_namespace"
+              "entities_destination_slug"
+              "entities_migrate_membership"
+              "entities_migrate_project"
+              "entities_source_full_path"
+              "entities_source_type"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "bulk_import_id"
+                orig: "import_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/bulk_imports/{import_id}/cancel"
+          parts: [
+            "api"
+            "v4"
+            "bulk_imports"
+            "{bulk_import_id}"
+            "cancel"
+          ]
+          rename: {
+            param: {
+              import_id: "bulk_import_id"
+            }
+          }
+          select: {
+            exist: [
+              "bulk_import_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "bulk_import_id"
+                orig: "import_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "status"
+                orig: "status"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/bulk_imports/{import_id}/entities"
+          parts: [
+            "api"
+            "v4"
+            "bulk_imports"
+            "{bulk_import_id}"
+            "entities"
+          ]
+          rename: {
+            param: {
+              import_id: "bulk_import_id"
+            }
+          }
+          select: {
+            exist: [
+              "bulk_import_id"
+              "page"
+              "per_page"
+              "status"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "sort"
+                orig: "sort"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "status"
+                orig: "status"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/bulk_imports"
+          parts: [
+            "api"
+            "v4"
+            "bulk_imports"
+          ]
+          select: {
+            exist: [
+              "page"
+              "per_page"
+              "sort"
+              "status"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "sort"
+                orig: "sort"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "status"
+                orig: "status"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/bulk_imports/entities"
+          parts: [
+            "api"
+            "v4"
+            "bulk_imports"
+            "entities"
+          ]
+          select: {
+            exist: [
+              "page"
+              "per_page"
+              "sort"
+              "status"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "bulk_import_id"
+                orig: "import_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "entity_id"
+                orig: "entity_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/bulk_imports/{import_id}/entities/{entity_id}"
+          parts: [
+            "api"
+            "v4"
+            "bulk_imports"
+            "{bulk_import_id}"
+            "entities"
+            "{entity_id}"
+          ]
+          rename: {
+            param: {
+              import_id: "bulk_import_id"
+            }
+          }
+          select: {
+            exist: [
+              "bulk_import_id"
+              "entity_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "import_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/bulk_imports/{import_id}"
+          parts: [
+            "api"
+            "v4"
+            "bulk_imports"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              import_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "bulk_imports"
+      ]
+      [
+        "bulk_imports"
+        "entities"
+      ]
+    ]
+  }
+
+
+
+}

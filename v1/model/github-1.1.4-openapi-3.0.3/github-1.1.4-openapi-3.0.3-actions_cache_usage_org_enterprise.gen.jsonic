@@ -1,0 +1,80 @@
+# Entity: actions_cache_usage_org_enterprise
+
+main: kit: entity: actions_cache_usage_org_enterprise: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "total_active_caches_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "total_active_caches_size_in_byte"
+      req: true
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "actions_cache_usage_org_enterprise"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/actions/cache/usage"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "cache"
+            "usage"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

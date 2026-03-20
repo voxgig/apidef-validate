@@ -1,0 +1,67 @@
+# Entity: history
+
+main: kit: entity: history: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "history"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "story_public_id"
+                orig: "story_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/stories/{story-public-id}/history"
+          parts: [
+            "api"
+            "v3"
+            "stories"
+            "{story_id}"
+            "history"
+          ]
+          rename: {
+            param: {
+              "story-public-id": "story_id"
+            }
+          }
+          select: {
+            exist: [
+              "story_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "stories"
+      ]
+    ]
+  }
+
+
+
+}

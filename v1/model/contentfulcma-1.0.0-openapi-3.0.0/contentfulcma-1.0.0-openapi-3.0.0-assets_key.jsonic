@@ -1,0 +1,81 @@
+# Entity: assets_key
+
+main: kit: entity: assets_key: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "assets_key"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "environment_id"
+                orig: "environment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/spaces/{space_id}/environments/{environment_id}/asset_keys"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "environments"
+            "{environment_id}"
+            "asset_keys"
+          ]
+          select: {
+            exist: [
+              "content_type"
+              "environment_id"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "spaces"
+        "environments"
+      ]
+    ]
+  }
+
+
+
+}

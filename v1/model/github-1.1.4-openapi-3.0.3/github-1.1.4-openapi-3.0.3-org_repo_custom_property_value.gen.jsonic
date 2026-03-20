@@ -1,0 +1,115 @@
+# Entity: org_repo_custom_property_value
+
+main: kit: entity: org_repo_custom_property_value: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "property"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "repository_full_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "repository_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "repository_name"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "org_repo_custom_property_value"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "repository_query"
+                orig: "repository_query"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/properties/values"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "properties"
+            "values"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "page"
+              "per_page"
+              "repository_query"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,176 @@
+# Entity: page
+
+main: kit: entity: page: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "build_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "cname"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "custom_404"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "html_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "https_certificate"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "https_enforced"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "pending_domain_unverified_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "protected_domain_state"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "public"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "source"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "status"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "page"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{repo}/pages"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "pages"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/pages"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "pages"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

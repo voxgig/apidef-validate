@@ -1,0 +1,298 @@
+# Entity: api_entities_integration
+
+main: kit: entity: api_entities_integration: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "active"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "alert_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "comment_on_event_enabled"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "commit_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "confidential_issues_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "confidential_note_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "deployment_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "incident_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "inherited"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "issues_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "job_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "merge_requests_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "note_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "pipeline_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "property"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "push_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "slug"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "tag_push_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "title"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "vulnerability_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "wiki_page_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_integration"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "group_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "slug"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/groups/{id}/integrations/{slug}"
+          parts: [
+            "api"
+            "v4"
+            "groups"
+            "{group_id}"
+            "integrations"
+            "group_id"
+          ]
+          rename: {
+            param: {
+              id: "group_id"
+              slug: "id"
+            }
+          }
+          select: {
+            exist: [
+              "group_id"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "slug"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/projects/{id}/integrations/{slug}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "integrations"
+            "project_id"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+              slug: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "slug"
+                orig: "slug"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/projects/{id}/services/{slug}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "services"
+            "{slug}"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "project_id"
+              "slug"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "groups"
+      ]
+      [
+        "projects"
+      ]
+      [
+        "projects"
+        "services"
+      ]
+    ]
+  }
+
+
+
+}

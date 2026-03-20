@@ -1,0 +1,272 @@
+# Entity: api_insights_time_stat
+
+main: kit: entity: api_insights_time_stat: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "rate_limited_request_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "timestamp"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "total_request_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_insights_time_stat"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "actor_id"
+                orig: "actor_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "actor_type"
+                orig: "actor_type"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "org"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "max_timestamp"
+                orig: "max_timestamp"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "min_timestamp"
+                orig: "min_timestamp"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "timestamp_increment"
+                orig: "timestamp_increment"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/insights/api/time-stats/{actor_type}/{actor_id}"
+          parts: [
+            "orgs"
+            "{org}"
+            "insights"
+            "api"
+            "time-stats"
+            "{actor_type}"
+            "{actor_id}"
+          ]
+          select: {
+            exist: [
+              "actor_id"
+              "actor_type"
+              "max_timestamp"
+              "min_timestamp"
+              "org"
+              "timestamp_increment"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "max_timestamp"
+                orig: "max_timestamp"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "min_timestamp"
+                orig: "min_timestamp"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "timestamp_increment"
+                orig: "timestamp_increment"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/insights/api/time-stats"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "insights"
+            "api"
+            "time-stats"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "max_timestamp"
+              "min_timestamp"
+              "org_id"
+              "timestamp_increment"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "user_id"
+                orig: "user_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "max_timestamp"
+                orig: "max_timestamp"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "min_timestamp"
+                orig: "min_timestamp"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "timestamp_increment"
+                orig: "timestamp_increment"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/insights/api/time-stats/users/{user_id}"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "insights"
+            "api"
+            "time-stats"
+            "users"
+            "{user_id}"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "max_timestamp"
+              "min_timestamp"
+              "org_id"
+              "timestamp_increment"
+              "user_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "orgs"
+        "users"
+      ]
+      [
+        "orgs"
+        "time-stats"
+        "{actor_type}"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,245 @@
+# Entity: custom
+
+main: kit: entity: custom: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "data_source"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "key_by"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "page_number"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "page_size"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "required_data"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "result"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "source_modified_date"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "total_result"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "custom"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "connection_id"
+                orig: "connection_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "custom_data_identifier"
+                orig: "custom_data_identifier"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "page_size"
+                orig: "page_size"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/companies/{companyId}/connections/{connectionId}/data/custom/{customDataIdentifier}"
+          parts: [
+            "companies"
+            "{company_id}"
+            "connections"
+            "{connection_id}"
+            "data"
+            "custom"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              companyId: "company_id"
+              connectionId: "connection_id"
+              customDataIdentifier: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+              "connection_id"
+              "custom_data_identifier"
+              "page"
+              "page_size"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "custom_data_identifier"
+                orig: "custom_data_identifier"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "platform_key"
+                orig: "platform_key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}"
+          parts: [
+            "integrations"
+            "{platformKey}"
+            "dataTypes"
+            "custom"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              customDataIdentifier: "id"
+            }
+          }
+          select: {
+            exist: [
+              "custom_data_identifier"
+              "platform_key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "custom_data_identifier"
+                orig: "custom_data_identifier"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "platform_key"
+                orig: "platform_key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}"
+          parts: [
+            "integrations"
+            "{platformKey}"
+            "dataTypes"
+            "custom"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              customDataIdentifier: "id"
+            }
+          }
+          select: {
+            exist: [
+              "custom_data_identifier"
+              "platform_key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "integrations"
+      ]
+      [
+        "companies"
+        "connections"
+      ]
+    ]
+  }
+
+
+
+}

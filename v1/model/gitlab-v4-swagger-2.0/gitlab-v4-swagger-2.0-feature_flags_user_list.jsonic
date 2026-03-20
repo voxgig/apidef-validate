@@ -1,0 +1,77 @@
+# Entity: feature_flags_user_list
+
+main: kit: entity: feature_flags_user_list: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "feature_flags_user_list"
+  op: {
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "iid"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/projects/{id}/feature_flags_user_lists/{iid}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "feature_flags_user_lists"
+            "project_id"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+              iid: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,134 @@
+# Entity: actions_fork_pr_workflows_private_repo
+
+main: kit: entity: actions_fork_pr_workflows_private_repo: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "require_approval_for_fork_pr_workflow"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "run_workflows_from_fork_pull_request"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "send_secrets_and_variable"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "send_write_tokens_to_workflow"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "actions_fork_pr_workflows_private_repo"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "actions"
+            "permissions"
+            "fork-pr-workflows-private-repos"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/actions/permissions/fork-pr-workflows-private-repos"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "permissions"
+            "fork-pr-workflows-private-repos"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

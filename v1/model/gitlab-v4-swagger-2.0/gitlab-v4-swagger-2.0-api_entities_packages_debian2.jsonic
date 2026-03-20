@@ -1,0 +1,78 @@
+# Entity: api_entities_packages_debian2
+
+main: kit: entity: api_entities_packages_debian2: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_packages_debian2"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "group_id"
+                orig: "id"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_groups_id_debian_distribution"
+                orig: "post_api_v4_groups_id_debian_distribution"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/groups/{id}/-/debian_distributions"
+          parts: [
+            "api"
+            "v4"
+            "groups"
+            "{group_id}"
+            "-"
+            "debian_distributions"
+          ]
+          rename: {
+            param: {
+              id: "group_id"
+            }
+          }
+          select: {
+            exist: [
+              "group_id"
+              "post_api_v4_groups_id_debian_distribution"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "groups"
+      ]
+    ]
+  }
+
+
+
+}

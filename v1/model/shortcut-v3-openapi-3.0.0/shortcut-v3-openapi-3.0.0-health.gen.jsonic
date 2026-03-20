@@ -1,0 +1,243 @@
+# Entity: health
+
+main: kit: entity: health: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "author_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "entity_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "epic_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "objective_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "status"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "text"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "health"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "epic_public_id"
+                orig: "epic_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v3/epics/{epic-public-id}/health"
+          parts: [
+            "api"
+            "v3"
+            "epics"
+            "{epic_id}"
+            "health"
+          ]
+          rename: {
+            param: {
+              "epic-public-id": "epic_id"
+            }
+          }
+          select: {
+            exist: [
+              "epic_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "epic_public_id"
+                orig: "epic_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/epics/{epic-public-id}/health-history"
+          parts: [
+            "api"
+            "v3"
+            "epics"
+            "{epic_id}"
+            "health-history"
+          ]
+          rename: {
+            param: {
+              "epic-public-id": "epic_id"
+            }
+          }
+          select: {
+            exist: [
+              "epic_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "epic_public_id"
+                orig: "epic_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v3/epics/{epic-public-id}/health"
+          parts: [
+            "api"
+            "v3"
+            "epics"
+            "{epic_id}"
+            "health"
+          ]
+          rename: {
+            param: {
+              "epic-public-id": "epic_id"
+            }
+          }
+          select: {
+            exist: [
+              "epic_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "health_public_id"
+                orig: "health_public_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v3/health/{health-public-id}"
+          parts: [
+            "api"
+            "v3"
+            "health"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              "health-public-id": "id"
+            }
+          }
+          select: {
+            exist: [
+              "health_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "epics"
+      ]
+    ]
+  }
+
+
+
+}

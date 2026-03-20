@@ -1,0 +1,152 @@
+# Entity: check_annotation
+
+main: kit: entity: check_annotation: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "annotation_level"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "blob_href"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "end_column"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "end_line"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "path"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "raw_detail"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "start_column"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "start_line"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "title"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "check_annotation"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "check_run_id"
+                orig: "check_run_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/check-runs/{check_run_id}/annotations"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "check-runs"
+            "{check_run_id}"
+            "annotations"
+          ]
+          select: {
+            exist: [
+              "check_run_id"
+              "owner"
+              "page"
+              "per_page"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "check-runs"
+      ]
+    ]
+  }
+
+
+
+}

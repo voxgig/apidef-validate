@@ -1,0 +1,80 @@
+# Entity: send_transfer
+
+main: kit: entity: send_transfer: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "error_code"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "result_code"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "transfer_record"
+      req: true
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "send_transfer"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "xc_orrelation_id"
+                orig: "xc_orrelation_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "request"
+                orig: "request"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/V1/SendTransfer"
+          parts: [
+            "api"
+            "V1"
+            "SendTransfer"
+          ]
+          select: {
+            exist: [
+              "request"
+              "xc_orrelation_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

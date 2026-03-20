@@ -1,0 +1,87 @@
+# Entity: story_reaction
+
+main: kit: entity: story_reaction: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "emoji"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "story_reaction"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "comment_public_id"
+                orig: "comment_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "story_public_id"
+                orig: "story_public_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions"
+          parts: [
+            "api"
+            "v3"
+            "stories"
+            "{story_id}"
+            "comments"
+            "{comment_id}"
+            "reactions"
+          ]
+          rename: {
+            param: {
+              "comment-public-id": "comment_id"
+              "story-public-id": "story_id"
+            }
+          }
+          select: {
+            exist: [
+              "comment_public_id"
+              "story_public_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "stories"
+        "comments"
+      ]
+    ]
+  }
+
+
+
+}

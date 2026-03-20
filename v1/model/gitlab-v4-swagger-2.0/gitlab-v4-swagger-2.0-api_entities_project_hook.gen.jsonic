@@ -1,0 +1,411 @@
+# Entity: api_entities_project_hook
+
+main: kit: entity: api_entities_project_hook: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "alert_status"
+      req: false
+      type: "Any"
+    }
+    {
+      name: "branch_filter_strategy"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "confidential_issues_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "confidential_note_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "custom_header"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "custom_webhook_template"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "deployment_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "disabled_until"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "emoji_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "enable_ssl_verification"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "feature_flag_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "issues_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "job_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "merge_requests_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "milestone_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "note_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "pipeline_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "project_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "push_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "push_events_branch_filter"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "releases_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "repository_update_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "resource_access_token_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "tag_push_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url_variable"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "vulnerability_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "wiki_page_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_project_hook"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_projects_id_hook"
+                orig: "post_api_v4_projects_id_hook"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/projects/{id}/hooks"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "hooks"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "post_api_v4_projects_id_hook"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/projects/{id}/hooks"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "hooks"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "page"
+              "per_page"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "hook_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/projects/{id}/hooks/{hook_id}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "hooks"
+            "project_id"
+          ]
+          rename: {
+            param: {
+              hook_id: "id"
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "hook_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "put_api_v4_projects_id_hooks_hook_id"
+                orig: "put_api_v4_projects_id_hooks_hook_id"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v4/projects/{id}/hooks/{hook_id}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "hooks"
+            "project_id"
+          ]
+          rename: {
+            param: {
+              hook_id: "id"
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "project_id"
+              "put_api_v4_projects_id_hooks_hook_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,137 @@
+# Entity: organization_samlauth
+
+main: kit: entity: organization_samlauth: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "saml_auth_enabled"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "saml_auth_enforced"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "saml_metadata_inline"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "saml_metadata_url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "organization_samlauth"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/saml-authentication"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "saml-authentication"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "data"
+                orig: "data"
+                reqd: false
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/orgs/{org}/saml-authentication"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "saml-authentication"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "data"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

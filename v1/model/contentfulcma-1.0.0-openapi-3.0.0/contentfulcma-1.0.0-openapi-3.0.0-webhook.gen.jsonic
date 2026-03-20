@@ -1,0 +1,417 @@
+# Entity: webhook
+
+main: kit: entity: webhook: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "webhook"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/spaces/{space_id}/webhook_definitions"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "webhook_definitions"
+          ]
+          select: {
+            exist: [
+              "content_type"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "call_id"
+                orig: "call_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "webhook_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/spaces/{space_id}/webhooks/{webhook_id}/calls/{call_id}"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "webhooks"
+            "{id}"
+            "calls"
+            "{call_id}"
+          ]
+          rename: {
+            param: {
+              webhook_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "call_id"
+              "content_type"
+              "id"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "webhook_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/spaces/{space_id}/webhooks/{webhook_id}/health"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "webhooks"
+            "{id}"
+            "health"
+          ]
+          rename: {
+            param: {
+              webhook_id: "id"
+            }
+          }
+          select: {
+            "$action": "health"
+            exist: [
+              "content_type"
+              "id"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "webhook_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/spaces/{space_id}/webhooks/{webhook_id}/calls"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "webhooks"
+            "{id}"
+            "calls"
+          ]
+          rename: {
+            param: {
+              webhook_id: "id"
+            }
+          }
+          select: {
+            "$action": "call"
+            exist: [
+              "id"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "webhook_definition_id"
+                orig: "webhook_definition_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/spaces/{space_id}/webhook_definitions/{webhook_definition_id}"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "webhook_definitions"
+            "{webhook_definition_id}"
+          ]
+          select: {
+            exist: [
+              "space_id"
+              "webhook_definition_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/spaces/{space_id}/webhook_definitions"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "webhook_definitions"
+          ]
+          select: {
+            exist: [
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "webhook_definition_id"
+                orig: "webhook_definition_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/spaces/{space_id}/webhook_definitions/{webhook_definition_id}"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "webhook_definitions"
+            "{webhook_definition_id}"
+          ]
+          select: {
+            exist: [
+              "space_id"
+              "webhook_definition_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "xc_ontentful_version"
+                orig: "xc_ontentful_version"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "webhook_definition_id"
+                orig: "webhook_definition_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/spaces/{space_id}/webhook_definitions/{webhook_definition_id}"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "webhook_definitions"
+            "{webhook_definition_id}"
+          ]
+          select: {
+            exist: [
+              "content_type"
+              "space_id"
+              "webhook_definition_id"
+              "xc_ontentful_version"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "spaces"
+      ]
+      [
+        "spaces"
+        "webhook_definitions"
+      ]
+      [
+        "spaces"
+        "calls"
+      ]
+    ]
+  }
+
+
+
+}

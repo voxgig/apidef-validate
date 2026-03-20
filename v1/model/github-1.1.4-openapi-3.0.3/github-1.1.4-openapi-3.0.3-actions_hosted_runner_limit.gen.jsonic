@@ -1,0 +1,75 @@
+# Entity: actions_hosted_runner_limit
+
+main: kit: entity: actions_hosted_runner_limit: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "public_ip"
+      req: true
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "actions_hosted_runner_limit"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/actions/hosted-runners/limits"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "actions"
+            "hosted-runners"
+            "limits"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

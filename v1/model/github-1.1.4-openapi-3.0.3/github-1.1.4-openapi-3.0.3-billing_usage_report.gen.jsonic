@@ -1,0 +1,104 @@
+# Entity: billing_usage_report
+
+main: kit: entity: billing_usage_report: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "usage_item"
+      req: false
+      type: "`$ARRAY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "billing_usage_report"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "day"
+                orig: "day"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "hour"
+                orig: "hour"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "month"
+                orig: "month"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "year"
+                orig: "year"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/organizations/{org}/settings/billing/usage"
+          parts: [
+            "organizations"
+            "{org}"
+            "settings"
+            "billing"
+            "usage"
+          ]
+          select: {
+            exist: [
+              "day"
+              "hour"
+              "month"
+              "org"
+              "year"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "organizations"
+      ]
+    ]
+  }
+
+
+
+}

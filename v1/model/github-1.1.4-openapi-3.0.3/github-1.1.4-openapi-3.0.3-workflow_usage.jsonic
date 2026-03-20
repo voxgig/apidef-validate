@@ -1,0 +1,95 @@
+# Entity: workflow_usage
+
+main: kit: entity: workflow_usage: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "billable"
+      req: true
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "workflow_usage"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "workflow_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "actions"
+            "workflows"
+            "{id}"
+            "timing"
+          ]
+          rename: {
+            param: {
+              workflow_id: "id"
+            }
+          }
+          select: {
+            "$action": "timing"
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+      ]
+    ]
+  }
+
+
+
+}

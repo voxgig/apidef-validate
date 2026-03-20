@@ -1,0 +1,168 @@
+# Entity: api_insights_subject_stat
+
+main: kit: entity: api_insights_subject_stat: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "integration_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "last_rate_limited_timestamp"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "last_request_timestamp"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "rate_limited_request_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "subject_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "subject_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "subject_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "total_request_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_insights_subject_stat"
+  op: {
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "direction"
+                orig: "direction"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "max_timestamp"
+                orig: "max_timestamp"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "min_timestamp"
+                orig: "min_timestamp"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "sort"
+                orig: "sort"
+                reqd: false
+                type: "`$ARRAY`"
+              }
+              {
+                kind: "query"
+                name: "subject_name_substring"
+                orig: "subject_name_substring"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/insights/api/subject-stats"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "insights"
+            "api"
+            "subject-stats"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "direction"
+              "max_timestamp"
+              "min_timestamp"
+              "org_id"
+              "page"
+              "per_page"
+              "sort"
+              "subject_name_substring"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+    ]
+  }
+
+
+
+}

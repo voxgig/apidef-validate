@@ -1,0 +1,146 @@
+# Entity: code_scanning_variant_analysis_repo_task
+
+main: kit: entity: code_scanning_variant_analysis_repo_task: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "analysis_status"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "artifact_size_in_byte"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "artifact_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "database_commit_sha"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "failure_message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "repository"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "result_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "source_location_prefix"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_scanning_variant_analysis_repo_task"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "codeql_variant_analysis_id"
+                orig: "codeql_variant_analysis_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo_name"
+                orig: "repo_name"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo_owner"
+                orig: "repo_owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/code-scanning/codeql/variant-analyses/{codeql_variant_analysis_id}/repos/{repo_owner}/{repo_name}"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "code-scanning"
+            "codeql"
+            "variant-analyses"
+            "{codeql_variant_analysis_id}"
+            "repos"
+            "{repo_owner}"
+            "{repo_name}"
+          ]
+          select: {
+            exist: [
+              "codeql_variant_analysis_id"
+              "owner"
+              "repo"
+              "repo_name"
+              "repo_owner"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "variant-analyses"
+        "repos"
+        "{repo_owner}"
+      ]
+    ]
+  }
+
+
+
+}

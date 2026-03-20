@@ -1,0 +1,235 @@
+# Entity: feature_flag
+
+main: kit: entity: feature_flag: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "feature_flag"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "unleash_id"
+                orig: "project_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_feature_flags_unleash_project_id_client_metric"
+                orig: "post_api_v4_feature_flags_unleash_project_id_client_metric"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/feature_flags/unleash/{project_id}/client/metrics"
+          parts: [
+            "api"
+            "v4"
+            "feature_flags"
+            "unleash"
+            "{unleash_id}"
+            "client"
+            "metrics"
+          ]
+          rename: {
+            param: {
+              project_id: "unleash_id"
+            }
+          }
+          select: {
+            exist: [
+              "post_api_v4_feature_flags_unleash_project_id_client_metric"
+              "unleash_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "unleash_id"
+                orig: "project_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_feature_flags_unleash_project_id_client_register"
+                orig: "post_api_v4_feature_flags_unleash_project_id_client_register"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/feature_flags/unleash/{project_id}/client/register"
+          parts: [
+            "api"
+            "v4"
+            "feature_flags"
+            "unleash"
+            "{unleash_id}"
+            "client"
+            "register"
+          ]
+          rename: {
+            param: {
+              project_id: "unleash_id"
+            }
+          }
+          select: {
+            exist: [
+              "post_api_v4_feature_flags_unleash_project_id_client_register"
+              "unleash_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "project_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "app_name"
+                orig: "app_name"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "query"
+                name: "instance_id"
+                orig: "instance_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/feature_flags/unleash/{project_id}"
+          parts: [
+            "api"
+            "v4"
+            "feature_flags"
+            "unleash"
+            "{project_id}"
+          ]
+          select: {
+            exist: [
+              "app_name"
+              "instance_id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "feature_flag_name"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/api/v4/projects/{id}/feature_flags/{feature_flag_name}"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "feature_flags"
+            "project_id"
+          ]
+          rename: {
+            param: {
+              feature_flag_name: "id"
+              id: "project_id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "unleash"
+      ]
+      [
+        "projects"
+      ]
+    ]
+  }
+
+
+
+}

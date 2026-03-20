@@ -1,0 +1,92 @@
+# Entity: api_entities_dictionary_table
+
+main: kit: entity: api_entities_dictionary_table: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "feature_category"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "table_name"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_dictionary_table"
+  op: {
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "databas_id"
+                orig: "database_name"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "table_name"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/admin/databases/{database_name}/dictionary/tables/{table_name}"
+          parts: [
+            "api"
+            "v4"
+            "admin"
+            "databases"
+            "{databas_id}"
+            "dictionary"
+            "tables"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              database_name: "databas_id"
+              table_name: "id"
+            }
+          }
+          select: {
+            exist: [
+              "databas_id"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "databases"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,254 @@
+# Entity: bulk_action
+
+main: kit: entity: bulk_action: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "bulk_action"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "environment_id"
+                orig: "environment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/publish"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "environment"
+            "{environment_id}"
+            "bulk_actions"
+            "publish"
+          ]
+          select: {
+            "$action": "publish"
+            exist: [
+              "content_type"
+              "environment_id"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "environment_id"
+                orig: "environment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/unpublish"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "environment"
+            "{environment_id}"
+            "bulk_actions"
+            "unpublish"
+          ]
+          select: {
+            "$action": "unpublish"
+            exist: [
+              "content_type"
+              "environment_id"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "environment_id"
+                orig: "environment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/validate"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "environment"
+            "{environment_id}"
+            "bulk_actions"
+            "validate"
+          ]
+          select: {
+            "$action": "validate"
+            exist: [
+              "content_type"
+              "environment_id"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "content_type"
+                orig: "content_type"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "environment_id"
+                orig: "environment_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "bulk_action_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "space_id"
+                orig: "space_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/actions/{bulk_action_id}"
+          parts: [
+            "spaces"
+            "{space_id}"
+            "environment"
+            "{environment_id}"
+            "bulk_actions"
+            "actions"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              bulk_action_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "content_type"
+              "environment_id"
+              "id"
+              "space_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "spaces"
+        "environment"
+      ]
+    ]
+  }
+
+
+
+}

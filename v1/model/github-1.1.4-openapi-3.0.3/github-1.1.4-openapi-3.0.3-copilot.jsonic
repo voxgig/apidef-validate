@@ -1,0 +1,365 @@
+# Entity: copilot
+
+main: kit: entity: copilot: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "assignee"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "assigning_team"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "last_activity_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "last_activity_editor"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "last_authenticated_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "organization"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "pending_cancellation_date"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "plan_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "seat"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "selected_team"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "selected_username"
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "total_seat"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "copilot"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/orgs/{org}/copilot/billing/selected_teams"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "copilot"
+            "billing"
+            "selected_teams"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/orgs/{org}/copilot/billing/selected_users"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "copilot"
+            "billing"
+            "selected_users"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/copilot/billing/seats"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "copilot"
+            "billing"
+            "seats"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "page"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "username"
+                orig: "username"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/orgs/{org}/members/{username}/copilot"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "members"
+            "{username}"
+            "copilot"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+              "username"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/orgs/{org}/copilot/billing/selected_teams"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "copilot"
+            "billing"
+            "selected_teams"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/orgs/{org}/copilot/billing/selected_users"
+          parts: [
+            "orgs"
+            "{org_id}"
+            "copilot"
+            "billing"
+            "selected_users"
+          ]
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          select: {
+            exist: [
+              "org_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "orgs"
+      ]
+      [
+        "orgs"
+        "members"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,178 @@
+# Entity: protected_branch
+
+main: kit: entity: protected_branch: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "allow_deletion"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "allow_force_push"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "allow_fork_syncing"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "block_creation"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "enforce_admin"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "lock_branch"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "required_conversation_resolution"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "required_linear_history"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "required_pull_request_review"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "required_signature"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "required_status_check"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "restriction"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "protected_branch"
+  op: {
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "branch_id"
+                orig: "branch"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/repos/{owner}/{repo}/branches/{branch}/protection"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "branches"
+            "{branch_id}"
+            "protection"
+          ]
+          rename: {
+            param: {
+              branch: "branch_id"
+            }
+          }
+          select: {
+            exist: [
+              "branch_id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repos"
+        "{owner}"
+        "branches"
+      ]
+    ]
+  }
+
+
+
+}

@@ -1,0 +1,89 @@
+# Entity: ee_api_entities_approval_state
+
+main: kit: entity: ee_api_entities_approval_state: {
+
+  alias: field: {}
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "ee_api_entities_approval_state"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "merge_request_id"
+                orig: "merge_request_iid"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_projects_id_merge_requests_merge_request_iid_approval"
+                orig: "post_api_v4_projects_id_merge_requests_merge_request_iid_approval"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/approvals"
+          parts: [
+            "api"
+            "v4"
+            "projects"
+            "{project_id}"
+            "merge_requests"
+            "{merge_request_id}"
+            "approvals"
+          ]
+          rename: {
+            param: {
+              id: "project_id"
+              merge_request_iid: "merge_request_id"
+            }
+          }
+          select: {
+            exist: [
+              "merge_request_id"
+              "post_api_v4_projects_id_merge_requests_merge_request_iid_approval"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "projects"
+        "merge_requests"
+      ]
+    ]
+  }
+
+
+
+}

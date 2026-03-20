@@ -1,0 +1,272 @@
+# Entity: api_entities_hook
+
+main: kit: entity: api_entities_hook: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "alert_status"
+      req: false
+      type: "Any"
+    }
+    {
+      name: "branch_filter_strategy"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "custom_header"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "custom_webhook_template"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "disabled_until"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "enable_ssl_verification"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "merge_requests_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "push_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "push_events_branch_filter"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "repository_update_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "tag_push_event"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url_variable"
+      req: false
+      type: "`$ARRAY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "api_entities_hook"
+  op: {
+    create: {
+      name: "create"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_hook"
+                orig: "post_api_v4_hook"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/hooks"
+          parts: [
+            "api"
+            "v4"
+            "hooks"
+          ]
+          select: {
+            exist: [
+              "post_api_v4_hook"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      targets: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/hooks"
+          parts: [
+            "api"
+            "v4"
+            "hooks"
+          ]
+          select: {
+            exist: [
+              "page"
+              "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "hook_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/api/v4/hooks/{hook_id}"
+          parts: [
+            "api"
+            "v4"
+            "hooks"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              hook_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      targets: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "hook_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "put_api_v4_hooks_hook_id"
+                orig: "put_api_v4_hooks_hook_id"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v4/hooks/{hook_id}"
+          parts: [
+            "api"
+            "v4"
+            "hooks"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              hook_id: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "put_api_v4_hooks_hook_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}
