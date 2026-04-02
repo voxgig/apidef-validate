@@ -6,7 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_path_1 = __importDefault(require("node:path"));
 const node_test_1 = require("node:test");
-const code_1 = require("@hapi/code");
+const node_assert_1 = __importDefault(require("node:assert"));
 const apidef_1 = require("@voxgig/apidef");
 const jostraca_1 = require("jostraca");
 const __1 = require("../..");
@@ -34,7 +34,7 @@ if (0 < caseSelector.length) {
 }
 (0, node_test_1.describe)('main', () => {
     (0, node_test_1.test)('happy', async () => {
-        (0, code_1.expect)((0, __2.main)()).equal('main');
+        node_assert_1.default.equal((0, __2.main)(), 'main');
     });
     (0, node_test_1.test)('guide-case', async () => {
         const { fs, vol } = prepfs(cases);
@@ -55,19 +55,19 @@ if (0 < caseSelector.length) {
                 });
                 break;
                 if (!bres?.ok) {
-                    console.log('BUILD WARN: ' + fullname(c) + ' build not ok, skipping validation');
+                    fails.push('BUILD FAIL: ' + fullname(c) + ' build not ok');
                 }
                 else {
                     validateGuide(c, fails, bres, fs, vol, testmetrics);
                 }
             }
             catch (err) {
-                console.log('BUILD WARN: ' + fullname(c) + ' build error, skipping validation');
+                fails.push('BUILD ERROR: ' + fullname(c) + ' ' + (err?.message || err));
             }
         }
         console.log('TOTAL TODOS: ' + testmetrics.todo);
         if (0 < fails.length) {
-            (0, code_1.fail)(fails.join('\n---\n'));
+            node_assert_1.default.fail(fails.join('\n---\n'));
         }
     });
     (0, node_test_1.test)('model-case', async () => {
@@ -91,7 +91,7 @@ if (0 < caseSelector.length) {
                 });
                 // console.log('BRES', c, bres)
                 if (!bres?.ok) {
-                    console.log('BUILD WARN: ' + fullname(c) + ' build not ok, skipping validation');
+                    fails.push('BUILD FAIL: ' + fullname(c) + ' build not ok');
                 }
                 else {
                     validateGuide(c, fails, bres, fs, vol, testmetrics);
@@ -99,12 +99,12 @@ if (0 < caseSelector.length) {
                 }
             }
             catch (err) {
-                console.log('BUILD WARN: ' + fullname(c) + ' build error, skipping validation');
+                fails.push('BUILD ERROR: ' + fullname(c) + ' ' + (err?.message || err));
             }
         }
         console.log('TOTAL TODOS: ' + testmetrics.todo);
         if (0 < fails.length) {
-            (0, code_1.fail)(fails.join('\n---\n'));
+            node_assert_1.default.fail(fails.join('\n---\n'));
         }
     });
 });

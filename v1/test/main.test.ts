@@ -4,7 +4,7 @@ import * as Fs from 'node:fs'
 import Path from 'node:path'
 import { test, describe } from 'node:test'
 
-import { expect, fail } from '@hapi/code'
+import assert from 'node:assert'
 
 import { ApiDef, formatJSONIC } from '@voxgig/apidef'
 
@@ -66,7 +66,7 @@ if (0 < caseSelector.length) {
 describe('main', () => {
 
   test('happy', async () => {
-    expect(main()).equal('main')
+    assert.equal(main(), 'main')
   })
 
 
@@ -96,21 +96,21 @@ describe('main', () => {
         break;
 
         if (!bres?.ok) {
-          console.log('BUILD WARN: ' + fullname(c) + ' build not ok, skipping validation')
+          fails.push('BUILD FAIL: ' + fullname(c) + ' build not ok')
         }
         else {
           validateGuide(c, fails, bres, fs, vol, testmetrics)
         }
       }
       catch (err: any) {
-        console.log('BUILD WARN: ' + fullname(c) + ' build error, skipping validation')
+        fails.push('BUILD ERROR: ' + fullname(c) + ' ' + (err?.message || err))
       }
     }
 
     console.log('TOTAL TODOS: ' + testmetrics.todo)
 
     if (0 < fails.length) {
-      fail(fails.join('\n---\n'))
+      assert.fail(fails.join('\n---\n'))
     }
 
   })
@@ -144,7 +144,7 @@ describe('main', () => {
         // console.log('BRES', c, bres)
 
         if (!bres?.ok) {
-          console.log('BUILD WARN: ' + fullname(c) + ' build not ok, skipping validation')
+          fails.push('BUILD FAIL: ' + fullname(c) + ' build not ok')
         }
         else {
           validateGuide(c, fails, bres, fs, vol, testmetrics)
@@ -152,14 +152,14 @@ describe('main', () => {
         }
       }
       catch (err: any) {
-        console.log('BUILD WARN: ' + fullname(c) + ' build error, skipping validation')
+        fails.push('BUILD ERROR: ' + fullname(c) + ' ' + (err?.message || err))
       }
     }
 
     console.log('TOTAL TODOS: ' + testmetrics.todo)
 
     if (0 < fails.length) {
-      fail(fails.join('\n---\n'))
+      assert.fail(fails.join('\n---\n'))
     }
 
   })
