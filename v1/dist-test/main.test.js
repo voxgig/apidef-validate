@@ -53,7 +53,6 @@ if (0 < caseSelector.length) {
                     builders: false,
                     generate: false,
                 });
-                break;
                 if (!bres?.ok) {
                     fails.push('BUILD FAIL: ' + fullname(c) + ' build not ok');
                 }

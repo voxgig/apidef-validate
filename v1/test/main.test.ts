@@ -93,8 +93,6 @@ describe('main', () => {
           generate: false,
         })
 
-        break;
-
         if (!bres?.ok) {
           fails.push('BUILD FAIL: ' + fullname(c) + ' build not ok')
         }
