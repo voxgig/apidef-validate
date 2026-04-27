@@ -10,67 +10,6 @@ main: kit: entity: setting: {
   }
 
   name: "setting"
-  op: {
-    create: {
-      name: "create"
-      points: [
-        {
-          method: "POST"
-          orig: "/profile/syncSettings"
-          parts: [
-            "profile"
-            "syncSettings"
-          ]
-          transform: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    remove: {
-      name: "remove"
-      points: [
-        {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "api_key_id"
-                orig: "api_key_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          method: "DELETE"
-          orig: "/apiKeys/{apiKeyId}"
-          parts: [
-            "apiKeys"
-            "{apiKeyId}"
-          ]
-          select: {
-            exist: [
-              "api_key_id"
-            ]
-          }
-          transform: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-  }
-
-  relations: {
-    ancestors: [
-      [
-        "apiKeys"
-      ]
-    ]
-  }
-
 
 
 }
