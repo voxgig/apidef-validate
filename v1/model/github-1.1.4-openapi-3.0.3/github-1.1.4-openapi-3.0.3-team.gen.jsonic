@@ -11,6 +11,11 @@ main: kit: entity: team: {
       type: "`$BOOLEAN`"
     }
     {
+      name: "allow_forking"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
       name: "allow_merge_commit"
       req: false
       type: "`$BOOLEAN`"
@@ -27,47 +32,48 @@ main: kit: entity: team: {
     }
     {
       name: "archive_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "archived"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
       type: "`$BOOLEAN`"
     }
     {
       name: "assignees_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "assignment"
       req: false
       type: "`$STRING`"
     }
     {
       name: "author"
-      op: {
-        list: {
-          req: false
-          type: "`$OBJECT`"
-        }
-      }
       req: true
       type: "`$OBJECT`"
     }
     {
       name: "avatar_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "blobs_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "body"
       op: {
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
         patch: {
           req: false
           type: "`$STRING`"
@@ -78,92 +84,73 @@ main: kit: entity: team: {
     }
     {
       name: "body_html"
-      op: {
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
       req: true
       type: "`$STRING`"
     }
     {
       name: "body_version"
-      op: {
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
       req: true
       type: "`$STRING`"
     }
     {
       name: "branches_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "clone_url"
-      req: false
-      type: "`$STRING`"
-    }
-    {
-      name: "collaborators_url"
-      req: false
-      type: "`$STRING`"
-    }
-    {
-      name: "columns_url"
       op: {
         list: {
           req: false
           type: "`$STRING`"
         }
       }
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "code_of_conduct"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "collaborators_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "columns_url"
       req: true
       type: "`$STRING`"
     }
     {
       name: "comments_count"
-      op: {
-        list: {
-          req: false
-          type: "`$INTEGER`"
-        }
-      }
       req: true
       type: "`$INTEGER`"
     }
     {
       name: "comments_url"
-      op: {
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
       req: true
       type: "`$STRING`"
     }
     {
       name: "commits_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "compare_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "contents_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "contributors_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
@@ -179,18 +166,23 @@ main: kit: entity: team: {
     }
     {
       name: "creator"
-      op: {
-        list: {
-          req: false
-          type: "`$OBJECT`"
-        }
-      }
       req: true
       type: "`$OBJECT`"
     }
     {
-      name: "default_branch"
+      name: "custom_property"
       req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "default_branch"
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
       type: "`$STRING`"
     }
     {
@@ -200,17 +192,13 @@ main: kit: entity: team: {
     }
     {
       name: "deployments_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "description"
       op: {
         create: {
-          req: false
-          type: "`$STRING`"
-        }
-        list: {
           req: false
           type: "`$STRING`"
         }
@@ -228,7 +216,13 @@ main: kit: entity: team: {
     }
     {
       name: "disabled"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
       type: "`$BOOLEAN`"
     }
     {
@@ -238,17 +232,23 @@ main: kit: entity: team: {
     }
     {
       name: "downloads_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "email"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
     {
       name: "events_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
@@ -263,107 +263,162 @@ main: kit: entity: team: {
     }
     {
       name: "followers_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "following_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "fork"
-      req: false
-      type: "`$BOOLEAN`"
+      op: {
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
+      type: "`$INTEGER`"
     }
     {
       name: "forks_count"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
       type: "`$INTEGER`"
     }
     {
       name: "forks_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "full_name"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "gists_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "git_commits_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "git_refs_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "git_tags_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "git_url"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
       type: "`$STRING`"
     }
     {
       name: "gravatar_id"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
-      name: "has_download"
+      name: "has_discussion"
       req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "has_download"
+      op: {
+        list: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
       type: "`$BOOLEAN`"
     }
     {
       name: "has_issue"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
       type: "`$BOOLEAN`"
     }
     {
       name: "has_page"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
       type: "`$BOOLEAN`"
     }
     {
       name: "has_project"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
       type: "`$BOOLEAN`"
     }
     {
       name: "has_wiki"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: true
       type: "`$BOOLEAN`"
     }
     {
       name: "homepage"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
       type: "`$STRING`"
     }
     {
       name: "hooks_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "html_url"
       op: {
         create: {
-          req: false
-          type: "`$STRING`"
-        }
-        list: {
           req: false
           type: "`$STRING`"
         }
@@ -382,10 +437,6 @@ main: kit: entity: team: {
           req: false
           type: "`$INTEGER`"
         }
-        list: {
-          req: false
-          type: "`$INTEGER`"
-        }
         update: {
           req: false
           type: "`$INTEGER`"
@@ -401,12 +452,12 @@ main: kit: entity: team: {
     }
     {
       name: "invitation_teams_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "inviter"
-      req: false
+      req: true
       type: "`$OBJECT`"
     }
     {
@@ -416,47 +467,47 @@ main: kit: entity: team: {
     }
     {
       name: "issue_comment_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "issue_events_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "issues_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "keys_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "labels_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "language"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
       type: "`$STRING`"
     }
     {
       name: "languages_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "last_edited_at"
-      op: {
-        list: {
-          req: false
-          type: "`$OBJECT`"
-        }
-      }
       req: true
       type: "`$STRING`"
     }
@@ -467,18 +518,29 @@ main: kit: entity: team: {
     }
     {
       name: "licenses"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$OBJECT`"
+        }
+      }
+      req: true
       type: "`$OBJECT`"
     }
     {
       name: "login"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "maintainer"
       req: false
       type: "`$ARRAY`"
+    }
+    {
+      name: "master_branch"
+      req: false
+      type: "`$STRING`"
     }
     {
       name: "members_count"
@@ -492,10 +554,6 @@ main: kit: entity: team: {
           req: false
           type: "`$STRING`"
         }
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
         update: {
           req: false
           type: "`$STRING`"
@@ -506,17 +564,23 @@ main: kit: entity: team: {
     }
     {
       name: "merges_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "milestones_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "mirror_url"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
       type: "`$STRING`"
     }
     {
@@ -554,10 +618,6 @@ main: kit: entity: team: {
           req: false
           type: "`$STRING`"
         }
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
         update: {
           req: false
           type: "`$STRING`"
@@ -573,11 +633,16 @@ main: kit: entity: team: {
     }
     {
       name: "notifications_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "number"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "open_issue"
       op: {
         list: {
           req: false
@@ -588,13 +653,14 @@ main: kit: entity: team: {
       type: "`$INTEGER`"
     }
     {
-      name: "open_issue"
-      req: false
-      type: "`$INTEGER`"
-    }
-    {
       name: "open_issues_count"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
       type: "`$INTEGER`"
     }
     {
@@ -609,22 +675,16 @@ main: kit: entity: team: {
     }
     {
       name: "organizations_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "owner"
-      req: false
+      req: true
       type: "`$OBJECT`"
     }
     {
       name: "owner_url"
-      op: {
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
       req: true
       type: "`$STRING`"
     }
@@ -634,10 +694,6 @@ main: kit: entity: team: {
         create: {
           req: false
           type: "`$STRING`"
-        }
-        list: {
-          req: false
-          type: "`$OBJECT`"
         }
         update: {
           req: false
@@ -661,7 +717,7 @@ main: kit: entity: team: {
         }
         list: {
           req: false
-          type: "`$STRING`"
+          type: "`$OBJECT`"
         }
         patch: {
           req: false
@@ -706,12 +762,18 @@ main: kit: entity: team: {
     }
     {
       name: "pulls_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "pushed_at"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
       type: "`$STRING`"
     }
     {
@@ -721,12 +783,12 @@ main: kit: entity: team: {
     }
     {
       name: "received_events_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "releases_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
@@ -741,17 +803,13 @@ main: kit: entity: team: {
     }
     {
       name: "repos_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "repositories_url"
       op: {
         create: {
-          req: false
-          type: "`$STRING`"
-        }
-        list: {
           req: false
           type: "`$STRING`"
         }
@@ -766,10 +824,6 @@ main: kit: entity: team: {
     {
       name: "role"
       op: {
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
         update: {
           req: false
           type: "`$STRING`"
@@ -784,23 +838,30 @@ main: kit: entity: team: {
       type: "`$STRING`"
     }
     {
-      name: "site_admin"
+      name: "security_and_analysi"
       req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "site_admin"
+      req: true
       type: "`$BOOLEAN`"
     }
     {
       name: "size"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
       type: "`$INTEGER`"
     }
     {
       name: "slug"
       op: {
         create: {
-          req: false
-          type: "`$STRING`"
-        }
-        list: {
           req: false
           type: "`$STRING`"
         }
@@ -814,26 +875,6 @@ main: kit: entity: team: {
     }
     {
       name: "ssh_url"
-      req: false
-      type: "`$STRING`"
-    }
-    {
-      name: "stargazers_count"
-      req: false
-      type: "`$INTEGER`"
-    }
-    {
-      name: "stargazers_url"
-      req: false
-      type: "`$STRING`"
-    }
-    {
-      name: "starred_url"
-      req: false
-      type: "`$STRING`"
-    }
-    {
-      name: "state"
       op: {
         list: {
           req: false
@@ -844,8 +885,39 @@ main: kit: entity: team: {
       type: "`$STRING`"
     }
     {
-      name: "statuses_url"
+      name: "stargazers_count"
+      op: {
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "stargazers_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "starred_at"
       req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "starred_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "state"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "statuses_url"
+      req: true
       type: "`$STRING`"
     }
     {
@@ -855,32 +927,38 @@ main: kit: entity: team: {
     }
     {
       name: "subscribers_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "subscription_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "subscriptions_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "svn_url"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
       type: "`$STRING`"
     }
     {
       name: "tags_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "team_count"
-      req: false
+      req: true
       type: "`$INTEGER`"
     }
     {
@@ -890,7 +968,7 @@ main: kit: entity: team: {
     }
     {
       name: "teams_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
@@ -916,12 +994,12 @@ main: kit: entity: team: {
     }
     {
       name: "trees_url"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
       name: "type"
-      req: false
+      req: true
       type: "`$STRING`"
     }
     {
@@ -942,10 +1020,6 @@ main: kit: entity: team: {
           req: false
           type: "`$STRING`"
         }
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
         update: {
           req: false
           type: "`$STRING`"
@@ -955,19 +1029,41 @@ main: kit: entity: team: {
       type: "`$STRING`"
     }
     {
+      name: "user_view_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "visibility"
       req: false
       type: "`$STRING`"
     }
     {
       name: "watcher"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
       type: "`$INTEGER`"
     }
     {
       name: "watchers_count"
-      req: false
+      op: {
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
       type: "`$INTEGER`"
+    }
+    {
+      name: "web_commit_signoff_required"
+      req: false
+      type: "`$BOOLEAN`"
     }
   ]
 

@@ -38,6 +38,12 @@ main: kit: entity: epic: {
     }
     {
       name: "comment"
+      op: {
+        list: {
+          req: false
+          type: "`$ARRAY`"
+        }
+      }
       req: true
       type: "`$ARRAY`"
     }
@@ -101,6 +107,10 @@ main: kit: entity: epic: {
       name: "description"
       op: {
         create: {
+          req: false
+          type: "`$STRING`"
+        }
+        list: {
           req: false
           type: "`$STRING`"
         }
@@ -416,43 +426,6 @@ main: kit: entity: epic: {
     create: {
       name: "create"
       points: [
-        {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "epic_public_id"
-                orig: "epic_public_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          method: "POST"
-          orig: "/api/v3/epics/{epic-public-id}/unlink-productboard"
-          parts: [
-            "api"
-            "v3"
-            "epics"
-            "{id}"
-            "unlink-productboard"
-          ]
-          rename: {
-            param: {
-              "epic-public-id": "id"
-            }
-          }
-          select: {
-            "$action": "unlink_productboard"
-            exist: [
-              "epic_public_id"
-            ]
-          }
-          transform: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           method: "POST"
           orig: "/api/v3/epics"

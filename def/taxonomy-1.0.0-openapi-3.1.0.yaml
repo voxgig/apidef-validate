@@ -16,6 +16,7 @@ tags:
   - name: Family
   - name: Genus
   - name: Species
+  - name: Observation
 
 paths:
   ## Domain
@@ -159,6 +160,23 @@ paths:
         "200": { $ref: "#/components/responses/OkTaxon" }
         default: { $ref: "#/components/responses/Error" }
 
+  ## Observation — list-only entity that exercises wrapper-response unwrap.
+  ## The list response is a paginated wrapper { items: [Observation], page, ... };
+  ## without unwrap-aware field resolution there are no other ops to fall back on
+  ## and the entity ends up with no fields at all.
+  "/{year}/observation":
+    get:
+      tags: [Observation]
+      summary: List observations
+      operationId: listObservations
+      parameters:
+        - $ref: "#/components/parameters/Year"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200": { $ref: "#/components/responses/PaginatedObservationsResponse" }
+        default: { $ref: "#/components/responses/Error" }
+
 
 components:
   parameters:
@@ -218,6 +236,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/PaginatedTaxa"
+    PaginatedObservationsResponse:
+      description: A paginated list of observations
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PaginatedObservations"
     OkTaxon:
       description: The requested taxon
       content:
@@ -305,6 +329,40 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Taxon"
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+
+    Observation:
+      type: object
+      required: [id, taxonId, observedAt]
+      properties:
+        id:
+          $ref: "#/components/schemas/Id"
+        taxonId:
+          $ref: "#/components/schemas/Id"
+        observedAt:
+          type: string
+          format: date-time
+        location:
+          type: object
+          additionalProperties: true
+        notes:
+          type: string
+        confidence:
+          type: number
+
+    PaginatedObservations:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Observation"
         page:
           type: integer
         pageSize:
