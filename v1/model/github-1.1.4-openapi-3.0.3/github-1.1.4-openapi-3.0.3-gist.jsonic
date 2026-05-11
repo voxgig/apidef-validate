@@ -7,6 +7,12 @@ main: kit: entity: gist: {
   fields: [
     {
       name: "comment"
+      op: {
+        list: {
+          req: true
+          type: "`$INTEGER`"
+        }
+      }
       req: false
       type: "`$INTEGER`"
     }
@@ -17,21 +23,45 @@ main: kit: entity: gist: {
     }
     {
       name: "comments_url"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
     {
       name: "commits_url"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
     {
       name: "created_at"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
     {
       name: "description"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
@@ -39,6 +69,10 @@ main: kit: entity: gist: {
       name: "file"
       op: {
         create: {
+          req: true
+          type: "`$OBJECT`"
+        }
+        list: {
           req: true
           type: "`$OBJECT`"
         }
@@ -58,16 +92,34 @@ main: kit: entity: gist: {
     }
     {
       name: "forks_url"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
     {
       name: "git_pull_url"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
     {
       name: "git_push_url"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
@@ -78,16 +130,34 @@ main: kit: entity: gist: {
     }
     {
       name: "html_url"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
     {
       name: "id"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
     {
       name: "node_id"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
@@ -98,6 +168,12 @@ main: kit: entity: gist: {
     }
     {
       name: "public"
+      op: {
+        list: {
+          req: true
+          type: "`$BOOLEAN`"
+        }
+      }
       req: false
       type: "`$BOOLEAN`"
     }
@@ -108,16 +184,34 @@ main: kit: entity: gist: {
     }
     {
       name: "updated_at"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
     {
       name: "url"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
     {
       name: "user"
+      op: {
+        list: {
+          req: true
+          type: "`$OBJECT`"
+        }
+      }
       req: false
       type: "`$STRING`"
     }
@@ -149,6 +243,51 @@ main: kit: entity: gist: {
     list: {
       name: "list"
       points: [
+        {
+          args: {
+            query: [
+              {
+                example: 1
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                example: 30
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "since"
+                orig: "since"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/gists"
+          parts: [
+            "gists"
+          ]
+          select: {
+            exist: [
+              "page"
+              "per_page"
+              "since"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           args: {
             params: [
@@ -460,11 +599,10 @@ main: kit: entity: gist: {
   relations: {
     ancestors: [
       [
-        "comments"
+        "comment"
       ]
       [
-        "gists"
-        "{gist_id}"
+        "gist"
       ]
     ]
   }

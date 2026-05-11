@@ -26,6 +26,11 @@ main: kit: entity: dependabot: {
       type: "`$STRING`"
     }
     {
+      name: "avatar_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
       name: "blobs_url"
       req: true
       type: "`$STRING`"
@@ -273,6 +278,16 @@ main: kit: entity: dependabot: {
       type: "`$OBJECT`"
     }
     {
+      name: "login"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "members_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
       name: "merges_url"
       req: true
       type: "`$STRING`"
@@ -333,6 +348,11 @@ main: kit: entity: dependabot: {
       type: "`$BOOLEAN`"
     }
     {
+      name: "public_members_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
       name: "pulls_url"
       req: true
       type: "`$STRING`"
@@ -344,6 +364,11 @@ main: kit: entity: dependabot: {
     }
     {
       name: "releases_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "repos_url"
       req: true
       type: "`$STRING`"
     }
@@ -521,6 +546,7 @@ main: kit: entity: dependabot: {
             ]
             query: [
               {
+                example: 1
                 kind: "query"
                 name: "page"
                 orig: "page"
@@ -528,6 +554,7 @@ main: kit: entity: dependabot: {
                 type: "`$INTEGER`"
               }
               {
+                example: 30
                 kind: "query"
                 name: "per_page"
                 orig: "per_page"
@@ -584,6 +611,7 @@ main: kit: entity: dependabot: {
             ]
             query: [
               {
+                example: 1
                 kind: "query"
                 name: "page"
                 orig: "page"
@@ -591,6 +619,7 @@ main: kit: entity: dependabot: {
                 type: "`$INTEGER`"
               }
               {
+                example: 30
                 kind: "query"
                 name: "per_page"
                 orig: "per_page"
@@ -635,6 +664,7 @@ main: kit: entity: dependabot: {
             ]
             query: [
               {
+                example: 1
                 kind: "query"
                 name: "page"
                 orig: "page"
@@ -642,6 +672,7 @@ main: kit: entity: dependabot: {
                 type: "`$INTEGER`"
               }
               {
+                example: 30
                 kind: "query"
                 name: "per_page"
                 orig: "per_page"
@@ -669,6 +700,42 @@ main: kit: entity: dependabot: {
               "org_id"
               "page"
               "per_page"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                example: 30
+                kind: "query"
+                name: "per_page"
+                orig: "per_page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "query"
+                name: "since"
+                orig: "since"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/organizations"
+          parts: [
+            "organizations"
+          ]
+          select: {
+            exist: [
+              "per_page"
+              "since"
             ]
           }
           transform: {
@@ -1007,28 +1074,26 @@ main: kit: entity: dependabot: {
   relations: {
     ancestors: [
       [
-        "organizations"
+        "organization"
       ]
       [
-        "orgs"
+        "org"
       ]
       [
-        "orgs"
-        "secrets"
+        "repo"
       ]
       [
-        "repos"
-        "{owner}"
+        "org"
+        "secret"
       ]
       [
-        "orgs"
-        "secrets"
-        "repositories"
+        "repo"
+        "secret"
       ]
       [
-        "repos"
-        "{owner}"
-        "secrets"
+        "org"
+        "secret"
+        "repository"
       ]
     ]
   }
