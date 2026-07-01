@@ -1,7 +1,7 @@
 # Guide
 
 guide: {
-  metrics: count: entity: 269
+  metrics: count: entity: 268
   metrics: count: path: 722
   metrics: count: method: 1089
 
@@ -2202,15 +2202,13 @@ guide: {
     path: "/licenses": {  # ent=license;orig=license-simple;cmp/resolve=license_simple;path=t/;path-primary
       op: list: method: *GET  # array
     }
-    path: "/licenses/{license}": {  # ent=license;orig=license-simple;cmp/resolve=licenses;path=t/p/;path-primary
+    path: "/licenses/{license}": {  # ent=license;orig=license-simple;cmp/resolve=license;path=t/p/;path-primary
       rename: param: "license": *"id"  # end-id;GET;parent=true/license;cmp=false
       op: load: method: *GET  # end-param
     }
-  }
-
-  entity: license_content: {
-    path: "/repos/{owner}/{repo}/license": {  # ent=license_content;orig=license-content;cmp/resolve=license_content;path=p/t/;cmp-primary;cmp-infreq
+    path: "/repos/{owner}/{repo}/license": {  # ent=license;orig=license-simple;cmp/resolve=license_content;path=p/t/;path-primary
       op: load: method: *GET  # not-list
+      op: load: transform: res: *("`body.license`")|top
     }
   }
 

@@ -16,7 +16,22 @@ main: kit: entity: license: {
       type: "`$ARRAY`"
     }
     {
+      name: "content"
+      req: true
+      type: "`$STRING`"
+    }
+    {
       name: "description"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "download_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "encoding"
       req: true
       type: "`$STRING`"
     }
@@ -24,6 +39,11 @@ main: kit: entity: license: {
       name: "featured"
       req: true
       type: "`$BOOLEAN`"
+    }
+    {
+      name: "git_url"
+      req: true
+      type: "`$STRING`"
     }
     {
       name: "html_url"
@@ -47,9 +67,19 @@ main: kit: entity: license: {
       type: "`$STRING`"
     }
     {
+      name: "license"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
       name: "limitation"
       req: true
       type: "`$ARRAY`"
+    }
+    {
+      name: "link"
+      req: true
+      type: "`$OBJECT`"
     }
     {
       name: "name"
@@ -62,12 +92,32 @@ main: kit: entity: license: {
       type: "`$STRING`"
     }
     {
+      name: "path"
+      req: true
+      type: "`$STRING`"
+    }
+    {
       name: "permission"
       req: true
       type: "`$ARRAY`"
     }
     {
+      name: "sha"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "size"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
       name: "spdx_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "type"
       req: true
       type: "`$STRING`"
     }
@@ -138,8 +188,56 @@ main: kit: entity: license: {
             params: [
               {
                 kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "ref"
+                orig: "ref"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/license"
+          parts: [
+            "repos"
+            "{owner}"
+            "{repo}"
+            "license"
+          ]
+          select: {
+            exist: [
+              "owner"
+              "ref"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.license`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
                 name: "id"
-                orig: "licenses"
+                orig: "license"
                 reqd: true
                 type: "`$STRING`"
               }
@@ -168,6 +266,14 @@ main: kit: entity: license: {
         }
       ]
     }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "repo"
+      ]
+    ]
   }
 
 
