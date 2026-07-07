@@ -36,7 +36,7 @@ function prepfs() {
     return (0, __1.makefs)(vol);
 }
 async function prepCaseGuide(c, fs) {
-    const guideFileName = fullname(c) + '-guide.jsonic';
+    const guideFileName = fullname(c) + '-guide.aontu';
     const realGuideFilePath = node_path_1.default.join(TOP_FOLDER, 'guide', guideFileName);
     const virtualGuideFilePath = node_path_1.default.join('/model', 'guide', guideFileName);
     let guideFileSrc = '';
@@ -45,9 +45,9 @@ async function prepCaseGuide(c, fs) {
     }
     else {
         guideFileSrc = `
-@"@voxgig/apidef/model/guide.jsonic"
+@"@voxgig/apidef/model/guide.aontu"
 
-@"${fullname(c)}-base-guide.jsonic"
+@"${fullname(c)}-base-guide.aontu"
 
 guide:{}
 `;

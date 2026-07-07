@@ -57,7 +57,7 @@ function prepfs() {
 
 
 async function prepCaseGuide(c: Case, fs: FST) {
-  const guideFileName = fullname(c) + '-guide.jsonic'
+  const guideFileName = fullname(c) + '-guide.aontu'
   const realGuideFilePath = Path.join(TOP_FOLDER, 'guide', guideFileName)
   const virtualGuideFilePath = Path.join('/model', 'guide', guideFileName)
 
@@ -66,9 +66,9 @@ async function prepCaseGuide(c: Case, fs: FST) {
     guideFileSrc = fs.readFileSync(realGuideFilePath).toString('utf8')
   } else {
     guideFileSrc = `
-@"@voxgig/apidef/model/guide.jsonic"
+@"@voxgig/apidef/model/guide.aontu"
 
-@"${fullname(c)}-base-guide.jsonic"
+@"${fullname(c)}-base-guide.aontu"
 
 guide:{}
 `

@@ -110,7 +110,7 @@ for (const t of TARGETS) {
 
 // ---------------- model load ----------------
 async function main() {
-  const modelPath = Path.join(SDK_DIR, 'model/sdk.jsonic')
+  const modelPath = Path.join(SDK_DIR, 'model/sdk.aontu')
   const src = Fs.readFileSync(modelPath, 'utf8')
 
   const aontu = new Aontu()

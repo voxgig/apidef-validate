@@ -181,10 +181,10 @@ function prepfs(cases: Case[]) {
       /*
   
         cases.reduce((a: any, c: Case) => {
-            a[fullname(c) + '-guide.jsonic'] = `
-  @"@voxgig/apidef/model/guide.jsonic"
+            a[fullname(c) + '-guide.aontu'] = `
+  @"@voxgig/apidef/model/guide.aontu"
   
-  @"${fullname(c)}-base-guide.jsonic"
+  @"${fullname(c)}-base-guide.aontu"
   
   guide:{}
   `
@@ -201,7 +201,7 @@ function prepfs(cases: Case[]) {
 
 
 async function prepCaseGuide(c: Case, fs: FST) {
-  const guideFileName = fullname(c) + '-guide.jsonic'
+  const guideFileName = fullname(c) + '-guide.aontu'
   const realGuideFilePath = Path.join(TOP_FOLDER, 'guide', guideFileName)
   const virtualGuideFilePath = Path.join('/model', 'guide', guideFileName)
 
@@ -213,9 +213,9 @@ async function prepCaseGuide(c: Case, fs: FST) {
   }
   else {
     guideFileSrc = `
-@"@voxgig/apidef/model/guide.jsonic"
+@"@voxgig/apidef/model/guide.aontu"
 
-@"${fullname(c)}-base-guide.jsonic"
+@"${fullname(c)}-base-guide.aontu"
 
 guide:{}
 `
@@ -285,14 +285,14 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
   const cfn = fullname(c)
 
   const volJSON = vol.toJSON()
-  const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.jsonic`].trim()
+  const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.aontu`].trim()
 
 
-  const generatedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.gen.jsonic`)
+  const generatedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.gen.aontu`)
   fs.writeFileSync(generatedBaseGuideFile, baseGuide)
 
 
-  const expectedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.jsonic`)
+  const expectedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.aontu`)
 
   if (!fs.existsSync(expectedBaseGuideFile)) {
     fs.writeFileSync(expectedBaseGuideFile, baseGuide)
@@ -327,14 +327,14 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
   /*
   const generatedFinalGuideFile =
-    Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.gen.jsonic`).trim()
+    Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.gen.aontu`).trim()
 
   fs.writeFileSync(generatedFinalGuideFile, finalGuide)
   */
 
 
   const expectedFinalGuideFile =
-    Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.jsonic`).trim()
+    Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.aontu`).trim()
 
   if (!fs.existsSync(expectedFinalGuideFile)) {
     fs.writeFileSync(expectedFinalGuideFile, finalGuide)
@@ -393,12 +393,12 @@ function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
   each(bres.apimodel.main.kit.entity, (entity: any) => {
     const efn = `${cfn}-${entity.name}`
 
-    const entitySrc = volJSON[`/model/entity/${efn}.jsonic`].trim()
+    const entitySrc = volJSON[`/model/entity/${efn}.aontu`].trim()
 
-    const generatedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.gen.jsonic`
+    const generatedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.gen.aontu`
     fs.writeFileSync(generatedSrcFile, entitySrc)
 
-    const expectedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.jsonic`
+    const expectedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.aontu`
 
     if (!fs.existsSync(expectedSrcFile)) {
       fs.writeFileSync(expectedSrcFile, entitySrc)

@@ -78,11 +78,11 @@ async function run(caseName, version, spec, format) {
   const fullname = `${caseName}-${version}-${spec}`;
   const vol = { model: { guide: {} } };
   const { fs } = makefs(vol);
-  const guideFileName = fullname + '-guide.jsonic';
+  const guideFileName = fullname + '-guide.aontu';
   const realGuideFilePath = Path.join(TOP_FOLDER, 'guide', guideFileName);
   const virtualGuideFilePath = Path.join('/model', 'guide', guideFileName);
   let guideFileSrc = fs.existsSync(realGuideFilePath) ? fs.readFileSync(realGuideFilePath).toString('utf8')
-    : `@"@voxgig/apidef/model/guide.jsonic"\n@"${fullname}-base-guide.jsonic"\nguide:{}`;
+    : `@"@voxgig/apidef/model/guide.aontu"\n@"${fullname}-base-guide.aontu"\nguide:{}`;
   if (!fs.existsSync(realGuideFilePath)) fs.writeFileSync(realGuideFilePath, guideFileSrc);
   fs.writeFileSync(virtualGuideFilePath, guideFileSrc);
   const buildSpec = { folder: '/model', debug: 'debug', outprefix: fullname + '-', why: { show: true }, fs };

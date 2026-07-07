@@ -9,14 +9,14 @@ async function run(caseName, version, spec, format) {
   const { fs, vol: v } = makefs(vol);
 
   // prepCaseGuide
-  const guideFileName = fullname + '-guide.jsonic';
+  const guideFileName = fullname + '-guide.aontu';
   const realGuideFilePath = Path.join(TOP_FOLDER, 'guide', guideFileName);
   const virtualGuideFilePath = Path.join('/model', 'guide', guideFileName);
   let guideFileSrc = '';
   if (fs.existsSync(realGuideFilePath)) {
     guideFileSrc = fs.readFileSync(realGuideFilePath).toString('utf8');
   } else {
-    guideFileSrc = `@"@voxgig/apidef/model/guide.jsonic"\n@"${fullname}-base-guide.jsonic"\nguide:{}`;
+    guideFileSrc = `@"@voxgig/apidef/model/guide.aontu"\n@"${fullname}-base-guide.aontu"\nguide:{}`;
     fs.writeFileSync(realGuideFilePath, guideFileSrc);
   }
   fs.writeFileSync(virtualGuideFilePath, guideFileSrc);
