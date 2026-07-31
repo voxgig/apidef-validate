@@ -1,6 +1,6 @@
 const Path = require('node:path');
-const { Jsonic } = require('jsonic');
-const { Yaml } = require('@jsonic/yaml');
+const { Jsonic } = require('@tabnas/jsonic');
+const { Yaml } = require('@tabnas/yaml');
 const { decircular } = require('@voxgig/util');
 const fs = require('fs');
 

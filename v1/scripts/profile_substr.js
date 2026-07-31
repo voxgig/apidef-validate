@@ -20,8 +20,8 @@ String.prototype.substring = function(start, end) {
   return result;
 };
 
-const {Jsonic} = require('jsonic');
-const {Yaml} = require('@jsonic/yaml');
+const {Jsonic} = require('@tabnas/jsonic');
+const {Yaml} = require('@tabnas/yaml');
 const yamlParser = Jsonic.make().use(Yaml);
 
 substringStats = {};
