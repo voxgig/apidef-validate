@@ -1,0 +1,351 @@
+# Entity: release_note
+
+main: kit: entity: release_note: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "document_content"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "first_release"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "generation_status"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "last_release"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "pipeline"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "release_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "slug_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "title"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "release_note"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation ReleaseNoteCreate($input: ReleaseNoteCreateInput!) { releaseNoteCreate(input: $input) { releaseNote { ...ReleaseNoteFields } success } } fragment ReleaseNoteFields on ReleaseNote { archivedAt createdAt documentContent { id } firstRelease { id } generationStatus id lastRelease { id } pipeline { id } releaseCount slugId title updatedAt url }"
+            field: "releaseNoteCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ReleaseNoteCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseNoteCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseNoteCreate.releaseNote`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ReleaseNoteList($after: String, $before: String, $filter: ReleaseNoteFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { releaseNotes(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...ReleaseNoteFields } pageInfo { endCursor hasNextPage } } } fragment ReleaseNoteFields on ReleaseNote { archivedAt createdAt documentContent { id } firstRelease { id } generationStatus id lastRelease { id } pipeline { id } releaseCount slugId title updatedAt url }"
+            field: "releaseNotes"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: ""
+                gqltype: "ReleaseNoteFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseNotes"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseNotes.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ReleaseNoteLoad($id: String!) { releaseNote(id: $id) { ...ReleaseNoteFields } } fragment ReleaseNoteFields on ReleaseNote { archivedAt createdAt documentContent { id } firstRelease { id } generationStatus id lastRelease { id } pipeline { id } releaseCount slugId title updatedAt url }"
+            field: "releaseNote"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseNote"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseNote`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ReleaseNoteRemove($id: String!) { releaseNoteDelete(id: $id) { entityId lastSyncId success } }"
+            field: "releaseNoteDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseNoteDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseNoteDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ReleaseNoteUpdate($id: String!, $input: ReleaseNoteUpdateInput!) { releaseNoteUpdate(id: $id, input: $input) { releaseNote { ...ReleaseNoteFields } success } } fragment ReleaseNoteFields on ReleaseNote { archivedAt createdAt documentContent { id } firstRelease { id } generationStatus id lastRelease { id } pipeline { id } releaseCount slugId title updatedAt url }"
+            field: "releaseNoteUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "ReleaseNoteUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseNoteUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseNoteUpdate.releaseNote`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,226 @@
+# Entity: user_setting
+
+main: kit: entity: user_setting: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "auto_assign_to_self"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "calendar_hash"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "feed_last_seen_time"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "feed_summary_schedule"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "show_full_user_name"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "subscribed_to_changelog"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "subscribed_to_dpa"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "subscribed_to_invite_accepted"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "subscribed_to_privacy_legal_update"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "user"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "user_setting"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "category"
+                orig: "category"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "channel"
+                orig: "channel"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "subscribe"
+                orig: "subscribe"
+                reqd: true
+                type: "`$BOOLEAN`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation UserSettingCreateNotificationCategoryChannelSubscriptionUpdate($category: NotificationCategory!, $channel: NotificationChannel!, $subscribe: Boolean!) { notificationCategoryChannelSubscriptionUpdate(category: $category, channel: $channel, subscribe: $subscribe) { userSettings { ...UserSettingFields } success } } fragment UserSettingFields on UserSettings { archivedAt autoAssignToSelf calendarHash createdAt feedLastSeenTime feedSummarySchedule id showFullUserNames subscribedToChangelog subscribedToDPA subscribedToInviteAccepted subscribedToPrivacyLegalUpdates updatedAt user { id } }"
+            field: "notificationCategoryChannelSubscriptionUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "category"
+                gqltype: "NotificationCategory!"
+                name: "category"
+              }
+              {
+                from: "channel"
+                gqltype: "NotificationChannel!"
+                name: "channel"
+              }
+              {
+                from: "subscribe"
+                gqltype: "Boolean!"
+                name: "subscribe"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "notificationCategoryChannelSubscriptionUpdate"
+          select: {
+            "$action": "notification_category_channel_subscription_update"
+            exist: [
+              "category"
+              "channel"
+              "subscribe"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.notificationCategoryChannelSubscriptionUpdate.userSettings`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          graphql: {
+            doc: "query UserSettingLoad { userSettings { ...UserSettingFields } } fragment UserSettingFields on UserSettings { archivedAt autoAssignToSelf calendarHash createdAt feedLastSeenTime feedSummarySchedule id showFullUserNames subscribedToChangelog subscribedToDPA subscribedToInviteAccepted subscribedToPrivacyLegalUpdates updatedAt user { id } }"
+            field: "userSettings"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "userSettings"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.userSettings`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation UserSettingUpdate($id: String!, $input: UserSettingsUpdateInput!) { userSettingsUpdate(id: $id, input: $input) { userSettings { ...UserSettingFields } success } } fragment UserSettingFields on UserSettings { archivedAt autoAssignToSelf calendarHash createdAt feedLastSeenTime feedSummarySchedule id showFullUserNames subscribedToChangelog subscribedToDPA subscribedToInviteAccepted subscribedToPrivacyLegalUpdates updatedAt user { id } }"
+            field: "userSettingsUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "UserSettingsUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "userSettingsUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.userSettingsUpdate.userSettings`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

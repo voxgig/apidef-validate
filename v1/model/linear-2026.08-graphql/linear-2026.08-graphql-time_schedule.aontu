@@ -1,0 +1,406 @@
+# Entity: time_schedule
+
+main: kit: entity: time_schedule: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "external_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "external_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "integration"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "organization"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "time_schedule"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation TimeScheduleCreate($input: TimeScheduleCreateInput!) { timeScheduleCreate(input: $input) { timeSchedule { ...TimeScheduleFields } success } } fragment TimeScheduleFields on TimeSchedule { archivedAt createdAt externalId externalUrl id integration { id } name organization { id } updatedAt }"
+            field: "timeScheduleCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "TimeScheduleCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "timeScheduleCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.timeScheduleCreate.timeSchedule`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query TimeScheduleList($after: String, $before: String, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { timeSchedules(after: $after, before: $before, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...TimeScheduleFields } pageInfo { endCursor hasNextPage } } } fragment TimeScheduleFields on TimeSchedule { archivedAt createdAt externalId externalUrl id integration { id } name organization { id } updatedAt }"
+            field: "timeSchedules"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "timeSchedules"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.timeSchedules.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query TimeScheduleLoad($id: String!) { timeSchedule(id: $id) { ...TimeScheduleFields } } fragment TimeScheduleFields on TimeSchedule { archivedAt createdAt externalId externalUrl id integration { id } name organization { id } updatedAt }"
+            field: "timeSchedule"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "timeSchedule"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.timeSchedule`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation TimeScheduleRemove($id: String!) { timeScheduleDelete(id: $id) { entityId lastSyncId success } }"
+            field: "timeScheduleDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "timeScheduleDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.timeScheduleDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "external_id"
+                orig: "external_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation TimeScheduleUpdate($externalId: String!, $input: TimeScheduleUpdateInput!) { timeScheduleUpsertExternal(externalId: $externalId, input: $input) { timeSchedule { ...TimeScheduleFields } success } } fragment TimeScheduleFields on TimeSchedule { archivedAt createdAt externalId externalUrl id integration { id } name organization { id } updatedAt }"
+            field: "timeScheduleUpsertExternal"
+            optype: "mutation"
+            vars: [
+              {
+                from: "externalId"
+                gqltype: "String!"
+                name: "externalId"
+              }
+              {
+                from: ""
+                gqltype: "TimeScheduleUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "timeScheduleUpsertExternal"
+          select: {
+            exist: [
+              "external_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.timeScheduleUpsertExternal.timeSchedule`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation TimeScheduleUpdateRefreshIntegrationSchedule($id: String!) { timeScheduleRefreshIntegrationSchedule(id: $id) { timeSchedule { ...TimeScheduleFields } success } } fragment TimeScheduleFields on TimeSchedule { archivedAt createdAt externalId externalUrl id integration { id } name organization { id } updatedAt }"
+            field: "timeScheduleRefreshIntegrationSchedule"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "timeScheduleRefreshIntegrationSchedule"
+          select: {
+            "$action": "refresh_integration_schedule"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.timeScheduleRefreshIntegrationSchedule.timeSchedule`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation TimeScheduleUpdate($id: String!, $input: TimeScheduleUpdateInput!) { timeScheduleUpdate(id: $id, input: $input) { timeSchedule { ...TimeScheduleFields } success } } fragment TimeScheduleFields on TimeSchedule { archivedAt createdAt externalId externalUrl id integration { id } name organization { id } updatedAt }"
+            field: "timeScheduleUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "TimeScheduleUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "timeScheduleUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.timeScheduleUpdate.timeSchedule`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

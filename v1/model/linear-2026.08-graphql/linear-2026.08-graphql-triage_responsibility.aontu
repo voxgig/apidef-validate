@@ -1,0 +1,321 @@
+# Entity: triage_responsibility
+
+main: kit: entity: triage_responsibility: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "action"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "current_user"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "team"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "time_schedule"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "triage_responsibility"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation TriageResponsibilityCreate($input: TriageResponsibilityCreateInput!) { triageResponsibilityCreate(input: $input) { triageResponsibility { ...TriageResponsibilityFields } success } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }"
+            field: "triageResponsibilityCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "TriageResponsibilityCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "triageResponsibilityCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.triageResponsibilityCreate.triageResponsibility`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query TriageResponsibilityList($after: String, $before: String, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { triageResponsibilities(after: $after, before: $before, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...TriageResponsibilityFields } pageInfo { endCursor hasNextPage } } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }"
+            field: "triageResponsibilities"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "triageResponsibilities"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.triageResponsibilities.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query TriageResponsibilityLoad($id: String!) { triageResponsibility(id: $id) { ...TriageResponsibilityFields } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }"
+            field: "triageResponsibility"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "triageResponsibility"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.triageResponsibility`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation TriageResponsibilityRemove($id: String!) { triageResponsibilityDelete(id: $id) { entityId lastSyncId success } }"
+            field: "triageResponsibilityDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "triageResponsibilityDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.triageResponsibilityDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation TriageResponsibilityUpdate($id: String!, $input: TriageResponsibilityUpdateInput!) { triageResponsibilityUpdate(id: $id, input: $input) { triageResponsibility { ...TriageResponsibilityFields } success } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }"
+            field: "triageResponsibilityUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "TriageResponsibilityUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "triageResponsibilityUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.triageResponsibilityUpdate.triageResponsibility`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,98 @@
+# Entity: application
+
+main: kit: entity: application: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "client_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "developer"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "developer_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "image_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "application"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "client_id"
+                orig: "client_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ApplicationLoad($clientId: String!) { applicationInfo(clientId: $clientId) { ...ApplicationFields } } fragment ApplicationFields on Application { clientId description developer developerUrl id imageUrl name }"
+            field: "applicationInfo"
+            optype: "query"
+            vars: [
+              {
+                from: "clientId"
+                gqltype: "String!"
+                name: "clientId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "applicationInfo"
+          select: {
+            exist: [
+              "client_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.applicationInfo`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

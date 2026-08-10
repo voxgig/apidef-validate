@@ -1,0 +1,370 @@
+# Entity: release_stage
+
+main: kit: entity: release_stage: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "color"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "frozen"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "pipeline"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "position"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "release_stage"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation ReleaseStageCreate($input: ReleaseStageCreateInput!) { releaseStageCreate(input: $input) { releaseStage { ...ReleaseStageFields } success } } fragment ReleaseStageFields on ReleaseStage { archivedAt color createdAt frozen id name pipeline { id } position type updatedAt }"
+            field: "releaseStageCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ReleaseStageCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseStageCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseStageCreate.releaseStage`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ReleaseStageList($after: String, $before: String, $filter: ReleaseStageFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { releaseStages(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...ReleaseStageFields } pageInfo { endCursor hasNextPage } } } fragment ReleaseStageFields on ReleaseStage { archivedAt color createdAt frozen id name pipeline { id } position type updatedAt }"
+            field: "releaseStages"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: ""
+                gqltype: "ReleaseStageFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseStages"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseStages.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ReleaseStageLoad($id: String!) { releaseStage(id: $id) { ...ReleaseStageFields } } fragment ReleaseStageFields on ReleaseStage { archivedAt color createdAt frozen id name pipeline { id } position type updatedAt }"
+            field: "releaseStage"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseStage"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseStage`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ReleaseStageUpdateArchive($id: String!) { releaseStageArchive(id: $id) { entity { ...ReleaseStageFields } success } } fragment ReleaseStageFields on ReleaseStage { archivedAt color createdAt frozen id name pipeline { id } position type updatedAt }"
+            field: "releaseStageArchive"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseStageArchive"
+          select: {
+            "$action": "archive"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseStageArchive.entity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ReleaseStageUpdateUnarchive($id: String!) { releaseStageUnarchive(id: $id) { entity { ...ReleaseStageFields } success } } fragment ReleaseStageFields on ReleaseStage { archivedAt color createdAt frozen id name pipeline { id } position type updatedAt }"
+            field: "releaseStageUnarchive"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseStageUnarchive"
+          select: {
+            "$action": "unarchive"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseStageUnarchive.entity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ReleaseStageUpdate($id: String!, $input: ReleaseStageUpdateInput!) { releaseStageUpdate(id: $id, input: $input) { releaseStage { ...ReleaseStageFields } success } } fragment ReleaseStageFields on ReleaseStage { archivedAt color createdAt frozen id name pipeline { id } position type updatedAt }"
+            field: "releaseStageUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "ReleaseStageUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseStageUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseStageUpdate.releaseStage`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

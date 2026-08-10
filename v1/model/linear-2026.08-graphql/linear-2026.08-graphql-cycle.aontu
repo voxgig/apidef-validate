@@ -1,0 +1,474 @@
+# Entity: cycle
+
+main: kit: entity: cycle: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "auto_archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "completed_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "completed_issue_count_history"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "completed_scope_history"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "current_progress"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "ends_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "in_progress_scope_history"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "inherited_from"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "is_active"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_future"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_next"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_past"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_previous"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "issue_count_history"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "number"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "progress"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "progress_history"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "scope_history"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "starts_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "team"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "cycle"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation CycleCreate($input: CycleCreateInput!) { cycleCreate(input: $input) { cycle { ...CycleFields } success } } fragment CycleFields on Cycle { archivedAt autoArchivedAt completedAt completedIssueCountHistory completedScopeHistory createdAt currentProgress description endsAt id inProgressScopeHistory inheritedFrom { id } isActive isFuture isNext isPast isPrevious issueCountHistory name number progress progressHistory scopeHistory startsAt team { id } updatedAt }"
+            field: "cycleCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CycleCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cycleCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cycleCreate.cycle`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation CycleCreateShiftAll($input: CycleShiftAllInput!) { cycleShiftAll(input: $input) { cycle { ...CycleFields } success } } fragment CycleFields on Cycle { archivedAt autoArchivedAt completedAt completedIssueCountHistory completedScopeHistory createdAt currentProgress description endsAt id inProgressScopeHistory inheritedFrom { id } isActive isFuture isNext isPast isPrevious issueCountHistory name number progress progressHistory scopeHistory startsAt team { id } updatedAt }"
+            field: "cycleShiftAll"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CycleShiftAllInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cycleShiftAll"
+          select: {
+            "$action": "shift_all"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cycleShiftAll.cycle`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query CycleList($after: String, $before: String, $filter: CycleFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { cycles(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...CycleFields } pageInfo { endCursor hasNextPage } } } fragment CycleFields on Cycle { archivedAt autoArchivedAt completedAt completedIssueCountHistory completedScopeHistory createdAt currentProgress description endsAt id inProgressScopeHistory inheritedFrom { id } isActive isFuture isNext isPast isPrevious issueCountHistory name number progress progressHistory scopeHistory startsAt team { id } updatedAt }"
+            field: "cycles"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: ""
+                gqltype: "CycleFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cycles"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cycles.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query CycleLoad($id: String!) { cycle(id: $id) { ...CycleFields } } fragment CycleFields on Cycle { archivedAt autoArchivedAt completedAt completedIssueCountHistory completedScopeHistory createdAt currentProgress description endsAt id inProgressScopeHistory inheritedFrom { id } isActive isFuture isNext isPast isPrevious issueCountHistory name number progress progressHistory scopeHistory startsAt team { id } updatedAt }"
+            field: "cycle"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cycle"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cycle`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CycleUpdateArchive($id: String!) { cycleArchive(id: $id) { entity { ...CycleFields } success } } fragment CycleFields on Cycle { archivedAt autoArchivedAt completedAt completedIssueCountHistory completedScopeHistory createdAt currentProgress description endsAt id inProgressScopeHistory inheritedFrom { id } isActive isFuture isNext isPast isPrevious issueCountHistory name number progress progressHistory scopeHistory startsAt team { id } updatedAt }"
+            field: "cycleArchive"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cycleArchive"
+          select: {
+            "$action": "archive"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cycleArchive.entity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CycleUpdateStartUpcomingCycleToday($id: String!) { cycleStartUpcomingCycleToday(id: $id) { cycle { ...CycleFields } success } } fragment CycleFields on Cycle { archivedAt autoArchivedAt completedAt completedIssueCountHistory completedScopeHistory createdAt currentProgress description endsAt id inProgressScopeHistory inheritedFrom { id } isActive isFuture isNext isPast isPrevious issueCountHistory name number progress progressHistory scopeHistory startsAt team { id } updatedAt }"
+            field: "cycleStartUpcomingCycleToday"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cycleStartUpcomingCycleToday"
+          select: {
+            "$action": "start_upcoming_cycle_today"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cycleStartUpcomingCycleToday.cycle`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CycleUpdate($id: String!, $input: CycleUpdateInput!) { cycleUpdate(id: $id, input: $input) { cycle { ...CycleFields } success } } fragment CycleFields on Cycle { archivedAt autoArchivedAt completedAt completedIssueCountHistory completedScopeHistory createdAt currentProgress description endsAt id inProgressScopeHistory inheritedFrom { id } isActive isFuture isNext isPast isPrevious issueCountHistory name number progress progressHistory scopeHistory startsAt team { id } updatedAt }"
+            field: "cycleUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "CycleUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cycleUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cycleUpdate.cycle`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

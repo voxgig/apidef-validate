@@ -1,0 +1,465 @@
+# Entity: issue_label
+
+main: kit: entity: issue_label: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "color"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "creator"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "inherited_from"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "is_group"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "last_applied_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "parent"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "retired_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "retired_by"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "team"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "issue_label"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "replace_team_label"
+                orig: "replace_team_label"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation IssueLabelCreate($input: IssueLabelCreateInput!, $replaceTeamLabels: Boolean) { issueLabelCreate(input: $input, replaceTeamLabels: $replaceTeamLabels) { issueLabel { ...IssueLabelFields } success } } fragment IssueLabelFields on IssueLabel { archivedAt color createdAt creator { id } description id inheritedFrom { id } isGroup lastAppliedAt name parent { id } retiredAt retiredBy { id } team { id } updatedAt }"
+            field: "issueLabelCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "IssueLabelCreateInput!"
+                name: "input"
+              }
+              {
+                from: "replaceTeamLabels"
+                gqltype: "Boolean"
+                name: "replaceTeamLabels"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueLabelCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueLabelCreate.issueLabel`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query IssueLabelList($after: String, $before: String, $filter: IssueLabelFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { issueLabels(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...IssueLabelFields } pageInfo { endCursor hasNextPage } } } fragment IssueLabelFields on IssueLabel { archivedAt color createdAt creator { id } description id inheritedFrom { id } isGroup lastAppliedAt name parent { id } retiredAt retiredBy { id } team { id } updatedAt }"
+            field: "issueLabels"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: ""
+                gqltype: "IssueLabelFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueLabels"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueLabels.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query IssueLabelLoad($id: String!) { issueLabel(id: $id) { ...IssueLabelFields } } fragment IssueLabelFields on IssueLabel { archivedAt color createdAt creator { id } description id inheritedFrom { id } isGroup lastAppliedAt name parent { id } retiredAt retiredBy { id } team { id } updatedAt }"
+            field: "issueLabel"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueLabel"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueLabel`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation IssueLabelRemove($id: String!) { issueLabelDelete(id: $id) { entityId lastSyncId success } }"
+            field: "issueLabelDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueLabelDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueLabelDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation IssueLabelUpdateRestore($id: String!) { issueLabelRestore(id: $id) { issueLabel { ...IssueLabelFields } success } } fragment IssueLabelFields on IssueLabel { archivedAt color createdAt creator { id } description id inheritedFrom { id } isGroup lastAppliedAt name parent { id } retiredAt retiredBy { id } team { id } updatedAt }"
+            field: "issueLabelRestore"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueLabelRestore"
+          select: {
+            "$action": "restore"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueLabelRestore.issueLabel`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation IssueLabelUpdateRetire($id: String!) { issueLabelRetire(id: $id) { issueLabel { ...IssueLabelFields } success } } fragment IssueLabelFields on IssueLabel { archivedAt color createdAt creator { id } description id inheritedFrom { id } isGroup lastAppliedAt name parent { id } retiredAt retiredBy { id } team { id } updatedAt }"
+            field: "issueLabelRetire"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueLabelRetire"
+          select: {
+            "$action": "retire"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueLabelRetire.issueLabel`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "replace_team_label"
+                orig: "replace_team_label"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation IssueLabelUpdate($id: String!, $input: IssueLabelUpdateInput!, $replaceTeamLabels: Boolean) { issueLabelUpdate(id: $id, input: $input, replaceTeamLabels: $replaceTeamLabels) { issueLabel { ...IssueLabelFields } success } } fragment IssueLabelFields on IssueLabel { archivedAt color createdAt creator { id } description id inheritedFrom { id } isGroup lastAppliedAt name parent { id } retiredAt retiredBy { id } team { id } updatedAt }"
+            field: "issueLabelUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "IssueLabelUpdateInput!"
+                name: "input"
+              }
+              {
+                from: "replaceTeamLabels"
+                gqltype: "Boolean"
+                name: "replaceTeamLabels"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueLabelUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueLabelUpdate.issueLabel`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

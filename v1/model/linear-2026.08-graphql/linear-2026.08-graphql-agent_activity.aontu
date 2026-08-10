@@ -1,0 +1,372 @@
+# Entity: agent_activity
+
+main: kit: entity: agent_activity: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "agent_session"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "contextual_metadata"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "ephemeral"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "queued"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "sent_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "signal"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "signal_metadata"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "source_comment"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "source_metadata"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "user"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "agent_activity"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation AgentActivityCreate($input: AgentActivityCreateInput!) { agentActivityCreate(input: $input) { agentActivity { ...AgentActivityFields } success } } fragment AgentActivityFields on AgentActivity { agentSession { id } archivedAt contextualMetadata createdAt ephemeral id queued sentAt signal signalMetadata sourceComment { id } sourceMetadata updatedAt user { id } }"
+            field: "agentActivityCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "AgentActivityCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "agentActivityCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.agentActivityCreate.agentActivity`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation AgentActivityCreateCreatePrompt($input: AgentActivityCreatePromptInput!) { agentActivityCreatePrompt(input: $input) { agentActivity { ...AgentActivityFields } success } } fragment AgentActivityFields on AgentActivity { agentSession { id } archivedAt contextualMetadata createdAt ephemeral id queued sentAt signal signalMetadata sourceComment { id } sourceMetadata updatedAt user { id } }"
+            field: "agentActivityCreatePrompt"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "AgentActivityCreatePromptInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "agentActivityCreatePrompt"
+          select: {
+            "$action": "create_prompt"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.agentActivityCreatePrompt.agentActivity`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query AgentActivityList($after: String, $before: String, $filter: AgentActivityFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { agentActivities(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...AgentActivityFields } pageInfo { endCursor hasNextPage } } } fragment AgentActivityFields on AgentActivity { agentSession { id } archivedAt contextualMetadata createdAt ephemeral id queued sentAt signal signalMetadata sourceComment { id } sourceMetadata updatedAt user { id } }"
+            field: "agentActivities"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: ""
+                gqltype: "AgentActivityFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "agentActivities"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.agentActivities.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query AgentActivityLoad($id: String!) { agentActivity(id: $id) { ...AgentActivityFields } } fragment AgentActivityFields on AgentActivity { agentSession { id } archivedAt contextualMetadata createdAt ephemeral id queued sentAt signal signalMetadata sourceComment { id } sourceMetadata updatedAt user { id } }"
+            field: "agentActivity"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "agentActivity"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.agentActivity`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation AgentActivityUpdateDeleteQueued($id: String!) { agentActivityDeleteQueued(id: $id) { agentActivity { ...AgentActivityFields } success } } fragment AgentActivityFields on AgentActivity { agentSession { id } archivedAt contextualMetadata createdAt ephemeral id queued sentAt signal signalMetadata sourceComment { id } sourceMetadata updatedAt user { id } }"
+            field: "agentActivityDeleteQueued"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "agentActivityDeleteQueued"
+          select: {
+            "$action": "delete_queued"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.agentActivityDeleteQueued.agentActivity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation AgentActivityUpdateSendQueued($id: String!) { agentActivitySendQueued(id: $id) { agentActivity { ...AgentActivityFields } success } } fragment AgentActivityFields on AgentActivity { agentSession { id } archivedAt contextualMetadata createdAt ephemeral id queued sentAt signal signalMetadata sourceComment { id } sourceMetadata updatedAt user { id } }"
+            field: "agentActivitySendQueued"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "agentActivitySendQueued"
+          select: {
+            "$action": "send_queued"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.agentActivitySendQueued.agentActivity`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

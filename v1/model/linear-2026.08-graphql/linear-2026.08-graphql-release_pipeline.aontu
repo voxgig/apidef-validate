@@ -1,0 +1,447 @@
+# Entity: release_pipeline
+
+main: kit: entity: release_pipeline: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "approximate_release_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "auto_generate_release_notes_on_completion"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "include_path_pattern"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "is_production"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "latest_release_note"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "release_note_template"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "rollover_issues_on_completion"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "slug_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "trashed"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "release_pipeline"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation ReleasePipelineCreate($input: ReleasePipelineCreateInput!) { releasePipelineCreate(input: $input) { releasePipeline { ...ReleasePipelineFields } success } } fragment ReleasePipelineFields on ReleasePipeline { approximateReleaseCount archivedAt autoGenerateReleaseNotesOnCompletion createdAt id includePathPatterns isProduction latestReleaseNote { id } name releaseNoteTemplate { id } rolloverIssuesOnCompletion slugId trashed type updatedAt url }"
+            field: "releasePipelineCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ReleasePipelineCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releasePipelineCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releasePipelineCreate.releasePipeline`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ReleasePipelineList($after: String, $before: String, $filter: ReleasePipelineFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy, $sort: [ReleasePipelineSortInput!]) { releasePipelines(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy, sort: $sort) { nodes { ...ReleasePipelineFields } pageInfo { endCursor hasNextPage } } } fragment ReleasePipelineFields on ReleasePipeline { approximateReleaseCount archivedAt autoGenerateReleaseNotesOnCompletion createdAt id includePathPatterns isProduction latestReleaseNote { id } name releaseNoteTemplate { id } rolloverIssuesOnCompletion slugId trashed type updatedAt url }"
+            field: "releasePipelines"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "filter"
+                gqltype: "ReleasePipelineFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+              {
+                from: "sort"
+                gqltype: "[ReleasePipelineSortInput!]"
+                name: "sort"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releasePipelines"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releasePipelines.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ReleasePipelineLoad($id: String!) { releasePipeline(id: $id) { ...ReleasePipelineFields } } fragment ReleasePipelineFields on ReleasePipeline { approximateReleaseCount archivedAt autoGenerateReleaseNotesOnCompletion createdAt id includePathPatterns isProduction latestReleaseNote { id } name releaseNoteTemplate { id } rolloverIssuesOnCompletion slugId trashed type updatedAt url }"
+            field: "releasePipeline"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releasePipeline"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releasePipeline`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ReleasePipelineRemove($id: String!) { releasePipelineDelete(id: $id) { entity { ...ReleasePipelineFields } success } } fragment ReleasePipelineFields on ReleasePipeline { approximateReleaseCount archivedAt autoGenerateReleaseNotesOnCompletion createdAt id includePathPatterns isProduction latestReleaseNote { id } name releaseNoteTemplate { id } rolloverIssuesOnCompletion slugId trashed type updatedAt url }"
+            field: "releasePipelineDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releasePipelineDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releasePipelineDelete.entity`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ReleasePipelineUpdateArchive($id: String!) { releasePipelineArchive(id: $id) { entity { ...ReleasePipelineFields } success } } fragment ReleasePipelineFields on ReleasePipeline { approximateReleaseCount archivedAt autoGenerateReleaseNotesOnCompletion createdAt id includePathPatterns isProduction latestReleaseNote { id } name releaseNoteTemplate { id } rolloverIssuesOnCompletion slugId trashed type updatedAt url }"
+            field: "releasePipelineArchive"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releasePipelineArchive"
+          select: {
+            "$action": "archive"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releasePipelineArchive.entity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ReleasePipelineUpdateUnarchive($id: String!) { releasePipelineUnarchive(id: $id) { entity { ...ReleasePipelineFields } success } } fragment ReleasePipelineFields on ReleasePipeline { approximateReleaseCount archivedAt autoGenerateReleaseNotesOnCompletion createdAt id includePathPatterns isProduction latestReleaseNote { id } name releaseNoteTemplate { id } rolloverIssuesOnCompletion slugId trashed type updatedAt url }"
+            field: "releasePipelineUnarchive"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releasePipelineUnarchive"
+          select: {
+            "$action": "unarchive"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releasePipelineUnarchive.entity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ReleasePipelineUpdate($id: String!, $input: ReleasePipelineUpdateInput!) { releasePipelineUpdate(id: $id, input: $input) { releasePipeline { ...ReleasePipelineFields } success } } fragment ReleasePipelineFields on ReleasePipeline { approximateReleaseCount archivedAt autoGenerateReleaseNotesOnCompletion createdAt id includePathPatterns isProduction latestReleaseNote { id } name releaseNoteTemplate { id } rolloverIssuesOnCompletion slugId trashed type updatedAt url }"
+            field: "releasePipelineUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "ReleasePipelineUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releasePipelineUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releasePipelineUpdate.releasePipeline`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

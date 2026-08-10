@@ -1,0 +1,406 @@
+# Entity: custom_view
+
+main: kit: entity: custom_view: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "color"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "creator"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "facet"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "feed_item_filter_data"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "filter_data"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "icon"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "initiative_filter_data"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "model_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "organization"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "organization_view_preference"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "owner"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "project_filter_data"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "shared"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "slug_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "team"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "updated_by"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "user_view_preference"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "custom_view"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation CustomViewCreate($input: CustomViewCreateInput!) { customViewCreate(input: $input) { customView { ...CustomViewFields } success } } fragment CustomViewFields on CustomView { archivedAt color createdAt creator { id } description facet { id } feedItemFilterData filterData icon id initiativeFilterData modelName name organization { id } organizationViewPreferences { id } owner { id } projectFilterData shared slugId team { id } updatedAt updatedBy { id } userViewPreferences { id } }"
+            field: "customViewCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CustomViewCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customViewCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customViewCreate.customView`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query CustomViewList($after: String, $before: String, $filter: CustomViewFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy, $sort: [CustomViewSortInput!]) { customViews(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy, sort: $sort) { nodes { ...CustomViewFields } pageInfo { endCursor hasNextPage } } } fragment CustomViewFields on CustomView { archivedAt color createdAt creator { id } description facet { id } feedItemFilterData filterData icon id initiativeFilterData modelName name organization { id } organizationViewPreferences { id } owner { id } projectFilterData shared slugId team { id } updatedAt updatedBy { id } userViewPreferences { id } }"
+            field: "customViews"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "filter"
+                gqltype: "CustomViewFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+              {
+                from: "sort"
+                gqltype: "[CustomViewSortInput!]"
+                name: "sort"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customViews"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customViews.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query CustomViewLoad($id: String!) { customView(id: $id) { ...CustomViewFields } } fragment CustomViewFields on CustomView { archivedAt color createdAt creator { id } description facet { id } feedItemFilterData filterData icon id initiativeFilterData modelName name organization { id } organizationViewPreferences { id } owner { id } projectFilterData shared slugId team { id } updatedAt updatedBy { id } userViewPreferences { id } }"
+            field: "customView"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customView"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customView`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomViewRemove($id: String!) { customViewDelete(id: $id) { entityId lastSyncId success } }"
+            field: "customViewDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customViewDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customViewDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomViewUpdate($id: String!, $input: CustomViewUpdateInput!) { customViewUpdate(id: $id, input: $input) { customView { ...CustomViewFields } success } } fragment CustomViewFields on CustomView { archivedAt color createdAt creator { id } description facet { id } feedItemFilterData filterData icon id initiativeFilterData modelName name organization { id } organizationViewPreferences { id } owner { id } projectFilterData shared slugId team { id } updatedAt updatedBy { id } userViewPreferences { id } }"
+            field: "customViewUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "CustomViewUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customViewUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customViewUpdate.customView`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

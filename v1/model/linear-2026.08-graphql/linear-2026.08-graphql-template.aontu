@@ -1,0 +1,329 @@
+# Entity: template
+
+main: kit: entity: template: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "color"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "creator"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "has_form_field"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "icon"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "inherited_from"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "last_applied_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "last_updated_by"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "organization"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "pipeline"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "sort_order"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "team"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "template_data"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "template"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation TemplateCreate($input: TemplateCreateInput!) { templateCreate(input: $input) { template { ...TemplateFields } success } } fragment TemplateFields on Template { archivedAt color createdAt creator { id } description hasFormFields icon id inheritedFrom { id } lastAppliedAt lastUpdatedBy { id } name organization { id } pipeline { id } sortOrder team { id } templateData type updatedAt }"
+            field: "templateCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "TemplateCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "templateCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.templateCreate.template`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "integration_type"
+                orig: "integration_type"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query TemplateList($integrationType: String!) { templatesForIntegration(integrationType: $integrationType) { ...TemplateFields } } fragment TemplateFields on Template { archivedAt color createdAt creator { id } description hasFormFields icon id inheritedFrom { id } lastAppliedAt lastUpdatedBy { id } name organization { id } pipeline { id } sortOrder team { id } templateData type updatedAt }"
+            field: "templatesForIntegration"
+            optype: "query"
+            vars: [
+              {
+                from: "integrationType"
+                gqltype: "String!"
+                name: "integrationType"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "templatesForIntegration"
+          select: {
+            exist: [
+              "integration_type"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.templatesForIntegration`"
+          }
+        }
+        {
+          graphql: {
+            doc: "query TemplateList { templates { ...TemplateFields } } fragment TemplateFields on Template { archivedAt color createdAt creator { id } description hasFormFields icon id inheritedFrom { id } lastAppliedAt lastUpdatedBy { id } name organization { id } pipeline { id } sortOrder team { id } templateData type updatedAt }"
+            field: "templates"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "templates"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.templates`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query TemplateLoad($id: String!) { template(id: $id) { ...TemplateFields } } fragment TemplateFields on Template { archivedAt color createdAt creator { id } description hasFormFields icon id inheritedFrom { id } lastAppliedAt lastUpdatedBy { id } name organization { id } pipeline { id } sortOrder team { id } templateData type updatedAt }"
+            field: "template"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "template"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.template`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation TemplateRemove($id: String!) { templateDelete(id: $id) { entityId lastSyncId success } }"
+            field: "templateDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "templateDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.templateDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation TemplateUpdate($id: String!, $input: TemplateUpdateInput!) { templateUpdate(id: $id, input: $input) { template { ...TemplateFields } success } } fragment TemplateFields on Template { archivedAt color createdAt creator { id } description hasFormFields icon id inheritedFrom { id } lastAppliedAt lastUpdatedBy { id } name organization { id } pipeline { id } sortOrder team { id } templateData type updatedAt }"
+            field: "templateUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "TemplateUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "templateUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.templateUpdate.template`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

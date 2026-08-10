@@ -1,0 +1,316 @@
+# Entity: initiative_to_project
+
+main: kit: entity: initiative_to_project: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "initiative"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "project"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "sort_order"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "initiative_to_project"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation InitiativeToProjectCreate($input: InitiativeToProjectCreateInput!) { initiativeToProjectCreate(input: $input) { initiativeToProject { ...InitiativeToProjectFields } success } } fragment InitiativeToProjectFields on InitiativeToProject { archivedAt createdAt id initiative { id } project { id } sortOrder updatedAt }"
+            field: "initiativeToProjectCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "InitiativeToProjectCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeToProjectCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeToProjectCreate.initiativeToProject`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query InitiativeToProjectList($after: String, $before: String, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { initiativeToProjects(after: $after, before: $before, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...InitiativeToProjectFields } pageInfo { endCursor hasNextPage } } } fragment InitiativeToProjectFields on InitiativeToProject { archivedAt createdAt id initiative { id } project { id } sortOrder updatedAt }"
+            field: "initiativeToProjects"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeToProjects"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeToProjects.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query InitiativeToProjectLoad($id: String!) { initiativeToProject(id: $id) { ...InitiativeToProjectFields } } fragment InitiativeToProjectFields on InitiativeToProject { archivedAt createdAt id initiative { id } project { id } sortOrder updatedAt }"
+            field: "initiativeToProject"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeToProject"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeToProject`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation InitiativeToProjectRemove($id: String!) { initiativeToProjectDelete(id: $id) { entityId lastSyncId success } }"
+            field: "initiativeToProjectDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeToProjectDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeToProjectDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation InitiativeToProjectUpdate($id: String!, $input: InitiativeToProjectUpdateInput!) { initiativeToProjectUpdate(id: $id, input: $input) { initiativeToProject { ...InitiativeToProjectFields } success } } fragment InitiativeToProjectFields on InitiativeToProject { archivedAt createdAt id initiative { id } project { id } sortOrder updatedAt }"
+            field: "initiativeToProjectUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "InitiativeToProjectUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeToProjectUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeToProjectUpdate.initiativeToProject`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

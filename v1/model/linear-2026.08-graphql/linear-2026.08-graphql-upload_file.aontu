@@ -1,0 +1,215 @@
+# Entity: upload_file
+
+main: kit: entity: upload_file: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "asset_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "content_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "filename"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "meta_data"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "size"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "upload_url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "upload_file"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "content_type"
+                orig: "content_type"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "filename"
+                orig: "filename"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "make_public"
+                orig: "make_public"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "meta_data"
+                orig: "meta_data"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "size"
+                orig: "size"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation UploadFileCreateFileUpload($contentType: String!, $filename: String!, $makePublic: Boolean, $metaData: JSON, $size: Int!) { fileUpload(contentType: $contentType, filename: $filename, makePublic: $makePublic, metaData: $metaData, size: $size) { uploadFile { ...UploadFileFields } success } } fragment UploadFileFields on UploadFile { assetUrl contentType filename metaData size uploadUrl }"
+            field: "fileUpload"
+            optype: "mutation"
+            vars: [
+              {
+                from: "contentType"
+                gqltype: "String!"
+                name: "contentType"
+              }
+              {
+                from: "filename"
+                gqltype: "String!"
+                name: "filename"
+              }
+              {
+                from: "makePublic"
+                gqltype: "Boolean"
+                name: "makePublic"
+              }
+              {
+                from: "metaData"
+                gqltype: "JSON"
+                name: "metaData"
+              }
+              {
+                from: "size"
+                gqltype: "Int!"
+                name: "size"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "fileUpload"
+          select: {
+            "$action": "file_upload"
+            exist: [
+              "content_type"
+              "filename"
+              "size"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.fileUpload.uploadFile`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "content_type"
+                orig: "content_type"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "filename"
+                orig: "filename"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "meta_data"
+                orig: "meta_data"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "size"
+                orig: "size"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation UploadFileCreateImportFileUpload($contentType: String!, $filename: String!, $metaData: JSON, $size: Int!) { importFileUpload(contentType: $contentType, filename: $filename, metaData: $metaData, size: $size) { uploadFile { ...UploadFileFields } success } } fragment UploadFileFields on UploadFile { assetUrl contentType filename metaData size uploadUrl }"
+            field: "importFileUpload"
+            optype: "mutation"
+            vars: [
+              {
+                from: "contentType"
+                gqltype: "String!"
+                name: "contentType"
+              }
+              {
+                from: "filename"
+                gqltype: "String!"
+                name: "filename"
+              }
+              {
+                from: "metaData"
+                gqltype: "JSON"
+                name: "metaData"
+              }
+              {
+                from: "size"
+                gqltype: "Int!"
+                name: "size"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "importFileUpload"
+          select: {
+            "$action": "import_file_upload"
+            exist: [
+              "content_type"
+              "filename"
+              "size"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.importFileUpload.uploadFile`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

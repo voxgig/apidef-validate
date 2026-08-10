@@ -1,0 +1,93 @@
+# Entity: sso_url_from_email_response
+
+main: kit: entity: sso_url_from_email_response: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "saml_sso_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "success"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  name: "sso_url_from_email_response"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "email"
+                orig: "email"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "is_desktop"
+                orig: "is_desktop"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "type"
+                orig: "type"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query SsoUrlFromEmailResponseLoad($email: String!, $isDesktop: Boolean, $type: IdentityProviderType!) { ssoUrlFromEmail(email: $email, isDesktop: $isDesktop, type: $type) { ...SsoUrlFromEmailResponseFields } } fragment SsoUrlFromEmailResponseFields on SsoUrlFromEmailResponse { samlSsoUrl success }"
+            field: "ssoUrlFromEmail"
+            optype: "query"
+            vars: [
+              {
+                from: "email"
+                gqltype: "String!"
+                name: "email"
+              }
+              {
+                from: "isDesktop"
+                gqltype: "Boolean"
+                name: "isDesktop"
+              }
+              {
+                from: "type"
+                gqltype: "IdentityProviderType!"
+                name: "type"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "ssoUrlFromEmail"
+          select: {
+            exist: [
+              "email"
+              "type"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.ssoUrlFromEmail`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

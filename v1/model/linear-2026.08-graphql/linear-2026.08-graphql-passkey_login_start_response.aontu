@@ -1,0 +1,69 @@
+# Entity: passkey_login_start_response
+
+main: kit: entity: passkey_login_start_response: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "option"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "success"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  name: "passkey_login_start_response"
+  op: {
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "auth_id"
+                orig: "auth_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation PasskeyLoginStartResponseUpdatePasskeyLoginStart($authId: String!) { passkeyLoginStart(authId: $authId) { ...PasskeyLoginStartResponseFields } } fragment PasskeyLoginStartResponseFields on PasskeyLoginStartResponse { options success }"
+            field: "passkeyLoginStart"
+            optype: "mutation"
+            vars: [
+              {
+                from: "authId"
+                gqltype: "String!"
+                name: "authId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "passkeyLoginStart"
+          select: {
+            "$action": "passkey_login_start"
+            exist: [
+              "auth_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.passkeyLoginStart`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

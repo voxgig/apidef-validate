@@ -1,0 +1,177 @@
+# Entity: authentication_session_response
+
+main: kit: entity: authentication_session_response: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "browser_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "client"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "country_code"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "detailed_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "ip"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "is_current_session"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "last_active_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "location"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "location_city"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "location_country"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "location_country_code"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "location_region_code"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "operating_system"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "service"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "user_agent"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "authentication_session_response"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query AuthenticationSessionResponseList($id: String!) { userSessions(id: $id) { ...AuthenticationSessionResponseFields } } fragment AuthenticationSessionResponseFields on AuthenticationSessionResponse { browserType client countryCodes createdAt detailedName id ip isCurrentSession lastActiveAt location locationCity locationCountry locationCountryCode locationRegionCode name operatingSystem service type updatedAt userAgent }"
+            field: "userSessions"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "userSessions"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.userSessions`"
+          }
+        }
+        {
+          graphql: {
+            doc: "query AuthenticationSessionResponseList { authenticationSessions { ...AuthenticationSessionResponseFields } } fragment AuthenticationSessionResponseFields on AuthenticationSessionResponse { browserType client countryCodes createdAt detailedName id ip isCurrentSession lastActiveAt location locationCity locationCountry locationCountryCode locationRegionCode name operatingSystem service type updatedAt userAgent }"
+            field: "authenticationSessions"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "authenticationSessions"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.authenticationSessions`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

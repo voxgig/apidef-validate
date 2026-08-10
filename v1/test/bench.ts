@@ -17,7 +17,29 @@ type Case = {
   version: string
   spec: string
   format: string
+  endpoint?: string
 }
+
+
+function isGraphql(c: Case) {
+  return 'graphql' === c.spec
+}
+
+
+// See the note on the same check in test/main.test.ts.
+function graphqlCapable(): boolean {
+  try {
+    return Fs.readFileSync(
+      require.resolve('@voxgig/apidef/model/apidef.aontu'), 'utf8')
+      .includes("'graphql'")
+  }
+  catch (err: any) {
+    return false
+  }
+}
+
+
+const GRAPHQL_CAPABLE = graphqlCapable()
 
 const TOP_FOLDER = Path.join(__dirname, '..')
 
@@ -37,11 +59,22 @@ let cases: Case[] = [
   { name: 'shortcut', version: 'v3', spec: 'openapi-3.0.0', format: 'json' },
   { name: 'github', version: '1.1.4', spec: 'openapi-3.0.3', format: 'yaml' },
   { name: 'gitlab', version: 'v4', spec: 'swagger-2.0', format: 'yaml' },
+
+  // GraphQL. Skipped automatically when the installed @voxgig/apidef predates
+  // GraphQL ingestion; see GRAPHQL_CAPABLE below.
+  {
+    name: 'linear', version: '2026.08', spec: 'graphql', format: 'graphql',
+    endpoint: 'https://api.linear.app/graphql',
+  },
 ]
 
 const caseSelector = (process.env.TEST_CASE ?? '').split(',').filter(Boolean)
 if (0 < caseSelector.length) {
   cases = cases.filter(c => 0 < caseSelector.filter(cs => c.name.includes(cs)).length)
+}
+
+if (!GRAPHQL_CAPABLE) {
+  cases = cases.filter(c => !isGraphql(c))
 }
 
 
@@ -86,6 +119,12 @@ async function makeBuild(c: Case, fs: FST) {
     why: { show: true },
     fs,
   }
+
+  if (isGraphql(c)) {
+    buildSpec.kind = 'GraphQL'
+    buildSpec.endpoint = c.endpoint
+  }
+
   return ApiDef.makeBuild(buildSpec)
 }
 

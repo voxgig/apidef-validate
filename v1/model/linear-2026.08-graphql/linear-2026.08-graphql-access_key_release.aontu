@@ -1,0 +1,194 @@
+# Entity: access_key_release
+
+main: kit: entity: access_key_release: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "commit_sha"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "completed_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "version"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "access_key_release"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation AccessKeyReleaseCreateReleaseCompleteByAccessKey($input: ReleaseCompleteInputBase!) { releaseCompleteByAccessKey(input: $input) { release { ...AccessKeyReleaseFields } success } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }"
+            field: "releaseCompleteByAccessKey"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ReleaseCompleteInputBase!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseCompleteByAccessKey"
+          select: {
+            "$action": "release_complete_by_access_key"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseCompleteByAccessKey.release`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation AccessKeyReleaseCreateReleaseSyncByAccessKey($input: ReleaseSyncInputBase!) { releaseSyncByAccessKey(input: $input) { release { ...AccessKeyReleaseFields } success } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }"
+            field: "releaseSyncByAccessKey"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ReleaseSyncInputBase!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseSyncByAccessKey"
+          select: {
+            "$action": "release_sync_by_access_key"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseSyncByAccessKey.release`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation AccessKeyReleaseCreateReleaseUpdateByPipelineByAccessKey($input: ReleaseUpdateByPipelineInputBase!) { releaseUpdateByPipelineByAccessKey(input: $input) { release { ...AccessKeyReleaseFields } success } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }"
+            field: "releaseUpdateByPipelineByAccessKey"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ReleaseUpdateByPipelineInputBase!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releaseUpdateByPipelineByAccessKey"
+          select: {
+            "$action": "release_update_by_pipeline_by_access_key"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releaseUpdateByPipelineByAccessKey.release`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "limit"
+                orig: "limit"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query AccessKeyReleaseList($limit: Int) { recentReleasesByAccessKey(limit: $limit) { ...AccessKeyReleaseFields } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }"
+            field: "recentReleasesByAccessKey"
+            optype: "query"
+            vars: [
+              {
+                from: "limit"
+                gqltype: "Int"
+                name: "limit"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "recentReleasesByAccessKey"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.recentReleasesByAccessKey`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          graphql: {
+            doc: "query AccessKeyReleaseLoad { latestReleaseByAccessKey { ...AccessKeyReleaseFields } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }"
+            field: "latestReleaseByAccessKey"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "latestReleaseByAccessKey"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.latestReleaseByAccessKey`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}
