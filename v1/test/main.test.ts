@@ -30,7 +30,37 @@ type Case = {
   version: string
   spec: string
   format: string
+
+  // GraphQL cases only. A schema declares neither a deployment URL nor an
+  // HTTP auth scheme, so the endpoint has to be supplied out of band; it is
+  // never called, but apidef requires servers[0].url to exist.
+  endpoint?: string
 }
+
+
+// A GraphQL case is identified by its spec slug, which is also what the def
+// file extension follows.
+function isGraphql(c: Case) {
+  return 'graphql' === c.spec
+}
+
+
+// GraphQL ingestion landed after the currently published @voxgig/apidef, so
+// the installed copy may not understand these cases at all. Detect the
+// capability from the shipped model rather than by version arithmetic:
+// a pre-GraphQL apidef simply has no graphql block in its point schema.
+function graphqlCapable(): boolean {
+  try {
+    const modelPath = require.resolve('@voxgig/apidef/model/apidef.aontu')
+    return Fs.readFileSync(modelPath, 'utf8').includes("'graphql'")
+  }
+  catch (err: any) {
+    return false
+  }
+}
+
+
+const GRAPHQL_CAPABLE = graphqlCapable()
 
 
 const TOP_FOLDER = Path.join(__dirname, '..')
@@ -54,7 +84,23 @@ let cases: Case[] = [
 
   { name: 'github', version: '1.1.4', spec: 'openapi-3.0.3', format: 'yaml' },
   { name: 'gitlab', version: 'v4', spec: 'swagger-2.0', format: 'yaml' },
+
+  // GraphQL. Real schemas, same treatment: classified into entities and ops,
+  // compared against goldens.
+  {
+    name: 'linear', version: '2026.08', spec: 'graphql', format: 'graphql',
+    endpoint: 'https://api.linear.app/graphql',
+  },
 ]
+
+if (!GRAPHQL_CAPABLE) {
+  const skipped = cases.filter(isGraphql).map(c => c.name)
+  if (0 < skipped.length) {
+    console.log('SKIPPING GRAPHQL CASES (installed @voxgig/apidef predates' +
+      ' GraphQL ingestion): ' + skipped.join(', '))
+  }
+  cases = cases.filter(c => !isGraphql(c))
+}
 
 const caseSelector = (process.env.TEST_CASE ?? '').split(',')
 
@@ -242,6 +288,11 @@ async function makeBuild(c: Case, fs: FST) {
     why: {
       show: true
     }
+  }
+
+  if (isGraphql(c)) {
+    buildSpec.kind = 'GraphQL'
+    buildSpec.endpoint = c.endpoint
   }
 
   buildSpec.fs = fs
