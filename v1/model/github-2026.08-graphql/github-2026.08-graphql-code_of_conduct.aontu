@@ -1,0 +1,112 @@
+# Entity: code_of_conduct
+
+main: kit: entity: code_of_conduct: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "body"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "key"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "resource_path"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_of_conduct"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          graphql: {
+            doc: "query CodeOfConductList { codesOfConduct { ...CodeOfConductFields } } fragment CodeOfConductFields on CodeOfConduct { body id key name resourcePath url }"
+            field: "codesOfConduct"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "codesOfConduct"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.codesOfConduct`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "key"
+                orig: "key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query CodeOfConductLoad($key: String!) { codeOfConduct(key: $key) { ...CodeOfConductFields } } fragment CodeOfConductFields on CodeOfConduct { body id key name resourcePath url }"
+            field: "codeOfConduct"
+            optype: "query"
+            vars: [
+              {
+                from: "key"
+                gqltype: "String!"
+                name: "key"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "codeOfConduct"
+          select: {
+            exist: [
+              "key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.codeOfConduct`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

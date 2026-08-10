@@ -1,0 +1,139 @@
+# Entity: location
+
+main: kit: entity: location: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "location"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "reverse"
+                orig: "reverse"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "sort_key"
+                orig: "sort_key"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query LocationList($after: String, $before: String, $first: Int, $last: Int, $near: GeoCoordinateInput, $reverse: Boolean, $sortKey: LocationSortKeys) { locations(after: $after, before: $before, first: $first, last: $last, near: $near, reverse: $reverse, sortKey: $sortKey) { nodes { ...LocationFields } pageInfo { endCursor hasNextPage } } } fragment LocationFields on Location { id name }"
+            field: "locations"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: ""
+                gqltype: "GeoCoordinateInput"
+                name: "near"
+              }
+              {
+                from: "reverse"
+                gqltype: "Boolean"
+                name: "reverse"
+              }
+              {
+                from: "sortKey"
+                gqltype: "LocationSortKeys"
+                name: "sortKey"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "locations"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.locations.nodes`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

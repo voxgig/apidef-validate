@@ -86,6 +86,22 @@ let cases = [
         name: 'linear', version: '2026.08', spec: 'graphql', format: 'graphql',
         endpoint: 'https://api.linear.app/graphql',
     },
+    // GitHub's GraphQL API, alongside its OpenAPI def above: the one API in
+    // this corpus present in both formats, so the two models can be compared.
+    // Its mutations are overwhelmingly commands rather than CRUD, which is
+    // what exercises action folding at scale.
+    {
+        name: 'github', version: '2026.08', spec: 'graphql', format: 'graphql',
+        endpoint: 'https://api.github.com/graphql',
+    },
+    // Shopify's Storefront API, supplied as INTROSPECTION JSON rather than
+    // SDL — the only case exercising that parser branch. Its query root is
+    // named QueryRoot, not Query, which a schema-literal reading would miss.
+    {
+        name: 'shopifystorefront', version: '2026.04', spec: 'graphql',
+        format: 'json',
+        endpoint: 'https://example.myshopify.com/api/2026-04/graphql.json',
+    },
 ];
 if (!GRAPHQL_CAPABLE) {
     const skipped = cases.filter(isGraphql).map(c => c.name);

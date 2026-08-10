@@ -1,0 +1,55 @@
+# Entity: query
+
+main: kit: entity: query: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "relay"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "viewer"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "query"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          graphql: {
+            doc: "query QueryLoad { relay { ...QueryFields } } fragment QueryFields on Query { id relay { id } viewer { id } }"
+            field: "relay"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "relay"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.relay`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

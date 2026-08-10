@@ -1,0 +1,136 @@
+# Entity: topic
+
+main: kit: entity: topic: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "stargazer_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "viewer_has_starred"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "topic"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation TopicCreateAcceptTopicSuggestion($input: AcceptTopicSuggestionInput!) { acceptTopicSuggestion(input: $input) { topic { ...TopicFields } } } fragment TopicFields on Topic { id name stargazerCount viewerHasStarred }"
+            field: "acceptTopicSuggestion"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "AcceptTopicSuggestionInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "acceptTopicSuggestion"
+          select: {
+            "$action": "accept_topic_suggestion"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.acceptTopicSuggestion.topic`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation TopicCreateDeclineTopicSuggestion($input: DeclineTopicSuggestionInput!) { declineTopicSuggestion(input: $input) { topic { ...TopicFields } } } fragment TopicFields on Topic { id name stargazerCount viewerHasStarred }"
+            field: "declineTopicSuggestion"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "DeclineTopicSuggestionInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "declineTopicSuggestion"
+          select: {
+            "$action": "decline_topic_suggestion"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.declineTopicSuggestion.topic`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "name"
+                orig: "name"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query TopicLoad($name: String!) { topic(name: $name) { ...TopicFields } } fragment TopicFields on Topic { id name stargazerCount viewerHasStarred }"
+            field: "topic"
+            optype: "query"
+            vars: [
+              {
+                from: "name"
+                gqltype: "String!"
+                name: "name"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "topic"
+          select: {
+            exist: [
+              "name"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.topic`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

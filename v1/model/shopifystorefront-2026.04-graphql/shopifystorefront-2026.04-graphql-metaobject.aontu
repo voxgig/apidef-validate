@@ -1,0 +1,208 @@
+# Entity: metaobject
+
+main: kit: entity: metaobject: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "handle"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "online_store_url"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "metaobject"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "reverse"
+                orig: "reverse"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "sort_key"
+                orig: "sort_key"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "type"
+                orig: "type"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query MetaobjectList($after: String, $before: String, $first: Int, $last: Int, $reverse: Boolean, $sortKey: String, $type: String!) { metaobjects(after: $after, before: $before, first: $first, last: $last, reverse: $reverse, sortKey: $sortKey, type: $type) { nodes { ...MetaobjectFields } pageInfo { endCursor hasNextPage } } } fragment MetaobjectFields on Metaobject { handle id onlineStoreUrl type updatedAt }"
+            field: "metaobjects"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "reverse"
+                gqltype: "Boolean"
+                name: "reverse"
+              }
+              {
+                from: "sortKey"
+                gqltype: "String"
+                name: "sortKey"
+              }
+              {
+                from: "type"
+                gqltype: "String!"
+                name: "type"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "metaobjects"
+          select: {
+            exist: [
+              "type"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.metaobjects.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query MetaobjectLoad($handle: MetaobjectHandleInput, $id: ID) { metaobject(handle: $handle, id: $id) { ...MetaobjectFields } } fragment MetaobjectFields on Metaobject { handle id onlineStoreUrl type updatedAt }"
+            field: "metaobject"
+            optype: "query"
+            vars: [
+              {
+                from: ""
+                gqltype: "MetaobjectHandleInput"
+                name: "handle"
+              }
+              {
+                from: "id"
+                gqltype: "ID"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "metaobject"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.metaobject`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

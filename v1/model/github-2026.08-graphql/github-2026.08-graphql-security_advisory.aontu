@@ -1,0 +1,277 @@
+# Entity: security_advisory
+
+main: kit: entity: security_advisory: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "classification"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "database_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "description"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "ghsa_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "notifications_permalink"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "origin"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "permalink"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "published_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "severity"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "summary"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "withdrawn_at"
+      req: false
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "security_advisory"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "classification"
+                orig: "classification"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "epss_percentage"
+                orig: "epss_percentage"
+                reqd: false
+                type: "`$NUMBER`"
+              }
+              {
+                kind: "param"
+                name: "epss_percentile"
+                orig: "epss_percentile"
+                reqd: false
+                type: "`$NUMBER`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "published_since"
+                orig: "published_since"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "updated_since"
+                orig: "updated_since"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query SecurityAdvisoryList($after: String, $before: String, $classifications: [SecurityAdvisoryClassification!], $epssPercentage: Float, $epssPercentile: Float, $first: Int, $identifier: SecurityAdvisoryIdentifierFilter, $last: Int, $orderBy: SecurityAdvisoryOrder, $publishedSince: DateTime, $updatedSince: DateTime) { securityAdvisories(after: $after, before: $before, classifications: $classifications, epssPercentage: $epssPercentage, epssPercentile: $epssPercentile, first: $first, identifier: $identifier, last: $last, orderBy: $orderBy, publishedSince: $publishedSince, updatedSince: $updatedSince) { nodes { ...SecurityAdvisoryFields } pageInfo { endCursor hasNextPage } } } fragment SecurityAdvisoryFields on SecurityAdvisory { classification databaseId description ghsaId id notificationsPermalink origin permalink publishedAt severity summary updatedAt withdrawnAt }"
+            field: "securityAdvisories"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "classifications"
+                gqltype: "[SecurityAdvisoryClassification!]"
+                name: "classifications"
+              }
+              {
+                from: "epssPercentage"
+                gqltype: "Float"
+                name: "epssPercentage"
+              }
+              {
+                from: "epssPercentile"
+                gqltype: "Float"
+                name: "epssPercentile"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "identifier"
+                gqltype: "SecurityAdvisoryIdentifierFilter"
+                name: "identifier"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "SecurityAdvisoryOrder"
+                name: "orderBy"
+              }
+              {
+                from: "publishedSince"
+                gqltype: "DateTime"
+                name: "publishedSince"
+              }
+              {
+                from: "updatedSince"
+                gqltype: "DateTime"
+                name: "updatedSince"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "securityAdvisories"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.securityAdvisories.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "ghsa_id"
+                orig: "ghsa_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query SecurityAdvisoryLoad($ghsaId: String!) { securityAdvisory(ghsaId: $ghsaId) { ...SecurityAdvisoryFields } } fragment SecurityAdvisoryFields on SecurityAdvisory { classification databaseId description ghsaId id notificationsPermalink origin permalink publishedAt severity summary updatedAt withdrawnAt }"
+            field: "securityAdvisory"
+            optype: "query"
+            vars: [
+              {
+                from: "ghsaId"
+                gqltype: "String!"
+                name: "ghsaId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "securityAdvisory"
+          select: {
+            exist: [
+              "ghsa_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.securityAdvisory`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

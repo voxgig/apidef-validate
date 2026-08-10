@@ -1,0 +1,92 @@
+# Entity: deployment_status
+
+main: kit: entity: deployment_status: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "deployment"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "environment"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "environment_url"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "log_url"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "state"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "deployment_status"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation DeploymentStatusCreate($input: CreateDeploymentStatusInput!) { createDeploymentStatus(input: $input) { deploymentStatus { ...DeploymentStatusFields } } } fragment DeploymentStatusFields on DeploymentStatus { createdAt deployment { id } description environment environmentUrl id logUrl state updatedAt }"
+            field: "createDeploymentStatus"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CreateDeploymentStatusInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "createDeploymentStatus"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.createDeploymentStatus.deploymentStatus`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

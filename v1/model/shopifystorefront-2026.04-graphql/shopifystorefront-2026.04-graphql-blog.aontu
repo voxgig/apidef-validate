@@ -1,0 +1,242 @@
+# Entity: blog
+
+main: kit: entity: blog: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "handle"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "online_store_url"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "title"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "blog"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "query"
+                orig: "query"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "reverse"
+                orig: "reverse"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "sort_key"
+                orig: "sort_key"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query BlogList($after: String, $before: String, $first: Int, $last: Int, $query: String, $reverse: Boolean, $sortKey: BlogSortKeys) { blogs(after: $after, before: $before, first: $first, last: $last, query: $query, reverse: $reverse, sortKey: $sortKey) { nodes { ...BlogFields } pageInfo { endCursor hasNextPage } } } fragment BlogFields on Blog { handle id onlineStoreUrl title }"
+            field: "blogs"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "query"
+                gqltype: "String"
+                name: "query"
+              }
+              {
+                from: "reverse"
+                gqltype: "Boolean"
+                name: "reverse"
+              }
+              {
+                from: "sortKey"
+                gqltype: "BlogSortKeys"
+                name: "sortKey"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "blogs"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.blogs.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "handle"
+                orig: "handle"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query BlogLoad($handle: String!) { blogByHandle(handle: $handle) { ...BlogFields } } fragment BlogFields on Blog { handle id onlineStoreUrl title }"
+            field: "blogByHandle"
+            optype: "query"
+            vars: [
+              {
+                from: "handle"
+                gqltype: "String!"
+                name: "handle"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "blogByHandle"
+          select: {
+            exist: [
+              "handle"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.blogByHandle`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "handle"
+                orig: "handle"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query BlogLoad($handle: String, $id: ID) { blog(handle: $handle, id: $id) { ...BlogFields } } fragment BlogFields on Blog { handle id onlineStoreUrl title }"
+            field: "blog"
+            optype: "query"
+            vars: [
+              {
+                from: "handle"
+                gqltype: "String"
+                name: "handle"
+              }
+              {
+                from: "id"
+                gqltype: "ID"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "blog"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.blog`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

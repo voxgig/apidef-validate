@@ -1,0 +1,987 @@
+# Entity: cart
+
+main: kit: entity: cart: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "checkout_url"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "note"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "total_quantity"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "cart"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation CartCreate($input: CartInput) { cartCreate(input: $input) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CartInput"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartCreate.cart`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query CartLoad($id: ID!) { cart(id: $id) { ...CartFields } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cart"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "ID!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cart"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cart`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "address_id"
+                orig: "address_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateDeliveryAddressesRemove($addressIds: [ID!]!, $cartId: ID!) { cartDeliveryAddressesRemove(addressIds: $addressIds, cartId: $cartId) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartDeliveryAddressesRemove"
+            optype: "mutation"
+            vars: [
+              {
+                from: "addressIds"
+                gqltype: "[ID!]!"
+                name: "addressIds"
+              }
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartDeliveryAddressesRemove"
+          select: {
+            "$action": "delivery_addresses_remove"
+            exist: [
+              "address_id"
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartDeliveryAddressesRemove.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "discount_code"
+                orig: "discount_code"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]!) { cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartDiscountCodesUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+              {
+                from: "discountCodes"
+                gqltype: "[String!]!"
+                name: "discountCodes"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartDiscountCodesUpdate"
+          select: {
+            "$action": "discount_codes_update"
+            exist: [
+              "cart_id"
+              "discount_code"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartDiscountCodesUpdate.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "gift_card_code"
+                orig: "gift_card_code"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateGiftCardCodesAdd($cartId: ID!, $giftCardCodes: [String!]!) { cartGiftCardCodesAdd(cartId: $cartId, giftCardCodes: $giftCardCodes) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartGiftCardCodesAdd"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+              {
+                from: "giftCardCodes"
+                gqltype: "[String!]!"
+                name: "giftCardCodes"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartGiftCardCodesAdd"
+          select: {
+            "$action": "gift_card_codes_add"
+            exist: [
+              "cart_id"
+              "gift_card_code"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartGiftCardCodesAdd.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "applied_gift_card_id"
+                orig: "applied_gift_card_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateGiftCardCodesRemove($appliedGiftCardIds: [ID!]!, $cartId: ID!) { cartGiftCardCodesRemove(appliedGiftCardIds: $appliedGiftCardIds, cartId: $cartId) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartGiftCardCodesRemove"
+            optype: "mutation"
+            vars: [
+              {
+                from: "appliedGiftCardIds"
+                gqltype: "[ID!]!"
+                name: "appliedGiftCardIds"
+              }
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartGiftCardCodesRemove"
+          select: {
+            "$action": "gift_card_codes_remove"
+            exist: [
+              "applied_gift_card_id"
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartGiftCardCodesRemove.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "gift_card_code"
+                orig: "gift_card_code"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateGiftCardCodesUpdate($cartId: ID!, $giftCardCodes: [String!]!) { cartGiftCardCodesUpdate(cartId: $cartId, giftCardCodes: $giftCardCodes) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartGiftCardCodesUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+              {
+                from: "giftCardCodes"
+                gqltype: "[String!]!"
+                name: "giftCardCodes"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartGiftCardCodesUpdate"
+          select: {
+            "$action": "gift_card_codes_update"
+            exist: [
+              "cart_id"
+              "gift_card_code"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartGiftCardCodesUpdate.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "line_id"
+                orig: "line_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateLinesRemove($cartId: ID!, $lineIds: [ID!]!) { cartLinesRemove(cartId: $cartId, lineIds: $lineIds) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartLinesRemove"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+              {
+                from: "lineIds"
+                gqltype: "[ID!]!"
+                name: "lineIds"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartLinesRemove"
+          select: {
+            "$action": "lines_remove"
+            exist: [
+              "cart_id"
+              "line_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartLinesRemove.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "note"
+                orig: "note"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateNoteUpdate($cartId: ID!, $note: String!) { cartNoteUpdate(cartId: $cartId, note: $note) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartNoteUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+              {
+                from: "note"
+                gqltype: "String!"
+                name: "note"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartNoteUpdate"
+          select: {
+            "$action": "note_update"
+            exist: [
+              "cart_id"
+              "note"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartNoteUpdate.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateAttributesUpdate($attributes: [AttributeInput!]!, $cartId: ID!) { cartAttributesUpdate(attributes: $attributes, cartId: $cartId) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartAttributesUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "[AttributeInput!]!"
+                name: "attributes"
+              }
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartAttributesUpdate"
+          select: {
+            "$action": "attributes_update"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartAttributesUpdate.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateBillingAddressUpdate($billingAddress: MailingAddressInput, $cartId: ID!) { cartBillingAddressUpdate(billingAddress: $billingAddress, cartId: $cartId) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartBillingAddressUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "MailingAddressInput"
+                name: "billingAddress"
+              }
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartBillingAddressUpdate"
+          select: {
+            "$action": "billing_address_update"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartBillingAddressUpdate.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateBuyerIdentityUpdate($buyerIdentity: CartBuyerIdentityInput!, $cartId: ID!) { cartBuyerIdentityUpdate(buyerIdentity: $buyerIdentity, cartId: $cartId) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartBuyerIdentityUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CartBuyerIdentityInput!"
+                name: "buyerIdentity"
+              }
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartBuyerIdentityUpdate"
+          select: {
+            "$action": "buyer_identity_update"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartBuyerIdentityUpdate.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateClone($cartId: ID!) { cartClone(cartId: $cartId) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartClone"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartClone"
+          select: {
+            "$action": "clone"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartClone.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateDeliveryAddressesAdd($addresses: [CartSelectableAddressInput!]!, $cartId: ID!) { cartDeliveryAddressesAdd(addresses: $addresses, cartId: $cartId) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartDeliveryAddressesAdd"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "[CartSelectableAddressInput!]!"
+                name: "addresses"
+              }
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartDeliveryAddressesAdd"
+          select: {
+            "$action": "delivery_addresses_add"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartDeliveryAddressesAdd.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateDeliveryAddressesReplace($addresses: [CartSelectableAddressInput!]!, $cartId: ID!) { cartDeliveryAddressesReplace(addresses: $addresses, cartId: $cartId) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartDeliveryAddressesReplace"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "[CartSelectableAddressInput!]!"
+                name: "addresses"
+              }
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartDeliveryAddressesReplace"
+          select: {
+            "$action": "delivery_addresses_replace"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartDeliveryAddressesReplace.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateDeliveryAddressesUpdate($addresses: [CartSelectableAddressUpdateInput!]!, $cartId: ID!) { cartDeliveryAddressesUpdate(addresses: $addresses, cartId: $cartId) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartDeliveryAddressesUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "[CartSelectableAddressUpdateInput!]!"
+                name: "addresses"
+              }
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartDeliveryAddressesUpdate"
+          select: {
+            "$action": "delivery_addresses_update"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartDeliveryAddressesUpdate.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) { cartLinesAdd(cartId: $cartId, lines: $lines) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartLinesAdd"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+              {
+                from: ""
+                gqltype: "[CartLineInput!]!"
+                name: "lines"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartLinesAdd"
+          select: {
+            "$action": "lines_add"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartLinesAdd.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) { cartLinesUpdate(cartId: $cartId, lines: $lines) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartLinesUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+              {
+                from: ""
+                gqltype: "[CartLineUpdateInput!]!"
+                name: "lines"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartLinesUpdate"
+          select: {
+            "$action": "lines_update"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartLinesUpdate.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdatePaymentUpdate($cartId: ID!, $payment: CartPaymentInput!) { cartPaymentUpdate(cartId: $cartId, payment: $payment) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartPaymentUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+              {
+                from: ""
+                gqltype: "CartPaymentInput!"
+                name: "payment"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartPaymentUpdate"
+          select: {
+            "$action": "payment_update"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartPaymentUpdate.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateRemovePersonalData($cartId: ID!) { cartRemovePersonalData(cartId: $cartId) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartRemovePersonalData"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartRemovePersonalData"
+          select: {
+            "$action": "remove_personal_data"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartRemovePersonalData.cart`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "cart_id"
+                orig: "cart_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CartUpdateSelectedDeliveryOptionsUpdate($cartId: ID!, $selectedDeliveryOptions: [CartSelectedDeliveryOptionInput!]!) { cartSelectedDeliveryOptionsUpdate(cartId: $cartId, selectedDeliveryOptions: $selectedDeliveryOptions) { cart { ...CartFields } } } fragment CartFields on Cart { checkoutUrl createdAt id note totalQuantity updatedAt }"
+            field: "cartSelectedDeliveryOptionsUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "cartId"
+                gqltype: "ID!"
+                name: "cartId"
+              }
+              {
+                from: ""
+                gqltype: "[CartSelectedDeliveryOptionInput!]!"
+                name: "selectedDeliveryOptions"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cartSelectedDeliveryOptionsUpdate"
+          select: {
+            "$action": "selected_delivery_options_update"
+            exist: [
+              "cart_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cartSelectedDeliveryOptionsUpdate.cart`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,99 @@
+# Entity: shop_pay_payment_request_receipt
+
+main: kit: entity: shop_pay_payment_request_receipt: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "processing_status_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "token"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "shop_pay_payment_request_receipt"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "idempotency_key"
+                orig: "idempotency_key"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "order_name"
+                orig: "order_name"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "token"
+                orig: "token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ShopPayPaymentRequestReceiptCreateShopPayPaymentRequestSessionSubmit($idempotencyKey: String!, $orderName: String, $paymentRequest: ShopPayPaymentRequestInput!, $token: String!) { shopPayPaymentRequestSessionSubmit(idempotencyKey: $idempotencyKey, orderName: $orderName, paymentRequest: $paymentRequest, token: $token) { paymentRequestReceipt { ...ShopPayPaymentRequestReceiptFields } } } fragment ShopPayPaymentRequestReceiptFields on ShopPayPaymentRequestReceipt { processingStatusType token }"
+            field: "shopPayPaymentRequestSessionSubmit"
+            optype: "mutation"
+            vars: [
+              {
+                from: "idempotencyKey"
+                gqltype: "String!"
+                name: "idempotencyKey"
+              }
+              {
+                from: "orderName"
+                gqltype: "String"
+                name: "orderName"
+              }
+              {
+                from: ""
+                gqltype: "ShopPayPaymentRequestInput!"
+                name: "paymentRequest"
+              }
+              {
+                from: "token"
+                gqltype: "String!"
+                name: "token"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "shopPayPaymentRequestSessionSubmit"
+          select: {
+            "$action": "shop_pay_payment_request_session_submit"
+            exist: [
+              "idempotency_key"
+              "token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.shopPayPaymentRequestSessionSubmit.paymentRequestReceipt`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,142 @@
+# Entity: license
+
+main: kit: entity: license: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "body"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "featured"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "hidden"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "implementation"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "key"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "nickname"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "pseudo_license"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "spdx_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "license"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          graphql: {
+            doc: "query LicenseList { licenses { ...LicenseFields } } fragment LicenseFields on License { body description featured hidden id implementation key name nickname pseudoLicense spdxId url }"
+            field: "licenses"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "licenses"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.licenses`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "key"
+                orig: "key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query LicenseLoad($key: String!) { license(key: $key) { ...LicenseFields } } fragment LicenseFields on License { body description featured hidden id implementation key name nickname pseudoLicense spdxId url }"
+            field: "license"
+            optype: "query"
+            vars: [
+              {
+                from: "key"
+                gqltype: "String!"
+                name: "key"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "license"
+          select: {
+            exist: [
+              "key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.license`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

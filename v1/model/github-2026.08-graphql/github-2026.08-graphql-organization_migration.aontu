@@ -1,0 +1,100 @@
+# Entity: organization_migration
+
+main: kit: entity: organization_migration: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "database_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "failure_reason"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "remaining_repositories_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "source_org_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "source_org_url"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "state"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "target_org_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "total_repositories_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "organization_migration"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation OrganizationMigrationCreateStart($input: StartOrganizationMigrationInput!) { startOrganizationMigration(input: $input) { orgMigration { ...OrganizationMigrationFields } } } fragment OrganizationMigrationFields on OrganizationMigration { createdAt databaseId failureReason id remainingRepositoriesCount sourceOrgName sourceOrgUrl state targetOrgName totalRepositoriesCount }"
+            field: "startOrganizationMigration"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "StartOrganizationMigrationInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "startOrganizationMigration"
+          select: {
+            "$action": "start"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.startOrganizationMigration.orgMigration`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

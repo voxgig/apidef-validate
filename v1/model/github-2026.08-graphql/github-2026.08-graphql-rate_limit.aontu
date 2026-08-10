@@ -1,0 +1,83 @@
+# Entity: rate_limit
+
+main: kit: entity: rate_limit: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "cost"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "limit"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "node_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "remaining"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "reset_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "used"
+      req: true
+      type: "`$INTEGER`"
+    }
+  ]
+
+  name: "rate_limit"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "dry_run"
+                orig: "dry_run"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query RateLimitLoad($dryRun: Boolean) { rateLimit(dryRun: $dryRun) { ...RateLimitFields } } fragment RateLimitFields on RateLimit { cost limit nodeCount remaining resetAt used }"
+            field: "rateLimit"
+            optype: "query"
+            vars: [
+              {
+                from: "dryRun"
+                gqltype: "Boolean"
+                name: "dryRun"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "rateLimit"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.rateLimit`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

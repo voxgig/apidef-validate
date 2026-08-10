@@ -1,0 +1,243 @@
+# Entity: article
+
+main: kit: entity: article: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "blog"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "content"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "content_html"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "excerpt"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "excerpt_html"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "handle"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "image"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "online_store_url"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "published_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "tag"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "title"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "tracking_parameter"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "article"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "query"
+                orig: "query"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "reverse"
+                orig: "reverse"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "sort_key"
+                orig: "sort_key"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ArticleList($after: String, $before: String, $first: Int, $last: Int, $query: String, $reverse: Boolean, $sortKey: ArticleSortKeys) { articles(after: $after, before: $before, first: $first, last: $last, query: $query, reverse: $reverse, sortKey: $sortKey) { nodes { ...ArticleFields } pageInfo { endCursor hasNextPage } } } fragment ArticleFields on Article { blog { id } content contentHtml excerpt excerptHtml handle id image { id } onlineStoreUrl publishedAt tags title trackingParameters }"
+            field: "articles"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "query"
+                gqltype: "String"
+                name: "query"
+              }
+              {
+                from: "reverse"
+                gqltype: "Boolean"
+                name: "reverse"
+              }
+              {
+                from: "sortKey"
+                gqltype: "ArticleSortKeys"
+                name: "sortKey"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "articles"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.articles.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ArticleLoad($id: ID!) { article(id: $id) { ...ArticleFields } } fragment ArticleFields on Article { blog { id } content contentHtml excerpt excerptHtml handle id image { id } onlineStoreUrl publishedAt tags title trackingParameters }"
+            field: "article"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "ID!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "article"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.article`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

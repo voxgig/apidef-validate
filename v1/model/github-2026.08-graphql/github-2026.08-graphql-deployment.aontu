@@ -1,0 +1,127 @@
+# Entity: deployment
+
+main: kit: entity: deployment: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "commit"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "commit_oid"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "database_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "environment"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "latest_environment"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "latest_status"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "original_environment"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "payload"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "ref"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "repository"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "state"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "task"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "deployment"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation DeploymentCreate($input: CreateDeploymentInput!) { createDeployment(input: $input) { deployment { ...DeploymentFields } } } fragment DeploymentFields on Deployment { commit { id } commitOid createdAt databaseId description environment id latestEnvironment latestStatus { id } originalEnvironment payload ref { id } repository { id } state task updatedAt }"
+            field: "createDeployment"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CreateDeploymentInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "createDeployment"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.createDeployment.deployment`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

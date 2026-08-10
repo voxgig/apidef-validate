@@ -1,0 +1,260 @@
+# Entity: issue_comment
+
+main: kit: entity: issue_comment: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "author_association"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "body"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "body_html"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "body_text"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "created_via_email"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "database_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "full_database_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "includes_created_edit"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_minimized"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_pinned"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "issue"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "last_edited_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "minimized_reason"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "pinned_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "pinned_by"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "published_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "pull_request"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "repository"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "resource_path"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "viewer_can_delete"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "viewer_can_minimize"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "viewer_can_pin"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "viewer_can_react"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "viewer_can_unminimize"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "viewer_can_unpin"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "viewer_can_update"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "viewer_cannot_update_reason"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "viewer_did_author"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "issue_comment"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation IssueCommentCreatePin($input: PinIssueCommentInput!) { pinIssueComment(input: $input) { issueComment { ...IssueCommentFields } } } fragment IssueCommentFields on IssueComment { authorAssociation body bodyHTML bodyText createdAt createdViaEmail databaseId fullDatabaseId id includesCreatedEdit isMinimized isPinned issue { id } lastEditedAt minimizedReason pinnedAt pinnedBy { id } publishedAt pullRequest { id } repository { id } resourcePath updatedAt url viewerCanDelete viewerCanMinimize viewerCanPin viewerCanReact viewerCanUnminimize viewerCanUnpin viewerCanUpdate viewerCannotUpdateReasons viewerDidAuthor }"
+            field: "pinIssueComment"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "PinIssueCommentInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "pinIssueComment"
+          select: {
+            "$action": "pin"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.pinIssueComment.issueComment`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation IssueCommentCreateUnpin($input: UnpinIssueCommentInput!) { unpinIssueComment(input: $input) { issueComment { ...IssueCommentFields } } } fragment IssueCommentFields on IssueComment { authorAssociation body bodyHTML bodyText createdAt createdViaEmail databaseId fullDatabaseId id includesCreatedEdit isMinimized isPinned issue { id } lastEditedAt minimizedReason pinnedAt pinnedBy { id } publishedAt pullRequest { id } repository { id } resourcePath updatedAt url viewerCanDelete viewerCanMinimize viewerCanPin viewerCanReact viewerCanUnminimize viewerCanUnpin viewerCanUpdate viewerCannotUpdateReasons viewerDidAuthor }"
+            field: "unpinIssueComment"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "UnpinIssueCommentInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "unpinIssueComment"
+          select: {
+            "$action": "unpin"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.unpinIssueComment.issueComment`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          graphql: {
+            doc: "mutation IssueCommentUpdate($input: UpdateIssueCommentInput!) { updateIssueComment(input: $input) { issueComment { ...IssueCommentFields } } } fragment IssueCommentFields on IssueComment { authorAssociation body bodyHTML bodyText createdAt createdViaEmail databaseId fullDatabaseId id includesCreatedEdit isMinimized isPinned issue { id } lastEditedAt minimizedReason pinnedAt pinnedBy { id } publishedAt pullRequest { id } repository { id } resourcePath updatedAt url viewerCanDelete viewerCanMinimize viewerCanPin viewerCanReact viewerCanUnminimize viewerCanUnpin viewerCanUpdate viewerCannotUpdateReasons viewerDidAuthor }"
+            field: "updateIssueComment"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "UpdateIssueCommentInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "updateIssueComment"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.updateIssueComment.issueComment`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

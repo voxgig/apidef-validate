@@ -1,0 +1,170 @@
+# Entity: customer_access_token
+
+main: kit: entity: customer_access_token: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "access_token"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "expires_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  name: "customer_access_token"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "multipass_token"
+                orig: "multipass_token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerAccessTokenCreateCreateWithMultipass($multipassToken: String!) { customerAccessTokenCreateWithMultipass(multipassToken: $multipassToken) { customerAccessToken { ...CustomerAccessTokenFields } } } fragment CustomerAccessTokenFields on CustomerAccessToken { accessToken expiresAt }"
+            field: "customerAccessTokenCreateWithMultipass"
+            optype: "mutation"
+            vars: [
+              {
+                from: "multipassToken"
+                gqltype: "String!"
+                name: "multipassToken"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerAccessTokenCreateWithMultipass"
+          select: {
+            "$action": "create_with_multipass"
+            exist: [
+              "multipass_token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerAccessTokenCreateWithMultipass.customerAccessToken`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "customer_access_token"
+                orig: "customer_access_token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerAccessTokenCreateRenew($customerAccessToken: String!) { customerAccessTokenRenew(customerAccessToken: $customerAccessToken) { customerAccessToken { ...CustomerAccessTokenFields } } } fragment CustomerAccessTokenFields on CustomerAccessToken { accessToken expiresAt }"
+            field: "customerAccessTokenRenew"
+            optype: "mutation"
+            vars: [
+              {
+                from: "customerAccessToken"
+                gqltype: "String!"
+                name: "customerAccessToken"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerAccessTokenRenew"
+          select: {
+            "$action": "renew"
+            exist: [
+              "customer_access_token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerAccessTokenRenew.customerAccessToken`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation CustomerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) { customerAccessTokenCreate(input: $input) { customerAccessToken { ...CustomerAccessTokenFields } } } fragment CustomerAccessTokenFields on CustomerAccessToken { accessToken expiresAt }"
+            field: "customerAccessTokenCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CustomerAccessTokenCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerAccessTokenCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerAccessTokenCreate.customerAccessToken`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "customer_access_token"
+                orig: "customer_access_token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerAccessTokenRemove($customerAccessToken: String!) { customerAccessTokenDelete(customerAccessToken: $customerAccessToken) { deletedAccessToken deletedCustomerAccessTokenId } }"
+            field: "customerAccessTokenDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "customerAccessToken"
+                gqltype: "String!"
+                name: "customerAccessToken"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerAccessTokenDelete"
+          select: {
+            exist: [
+              "customer_access_token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerAccessTokenDelete`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

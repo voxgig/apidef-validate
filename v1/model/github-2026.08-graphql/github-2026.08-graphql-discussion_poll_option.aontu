@@ -1,0 +1,75 @@
+# Entity: discussion_poll_option
+
+main: kit: entity: discussion_poll_option: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "option"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "poll"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "total_vote_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "viewer_has_voted"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "discussion_poll_option"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation DiscussionPollOptionCreateAddDiscussionPollVote($input: AddDiscussionPollVoteInput!) { addDiscussionPollVote(input: $input) { pollOption { ...DiscussionPollOptionFields } } } fragment DiscussionPollOptionFields on DiscussionPollOption { id option poll { id } totalVoteCount viewerHasVoted }"
+            field: "addDiscussionPollVote"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "AddDiscussionPollVoteInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "addDiscussionPollVote"
+          select: {
+            "$action": "add_discussion_poll_vote"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.addDiscussionPollVote.pollOption`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

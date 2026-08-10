@@ -1,0 +1,88 @@
+# Entity: repository_owner
+
+main: kit: entity: repository_owner: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "avatar_url"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "login"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "resource_path"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "repository_owner"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "login"
+                orig: "login"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query RepositoryOwnerLoad($login: String!) { repositoryOwner(login: $login) { ...RepositoryOwnerFields } } fragment RepositoryOwnerFields on RepositoryOwner { avatarUrl id login resourcePath url }"
+            field: "repositoryOwner"
+            optype: "query"
+            vars: [
+              {
+                from: "login"
+                gqltype: "String!"
+                name: "login"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "repositoryOwner"
+          select: {
+            exist: [
+              "login"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.repositoryOwner`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}
