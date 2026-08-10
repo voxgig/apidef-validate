@@ -1,0 +1,306 @@
+# Entity: notification
+
+main: kit: entity: notification: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "actor"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "actor_avatar_color"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "actor_avatar_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "actor_initial"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "bot_actor"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "category"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "emailed_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "external_user_actor"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "grouping_key"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "grouping_priority"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "inbox_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "initiative_update_health"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "is_linear_actor"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "issue_status_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "project_update_health"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "read_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "snoozed_until_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "subtitle"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "title"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "unsnoozed_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "user"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "notification"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query NotificationList($after: String, $before: String, $filter: NotificationFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { notifications(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...NotificationFields } pageInfo { endCursor hasNextPage } } } fragment NotificationFields on Notification { actor { id } actorAvatarColor actorAvatarUrl actorInitials archivedAt botActor { id } category createdAt emailedAt externalUserActor { id } groupingKey groupingPriority id inboxUrl initiativeUpdateHealth isLinearActor issueStatusType projectUpdateHealth readAt snoozedUntilAt subtitle title type unsnoozedAt updatedAt url user { id } }"
+            field: "notifications"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: ""
+                gqltype: "NotificationFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "notifications"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.notifications.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query NotificationLoad($id: String!) { notification(id: $id) { ...NotificationFields } } fragment NotificationFields on Notification { actor { id } actorAvatarColor actorAvatarUrl actorInitials archivedAt botActor { id } category createdAt emailedAt externalUserActor { id } groupingKey groupingPriority id inboxUrl initiativeUpdateHealth isLinearActor issueStatusType projectUpdateHealth readAt snoozedUntilAt subtitle title type unsnoozedAt updatedAt url user { id } }"
+            field: "notification"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "notification"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.notification`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

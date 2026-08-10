@@ -1,0 +1,469 @@
+# Entity: project_update
+
+main: kit: entity: project_update: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "body"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "body_data"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "comment_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "diff"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "diff_markdown"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "edited_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "health"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "info_snapshot"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "is_diff_hidden"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_stale"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "project"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "reaction_data"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "slug_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "user"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "project_update"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation ProjectUpdateCreate($input: ProjectUpdateCreateInput!) { projectUpdateCreate(input: $input) { projectUpdate { ...ProjectUpdateFields } success } } fragment ProjectUpdateFields on ProjectUpdate { archivedAt body bodyData commentCount createdAt diff diffMarkdown editedAt health id infoSnapshot isDiffHidden isStale project { id } reactionData slugId updatedAt url user { id } }"
+            field: "projectUpdateCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ProjectUpdateCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "projectUpdateCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.projectUpdateCreate.projectUpdate`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ProjectUpdateList($after: String, $before: String, $filter: ProjectUpdateFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { projectUpdates(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...ProjectUpdateFields } pageInfo { endCursor hasNextPage } } } fragment ProjectUpdateFields on ProjectUpdate { archivedAt body bodyData commentCount createdAt diff diffMarkdown editedAt health id infoSnapshot isDiffHidden isStale project { id } reactionData slugId updatedAt url user { id } }"
+            field: "projectUpdates"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: ""
+                gqltype: "ProjectUpdateFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "projectUpdates"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.projectUpdates.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "project_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ProjectUpdateLoad($id: String!, $projectId: String) { projectUpdate(id: $id, projectId: $projectId) { ...ProjectUpdateFields } } fragment ProjectUpdateFields on ProjectUpdate { archivedAt body bodyData commentCount createdAt diff diffMarkdown editedAt health id infoSnapshot isDiffHidden isStale project { id } reactionData slugId updatedAt url user { id } }"
+            field: "projectUpdate"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: "projectId"
+                gqltype: "String"
+                name: "projectId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "projectUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.projectUpdate`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ProjectUpdateRemove($id: String!) { projectUpdateDelete(id: $id) { entityId lastSyncId success } }"
+            field: "projectUpdateDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "projectUpdateDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.projectUpdateDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ProjectUpdateUpdateArchive($id: String!) { projectUpdateArchive(id: $id) { entity { ...ProjectUpdateFields } success } } fragment ProjectUpdateFields on ProjectUpdate { archivedAt body bodyData commentCount createdAt diff diffMarkdown editedAt health id infoSnapshot isDiffHidden isStale project { id } reactionData slugId updatedAt url user { id } }"
+            field: "projectUpdateArchive"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "projectUpdateArchive"
+          select: {
+            "$action": "archive"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.projectUpdateArchive.entity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ProjectUpdateUpdateUnarchive($id: String!) { projectUpdateUnarchive(id: $id) { entity { ...ProjectUpdateFields } success } } fragment ProjectUpdateFields on ProjectUpdate { archivedAt body bodyData commentCount createdAt diff diffMarkdown editedAt health id infoSnapshot isDiffHidden isStale project { id } reactionData slugId updatedAt url user { id } }"
+            field: "projectUpdateUnarchive"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "projectUpdateUnarchive"
+          select: {
+            "$action": "unarchive"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.projectUpdateUnarchive.entity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ProjectUpdateUpdate($id: String!, $input: ProjectUpdateUpdateInput!) { projectUpdateUpdate(id: $id, input: $input) { projectUpdate { ...ProjectUpdateFields } success } } fragment ProjectUpdateFields on ProjectUpdate { archivedAt body bodyData commentCount createdAt diff diffMarkdown editedAt health id infoSnapshot isDiffHidden isStale project { id } reactionData slugId updatedAt url user { id } }"
+            field: "projectUpdateUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "ProjectUpdateUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "projectUpdateUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.projectUpdateUpdate.projectUpdate`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

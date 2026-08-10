@@ -1,0 +1,220 @@
+# Entity: enterprise_member_invitation
+
+main: kit: entity: enterprise_member_invitation: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "email"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "enterprise"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "invitee"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "inviter"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "enterprise_member_invitation"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation EnterpriseMemberInvitationCreateAccept($input: AcceptEnterpriseMemberInvitationInput!) { acceptEnterpriseMemberInvitation(input: $input) { invitation { ...EnterpriseMemberInvitationFields } } } fragment EnterpriseMemberInvitationFields on EnterpriseMemberInvitation { createdAt email enterprise { id } id invitee { id } inviter { id } }"
+            field: "acceptEnterpriseMemberInvitation"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "AcceptEnterpriseMemberInvitationInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "acceptEnterpriseMemberInvitation"
+          select: {
+            "$action": "accept"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.acceptEnterpriseMemberInvitation.invitation`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation EnterpriseMemberInvitationCreateCancel($input: CancelEnterpriseMemberInvitationInput!) { cancelEnterpriseMemberInvitation(input: $input) { invitation { ...EnterpriseMemberInvitationFields } } } fragment EnterpriseMemberInvitationFields on EnterpriseMemberInvitation { createdAt email enterprise { id } id invitee { id } inviter { id } }"
+            field: "cancelEnterpriseMemberInvitation"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CancelEnterpriseMemberInvitationInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cancelEnterpriseMemberInvitation"
+          select: {
+            "$action": "cancel"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cancelEnterpriseMemberInvitation.invitation`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation EnterpriseMemberInvitationCreateInviteEnterpriseMember($input: InviteEnterpriseMemberInput!) { inviteEnterpriseMember(input: $input) { invitation { ...EnterpriseMemberInvitationFields } } } fragment EnterpriseMemberInvitationFields on EnterpriseMemberInvitation { createdAt email enterprise { id } id invitee { id } inviter { id } }"
+            field: "inviteEnterpriseMember"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "InviteEnterpriseMemberInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "inviteEnterpriseMember"
+          select: {
+            "$action": "invite_enterprise_member"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.inviteEnterpriseMember.invitation`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "enterprise_slug"
+                orig: "enterprise_slug"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "user_login"
+                orig: "user_login"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query EnterpriseMemberInvitationLoad($enterpriseSlug: String!, $userLogin: String!) { enterpriseMemberInvitation(enterpriseSlug: $enterpriseSlug, userLogin: $userLogin) { ...EnterpriseMemberInvitationFields } } fragment EnterpriseMemberInvitationFields on EnterpriseMemberInvitation { createdAt email enterprise { id } id invitee { id } inviter { id } }"
+            field: "enterpriseMemberInvitation"
+            optype: "query"
+            vars: [
+              {
+                from: "enterpriseSlug"
+                gqltype: "String!"
+                name: "enterpriseSlug"
+              }
+              {
+                from: "userLogin"
+                gqltype: "String!"
+                name: "userLogin"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "enterpriseMemberInvitation"
+          select: {
+            exist: [
+              "enterprise_slug"
+              "user_login"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.enterpriseMemberInvitation`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "invitation_token"
+                orig: "invitation_token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query EnterpriseMemberInvitationLoad($invitationToken: String!) { enterpriseMemberInvitationByToken(invitationToken: $invitationToken) { ...EnterpriseMemberInvitationFields } } fragment EnterpriseMemberInvitationFields on EnterpriseMemberInvitation { createdAt email enterprise { id } id invitee { id } inviter { id } }"
+            field: "enterpriseMemberInvitationByToken"
+            optype: "query"
+            vars: [
+              {
+                from: "invitationToken"
+                gqltype: "String!"
+                name: "invitationToken"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "enterpriseMemberInvitationByToken"
+          select: {
+            exist: [
+              "invitation_token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.enterpriseMemberInvitationByToken`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

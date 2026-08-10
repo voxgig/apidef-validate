@@ -1,0 +1,100 @@
+# Entity: user_status
+
+main: kit: entity: user_status: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "emoji"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "emoji_html"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "expires_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "indicates_limited_availability"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "organization"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "user"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "user_status"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation UserStatusCreateChange($input: ChangeUserStatusInput!) { changeUserStatus(input: $input) { status { ...UserStatusFields } } } fragment UserStatusFields on UserStatus { createdAt emoji emojiHTML expiresAt id indicatesLimitedAvailability message organization { id } updatedAt user { id } }"
+            field: "changeUserStatus"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ChangeUserStatusInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "changeUserStatus"
+          select: {
+            "$action": "change"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.changeUserStatus.status`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

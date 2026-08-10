@@ -1,0 +1,149 @@
+# Entity: reaction
+
+main: kit: entity: reaction: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "comment"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "emoji"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "external_user"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "initiative_update"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "issue"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "post"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "project_update"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "user"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "reaction"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation ReactionCreate($input: ReactionCreateInput!) { reactionCreate(input: $input) { reaction { ...ReactionFields } success } } fragment ReactionFields on Reaction { archivedAt comment { id } createdAt emoji externalUser { id } id initiativeUpdate { id } issue { id } post { id } projectUpdate { id } updatedAt user { id } }"
+            field: "reactionCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ReactionCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "reactionCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.reactionCreate.reaction`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ReactionRemove($id: String!) { reactionDelete(id: $id) { entityId lastSyncId success } }"
+            field: "reactionDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "reactionDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.reactionDelete`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,116 @@
+# Entity: sponsorship
+
+main: kit: entity: sponsorship: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "is_active"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_one_time_payment"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_sponsor_opted_into_email"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "payment_source"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "privacy_level"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "tier"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "tier_selected_at"
+      req: false
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "sponsorship"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation SponsorshipCreate($input: CreateSponsorshipInput!) { createSponsorship(input: $input) { sponsorship { ...SponsorshipFields } } } fragment SponsorshipFields on Sponsorship { createdAt id isActive isOneTimePayment isSponsorOptedIntoEmail paymentSource privacyLevel tier { id } tierSelectedAt }"
+            field: "createSponsorship"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CreateSponsorshipInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "createSponsorship"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.createSponsorship.sponsorship`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation SponsorshipCreateUpdateSponsorshipPreference($input: UpdateSponsorshipPreferencesInput!) { updateSponsorshipPreferences(input: $input) { sponsorship { ...SponsorshipFields } } } fragment SponsorshipFields on Sponsorship { createdAt id isActive isOneTimePayment isSponsorOptedIntoEmail paymentSource privacyLevel tier { id } tierSelectedAt }"
+            field: "updateSponsorshipPreferences"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "UpdateSponsorshipPreferencesInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "updateSponsorshipPreferences"
+          select: {
+            "$action": "update_sponsorship_preference"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.updateSponsorshipPreferences.sponsorship`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

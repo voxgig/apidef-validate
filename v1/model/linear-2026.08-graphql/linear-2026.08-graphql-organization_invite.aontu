@@ -1,0 +1,346 @@
+# Entity: organization_invite
+
+main: kit: entity: organization_invite: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "accepted_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "email"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "expires_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "external"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "invitee"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "inviter"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "metadata"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "organization"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "role"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "organization_invite"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation OrganizationInviteCreate($input: OrganizationInviteCreateInput!) { organizationInviteCreate(input: $input) { organizationInvite { ...OrganizationInviteFields } success } } fragment OrganizationInviteFields on OrganizationInvite { acceptedAt archivedAt createdAt email expiresAt external id invitee { id } inviter { id } metadata organization { id } role updatedAt }"
+            field: "organizationInviteCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "OrganizationInviteCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "organizationInviteCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.organizationInviteCreate.organizationInvite`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query OrganizationInviteList($after: String, $before: String, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { organizationInvites(after: $after, before: $before, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...OrganizationInviteFields } pageInfo { endCursor hasNextPage } } } fragment OrganizationInviteFields on OrganizationInvite { acceptedAt archivedAt createdAt email expiresAt external id invitee { id } inviter { id } metadata organization { id } role updatedAt }"
+            field: "organizationInvites"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "organizationInvites"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.organizationInvites.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query OrganizationInviteLoad($id: String!) { organizationInvite(id: $id) { ...OrganizationInviteFields } } fragment OrganizationInviteFields on OrganizationInvite { acceptedAt archivedAt createdAt email expiresAt external id invitee { id } inviter { id } metadata organization { id } role updatedAt }"
+            field: "organizationInvite"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "organizationInvite"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.organizationInvite`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation OrganizationInviteRemove($id: String!) { organizationInviteDelete(id: $id) { entityId lastSyncId success } }"
+            field: "organizationInviteDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "organizationInviteDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.organizationInviteDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation OrganizationInviteUpdate($id: String!, $input: OrganizationInviteUpdateInput!) { organizationInviteUpdate(id: $id, input: $input) { organizationInvite { ...OrganizationInviteFields } success } } fragment OrganizationInviteFields on OrganizationInvite { acceptedAt archivedAt createdAt email expiresAt external id invitee { id } inviter { id } metadata organization { id } role updatedAt }"
+            field: "organizationInviteUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "OrganizationInviteUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "organizationInviteUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.organizationInviteUpdate.organizationInvite`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

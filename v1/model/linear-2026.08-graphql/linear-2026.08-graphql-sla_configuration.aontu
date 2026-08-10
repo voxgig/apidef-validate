@@ -1,0 +1,93 @@
+# Entity: sla_configuration
+
+main: kit: entity: sla_configuration: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "condition"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "removes_sla"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "sla"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "sla_type"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "sla_configuration"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "team_id"
+                orig: "team_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query SlaConfigurationList($teamId: String!) { slaConfigurations(teamId: $teamId) { ...SlaConfigurationFields } } fragment SlaConfigurationFields on SlaConfiguration { conditions id name removesSla sla slaType }"
+            field: "slaConfigurations"
+            optype: "query"
+            vars: [
+              {
+                from: "teamId"
+                gqltype: "String!"
+                name: "teamId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "slaConfigurations"
+          select: {
+            exist: [
+              "team_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.slaConfigurations`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,122 @@
+# Entity: search_result_item
+
+main: kit: entity: search_result_item: {
+
+  alias: field: {}
+
+  name: "search_result_item"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "query"
+                orig: "query"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "type"
+                orig: "type"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query SearchResultItemList($after: String, $before: String, $first: Int, $last: Int, $query: String!, $type: SearchType!) { search(after: $after, before: $before, first: $first, last: $last, query: $query, type: $type) { nodes { id } pageInfo { endCursor hasNextPage } } }"
+            field: "search"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "query"
+                gqltype: "String!"
+                name: "query"
+              }
+              {
+                from: "type"
+                gqltype: "SearchType!"
+                name: "type"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "search"
+          select: {
+            exist: [
+              "query"
+              "type"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.search.nodes`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

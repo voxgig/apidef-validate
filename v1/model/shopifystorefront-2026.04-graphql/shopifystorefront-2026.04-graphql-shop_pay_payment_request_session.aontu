@@ -1,0 +1,78 @@
+# Entity: shop_pay_payment_request_session
+
+main: kit: entity: shop_pay_payment_request_session: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "checkout_url"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "source_identifier"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "token"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "shop_pay_payment_request_session"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "source_identifier"
+                orig: "source_identifier"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ShopPayPaymentRequestSessionCreate($paymentRequest: ShopPayPaymentRequestInput!, $sourceIdentifier: String!) { shopPayPaymentRequestSessionCreate(paymentRequest: $paymentRequest, sourceIdentifier: $sourceIdentifier) { shopPayPaymentRequestSession { ...ShopPayPaymentRequestSessionFields } } } fragment ShopPayPaymentRequestSessionFields on ShopPayPaymentRequestSession { checkoutUrl sourceIdentifier token }"
+            field: "shopPayPaymentRequestSessionCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ShopPayPaymentRequestInput!"
+                name: "paymentRequest"
+              }
+              {
+                from: "sourceIdentifier"
+                gqltype: "String!"
+                name: "sourceIdentifier"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "shopPayPaymentRequestSessionCreate"
+          select: {
+            exist: [
+              "source_identifier"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.shopPayPaymentRequestSessionCreate.shopPayPaymentRequestSession`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

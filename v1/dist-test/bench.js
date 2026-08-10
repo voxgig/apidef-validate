@@ -1,12 +1,60 @@
 "use strict";
 /* Copyright (c) 2025 Voxgig Ltd, MIT License */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const Fs = __importStar(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 const apidef_1 = require("@voxgig/apidef");
 const __1 = require("../..");
+function isGraphql(c) {
+    return 'graphql' === c.spec;
+}
+// See the note on the same check in test/main.test.ts.
+function graphqlCapable() {
+    try {
+        return Fs.readFileSync(require.resolve('@voxgig/apidef/model/apidef.aontu'), 'utf8')
+            .includes("'graphql'");
+    }
+    catch (err) {
+        return false;
+    }
+}
+const GRAPHQL_CAPABLE = graphqlCapable();
 const TOP_FOLDER = node_path_1.default.join(__dirname, '..');
 let cases = [
     { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
@@ -23,10 +71,35 @@ let cases = [
     { name: 'shortcut', version: 'v3', spec: 'openapi-3.0.0', format: 'json' },
     { name: 'github', version: '1.1.4', spec: 'openapi-3.0.3', format: 'yaml' },
     { name: 'gitlab', version: 'v4', spec: 'swagger-2.0', format: 'yaml' },
+    // GraphQL. Skipped automatically when the installed @voxgig/apidef predates
+    // GraphQL ingestion; see GRAPHQL_CAPABLE below.
+    {
+        name: 'linear', version: '2026.08', spec: 'graphql', format: 'graphql',
+        endpoint: 'https://api.linear.app/graphql',
+    },
+    // GitHub's GraphQL API, alongside its OpenAPI def above: the one API in
+    // this corpus present in both formats, so the two models can be compared.
+    // Its mutations are overwhelmingly commands rather than CRUD, which is
+    // what exercises action folding at scale.
+    {
+        name: 'github', version: '2026.08', spec: 'graphql', format: 'graphql',
+        endpoint: 'https://api.github.com/graphql',
+    },
+    // Shopify's Storefront API, supplied as INTROSPECTION JSON rather than
+    // SDL — the only case exercising that parser branch. Its query root is
+    // named QueryRoot, not Query, which a schema-literal reading would miss.
+    {
+        name: 'shopifystorefront', version: '2026.04', spec: 'graphql',
+        format: 'json',
+        endpoint: 'https://example.myshopify.com/api/2026-04/graphql.json',
+    },
 ];
 const caseSelector = (process.env.TEST_CASE ?? '').split(',').filter(Boolean);
 if (0 < caseSelector.length) {
     cases = cases.filter(c => 0 < caseSelector.filter(cs => c.name.includes(cs)).length);
+}
+if (!GRAPHQL_CAPABLE) {
+    cases = cases.filter(c => !isGraphql(c));
 }
 function fullname(c) {
     return `${c.name}-${c.version}-${c.spec}`;
@@ -63,6 +136,10 @@ async function makeBuild(c, fs) {
         why: { show: true },
         fs,
     };
+    if (isGraphql(c)) {
+        buildSpec.kind = 'GraphQL';
+        buildSpec.endpoint = c.endpoint;
+    }
     return apidef_1.ApiDef.makeBuild(buildSpec);
 }
 async function runBuild(c, build, step) {

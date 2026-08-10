@@ -1,0 +1,220 @@
+# Entity: mailing_address
+
+main: kit: entity: mailing_address: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "address1"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "address2"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "city"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "company"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "country"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "country_code_v2"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "first_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "formatted"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "formatted_area"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "last_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "latitude"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "longitude"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "phone"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "province"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "province_code"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "zip"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "mailing_address"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "customer_access_token"
+                orig: "customer_access_token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation MailingAddressCreateCustomerAddressCreate($address: MailingAddressInput!, $customerAccessToken: String!) { customerAddressCreate(address: $address, customerAccessToken: $customerAccessToken) { customerAddress { ...MailingAddressFields } } } fragment MailingAddressFields on MailingAddress { address1 address2 city company country countryCodeV2 firstName formatted formattedArea id lastName latitude longitude name phone province provinceCode zip }"
+            field: "customerAddressCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "MailingAddressInput!"
+                name: "address"
+              }
+              {
+                from: "customerAccessToken"
+                gqltype: "String!"
+                name: "customerAccessToken"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerAddressCreate"
+          select: {
+            "$action": "customer_address_create"
+            exist: [
+              "customer_access_token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerAddressCreate.customerAddress`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "customer_access_token"
+                orig: "customer_access_token"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation MailingAddressUpdateCustomerAddressUpdate($address: MailingAddressInput!, $customerAccessToken: String!, $id: ID!) { customerAddressUpdate(address: $address, customerAccessToken: $customerAccessToken, id: $id) { customerAddress { ...MailingAddressFields } } } fragment MailingAddressFields on MailingAddress { address1 address2 city company country countryCodeV2 firstName formatted formattedArea id lastName latitude longitude name phone province provinceCode zip }"
+            field: "customerAddressUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "MailingAddressInput!"
+                name: "address"
+              }
+              {
+                from: "customerAccessToken"
+                gqltype: "String!"
+                name: "customerAccessToken"
+              }
+              {
+                from: "id"
+                gqltype: "ID!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerAddressUpdate"
+          select: {
+            "$action": "customer_address_update"
+            exist: [
+              "customer_access_token"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerAddressUpdate.customerAddress`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

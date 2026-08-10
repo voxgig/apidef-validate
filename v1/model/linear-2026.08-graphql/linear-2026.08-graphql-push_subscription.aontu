@@ -1,0 +1,109 @@
+# Entity: push_subscription
+
+main: kit: entity: push_subscription: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "push_subscription"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation PushSubscriptionCreate($input: PushSubscriptionCreateInput!) { pushSubscriptionCreate(input: $input) { entity { ...PushSubscriptionFields } success } } fragment PushSubscriptionFields on PushSubscription { archivedAt createdAt id updatedAt }"
+            field: "pushSubscriptionCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "PushSubscriptionCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "pushSubscriptionCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.pushSubscriptionCreate.entity`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation PushSubscriptionRemove($id: String!) { pushSubscriptionDelete(id: $id) { entity { ...PushSubscriptionFields } success } } fragment PushSubscriptionFields on PushSubscription { archivedAt createdAt id updatedAt }"
+            field: "pushSubscriptionDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "pushSubscriptionDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.pushSubscriptionDelete.entity`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

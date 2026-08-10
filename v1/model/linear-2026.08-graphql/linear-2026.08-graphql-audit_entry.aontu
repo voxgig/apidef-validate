@@ -1,0 +1,189 @@
+# Entity: audit_entry
+
+main: kit: entity: audit_entry: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "actor"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "actor_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "country_code"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "ip"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "metadata"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "organization"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "request_information"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "audit_entry"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query AuditEntryList($after: String, $before: String, $filter: AuditEntryFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { auditEntries(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...AuditEntryFields } pageInfo { endCursor hasNextPage } } } fragment AuditEntryFields on AuditEntry { actor { id } actorId archivedAt countryCode createdAt id ip metadata organization { id } requestInformation type updatedAt }"
+            field: "auditEntries"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: ""
+                gqltype: "AuditEntryFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "auditEntries"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.auditEntries.nodes`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

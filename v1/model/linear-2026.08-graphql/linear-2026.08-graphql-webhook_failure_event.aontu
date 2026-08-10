@@ -1,0 +1,98 @@
+# Entity: webhook_failure_event
+
+main: kit: entity: webhook_failure_event: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "execution_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "http_status"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "response_or_error"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "webhook"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "webhook_failure_event"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "oauth_client_id"
+                orig: "oauth_client_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query WebhookFailureEventList($oauthClientId: String!) { failuresForOauthWebhooks(oauthClientId: $oauthClientId) { ...WebhookFailureEventFields } } fragment WebhookFailureEventFields on WebhookFailureEvent { createdAt executionId httpStatus id responseOrError url webhook { id } }"
+            field: "failuresForOauthWebhooks"
+            optype: "query"
+            vars: [
+              {
+                from: "oauthClientId"
+                gqltype: "String!"
+                name: "oauthClientId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "failuresForOauthWebhooks"
+          select: {
+            exist: [
+              "oauth_client_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.failuresForOauthWebhooks`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

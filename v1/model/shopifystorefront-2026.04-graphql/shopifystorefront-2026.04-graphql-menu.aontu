@@ -1,0 +1,83 @@
+# Entity: menu
+
+main: kit: entity: menu: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "handle"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "items_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "title"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "menu"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "handle"
+                orig: "handle"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query MenuLoad($handle: String!) { menu(handle: $handle) { ...MenuFields } } fragment MenuFields on Menu { handle id itemsCount title }"
+            field: "menu"
+            optype: "query"
+            vars: [
+              {
+                from: "handle"
+                gqltype: "String!"
+                name: "handle"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "menu"
+          select: {
+            exist: [
+              "handle"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.menu`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

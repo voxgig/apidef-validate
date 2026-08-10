@@ -1,0 +1,332 @@
+# Entity: issue_relation
+
+main: kit: entity: issue_relation: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "issue"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "related_issue"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "issue_relation"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "override_created_at"
+                orig: "override_created_at"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation IssueRelationCreate($input: IssueRelationCreateInput!, $overrideCreatedAt: DateTime) { issueRelationCreate(input: $input, overrideCreatedAt: $overrideCreatedAt) { issueRelation { ...IssueRelationFields } success } } fragment IssueRelationFields on IssueRelation { archivedAt createdAt id issue { id } relatedIssue { id } type updatedAt }"
+            field: "issueRelationCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "IssueRelationCreateInput!"
+                name: "input"
+              }
+              {
+                from: "overrideCreatedAt"
+                gqltype: "DateTime"
+                name: "overrideCreatedAt"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueRelationCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueRelationCreate.issueRelation`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query IssueRelationList($after: String, $before: String, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { issueRelations(after: $after, before: $before, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...IssueRelationFields } pageInfo { endCursor hasNextPage } } } fragment IssueRelationFields on IssueRelation { archivedAt createdAt id issue { id } relatedIssue { id } type updatedAt }"
+            field: "issueRelations"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueRelations"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueRelations.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query IssueRelationLoad($id: String!) { issueRelation(id: $id) { ...IssueRelationFields } } fragment IssueRelationFields on IssueRelation { archivedAt createdAt id issue { id } relatedIssue { id } type updatedAt }"
+            field: "issueRelation"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueRelation"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueRelation`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation IssueRelationRemove($id: String!) { issueRelationDelete(id: $id) { entityId lastSyncId success } }"
+            field: "issueRelationDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueRelationDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueRelationDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation IssueRelationUpdate($id: String!, $input: IssueRelationUpdateInput!) { issueRelationUpdate(id: $id, input: $input) { issueRelation { ...IssueRelationFields } success } } fragment IssueRelationFields on IssueRelation { archivedAt createdAt id issue { id } relatedIssue { id } type updatedAt }"
+            field: "issueRelationUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "IssueRelationUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "issueRelationUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.issueRelationUpdate.issueRelation`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

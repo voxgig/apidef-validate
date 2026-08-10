@@ -1,0 +1,50 @@
+# Entity: access_key_release_pipeline
+
+main: kit: entity: access_key_release_pipeline: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "include_path_pattern"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "access_key_release_pipeline"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          graphql: {
+            doc: "query AccessKeyReleasePipelineLoad { releasePipelineByAccessKey { ...AccessKeyReleasePipelineFields } } fragment AccessKeyReleasePipelineFields on AccessKeyReleasePipeline { id includePathPatterns }"
+            field: "releasePipelineByAccessKey"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "releasePipelineByAccessKey"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.releasePipelineByAccessKey`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

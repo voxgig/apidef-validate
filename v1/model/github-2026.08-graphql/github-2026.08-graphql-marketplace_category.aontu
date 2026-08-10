@@ -1,0 +1,181 @@
+# Entity: marketplace_category
+
+main: kit: entity: marketplace_category: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "how_it_work"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "primary_listing_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "resource_path"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "secondary_listing_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "slug"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "marketplace_category"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "exclude_empty"
+                orig: "exclude_empty"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "exclude_subcategory"
+                orig: "exclude_subcategory"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "include_category"
+                orig: "include_category"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query MarketplaceCategoryList($excludeEmpty: Boolean, $excludeSubcategories: Boolean, $includeCategories: [String!]) { marketplaceCategories(excludeEmpty: $excludeEmpty, excludeSubcategories: $excludeSubcategories, includeCategories: $includeCategories) { ...MarketplaceCategoryFields } } fragment MarketplaceCategoryFields on MarketplaceCategory { description howItWorks id name primaryListingCount resourcePath secondaryListingCount slug url }"
+            field: "marketplaceCategories"
+            optype: "query"
+            vars: [
+              {
+                from: "excludeEmpty"
+                gqltype: "Boolean"
+                name: "excludeEmpty"
+              }
+              {
+                from: "excludeSubcategories"
+                gqltype: "Boolean"
+                name: "excludeSubcategories"
+              }
+              {
+                from: "includeCategories"
+                gqltype: "[String!]"
+                name: "includeCategories"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "marketplaceCategories"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.marketplaceCategories`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "slug"
+                orig: "slug"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "use_topic_alias"
+                orig: "use_topic_alias"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query MarketplaceCategoryLoad($slug: String!, $useTopicAliases: Boolean) { marketplaceCategory(slug: $slug, useTopicAliases: $useTopicAliases) { ...MarketplaceCategoryFields } } fragment MarketplaceCategoryFields on MarketplaceCategory { description howItWorks id name primaryListingCount resourcePath secondaryListingCount slug url }"
+            field: "marketplaceCategory"
+            optype: "query"
+            vars: [
+              {
+                from: "slug"
+                gqltype: "String!"
+                name: "slug"
+              }
+              {
+                from: "useTopicAliases"
+                gqltype: "Boolean"
+                name: "useTopicAliases"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "marketplaceCategory"
+          select: {
+            exist: [
+              "slug"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.marketplaceCategory`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

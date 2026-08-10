@@ -1,0 +1,165 @@
+# Entity: verifiable_domain
+
+main: kit: entity: verifiable_domain: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "database_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "dns_host_name"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "domain"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "has_found_host_name"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "has_found_verification_token"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "is_approved"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_required_for_policy_enforcement"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_verified"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "punycode_encoded_domain"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "token_expiration_time"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "verification_token"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "verifiable_domain"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation VerifiableDomainCreate($input: AddVerifiableDomainInput!) { addVerifiableDomain(input: $input) { domain { ...VerifiableDomainFields } } } fragment VerifiableDomainFields on VerifiableDomain { createdAt databaseId dnsHostName domain hasFoundHostName hasFoundVerificationToken id isApproved isRequiredForPolicyEnforcement isVerified punycodeEncodedDomain tokenExpirationTime updatedAt verificationToken }"
+            field: "addVerifiableDomain"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "AddVerifiableDomainInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "addVerifiableDomain"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.addVerifiableDomain.domain`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation VerifiableDomainCreateApprove($input: ApproveVerifiableDomainInput!) { approveVerifiableDomain(input: $input) { domain { ...VerifiableDomainFields } } } fragment VerifiableDomainFields on VerifiableDomain { createdAt databaseId dnsHostName domain hasFoundHostName hasFoundVerificationToken id isApproved isRequiredForPolicyEnforcement isVerified punycodeEncodedDomain tokenExpirationTime updatedAt verificationToken }"
+            field: "approveVerifiableDomain"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ApproveVerifiableDomainInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "approveVerifiableDomain"
+          select: {
+            "$action": "approve"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.approveVerifiableDomain.domain`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation VerifiableDomainCreateVerify($input: VerifyVerifiableDomainInput!) { verifyVerifiableDomain(input: $input) { domain { ...VerifiableDomainFields } } } fragment VerifiableDomainFields on VerifiableDomain { createdAt databaseId dnsHostName domain hasFoundHostName hasFoundVerificationToken id isApproved isRequiredForPolicyEnforcement isVerified punycodeEncodedDomain tokenExpirationTime updatedAt verificationToken }"
+            field: "verifyVerifiableDomain"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "VerifyVerifiableDomainInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "verifyVerifiableDomain"
+          select: {
+            "$action": "verify"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.verifyVerifiableDomain.domain`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

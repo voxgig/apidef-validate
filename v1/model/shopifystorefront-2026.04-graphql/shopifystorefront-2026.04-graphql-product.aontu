@@ -1,0 +1,388 @@
+# Entity: product
+
+main: kit: entity: product: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "available_for_sale"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "category"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "description"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "description_html"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "encoded_variant_availability"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "encoded_variant_existence"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "featured_image"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "handle"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "is_gift_card"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "online_store_url"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "product_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "published_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "requires_selling_plan"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "selected_or_first_available_variant"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "tag"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "title"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "total_inventory"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "tracking_parameter"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "vendor"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "product"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "intent"
+                orig: "intent"
+                reqd: false
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "product_handle"
+                orig: "product_handle"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "product_id"
+                orig: "product_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ProductList($intent: ProductRecommendationIntent, $productHandle: String, $productId: ID) { productRecommendations(intent: $intent, productHandle: $productHandle, productId: $productId) { ...ProductFields } } fragment ProductFields on Product { availableForSale category { id } createdAt description descriptionHtml encodedVariantAvailability encodedVariantExistence featuredImage { id } handle id isGiftCard onlineStoreUrl productType publishedAt requiresSellingPlan selectedOrFirstAvailableVariant { id } tags title totalInventory trackingParameters updatedAt vendor }"
+            field: "productRecommendations"
+            optype: "query"
+            vars: [
+              {
+                from: "intent"
+                gqltype: "ProductRecommendationIntent"
+                name: "intent"
+              }
+              {
+                from: "productHandle"
+                gqltype: "String"
+                name: "productHandle"
+              }
+              {
+                from: "productId"
+                gqltype: "ID"
+                name: "productId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "productRecommendations"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.productRecommendations`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "query"
+                orig: "query"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "reverse"
+                orig: "reverse"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "sort_key"
+                orig: "sort_key"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ProductList($after: String, $before: String, $first: Int, $last: Int, $query: String, $reverse: Boolean, $sortKey: ProductSortKeys) { products(after: $after, before: $before, first: $first, last: $last, query: $query, reverse: $reverse, sortKey: $sortKey) { nodes { ...ProductFields } pageInfo { endCursor hasNextPage } } } fragment ProductFields on Product { availableForSale category { id } createdAt description descriptionHtml encodedVariantAvailability encodedVariantExistence featuredImage { id } handle id isGiftCard onlineStoreUrl productType publishedAt requiresSellingPlan selectedOrFirstAvailableVariant { id } tags title totalInventory trackingParameters updatedAt vendor }"
+            field: "products"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "query"
+                gqltype: "String"
+                name: "query"
+              }
+              {
+                from: "reverse"
+                gqltype: "Boolean"
+                name: "reverse"
+              }
+              {
+                from: "sortKey"
+                gqltype: "ProductSortKeys"
+                name: "sortKey"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "products"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.products.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "handle"
+                orig: "handle"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ProductLoad($handle: String!) { productByHandle(handle: $handle) { ...ProductFields } } fragment ProductFields on Product { availableForSale category { id } createdAt description descriptionHtml encodedVariantAvailability encodedVariantExistence featuredImage { id } handle id isGiftCard onlineStoreUrl productType publishedAt requiresSellingPlan selectedOrFirstAvailableVariant { id } tags title totalInventory trackingParameters updatedAt vendor }"
+            field: "productByHandle"
+            optype: "query"
+            vars: [
+              {
+                from: "handle"
+                gqltype: "String!"
+                name: "handle"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "productByHandle"
+          select: {
+            exist: [
+              "handle"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.productByHandle`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "handle"
+                orig: "handle"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query ProductLoad($handle: String, $id: ID) { product(handle: $handle, id: $id) { ...ProductFields } } fragment ProductFields on Product { availableForSale category { id } createdAt description descriptionHtml encodedVariantAvailability encodedVariantExistence featuredImage { id } handle id isGiftCard onlineStoreUrl productType publishedAt requiresSellingPlan selectedOrFirstAvailableVariant { id } tags title totalInventory trackingParameters updatedAt vendor }"
+            field: "product"
+            optype: "query"
+            vars: [
+              {
+                from: "handle"
+                gqltype: "String"
+                name: "handle"
+              }
+              {
+                from: "id"
+                gqltype: "ID"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "product"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.product`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

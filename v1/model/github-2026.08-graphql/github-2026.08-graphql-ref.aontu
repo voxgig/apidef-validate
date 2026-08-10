@@ -1,0 +1,103 @@
+# Entity: ref
+
+main: kit: entity: ref: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "branch_protection_rule"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "prefix"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "repository"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "target"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "ref"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation RefCreate($input: CreateRefInput!) { createRef(input: $input) { ref { ...RefFields } } } fragment RefFields on Ref { branchProtectionRule { id } id name prefix repository { id } target { id } }"
+            field: "createRef"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CreateRefInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "createRef"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.createRef.ref`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          graphql: {
+            doc: "mutation RefUpdate($input: UpdateRefInput!) { updateRef(input: $input) { ref { ...RefFields } } } fragment RefFields on Ref { branchProtectionRule { id } id name prefix repository { id } target { id } }"
+            field: "updateRef"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "UpdateRefInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "updateRef"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.updateRef.ref`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

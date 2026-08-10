@@ -1,0 +1,70 @@
+# Entity: git_hub_metadata
+
+main: kit: entity: git_hub_metadata: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "git_hub_services_sha"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "git_ip_address"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "github_enterprise_importer_ip_address"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "hook_ip_address"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "importer_ip_address"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "is_password_authentication_verifiable"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "pages_ip_address"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "git_hub_metadata"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          graphql: {
+            doc: "query GitHubMetadataLoad { meta { ...GitHubMetadataFields } } fragment GitHubMetadataFields on GitHubMetadata { gitHubServicesSha gitIpAddresses githubEnterpriseImporterIpAddresses hookIpAddresses importerIpAddresses isPasswordAuthenticationVerifiable pagesIpAddresses }"
+            field: "meta"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "meta"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.meta`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

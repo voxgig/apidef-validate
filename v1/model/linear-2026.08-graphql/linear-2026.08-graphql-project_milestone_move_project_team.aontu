@@ -1,0 +1,74 @@
+# Entity: project_milestone_move_project_team
+
+main: kit: entity: project_milestone_move_project_team: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "project_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "team_id"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "project_milestone_move_project_team"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation ProjectMilestoneMoveProjectTeamCreateProjectMilestoneMove($id: String!, $input: ProjectMilestoneMoveInput!) { projectMilestoneMove(id: $id, input: $input) { previousProjectTeamIds { ...ProjectMilestoneMoveProjectTeamFields } success } } fragment ProjectMilestoneMoveProjectTeamFields on ProjectMilestoneMoveProjectTeams { projectId teamIds }"
+            field: "projectMilestoneMove"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "ProjectMilestoneMoveInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "projectMilestoneMove"
+          select: {
+            "$action": "project_milestone_move"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.projectMilestoneMove.previousProjectTeamIds`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

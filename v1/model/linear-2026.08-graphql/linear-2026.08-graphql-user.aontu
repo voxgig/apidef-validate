@@ -1,0 +1,518 @@
+# Entity: user
+
+main: kit: entity: user: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "active"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "admin"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "app"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "avatar_background_color"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "avatar_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "calendar_hash"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "can_access_any_public_team"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "created_issue_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "disable_reason"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "display_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "email"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "git_hub_user_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "guest"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "has_git_hub_code_access"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "identity_provider"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "initial"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "is_assignable"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_me"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_mentionable"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "last_seen"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "organization"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "owner"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "status_emoji"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "status_label"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "status_until_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "supports_agent_session"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "timezone"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "title"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "user"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "code"
+                orig: "code"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "redirect_uri"
+                orig: "redirect_uri"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation UserCreateDiscordConnect($code: String!, $redirectUri: String!) { userDiscordConnect(code: $code, redirectUri: $redirectUri) { user { ...UserFields } success } } fragment UserFields on User { active admin app archivedAt avatarBackgroundColor avatarUrl calendarHash canAccessAnyPublicTeam createdAt createdIssueCount description disableReason displayName email gitHubUserId guest hasGitHubCodeAccess id identityProvider { id } initials isAssignable isMe isMentionable lastSeen name organization { id } owner statusEmoji statusLabel statusUntilAt supportsAgentSessions timezone title updatedAt url }"
+            field: "userDiscordConnect"
+            optype: "mutation"
+            vars: [
+              {
+                from: "code"
+                gqltype: "String!"
+                name: "code"
+              }
+              {
+                from: "redirectUri"
+                gqltype: "String!"
+                name: "redirectUri"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "userDiscordConnect"
+          select: {
+            "$action": "discord_connect"
+            exist: [
+              "code"
+              "redirect_uri"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.userDiscordConnect.user`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "service"
+                orig: "service"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation UserCreateExternalUserDisconnect($service: String!) { userExternalUserDisconnect(service: $service) { user { ...UserFields } success } } fragment UserFields on User { active admin app archivedAt avatarBackgroundColor avatarUrl calendarHash canAccessAnyPublicTeam createdAt createdIssueCount description disableReason displayName email gitHubUserId guest hasGitHubCodeAccess id identityProvider { id } initials isAssignable isMe isMentionable lastSeen name organization { id } owner statusEmoji statusLabel statusUntilAt supportsAgentSessions timezone title updatedAt url }"
+            field: "userExternalUserDisconnect"
+            optype: "mutation"
+            vars: [
+              {
+                from: "service"
+                gqltype: "String!"
+                name: "service"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "userExternalUserDisconnect"
+          select: {
+            "$action": "external_user_disconnect"
+            exist: [
+              "service"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.userExternalUserDisconnect.user`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "include_disabled"
+                orig: "include_disabled"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query UserList($after: String, $before: String, $filter: UserFilter, $first: Int, $includeArchived: Boolean, $includeDisabled: Boolean, $last: Int, $orderBy: PaginationOrderBy, $sort: [UserSortInput!]) { users(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, includeDisabled: $includeDisabled, last: $last, orderBy: $orderBy, sort: $sort) { nodes { ...UserFields } pageInfo { endCursor hasNextPage } } } fragment UserFields on User { active admin app archivedAt avatarBackgroundColor avatarUrl calendarHash canAccessAnyPublicTeam createdAt createdIssueCount description disableReason displayName email gitHubUserId guest hasGitHubCodeAccess id identityProvider { id } initials isAssignable isMe isMentionable lastSeen name organization { id } owner statusEmoji statusLabel statusUntilAt supportsAgentSessions timezone title updatedAt url }"
+            field: "users"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "filter"
+                gqltype: "UserFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "includeDisabled"
+                gqltype: "Boolean"
+                name: "includeDisabled"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+              {
+                from: "sort"
+                gqltype: "[UserSortInput!]"
+                name: "sort"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "users"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.users.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query UserLoad($id: String!) { user(id: $id) { ...UserFields } } fragment UserFields on User { active admin app archivedAt avatarBackgroundColor avatarUrl calendarHash canAccessAnyPublicTeam createdAt createdIssueCount description disableReason displayName email gitHubUserId guest hasGitHubCodeAccess id identityProvider { id } initials isAssignable isMe isMentionable lastSeen name organization { id } owner statusEmoji statusLabel statusUntilAt supportsAgentSessions timezone title updatedAt url }"
+            field: "user"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "user"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.user`"
+          }
+        }
+        {
+          graphql: {
+            doc: "query UserLoad { viewer { ...UserFields } } fragment UserFields on User { active admin app archivedAt avatarBackgroundColor avatarUrl calendarHash canAccessAnyPublicTeam createdAt createdIssueCount description disableReason displayName email gitHubUserId guest hasGitHubCodeAccess id identityProvider { id } initials isAssignable isMe isMentionable lastSeen name organization { id } owner statusEmoji statusLabel statusUntilAt supportsAgentSessions timezone title updatedAt url }"
+            field: "viewer"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "viewer"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.viewer`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation UserUpdate($id: String!, $input: UserUpdateInput!) { userUpdate(id: $id, input: $input) { user { ...UserFields } success } } fragment UserFields on User { active admin app archivedAt avatarBackgroundColor avatarUrl calendarHash canAccessAnyPublicTeam createdAt createdIssueCount description disableReason displayName email gitHubUserId guest hasGitHubCodeAccess id identityProvider { id } initials isAssignable isMe isMentionable lastSeen name organization { id } owner statusEmoji statusLabel statusUntilAt supportsAgentSessions timezone title updatedAt url }"
+            field: "userUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "UserUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "userUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.userUpdate.user`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

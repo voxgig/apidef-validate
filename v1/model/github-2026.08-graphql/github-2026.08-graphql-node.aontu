@@ -1,0 +1,110 @@
+# Entity: node
+
+main: kit: entity: node: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "node"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "ids"
+                orig: "ids"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query NodeList($ids: [ID!]!) { nodes(ids: $ids) { ...NodeFields } } fragment NodeFields on Node { id }"
+            field: "nodes"
+            optype: "query"
+            vars: [
+              {
+                from: "ids"
+                gqltype: "[ID!]!"
+                name: "ids"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "nodes"
+          select: {
+            exist: [
+              "ids"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query NodeLoad($id: ID!) { node(id: $id) { ...NodeFields } } fragment NodeFields on Node { id }"
+            field: "node"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "ID!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "node"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.node`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,238 @@
+# Entity: enterprise_administrator_invitation
+
+main: kit: entity: enterprise_administrator_invitation: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "email"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "enterprise"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "invitee"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "inviter"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "role"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "enterprise_administrator_invitation"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation EnterpriseAdministratorInvitationCreateAccept($input: AcceptEnterpriseAdministratorInvitationInput!) { acceptEnterpriseAdministratorInvitation(input: $input) { invitation { ...EnterpriseAdministratorInvitationFields } } } fragment EnterpriseAdministratorInvitationFields on EnterpriseAdministratorInvitation { createdAt email enterprise { id } id invitee { id } inviter { id } role }"
+            field: "acceptEnterpriseAdministratorInvitation"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "AcceptEnterpriseAdministratorInvitationInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "acceptEnterpriseAdministratorInvitation"
+          select: {
+            "$action": "accept"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.acceptEnterpriseAdministratorInvitation.invitation`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation EnterpriseAdministratorInvitationCreateCancelEnterpriseAdminInvitation($input: CancelEnterpriseAdminInvitationInput!) { cancelEnterpriseAdminInvitation(input: $input) { invitation { ...EnterpriseAdministratorInvitationFields } } } fragment EnterpriseAdministratorInvitationFields on EnterpriseAdministratorInvitation { createdAt email enterprise { id } id invitee { id } inviter { id } role }"
+            field: "cancelEnterpriseAdminInvitation"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CancelEnterpriseAdminInvitationInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "cancelEnterpriseAdminInvitation"
+          select: {
+            "$action": "cancel_enterprise_admin_invitation"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.cancelEnterpriseAdminInvitation.invitation`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation EnterpriseAdministratorInvitationCreateInviteEnterpriseAdmin($input: InviteEnterpriseAdminInput!) { inviteEnterpriseAdmin(input: $input) { invitation { ...EnterpriseAdministratorInvitationFields } } } fragment EnterpriseAdministratorInvitationFields on EnterpriseAdministratorInvitation { createdAt email enterprise { id } id invitee { id } inviter { id } role }"
+            field: "inviteEnterpriseAdmin"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "InviteEnterpriseAdminInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "inviteEnterpriseAdmin"
+          select: {
+            "$action": "invite_enterprise_admin"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.inviteEnterpriseAdmin.invitation`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "enterprise_slug"
+                orig: "enterprise_slug"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "role"
+                orig: "role"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "user_login"
+                orig: "user_login"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query EnterpriseAdministratorInvitationLoad($enterpriseSlug: String!, $role: EnterpriseAdministratorRole!, $userLogin: String!) { enterpriseAdministratorInvitation(enterpriseSlug: $enterpriseSlug, role: $role, userLogin: $userLogin) { ...EnterpriseAdministratorInvitationFields } } fragment EnterpriseAdministratorInvitationFields on EnterpriseAdministratorInvitation { createdAt email enterprise { id } id invitee { id } inviter { id } role }"
+            field: "enterpriseAdministratorInvitation"
+            optype: "query"
+            vars: [
+              {
+                from: "enterpriseSlug"
+                gqltype: "String!"
+                name: "enterpriseSlug"
+              }
+              {
+                from: "role"
+                gqltype: "EnterpriseAdministratorRole!"
+                name: "role"
+              }
+              {
+                from: "userLogin"
+                gqltype: "String!"
+                name: "userLogin"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "enterpriseAdministratorInvitation"
+          select: {
+            exist: [
+              "enterprise_slug"
+              "role"
+              "user_login"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.enterpriseAdministratorInvitation`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "invitation_token"
+                orig: "invitation_token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query EnterpriseAdministratorInvitationLoad($invitationToken: String!) { enterpriseAdministratorInvitationByToken(invitationToken: $invitationToken) { ...EnterpriseAdministratorInvitationFields } } fragment EnterpriseAdministratorInvitationFields on EnterpriseAdministratorInvitation { createdAt email enterprise { id } id invitee { id } inviter { id } role }"
+            field: "enterpriseAdministratorInvitationByToken"
+            optype: "query"
+            vars: [
+              {
+                from: "invitationToken"
+                gqltype: "String!"
+                name: "invitationToken"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "enterpriseAdministratorInvitationByToken"
+          select: {
+            exist: [
+              "invitation_token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.enterpriseAdministratorInvitationByToken`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

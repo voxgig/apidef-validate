@@ -1,0 +1,133 @@
+# Entity: diff
+
+main: kit: entity: diff: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "addition"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "agent_session"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "content_hash"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "creator"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "deletion"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "file_count"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "organization"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "pull_request"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "slug_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "truncated"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "diff"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query DiffLoad($id: String!) { diff(id: $id) { ...DiffFields } } fragment DiffFields on Diff { additions agentSession { id } archivedAt contentHash createdAt creator { id } deletions fileCount id organization { id } pullRequest { id } slugId truncated updatedAt }"
+            field: "diff"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "diff"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.diff`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

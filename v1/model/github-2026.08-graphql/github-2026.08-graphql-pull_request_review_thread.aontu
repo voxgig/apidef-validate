@@ -1,0 +1,185 @@
+# Entity: pull_request_review_thread
+
+main: kit: entity: pull_request_review_thread: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "diff_side"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "is_collapsed"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_outdated"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "is_resolved"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "line"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "original_line"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "original_start_line"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "path"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "pull_request"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "repository"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "resolved_by"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "start_diff_side"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "start_line"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "subject_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "viewer_can_reply"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "viewer_can_resolve"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "viewer_can_unresolve"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "pull_request_review_thread"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation PullRequestReviewThreadCreate($input: AddPullRequestReviewThreadInput!) { addPullRequestReviewThread(input: $input) { thread { ...PullRequestReviewThreadFields } } } fragment PullRequestReviewThreadFields on PullRequestReviewThread { diffSide id isCollapsed isOutdated isResolved line originalLine originalStartLine path pullRequest { id } repository { id } resolvedBy { id } startDiffSide startLine subjectType viewerCanReply viewerCanResolve viewerCanUnresolve }"
+            field: "addPullRequestReviewThread"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "AddPullRequestReviewThreadInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "addPullRequestReviewThread"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.addPullRequestReviewThread.thread`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation PullRequestReviewThreadCreateResolveReviewThread($input: ResolveReviewThreadInput!) { resolveReviewThread(input: $input) { thread { ...PullRequestReviewThreadFields } } } fragment PullRequestReviewThreadFields on PullRequestReviewThread { diffSide id isCollapsed isOutdated isResolved line originalLine originalStartLine path pullRequest { id } repository { id } resolvedBy { id } startDiffSide startLine subjectType viewerCanReply viewerCanResolve viewerCanUnresolve }"
+            field: "resolveReviewThread"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ResolveReviewThreadInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "resolveReviewThread"
+          select: {
+            "$action": "resolve_review_thread"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.resolveReviewThread.thread`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation PullRequestReviewThreadCreateUnresolveReviewThread($input: UnresolveReviewThreadInput!) { unresolveReviewThread(input: $input) { thread { ...PullRequestReviewThreadFields } } } fragment PullRequestReviewThreadFields on PullRequestReviewThread { diffSide id isCollapsed isOutdated isResolved line originalLine originalStartLine path pullRequest { id } repository { id } resolvedBy { id } startDiffSide startLine subjectType viewerCanReply viewerCanResolve viewerCanUnresolve }"
+            field: "unresolveReviewThread"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "UnresolveReviewThreadInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "unresolveReviewThread"
+          select: {
+            "$action": "unresolve_review_thread"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.unresolveReviewThread.thread`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,103 @@
+# Entity: reaction
+
+main: kit: entity: reaction: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "content"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "database_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "reactable"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "user"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "reaction"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation ReactionCreate($input: AddReactionInput!) { addReaction(input: $input) { reaction { ...ReactionFields } } } fragment ReactionFields on Reaction { content createdAt databaseId id reactable { id } user { id } }"
+            field: "addReaction"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "AddReactionInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "addReaction"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.addReaction.reaction`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          graphql: {
+            doc: "mutation ReactionRemove($input: RemoveReactionInput!) { removeReaction(input: $input) { reaction { ...ReactionFields } } } fragment ReactionFields on Reaction { content createdAt databaseId id reactable { id } user { id } }"
+            field: "removeReaction"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "RemoveReactionInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "removeReaction"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.removeReaction.reaction`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -18,7 +18,10 @@ type Case struct {
 	Format  string
 }
 
-// Mirrors the TS case list in test/main.test.ts.
+// Mirrors the TS case list in test/main.test.ts, MINUS its GraphQL cases:
+// the Go apidef module has no GraphQL ingestion (no strategy dispatch, no SDL
+// parser), so a graphql case here could only fail. Add them together with the
+// Go port, not before it — and drop this note when they are in sync again.
 var allCases = []Case{
 	{"solar", "1.0.0", "openapi-3.0.0", "yaml"},
 	{"petstore", "1.0.7", "swagger-2.0", "json"},

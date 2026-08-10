@@ -1,0 +1,50 @@
+# Entity: api_version
+
+main: kit: entity: api_version: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "display_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "handle"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "supported"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  name: "api_version"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          graphql: {
+            doc: "query ApiVersionList { publicApiVersions { ...ApiVersionFields } } fragment ApiVersionFields on ApiVersion { displayName handle supported }"
+            field: "publicApiVersions"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "publicApiVersions"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.publicApiVersions`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

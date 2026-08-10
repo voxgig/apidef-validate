@@ -1,0 +1,731 @@
+# Entity: initiative
+
+main: kit: entity: initiative: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "canceled_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "color"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "completed_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "content"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "creator"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "document_content"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "frequency_resolution"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "health"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "health_updated_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "icon"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "identifier"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "integrations_setting"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "label_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "last_update"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "lead_team"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "organization"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "owner"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "parent_initiative"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "previous_identifier"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "priority"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "priority_sort_order"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "slug_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "sort_order"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "started_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "status"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "target_date"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "target_date_resolution"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "trashed"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "update_reminder_frequency"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "update_reminder_frequency_in_week"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "update_reminders_day"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "update_reminders_hour"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "visibility"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "initiative"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "label_id"
+                orig: "label_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation InitiativeCreateAddLabel($id: String!, $labelId: String!) { initiativeAddLabel(id: $id, labelId: $labelId) { initiative { ...InitiativeFields } success } } fragment InitiativeFields on Initiative { archivedAt canceledAt color completedAt content createdAt creator { id } description documentContent { id } frequencyResolution health healthUpdatedAt icon id identifier integrationsSettings { id } labelIds lastUpdate { id } leadTeam { id } name organization { id } owner { id } parentInitiative { id } previousIdentifiers priority prioritySortOrder slugId sortOrder startedAt status targetDate targetDateResolution trashed updateReminderFrequency updateReminderFrequencyInWeeks updateRemindersDay updateRemindersHour updatedAt url visibility }"
+            field: "initiativeAddLabel"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: "labelId"
+                gqltype: "String!"
+                name: "labelId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeAddLabel"
+          select: {
+            "$action": "add_label"
+            exist: [
+              "id"
+              "label_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeAddLabel.initiative`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "label_id"
+                orig: "label_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation InitiativeCreateRemoveLabel($id: String!, $labelId: String!) { initiativeRemoveLabel(id: $id, labelId: $labelId) { initiative { ...InitiativeFields } success } } fragment InitiativeFields on Initiative { archivedAt canceledAt color completedAt content createdAt creator { id } description documentContent { id } frequencyResolution health healthUpdatedAt icon id identifier integrationsSettings { id } labelIds lastUpdate { id } leadTeam { id } name organization { id } owner { id } parentInitiative { id } previousIdentifiers priority prioritySortOrder slugId sortOrder startedAt status targetDate targetDateResolution trashed updateReminderFrequency updateReminderFrequencyInWeeks updateRemindersDay updateRemindersHour updatedAt url visibility }"
+            field: "initiativeRemoveLabel"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: "labelId"
+                gqltype: "String!"
+                name: "labelId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeRemoveLabel"
+          select: {
+            "$action": "remove_label"
+            exist: [
+              "id"
+              "label_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeRemoveLabel.initiative`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation InitiativeCreate($input: InitiativeCreateInput!) { initiativeCreate(input: $input) { initiative { ...InitiativeFields } success } } fragment InitiativeFields on Initiative { archivedAt canceledAt color completedAt content createdAt creator { id } description documentContent { id } frequencyResolution health healthUpdatedAt icon id identifier integrationsSettings { id } labelIds lastUpdate { id } leadTeam { id } name organization { id } owner { id } parentInitiative { id } previousIdentifiers priority prioritySortOrder slugId sortOrder startedAt status targetDate targetDateResolution trashed updateReminderFrequency updateReminderFrequencyInWeeks updateRemindersDay updateRemindersHour updatedAt url visibility }"
+            field: "initiativeCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "InitiativeCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeCreate.initiative`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query InitiativeList($after: String, $before: String, $filter: InitiativeFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy, $sort: [InitiativeSortInput!]) { initiatives(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy, sort: $sort) { nodes { ...InitiativeFields } pageInfo { endCursor hasNextPage } } } fragment InitiativeFields on Initiative { archivedAt canceledAt color completedAt content createdAt creator { id } description documentContent { id } frequencyResolution health healthUpdatedAt icon id identifier integrationsSettings { id } labelIds lastUpdate { id } leadTeam { id } name organization { id } owner { id } parentInitiative { id } previousIdentifiers priority prioritySortOrder slugId sortOrder startedAt status targetDate targetDateResolution trashed updateReminderFrequency updateReminderFrequencyInWeeks updateRemindersDay updateRemindersHour updatedAt url visibility }"
+            field: "initiatives"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "filter"
+                gqltype: "InitiativeFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+              {
+                from: "sort"
+                gqltype: "[InitiativeSortInput!]"
+                name: "sort"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiatives"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiatives.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query InitiativeLoad($id: String!) { initiative(id: $id) { ...InitiativeFields } } fragment InitiativeFields on Initiative { archivedAt canceledAt color completedAt content createdAt creator { id } description documentContent { id } frequencyResolution health healthUpdatedAt icon id identifier integrationsSettings { id } labelIds lastUpdate { id } leadTeam { id } name organization { id } owner { id } parentInitiative { id } previousIdentifiers priority prioritySortOrder slugId sortOrder startedAt status targetDate targetDateResolution trashed updateReminderFrequency updateReminderFrequencyInWeeks updateRemindersDay updateRemindersHour updatedAt url visibility }"
+            field: "initiative"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiative"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiative`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation InitiativeRemove($id: String!) { initiativeDelete(id: $id) { entityId lastSyncId success } }"
+            field: "initiativeDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation InitiativeUpdateArchive($id: String!) { initiativeArchive(id: $id) { entity { ...InitiativeFields } success } } fragment InitiativeFields on Initiative { archivedAt canceledAt color completedAt content createdAt creator { id } description documentContent { id } frequencyResolution health healthUpdatedAt icon id identifier integrationsSettings { id } labelIds lastUpdate { id } leadTeam { id } name organization { id } owner { id } parentInitiative { id } previousIdentifiers priority prioritySortOrder slugId sortOrder startedAt status targetDate targetDateResolution trashed updateReminderFrequency updateReminderFrequencyInWeeks updateRemindersDay updateRemindersHour updatedAt url visibility }"
+            field: "initiativeArchive"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeArchive"
+          select: {
+            "$action": "archive"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeArchive.entity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "lead_team_id"
+                orig: "lead_team_id"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "mode"
+                orig: "mode"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation InitiativeUpdateLeadTeamUpdate($id: String!, $leadTeamId: String, $mode: InitiativeLeadTeamChangeMode) { initiativeLeadTeamUpdate(id: $id, leadTeamId: $leadTeamId, mode: $mode) { initiative { ...InitiativeFields } success } } fragment InitiativeFields on Initiative { archivedAt canceledAt color completedAt content createdAt creator { id } description documentContent { id } frequencyResolution health healthUpdatedAt icon id identifier integrationsSettings { id } labelIds lastUpdate { id } leadTeam { id } name organization { id } owner { id } parentInitiative { id } previousIdentifiers priority prioritySortOrder slugId sortOrder startedAt status targetDate targetDateResolution trashed updateReminderFrequency updateReminderFrequencyInWeeks updateRemindersDay updateRemindersHour updatedAt url visibility }"
+            field: "initiativeLeadTeamUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: "leadTeamId"
+                gqltype: "String"
+                name: "leadTeamId"
+              }
+              {
+                from: "mode"
+                gqltype: "InitiativeLeadTeamChangeMode"
+                name: "mode"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeLeadTeamUpdate"
+          select: {
+            "$action": "lead_team_update"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeLeadTeamUpdate.initiative`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation InitiativeUpdateUnarchive($id: String!) { initiativeUnarchive(id: $id) { entity { ...InitiativeFields } success } } fragment InitiativeFields on Initiative { archivedAt canceledAt color completedAt content createdAt creator { id } description documentContent { id } frequencyResolution health healthUpdatedAt icon id identifier integrationsSettings { id } labelIds lastUpdate { id } leadTeam { id } name organization { id } owner { id } parentInitiative { id } previousIdentifiers priority prioritySortOrder slugId sortOrder startedAt status targetDate targetDateResolution trashed updateReminderFrequency updateReminderFrequencyInWeeks updateRemindersDay updateRemindersHour updatedAt url visibility }"
+            field: "initiativeUnarchive"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeUnarchive"
+          select: {
+            "$action": "unarchive"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeUnarchive.entity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation InitiativeUpdate($id: String!, $input: InitiativeUpdateInput!) { initiativeUpdate(id: $id, input: $input) { initiative { ...InitiativeFields } success } } fragment InitiativeFields on Initiative { archivedAt canceledAt color completedAt content createdAt creator { id } description documentContent { id } frequencyResolution health healthUpdatedAt icon id identifier integrationsSettings { id } labelIds lastUpdate { id } leadTeam { id } name organization { id } owner { id } parentInitiative { id } previousIdentifiers priority prioritySortOrder slugId sortOrder startedAt status targetDate targetDateResolution trashed updateReminderFrequency updateReminderFrequencyInWeeks updateRemindersDay updateRemindersHour updatedAt url visibility }"
+            field: "initiativeUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "InitiativeUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "initiativeUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.initiativeUpdate.initiative`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

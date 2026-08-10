@@ -1,0 +1,70 @@
+# Entity: payment_setting
+
+main: kit: entity: payment_setting: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "accepted_card_brand"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "card_vault_url"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "country_code"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "currency_code"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "enabled_presentment_currency"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "shopify_payments_account_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "supported_digital_wallet"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "payment_setting"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          graphql: {
+            doc: "query PaymentSettingLoad { paymentSettings { ...PaymentSettingFields } } fragment PaymentSettingFields on PaymentSettings { acceptedCardBrands cardVaultUrl countryCode currencyCode enabledPresentmentCurrencies shopifyPaymentsAccountId supportedDigitalWallets }"
+            field: "paymentSettings"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "paymentSettings"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.paymentSettings`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

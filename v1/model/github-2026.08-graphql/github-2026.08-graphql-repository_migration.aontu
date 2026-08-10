@@ -1,0 +1,105 @@
+# Entity: repository_migration
+
+main: kit: entity: repository_migration: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "continue_on_error"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "database_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "failure_reason"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "migration_log_url"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "migration_source"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "repository_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "source_url"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "state"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "warnings_count"
+      req: true
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "repository_migration"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation RepositoryMigrationCreateStart($input: StartRepositoryMigrationInput!) { startRepositoryMigration(input: $input) { repositoryMigration { ...RepositoryMigrationFields } } } fragment RepositoryMigrationFields on RepositoryMigration { continueOnError createdAt databaseId failureReason id migrationLogUrl migrationSource { id } repositoryName sourceUrl state warningsCount }"
+            field: "startRepositoryMigration"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "StartRepositoryMigrationInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "startRepositoryMigration"
+          select: {
+            "$action": "start"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.startRepositoryMigration.repositoryMigration`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

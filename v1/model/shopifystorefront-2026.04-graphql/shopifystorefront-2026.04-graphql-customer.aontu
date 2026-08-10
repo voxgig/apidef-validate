@@ -1,0 +1,440 @@
+# Entity: customer
+
+main: kit: entity: customer: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "accepts_marketing"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "avatar_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "default_address"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "display_name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "email"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "first_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "last_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "number_of_order"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "phone"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "tag"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "customer"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "activation_url"
+                orig: "activation_url"
+                reqd: true
+                type: "`$ANY`"
+              }
+              {
+                kind: "param"
+                name: "password"
+                orig: "password"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerCreateActivateByUrl($activationUrl: URL!, $password: String!) { customerActivateByUrl(activationUrl: $activationUrl, password: $password) { customer { ...CustomerFields } } } fragment CustomerFields on Customer { acceptsMarketing avatarUrl createdAt defaultAddress { id } displayName email firstName id lastName numberOfOrders phone tags updatedAt }"
+            field: "customerActivateByUrl"
+            optype: "mutation"
+            vars: [
+              {
+                from: "activationUrl"
+                gqltype: "URL!"
+                name: "activationUrl"
+              }
+              {
+                from: "password"
+                gqltype: "String!"
+                name: "password"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerActivateByUrl"
+          select: {
+            "$action": "activate_by_url"
+            exist: [
+              "activation_url"
+              "password"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerActivateByUrl.customer`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "password"
+                orig: "password"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "reset_url"
+                orig: "reset_url"
+                reqd: true
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerCreateResetByUrl($password: String!, $resetUrl: URL!) { customerResetByUrl(password: $password, resetUrl: $resetUrl) { customer { ...CustomerFields } } } fragment CustomerFields on Customer { acceptsMarketing avatarUrl createdAt defaultAddress { id } displayName email firstName id lastName numberOfOrders phone tags updatedAt }"
+            field: "customerResetByUrl"
+            optype: "mutation"
+            vars: [
+              {
+                from: "password"
+                gqltype: "String!"
+                name: "password"
+              }
+              {
+                from: "resetUrl"
+                gqltype: "URL!"
+                name: "resetUrl"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerResetByUrl"
+          select: {
+            "$action": "reset_by_url"
+            exist: [
+              "password"
+              "reset_url"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerResetByUrl.customer`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation CustomerCreate($input: CustomerCreateInput!) { customerCreate(input: $input) { customer { ...CustomerFields } } } fragment CustomerFields on Customer { acceptsMarketing avatarUrl createdAt defaultAddress { id } displayName email firstName id lastName numberOfOrders phone tags updatedAt }"
+            field: "customerCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CustomerCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerCreate.customer`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "customer_access_token"
+                orig: "customer_access_token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query CustomerLoad($customerAccessToken: String!) { customer(customerAccessToken: $customerAccessToken) { ...CustomerFields } } fragment CustomerFields on Customer { acceptsMarketing avatarUrl createdAt defaultAddress { id } displayName email firstName id lastName numberOfOrders phone tags updatedAt }"
+            field: "customer"
+            optype: "query"
+            vars: [
+              {
+                from: "customerAccessToken"
+                gqltype: "String!"
+                name: "customerAccessToken"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customer"
+          select: {
+            exist: [
+              "customer_access_token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customer`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "address_id"
+                orig: "address_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "customer_access_token"
+                orig: "customer_access_token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerUpdateDefaultAddressUpdate($addressId: ID!, $customerAccessToken: String!) { customerDefaultAddressUpdate(addressId: $addressId, customerAccessToken: $customerAccessToken) { customer { ...CustomerFields } } } fragment CustomerFields on Customer { acceptsMarketing avatarUrl createdAt defaultAddress { id } displayName email firstName id lastName numberOfOrders phone tags updatedAt }"
+            field: "customerDefaultAddressUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "addressId"
+                gqltype: "ID!"
+                name: "addressId"
+              }
+              {
+                from: "customerAccessToken"
+                gqltype: "String!"
+                name: "customerAccessToken"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerDefaultAddressUpdate"
+          select: {
+            "$action": "default_address_update"
+            exist: [
+              "address_id"
+              "customer_access_token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerDefaultAddressUpdate.customer`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "customer_access_token"
+                orig: "customer_access_token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerUpdate($customer: CustomerUpdateInput!, $customerAccessToken: String!) { customerUpdate(customer: $customer, customerAccessToken: $customerAccessToken) { customer { ...CustomerFields } } } fragment CustomerFields on Customer { acceptsMarketing avatarUrl createdAt defaultAddress { id } displayName email firstName id lastName numberOfOrders phone tags updatedAt }"
+            field: "customerUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CustomerUpdateInput!"
+                name: "customer"
+              }
+              {
+                from: "customerAccessToken"
+                gqltype: "String!"
+                name: "customerAccessToken"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerUpdate"
+          select: {
+            exist: [
+              "customer_access_token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerUpdate.customer`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerUpdateActivate($id: ID!, $input: CustomerActivateInput!) { customerActivate(id: $id, input: $input) { customer { ...CustomerFields } } } fragment CustomerFields on Customer { acceptsMarketing avatarUrl createdAt defaultAddress { id } displayName email firstName id lastName numberOfOrders phone tags updatedAt }"
+            field: "customerActivate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "ID!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "CustomerActivateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerActivate"
+          select: {
+            "$action": "activate"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerActivate.customer`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerUpdateReset($id: ID!, $input: CustomerResetInput!) { customerReset(id: $id, input: $input) { customer { ...CustomerFields } } } fragment CustomerFields on Customer { acceptsMarketing avatarUrl createdAt defaultAddress { id } displayName email firstName id lastName numberOfOrders phone tags updatedAt }"
+            field: "customerReset"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "ID!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "CustomerResetInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerReset"
+          select: {
+            "$action": "reset"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerReset.customer`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

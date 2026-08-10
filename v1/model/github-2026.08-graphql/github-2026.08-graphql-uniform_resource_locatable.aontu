@@ -1,0 +1,68 @@
+# Entity: uniform_resource_locatable
+
+main: kit: entity: uniform_resource_locatable: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "resource_path"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "uniform_resource_locatable"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "url"
+                orig: "url"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query UniformResourceLocatableLoad($url: URI!) { resource(url: $url) { ...UniformResourceLocatableFields } } fragment UniformResourceLocatableFields on UniformResourceLocatable { resourcePath url }"
+            field: "resource"
+            optype: "query"
+            vars: [
+              {
+                from: "url"
+                gqltype: "URI!"
+                name: "url"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "resource"
+          select: {
+            exist: [
+              "url"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.resource`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

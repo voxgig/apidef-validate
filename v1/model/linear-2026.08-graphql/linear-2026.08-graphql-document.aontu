@@ -1,0 +1,459 @@
+# Entity: document
+
+main: kit: entity: document: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "color"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "content"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "content_state"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "creator"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "cycle"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "document_content_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "hidden_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "icon"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "initiative"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "issue"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "last_applied_template"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "owner"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "project"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "release"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "slug_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "sort_order"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "summary"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "team"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "title"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "trashed"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "updated_by"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "document"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation DocumentCreate($input: DocumentCreateInput!) { documentCreate(input: $input) { document { ...DocumentFields } success } } fragment DocumentFields on Document { archivedAt color content contentState createdAt creator { id } cycle { id } documentContentId hiddenAt icon id initiative { id } issue { id } lastAppliedTemplate { id } owner { id } project { id } release { id } slugId sortOrder summary team { id } title trashed updatedAt updatedBy { id } url }"
+            field: "documentCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "DocumentCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "documentCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.documentCreate.document`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query DocumentList($after: String, $before: String, $filter: DocumentFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy, $sort: [DocumentSortInput!]) { documents(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy, sort: $sort) { nodes { ...DocumentFields } pageInfo { endCursor hasNextPage } } } fragment DocumentFields on Document { archivedAt color content contentState createdAt creator { id } cycle { id } documentContentId hiddenAt icon id initiative { id } issue { id } lastAppliedTemplate { id } owner { id } project { id } release { id } slugId sortOrder summary team { id } title trashed updatedAt updatedBy { id } url }"
+            field: "documents"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "filter"
+                gqltype: "DocumentFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+              {
+                from: "sort"
+                gqltype: "[DocumentSortInput!]"
+                name: "sort"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "documents"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.documents.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query DocumentLoad($id: String!) { document(id: $id) { ...DocumentFields } } fragment DocumentFields on Document { archivedAt color content contentState createdAt creator { id } cycle { id } documentContentId hiddenAt icon id initiative { id } issue { id } lastAppliedTemplate { id } owner { id } project { id } release { id } slugId sortOrder summary team { id } title trashed updatedAt updatedBy { id } url }"
+            field: "document"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "document"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.document`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation DocumentRemove($id: String!) { documentDelete(id: $id) { entity { ...DocumentFields } success } } fragment DocumentFields on Document { archivedAt color content contentState createdAt creator { id } cycle { id } documentContentId hiddenAt icon id initiative { id } issue { id } lastAppliedTemplate { id } owner { id } project { id } release { id } slugId sortOrder summary team { id } title trashed updatedAt updatedBy { id } url }"
+            field: "documentDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "documentDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.documentDelete.entity`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation DocumentUpdateUnarchive($id: String!) { documentUnarchive(id: $id) { entity { ...DocumentFields } success } } fragment DocumentFields on Document { archivedAt color content contentState createdAt creator { id } cycle { id } documentContentId hiddenAt icon id initiative { id } issue { id } lastAppliedTemplate { id } owner { id } project { id } release { id } slugId sortOrder summary team { id } title trashed updatedAt updatedBy { id } url }"
+            field: "documentUnarchive"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "documentUnarchive"
+          select: {
+            "$action": "unarchive"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.documentUnarchive.entity`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation DocumentUpdate($id: String!, $input: DocumentUpdateInput!) { documentUpdate(id: $id, input: $input) { document { ...DocumentFields } success } } fragment DocumentFields on Document { archivedAt color content contentState createdAt creator { id } cycle { id } documentContentId hiddenAt icon id initiative { id } issue { id } lastAppliedTemplate { id } owner { id } project { id } release { id } slugId sortOrder summary team { id } title trashed updatedAt updatedBy { id } url }"
+            field: "documentUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "DocumentUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "documentUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.documentUpdate.document`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

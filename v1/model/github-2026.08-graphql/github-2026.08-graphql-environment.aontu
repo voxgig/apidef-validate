@@ -1,0 +1,151 @@
+# Entity: environment
+
+main: kit: entity: environment: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "database_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "is_pinned"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "latest_completed_deployment"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "pinned_position"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "environment"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation EnvironmentCreate($input: CreateEnvironmentInput!) { createEnvironment(input: $input) { environment { ...EnvironmentFields } } } fragment EnvironmentFields on Environment { databaseId id isPinned latestCompletedDeployment { id } name pinnedPosition }"
+            field: "createEnvironment"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CreateEnvironmentInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "createEnvironment"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.createEnvironment.environment`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation EnvironmentCreatePin($input: PinEnvironmentInput!) { pinEnvironment(input: $input) { environment { ...EnvironmentFields } } } fragment EnvironmentFields on Environment { databaseId id isPinned latestCompletedDeployment { id } name pinnedPosition }"
+            field: "pinEnvironment"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "PinEnvironmentInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "pinEnvironment"
+          select: {
+            "$action": "pin"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.pinEnvironment.environment`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation EnvironmentCreateReorder($input: ReorderEnvironmentInput!) { reorderEnvironment(input: $input) { environment { ...EnvironmentFields } } } fragment EnvironmentFields on Environment { databaseId id isPinned latestCompletedDeployment { id } name pinnedPosition }"
+            field: "reorderEnvironment"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ReorderEnvironmentInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "reorderEnvironment"
+          select: {
+            "$action": "reorder"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.reorderEnvironment.environment`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          graphql: {
+            doc: "mutation EnvironmentUpdate($input: UpdateEnvironmentInput!) { updateEnvironment(input: $input) { environment { ...EnvironmentFields } } } fragment EnvironmentFields on Environment { databaseId id isPinned latestCompletedDeployment { id } name pinnedPosition }"
+            field: "updateEnvironment"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "UpdateEnvironmentInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "updateEnvironment"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.updateEnvironment.environment`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

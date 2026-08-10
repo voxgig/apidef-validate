@@ -1,0 +1,499 @@
+# Entity: customer
+
+main: kit: entity: customer: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "approximate_need_count"
+      req: true
+      type: "`$NUMBER`"
+    }
+    {
+      name: "archived_at"
+      req: false
+      type: "`$ANY`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "domain"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "external_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "integration"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "logo_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "main_source_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "owner"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "revenue"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "size"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "slack_channel_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "slug_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "status"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "tier"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "url"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "customer"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "source_customer_id"
+                orig: "source_customer_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "target_customer_id"
+                orig: "target_customer_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerCreateMerge($sourceCustomerId: String!, $targetCustomerId: String!) { customerMerge(sourceCustomerId: $sourceCustomerId, targetCustomerId: $targetCustomerId) { customer { ...CustomerFields } success } } fragment CustomerFields on Customer { approximateNeedCount archivedAt createdAt domains externalIds id integration { id } logoUrl mainSourceId name owner { id } revenue size slackChannelId slugId status { id } tier { id } updatedAt url }"
+            field: "customerMerge"
+            optype: "mutation"
+            vars: [
+              {
+                from: "sourceCustomerId"
+                gqltype: "String!"
+                name: "sourceCustomerId"
+              }
+              {
+                from: "targetCustomerId"
+                gqltype: "String!"
+                name: "targetCustomerId"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerMerge"
+          select: {
+            "$action": "merge"
+            exist: [
+              "source_customer_id"
+              "target_customer_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerMerge.customer`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation CustomerCreate($input: CustomerCreateInput!) { customerCreate(input: $input) { customer { ...CustomerFields } success } } fragment CustomerFields on Customer { approximateNeedCount archivedAt createdAt domains externalIds id integration { id } logoUrl mainSourceId name owner { id } revenue size slackChannelId slugId status { id } tier { id } updatedAt url }"
+            field: "customerCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CustomerCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerCreate.customer`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation CustomerCreateUpsert($input: CustomerUpsertInput!) { customerUpsert(input: $input) { customer { ...CustomerFields } success } } fragment CustomerFields on Customer { approximateNeedCount archivedAt createdAt domains externalIds id integration { id } logoUrl mainSourceId name owner { id } revenue size slackChannelId slugId status { id } tier { id } updatedAt url }"
+            field: "customerUpsert"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "CustomerUpsertInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerUpsert"
+          select: {
+            "$action": "upsert"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerUpsert.customer`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "after"
+                orig: "after"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "before"
+                orig: "before"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "first"
+                orig: "first"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "include_archived"
+                orig: "include_archived"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "param"
+                name: "last"
+                orig: "last"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$ANY`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query CustomerList($after: String, $before: String, $filter: CustomerFilter, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy, $sorts: [CustomerSortInput!]) { customers(after: $after, before: $before, filter: $filter, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy, sorts: $sorts) { nodes { ...CustomerFields } pageInfo { endCursor hasNextPage } } } fragment CustomerFields on Customer { approximateNeedCount archivedAt createdAt domains externalIds id integration { id } logoUrl mainSourceId name owner { id } revenue size slackChannelId slugId status { id } tier { id } updatedAt url }"
+            field: "customers"
+            optype: "query"
+            page: {
+              cursor: "pageInfo.endCursor"
+              more: "pageInfo.hasNextPage"
+              nodes: "nodes"
+              style: "relay"
+            }
+            vars: [
+              {
+                from: "after"
+                gqltype: "String"
+                name: "after"
+              }
+              {
+                from: "before"
+                gqltype: "String"
+                name: "before"
+              }
+              {
+                from: "filter"
+                gqltype: "CustomerFilter"
+                name: "filter"
+              }
+              {
+                from: "first"
+                gqltype: "Int"
+                name: "first"
+              }
+              {
+                from: "includeArchived"
+                gqltype: "Boolean"
+                name: "includeArchived"
+              }
+              {
+                from: "last"
+                gqltype: "Int"
+                name: "last"
+              }
+              {
+                from: "orderBy"
+                gqltype: "PaginationOrderBy"
+                name: "orderBy"
+              }
+              {
+                from: "sorts"
+                gqltype: "[CustomerSortInput!]"
+                name: "sorts"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customers"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customers.nodes`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query CustomerLoad($id: String!) { customer(id: $id) { ...CustomerFields } } fragment CustomerFields on Customer { approximateNeedCount archivedAt createdAt domains externalIds id integration { id } logoUrl mainSourceId name owner { id } revenue size slackChannelId slugId status { id } tier { id } updatedAt url }"
+            field: "customer"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customer"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customer`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerRemove($id: String!) { customerDelete(id: $id) { entityId lastSyncId success } }"
+            field: "customerDelete"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerDelete"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerDelete`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerUpdateUnsync($id: String!) { customerUnsync(id: $id) { customer { ...CustomerFields } success } } fragment CustomerFields on Customer { approximateNeedCount archivedAt createdAt domains externalIds id integration { id } logoUrl mainSourceId name owner { id } revenue size slackChannelId slugId status { id } tier { id } updatedAt url }"
+            field: "customerUnsync"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerUnsync"
+          select: {
+            "$action": "unsync"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerUnsync.customer`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation CustomerUpdate($id: String!, $input: CustomerUpdateInput!) { customerUpdate(id: $id, input: $input) { customer { ...CustomerFields } success } } fragment CustomerFields on Customer { approximateNeedCount archivedAt createdAt domains externalIds id integration { id } logoUrl mainSourceId name owner { id } revenue size slackChannelId slugId status { id } tier { id } updatedAt url }"
+            field: "customerUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "CustomerUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "customerUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.customerUpdate.customer`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

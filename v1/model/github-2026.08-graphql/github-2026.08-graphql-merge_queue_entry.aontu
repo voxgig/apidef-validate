@@ -1,0 +1,129 @@
+# Entity: merge_queue_entry
+
+main: kit: entity: merge_queue_entry: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "base_commit"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "enqueued_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "estimated_time_to_merge"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "head_commit"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "jump"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "merge_queue"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "position"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "pull_request"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "solo"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "state"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "merge_queue_entry"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation MergeQueueEntryCreateDequeuePullRequest($input: DequeuePullRequestInput!) { dequeuePullRequest(input: $input) { mergeQueueEntry { ...MergeQueueEntryFields } } } fragment MergeQueueEntryFields on MergeQueueEntry { baseCommit { id } enqueuedAt estimatedTimeToMerge headCommit { id } id jump mergeQueue { id } position pullRequest { id } solo state }"
+            field: "dequeuePullRequest"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "DequeuePullRequestInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "dequeuePullRequest"
+          select: {
+            "$action": "dequeue_pull_request"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.dequeuePullRequest.mergeQueueEntry`"
+          }
+        }
+        {
+          graphql: {
+            doc: "mutation MergeQueueEntryCreateEnqueuePullRequest($input: EnqueuePullRequestInput!) { enqueuePullRequest(input: $input) { mergeQueueEntry { ...MergeQueueEntryFields } } } fragment MergeQueueEntryFields on MergeQueueEntry { baseCommit { id } enqueuedAt estimatedTimeToMerge headCommit { id } id jump mergeQueue { id } position pullRequest { id } solo state }"
+            field: "enqueuePullRequest"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "EnqueuePullRequestInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "enqueuePullRequest"
+          select: {
+            "$action": "enqueue_pull_request"
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.enqueuePullRequest.mergeQueueEntry`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

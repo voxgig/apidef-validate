@@ -1,0 +1,230 @@
+# Entity: o_auth_application
+
+main: kit: entity: o_auth_application: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "client_id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "developer"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "developer_url"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "distribution"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "grant_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "image_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "redirect_uri"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: true
+      type: "`$ANY`"
+    }
+    {
+      name: "webhook_enabled"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "webhook_resource_type"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "webhook_url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "o_auth_application"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          graphql: {
+            doc: "mutation OAuthApplicationCreate($input: OAuthApplicationCreateInput!) { oauthApplicationCreate(input: $input) { application { ...OAuthApplicationFields } success } } fragment OAuthApplicationFields on OAuthApplication { clientId createdAt description developer developerUrl distribution grantTypes id imageUrl name redirectUris updatedAt webhookEnabled webhookResourceTypes webhookUrl }"
+            field: "oauthApplicationCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "OAuthApplicationCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "oauthApplicationCreate"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.oauthApplicationCreate.application`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          graphql: {
+            doc: "query OAuthApplicationList { oauthApplications { ...OAuthApplicationFields } } fragment OAuthApplicationFields on OAuthApplication { clientId createdAt description developer developerUrl distribution grantTypes id imageUrl name redirectUris updatedAt webhookEnabled webhookResourceTypes webhookUrl }"
+            field: "oauthApplications"
+            optype: "query"
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "oauthApplications"
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.oauthApplications`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "query OAuthApplicationLoad($id: String!) { oauthApplication(id: $id) { ...OAuthApplicationFields } } fragment OAuthApplicationFields on OAuthApplication { clientId createdAt description developer developerUrl distribution grantTypes id imageUrl name redirectUris updatedAt webhookEnabled webhookResourceTypes webhookUrl }"
+            field: "oauthApplication"
+            optype: "query"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "oauthApplication"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.oauthApplication`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          graphql: {
+            doc: "mutation OAuthApplicationUpdate($id: String!, $input: OAuthApplicationUpdateInput!) { oauthApplicationUpdate(id: $id, input: $input) { application { ...OAuthApplicationFields } success } } fragment OAuthApplicationFields on OAuthApplication { clientId createdAt description developer developerUrl distribution grantTypes id imageUrl name redirectUris updatedAt webhookEnabled webhookResourceTypes webhookUrl }"
+            field: "oauthApplicationUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "OAuthApplicationUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          kind: "graphql"
+          method: "POST"
+          orig: "oauthApplicationUpdate"
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data.oauthApplicationUpdate.application`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}
