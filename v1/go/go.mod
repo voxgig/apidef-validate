@@ -2,7 +2,7 @@ module github.com/voxgig/apidef-validate/v1/go
 
 go 1.25.0
 
-require github.com/voxgig/apidef/go v0.1.4
+require github.com/voxgig/apidef/go v0.1.5
 
 require (
 	github.com/mattn/go-colorable v0.1.15 // indirect
