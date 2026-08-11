@@ -16,7 +16,7 @@ main: kit: entity: repository_advisory: {
       type: "`$STRING`"
     }
     {
-      name: "collaborating_team"
+      name: "collaborating_teams"
       op: {
         update: {
           req: false
@@ -27,7 +27,7 @@ main: kit: entity: repository_advisory: {
       type: "`$ARRAY`"
     }
     {
-      name: "collaborating_user"
+      name: "collaborating_users"
       op: {
         update: {
           req: false
@@ -43,7 +43,7 @@ main: kit: entity: repository_advisory: {
       type: "`$STRING`"
     }
     {
-      name: "credit"
+      name: "credits"
       op: {
         create: {
           req: false
@@ -83,7 +83,7 @@ main: kit: entity: repository_advisory: {
       type: "`$OBJECT`"
     }
     {
-      name: "cvss_severity"
+      name: "cvss_severities"
       req: false
       type: "`$OBJECT`"
     }
@@ -93,12 +93,7 @@ main: kit: entity: repository_advisory: {
       type: "`$STRING`"
     }
     {
-      name: "cwe"
-      req: true
-      type: "`$ARRAY`"
-    }
-    {
-      name: "cwe_id"
+      name: "cwe_ids"
       op: {
         create: {
           req: false
@@ -109,6 +104,11 @@ main: kit: entity: repository_advisory: {
           type: "`$ARRAY`"
         }
       }
+      req: true
+      type: "`$ARRAY`"
+    }
+    {
+      name: "cwes"
       req: true
       type: "`$ARRAY`"
     }
@@ -134,7 +134,7 @@ main: kit: entity: repository_advisory: {
       type: "`$STRING`"
     }
     {
-      name: "identifier"
+      name: "identifiers"
       req: true
       type: "`$ARRAY`"
     }
@@ -211,7 +211,7 @@ main: kit: entity: repository_advisory: {
       type: "`$STRING`"
     }
     {
-      name: "vulnerability"
+      name: "vulnerabilities"
       op: {
         create: {
           req: false
@@ -271,7 +271,17 @@ main: kit: entity: repository_advisory: {
             ]
           }
           transform: {
-            req: "`reqdata`"
+            req: {
+              credits: "`reqdata.credit`"
+              cve_id: "`reqdata.cve_id`"
+              cvss_vector_string: "`reqdata.cvss_vector_string`"
+              cwe_ids: "`reqdata.cwe_id`"
+              description: "`reqdata.description`"
+              severity: "`reqdata.severity`"
+              start_private_fork: "`reqdata.start_private_fork`"
+              summary: "`reqdata.summary`"
+              vulnerabilities: "`reqdata.vulnerability`"
+            }
             res: "`body`"
           }
         }
@@ -310,7 +320,15 @@ main: kit: entity: repository_advisory: {
             ]
           }
           transform: {
-            req: "`reqdata`"
+            req: {
+              cvss_vector_string: "`reqdata.cvss_vector_string`"
+              cwe_ids: "`reqdata.cwe_id`"
+              description: "`reqdata.description`"
+              severity: "`reqdata.severity`"
+              start_private_fork: "`reqdata.start_private_fork`"
+              summary: "`reqdata.summary`"
+              vulnerabilities: "`reqdata.vulnerability`"
+            }
             res: "`body`"
           }
         }
@@ -597,7 +615,19 @@ main: kit: entity: repository_advisory: {
             ]
           }
           transform: {
-            req: "`reqdata`"
+            req: {
+              collaborating_teams: "`reqdata.collaborating_team`"
+              collaborating_users: "`reqdata.collaborating_user`"
+              credits: "`reqdata.credit`"
+              cve_id: "`reqdata.cve_id`"
+              cvss_vector_string: "`reqdata.cvss_vector_string`"
+              cwe_ids: "`reqdata.cwe_id`"
+              description: "`reqdata.description`"
+              severity: "`reqdata.severity`"
+              state: "`reqdata.state`"
+              summary: "`reqdata.summary`"
+              vulnerabilities: "`reqdata.vulnerability`"
+            }
             res: "`body`"
           }
         }

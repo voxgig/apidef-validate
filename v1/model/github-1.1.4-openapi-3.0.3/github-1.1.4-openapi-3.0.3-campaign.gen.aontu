@@ -6,7 +6,7 @@ main: kit: entity: campaign: {
 
   fields: [
     {
-      name: "alert_stat"
+      name: "alert_stats"
       req: true
       type: "`$OBJECT`"
     }
@@ -16,7 +16,7 @@ main: kit: entity: campaign: {
       type: "`$STRING`"
     }
     {
-      name: "code_scanning_alert"
+      name: "code_scanning_alerts"
       req: true
       type: "`$ARRAY`"
     }
@@ -63,12 +63,12 @@ main: kit: entity: campaign: {
       type: "`$STRING`"
     }
     {
-      name: "generate_issue"
+      name: "generate_issues"
       req: false
       type: "`$BOOLEAN`"
     }
     {
-      name: "manager"
+      name: "managers"
       op: {
         create: {
           req: false
@@ -115,7 +115,7 @@ main: kit: entity: campaign: {
       type: "`$STRING`"
     }
     {
-      name: "team_manager"
+      name: "team_managers"
       req: false
       type: "`$ARRAY`"
     }
@@ -161,7 +161,16 @@ main: kit: entity: campaign: {
             ]
           }
           transform: {
-            req: "`reqdata`"
+            req: {
+              code_scanning_alerts: "`reqdata.code_scanning_alert`"
+              contact_link: "`reqdata.contact_link`"
+              description: "`reqdata.description`"
+              ends_at: "`reqdata.ends_at`"
+              generate_issues: "`reqdata.generate_issue`"
+              managers: "`reqdata.manager`"
+              name: "`reqdata.name`"
+              team_managers: "`reqdata.team_manager`"
+            }
             res: "`body`"
           }
         }
@@ -393,7 +402,15 @@ main: kit: entity: campaign: {
             ]
           }
           transform: {
-            req: "`reqdata`"
+            req: {
+              contact_link: "`reqdata.contact_link`"
+              description: "`reqdata.description`"
+              ends_at: "`reqdata.ends_at`"
+              managers: "`reqdata.manager`"
+              name: "`reqdata.name`"
+              state: "`reqdata.state`"
+              team_managers: "`reqdata.team_manager`"
+            }
             res: "`body`"
           }
         }

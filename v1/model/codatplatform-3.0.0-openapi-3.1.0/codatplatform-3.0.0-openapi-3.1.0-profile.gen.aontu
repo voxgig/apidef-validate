@@ -4,7 +4,80 @@ main: kit: entity: profile: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "apiKey"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "confirmCompanyName"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "iconUrl"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "logoUrl"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "redirectUrl"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "whiteListUrls"
+      req: false
+      type: "`$ARRAY`"
+    }
+  ]
+
   name: "profile"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/profile"
+          parts: [
+            "profile"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.whiteListUrls`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          method: "PUT"
+          orig: "/profile"
+          parts: [
+            "profile"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
 
 
 }

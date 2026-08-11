@@ -4,7 +4,114 @@ main: kit: entity: webhook: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "companyTags"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "disabled"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "eventTypes"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "webhook"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          method: "POST"
+          orig: "/webhooks"
+          parts: [
+            "webhooks"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/webhooks"
+          parts: [
+            "webhooks"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.results`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                kind: "param"
+                name: "id"
+                orig: "webhook_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/webhooks/{webhookId}"
+          parts: [
+            "webhooks"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              webhookId: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
 
 
 }

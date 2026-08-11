@@ -1,0 +1,62 @@
+# Entity: refresh_data
+
+main: kit: entity: refresh_data: {
+
+  alias: field: {}
+
+  name: "refresh_data"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/companies/{companyId}/data/all"
+          parts: [
+            "companies"
+            "{company_id}"
+            "data"
+            "all"
+          ]
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "company"
+      ]
+    ]
+  }
+
+
+
+}

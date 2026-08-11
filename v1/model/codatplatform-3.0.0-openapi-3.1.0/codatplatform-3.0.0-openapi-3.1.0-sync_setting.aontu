@@ -4,7 +4,70 @@ main: kit: entity: sync_setting: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "dataType"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "fetchOnFirstLink"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "isLocked"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "monthsToSync"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "syncFromUtc"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "syncFromWindow"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "syncOrder"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "syncSchedule"
+      req: true
+      type: "`$INTEGER`"
+    }
+  ]
+
   name: "sync_setting"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/profile/syncSettings"
+          parts: [
+            "profile"
+            "syncSettings"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.settings`"
+          }
+        }
+      ]
+    }
+  }
+
 
 
 }

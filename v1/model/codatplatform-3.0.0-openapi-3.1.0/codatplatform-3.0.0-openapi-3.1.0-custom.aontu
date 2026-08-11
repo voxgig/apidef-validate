@@ -4,7 +4,248 @@ main: kit: entity: custom: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "dataSource"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "keyBy"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "pageNumber"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "pageSize"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "requiredData"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "results"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "sourceModifiedDate"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "totalResults"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
   name: "custom"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                example: "2e9d2c44-f675-40ba-8049-353bfcb5e171"
+                kind: "param"
+                name: "connection_id"
+                orig: "connection_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                example: "DynamicsPurchaseOrders"
+                kind: "param"
+                name: "id"
+                orig: "custom_data_identifier"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                example: 1
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                example: 100
+                kind: "query"
+                name: "page_size"
+                orig: "page_size"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/companies/{companyId}/connections/{connectionId}/data/custom/{customDataIdentifier}"
+          parts: [
+            "companies"
+            "{company_id}"
+            "connections"
+            "{connection_id}"
+            "data"
+            "custom"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              companyId: "company_id"
+              connectionId: "connection_id"
+              customDataIdentifier: "id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+              "connection_id"
+              "id"
+              "page"
+              "page_size"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                example: "DynamicsPurchaseOrders"
+                kind: "param"
+                name: "id"
+                orig: "custom_data_identifier"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                example: "gbol"
+                kind: "param"
+                name: "platform_key"
+                orig: "platform_key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}"
+          parts: [
+            "integrations"
+            "{platform_key}"
+            "dataTypes"
+            "custom"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              customDataIdentifier: "id"
+              platformKey: "platform_key"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "platform_key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "DynamicsPurchaseOrders"
+                kind: "param"
+                name: "id"
+                orig: "custom_data_identifier"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                example: "gbol"
+                kind: "param"
+                name: "platform_key"
+                orig: "platform_key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}"
+          parts: [
+            "integrations"
+            "{platform_key}"
+            "dataTypes"
+            "custom"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              customDataIdentifier: "id"
+              platformKey: "platform_key"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+              "platform_key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "integration"
+      ]
+      [
+        "company"
+        "connection"
+      ]
+    ]
+  }
+
 
 
 }

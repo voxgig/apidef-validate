@@ -1,19 +1,17 @@
 {
-  metrics: {
-    count: {
-      entity: 18
-      path: 54
-      method: 112
-    }
-  }
-
   entity: {
     component: {
+      name: "component"
       path: {
         "/pages/{page_id}/components": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  component: "`reqdata`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -21,23 +19,33 @@
           }
         }
         "/pages/{page_id}/components/{component_id}": {
-          rename: {
-            param: {
-              component_id: "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
             patch: {
               method: "PATCH"
+              transform: {
+                req: {
+                  component: "`reqdata`"
+                }
+              }
             }
             remove: {
               method: "DELETE"
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  component: "`reqdata`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              component_id: "id"
             }
           }
         }
@@ -46,17 +54,17 @@
             page_access_group: {
             }
           }
-          rename: {
-            param: {
-              component_id: "id"
-            }
-          }
           op: {
             create: {
               method: "POST"
             }
             remove: {
               method: "DELETE"
+            }
+          }
+          rename: {
+            param: {
+              component_id: "id"
             }
           }
         }
@@ -65,11 +73,6 @@
             page_access_user: {
             }
           }
-          rename: {
-            param: {
-              component_id: "id"
-            }
-          }
           op: {
             create: {
               method: "POST"
@@ -78,20 +81,28 @@
               method: "DELETE"
             }
           }
+          rename: {
+            param: {
+              component_id: "id"
+            }
+          }
         }
         "/pages/{page_id}/components/{component_id}/uptime": {
           action: {
             uptime: {
             }
           }
-          rename: {
-            param: {
-              component_id: "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
+              transform: {
+                res: "`body.related_events`"
+              }
+            }
+          }
+          rename: {
+            param: {
+              component_id: "id"
             }
           }
         }
@@ -110,21 +121,24 @@
           }
         }
       }
-      name: "component"
     }
     component_group_uptime: {
+      name: "component_group_uptime"
       path: {
         "/pages/{page_id}/component-groups/{id}/uptime": {
           op: {
             load: {
               method: "GET"
+              transform: {
+                res: "`body.related_events`"
+              }
             }
           }
         }
       }
-      name: "component_group_uptime"
     }
     group_component: {
+      name: "group_component"
       path: {
         "/pages/{page_id}/component-groups": {
           op: {
@@ -153,14 +167,19 @@
           }
         }
       }
-      name: "group_component"
     }
     incident: {
+      name: "incident"
       path: {
         "/pages/{page_id}/incidents": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  incident: "`reqdata`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -212,47 +231,57 @@
           }
         }
         "/pages/{page_id}/incidents/{incident_id}": {
-          rename: {
-            param: {
-              incident_id: "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
             patch: {
               method: "PATCH"
+              transform: {
+                req: {
+                  incident: "`reqdata`"
+                }
+              }
             }
             remove: {
               method: "DELETE"
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  incident: "`reqdata`"
+                }
+              }
             }
           }
-        }
-      }
-      name: "incident"
-    }
-    incident_postmortem: {
-      path: {
-        "/pages/{page_id}/incidents/{incident_id}/postmortem": {
           rename: {
             param: {
               incident_id: "id"
             }
           }
+        }
+      }
+    }
+    incident_postmortem: {
+      name: "incident_postmortem"
+      path: {
+        "/pages/{page_id}/incidents/{incident_id}/postmortem": {
           op: {
             remove: {
               method: "DELETE"
             }
           }
+          rename: {
+            param: {
+              incident_id: "id"
+            }
+          }
         }
       }
-      name: "incident_postmortem"
     }
     incident_subscriber: {
+      name: "incident_subscriber"
       path: {
         "/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}/resend_confirmation": {
           op: {
@@ -262,9 +291,9 @@
           }
         }
       }
-      name: "incident_subscriber"
     }
     incident_template: {
+      name: "incident_template"
       path: {
         "/pages/{page_id}/incident_templates": {
           op: {
@@ -277,29 +306,39 @@
           }
         }
       }
-      name: "incident_template"
     }
     incident_update: {
+      name: "incident_update"
       path: {
         "/pages/{page_id}/incidents/{incident_id}/incident_updates/{incident_update_id}": {
+          op: {
+            patch: {
+              method: "PATCH"
+              transform: {
+                req: {
+                  incident_update: "`reqdata`"
+                }
+              }
+            }
+            update: {
+              method: "PUT"
+              transform: {
+                req: {
+                  incident_update: "`reqdata`"
+                }
+              }
+            }
+          }
           rename: {
             param: {
               incident_update_id: "id"
             }
           }
-          op: {
-            patch: {
-              method: "PATCH"
-            }
-            update: {
-              method: "PUT"
-            }
-          }
         }
       }
-      name: "incident_update"
     }
     metric: {
+      name: "metric"
       path: {
         "/pages/{page_id}/metrics": {
           op: {
@@ -320,23 +359,33 @@
           }
         }
         "/pages/{page_id}/metrics/{metric_id}": {
-          rename: {
-            param: {
-              metric_id: "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
             patch: {
               method: "PATCH"
+              transform: {
+                req: {
+                  metric: "`reqdata`"
+                }
+              }
             }
             remove: {
               method: "DELETE"
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  metric: "`reqdata`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              metric_id: "id"
             }
           }
         }
@@ -345,17 +394,20 @@
             data: {
             }
           }
-          rename: {
-            param: {
-              metric_id: "id"
-            }
-          }
           op: {
             create: {
               method: "POST"
+              transform: {
+                res: "`body.data`"
+              }
             }
             remove: {
               method: "DELETE"
+            }
+          }
+          rename: {
+            param: {
+              metric_id: "id"
             }
           }
         }
@@ -363,6 +415,11 @@
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  metric: "`reqdata`"
+                }
+              }
             }
             load: {
               method: "GET"
@@ -377,14 +434,19 @@
           }
         }
       }
-      name: "metric"
     }
     metrics_provider: {
+      name: "metrics_provider"
       path: {
         "/pages/{page_id}/metrics_providers": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  metrics_provider: "`reqdata`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -392,30 +454,40 @@
           }
         }
         "/pages/{page_id}/metrics_providers/{metrics_provider_id}": {
-          rename: {
-            param: {
-              metrics_provider_id: "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
             patch: {
               method: "PATCH"
+              transform: {
+                req: {
+                  metrics_provider: "`reqdata`"
+                }
+              }
             }
             remove: {
               method: "DELETE"
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  metrics_provider: "`reqdata`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              metrics_provider_id: "id"
             }
           }
         }
       }
-      name: "metrics_provider"
     }
     page: {
+      name: "page"
       path: {
         "/pages": {
           op: {
@@ -425,61 +497,86 @@
           }
         }
         "/pages/{page_id}": {
-          rename: {
-            param: {
-              page_id: "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
             patch: {
               method: "PATCH"
+              transform: {
+                req: {
+                  page: "`reqdata`"
+                }
+              }
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  page: "`reqdata`"
+                }
+              }
             }
           }
-        }
-      }
-      name: "page"
-    }
-    page_access_group: {
-      path: {
-        "/pages/{page_id}/page_access_groups": {
           rename: {
             param: {
               page_id: "id"
             }
           }
+        }
+      }
+    }
+    page_access_group: {
+      name: "page_access_group"
+      path: {
+        "/pages/{page_id}/page_access_groups": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  page_access_group: "`reqdata`"
+                }
+              }
             }
             list: {
               method: "GET"
             }
           }
-        }
-        "/pages/{page_id}/page_access_groups/{page_access_group_id}": {
           rename: {
             param: {
-              page_access_group_id: "id"
+              page_id: "id"
             }
           }
+        }
+        "/pages/{page_id}/page_access_groups/{page_access_group_id}": {
           op: {
             load: {
               method: "GET"
             }
             patch: {
               method: "PATCH"
+              transform: {
+                req: {
+                  page_access_group: "`reqdata`"
+                }
+              }
             }
             remove: {
               method: "DELETE"
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  page_access_group: "`reqdata`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              page_access_group_id: "id"
             }
           }
         }
@@ -488,11 +585,6 @@
             component: {
             }
           }
-          rename: {
-            param: {
-              page_access_group_id: "id"
-            }
-          }
           op: {
             create: {
               method: "POST"
@@ -507,45 +599,50 @@
               method: "PUT"
             }
           }
-        }
-        "/pages/{page_id}/page_access_groups/{page_access_group_id}/components/{component_id}": {
           rename: {
             param: {
               page_access_group_id: "id"
             }
           }
+        }
+        "/pages/{page_id}/page_access_groups/{page_access_group_id}/components/{component_id}": {
           op: {
             remove: {
               method: "DELETE"
             }
           }
-        }
-      }
-      name: "page_access_group"
-    }
-    page_access_user: {
-      path: {
-        "/pages/{page_id}/page_access_users": {
           rename: {
             param: {
-              page_id: "id"
+              page_access_group_id: "id"
             }
           }
+        }
+      }
+    }
+    page_access_user: {
+      name: "page_access_user"
+      path: {
+        "/pages/{page_id}/page_access_users": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  page_access_user: "`reqdata`"
+                }
+              }
             }
             list: {
               method: "GET"
             }
           }
-        }
-        "/pages/{page_id}/page_access_users/{page_access_user_id}": {
           rename: {
             param: {
-              page_access_user_id: "id"
+              page_id: "id"
             }
           }
+        }
+        "/pages/{page_id}/page_access_users/{page_access_user_id}": {
           op: {
             load: {
               method: "GET"
@@ -558,6 +655,11 @@
             }
             update: {
               method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              page_access_user_id: "id"
             }
           }
         }
@@ -566,11 +668,6 @@
             component: {
             }
           }
-          rename: {
-            param: {
-              page_access_user_id: "id"
-            }
-          }
           op: {
             create: {
               method: "POST"
@@ -585,16 +682,21 @@
               method: "PUT"
             }
           }
-        }
-        "/pages/{page_id}/page_access_users/{page_access_user_id}/components/{component_id}": {
           rename: {
             param: {
               page_access_user_id: "id"
             }
           }
+        }
+        "/pages/{page_id}/page_access_users/{page_access_user_id}/components/{component_id}": {
           op: {
             remove: {
               method: "DELETE"
+            }
+          }
+          rename: {
+            param: {
+              page_access_user_id: "id"
             }
           }
         }
@@ -603,11 +705,6 @@
             metric: {
             }
           }
-          rename: {
-            param: {
-              page_access_user_id: "id"
-            }
-          }
           op: {
             create: {
               method: "POST"
@@ -622,43 +719,54 @@
               method: "PUT"
             }
           }
-        }
-        "/pages/{page_id}/page_access_users/{page_access_user_id}/metrics/{metric_id}": {
           rename: {
             param: {
               page_access_user_id: "id"
             }
           }
+        }
+        "/pages/{page_id}/page_access_users/{page_access_user_id}/metrics/{metric_id}": {
           op: {
             remove: {
               method: "DELETE"
             }
           }
+          rename: {
+            param: {
+              page_access_user_id: "id"
+            }
+          }
         }
       }
-      name: "page_access_user"
     }
     permission: {
+      name: "permission"
       path: {
         "/organizations/{organization_id}/permissions/{user_id}": {
+          op: {
+            load: {
+              method: "GET"
+              transform: {
+                res: "`body.data`"
+              }
+            }
+            update: {
+              method: "PUT"
+              transform: {
+                res: "`body.data`"
+              }
+            }
+          }
           rename: {
             param: {
               user_id: "id"
             }
           }
-          op: {
-            load: {
-              method: "GET"
-            }
-            update: {
-              method: "PUT"
-            }
-          }
         }
       }
-      name: "permission"
     }
     postmortem: {
+      name: "postmortem"
       path: {
         "/pages/{page_id}/incidents/{incident_id}/postmortem": {
           op: {
@@ -667,6 +775,11 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  postmortem: "`reqdata`"
+                }
+              }
             }
           }
         }
@@ -678,6 +791,11 @@
           op: {
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  postmortem: "`reqdata`"
+                }
+              }
             }
           }
         }
@@ -693,9 +811,9 @@
           }
         }
       }
-      name: "postmortem"
     }
     status_embed_config: {
+      name: "status_embed_config"
       path: {
         "/pages/{page_id}/status_embed_config": {
           op: {
@@ -704,21 +822,36 @@
             }
             patch: {
               method: "PATCH"
+              transform: {
+                req: {
+                  status_embed_config: "`reqdata`"
+                }
+              }
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  status_embed_config: "`reqdata`"
+                }
+              }
             }
           }
         }
       }
-      name: "status_embed_config"
     }
     subscriber: {
+      name: "subscriber"
       path: {
         "/pages/{page_id}/incidents/{incident_id}/subscribers": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  subscriber: "`reqdata`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -726,11 +859,6 @@
           }
         }
         "/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}": {
-          rename: {
-            param: {
-              subscriber_id: "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -739,11 +867,21 @@
               method: "DELETE"
             }
           }
+          rename: {
+            param: {
+              subscriber_id: "id"
+            }
+          }
         }
         "/pages/{page_id}/subscribers": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  subscriber: "`reqdata`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -817,11 +955,6 @@
           }
         }
         "/pages/{page_id}/subscribers/{subscriber_id}": {
-          rename: {
-            param: {
-              subscriber_id: "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -833,10 +966,20 @@
               method: "DELETE"
             }
           }
+          rename: {
+            param: {
+              subscriber_id: "id"
+            }
+          }
         }
         "/pages/{page_id}/subscribers/{subscriber_id}/resend_confirmation": {
           action: {
             resend_confirmation: {
+            }
+          }
+          op: {
+            create: {
+              method: "POST"
             }
           }
           rename: {
@@ -844,21 +987,21 @@
               subscriber_id: "id"
             }
           }
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
         }
       }
-      name: "subscriber"
     }
     user: {
+      name: "user"
       path: {
         "/organizations/{organization_id}/users": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  user: "`reqdata`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -866,19 +1009,26 @@
           }
         }
         "/organizations/{organization_id}/users/{user_id}": {
-          rename: {
-            param: {
-              user_id: "id"
-            }
-          }
           op: {
             remove: {
               method: "DELETE"
             }
           }
+          rename: {
+            param: {
+              user_id: "id"
+            }
+          }
         }
       }
-      name: "user"
+    }
+  }
+
+  metrics: {
+    count: {
+      entity: 18
+      method: 112
+      path: 54
     }
   }
 

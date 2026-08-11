@@ -4,7 +4,67 @@ main: kit: entity: connection_management_access_token: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "accessToken"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
   name: "connection_management_access_token"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/companies/{companyId}/connectionManagement/accessToken"
+          parts: [
+            "companies"
+            "{company_id}"
+            "connectionManagement"
+            "accessToken"
+          ]
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "company"
+      ]
+    ]
+  }
+
 
 
 }

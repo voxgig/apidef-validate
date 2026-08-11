@@ -1,23 +1,58 @@
 {
   entity: {
-    company: {
+    access_token: {
+      name: "access_token"
       path: {
-        "/companies/{companyId}/data/all": {
+        "/companies/{companyId}/connectionManagement/accessToken": {
+          op: {
+          }
           rename: {
             param: {
               companyId: "company_id"
             }
           }
+        }
+      }
+    }
+    all: {
+      name: "all"
+      path: {
+        "/companies/{companyId}/data/all": {
           op: {
-            create: {
-              method: "POST"
-            }
           }
-          action: {
-            data_all: {
+          rename: {
+            param: {
+              companyId: "company_id"
             }
           }
         }
+      }
+    }
+    api_key: {
+      name: "api_key"
+      path: {
+      }
+    }
+    branding: {
+      name: "branding"
+      path: {
+        "/integrations/{platformKey}/branding": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              platformKey: "platform_key"
+            }
+          }
+        }
+      }
+    }
+    company: {
+      name: "company"
+      path: {
         "/companies": {
           op: {
             create: {
@@ -29,11 +64,6 @@
           }
         }
         "/companies/{companyId}": {
-          rename: {
-            param: {
-              companyId: "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -48,11 +78,18 @@
               method: "PUT"
             }
           }
+          rename: {
+            param: {
+              companyId: "id"
+            }
+          }
         }
         "/companies/{companyId}/dataStatus": {
           action: {
             data_status: {
             }
+          }
+          op: {
           }
           rename: {
             param: {
@@ -61,12 +98,6 @@
           }
         }
         "/companies/{companyId}/products/{productIdentifier}": {
-          rename: {
-            param: {
-              companyId: "id"
-              productIdentifier: "product_identifier"
-            }
-          }
           op: {
             remove: {
               method: "DELETE"
@@ -75,23 +106,48 @@
               method: "PUT"
             }
           }
-        }
-        "/companies/{companyId}/products/{productIdentifier}/refresh": {
           rename: {
             param: {
               companyId: "id"
               productIdentifier: "product_identifier"
             }
           }
+        }
+        "/companies/{companyId}/products/{productIdentifier}/refresh": {
           op: {
             create: {
               method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "id"
+              productIdentifier: "product_identifier"
             }
           }
         }
         "/companies/{companyId}/push": {
           action: {
             push: {
+            }
+          }
+          op: {
+          }
+          rename: {
+            param: {
+              companyId: "id"
+            }
+          }
+        }
+      }
+    }
+    company_access_token: {
+      name: "company_access_token"
+      path: {
+        "/companies/{companyId}/accessToken": {
+          op: {
+            load: {
+              method: "GET"
             }
           }
           rename: {
@@ -101,99 +157,637 @@
           }
         }
       }
-      name: "company"
-    }
-    access_token: {
-      name: "access_token"
-    }
-    all: {
-      name: "all"
-    }
-    api_key: {
-      name: "api_key"
-    }
-    branding: {
-      name: "branding"
-    }
-    company_access_token: {
-      name: "company_access_token"
     }
     connection: {
       name: "connection"
+      path: {
+        "/companies/{companyId}/connections": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            list: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+        }
+        "/companies/{companyId}/connections/{connectionId}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+            patch: {
+              method: "PATCH"
+              transform: {
+                req: {
+                  status: "`reqdata.status`"
+                }
+              }
+            }
+            remove: {
+              method: "DELETE"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              connectionId: "id"
+            }
+          }
+        }
+        "/companies/{companyId}/connections/{connectionId}/authorization": {
+          action: {
+            authorization: {
+            }
+          }
+          op: {
+            update: {
+              method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              connectionId: "id"
+            }
+          }
+        }
+      }
     }
     connection_management_access_token: {
       name: "connection_management_access_token"
+      path: {
+        "/companies/{companyId}/connectionManagement/accessToken": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+        }
+      }
     }
     connection_management_allowed_origin: {
       name: "connection_management_allowed_origin"
+      path: {
+        "/connectionManagement/corsSettings": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.allowedOrigins`"
+              }
+            }
+          }
+        }
+        "/corsSettings": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.allowedOrigins`"
+              }
+            }
+          }
+        }
+      }
     }
     custom: {
       name: "custom"
+      path: {
+        "/companies/{companyId}/connections/{connectionId}/data/custom/{customDataIdentifier}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              connectionId: "connection_id"
+              customDataIdentifier: "id"
+            }
+          }
+        }
+        "/companies/{companyId}/connections/{connectionId}/data/queue/custom/{customDataIdentifier}": {
+          op: {
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              connectionId: "connection_id"
+              customDataIdentifier: "id"
+            }
+          }
+        }
+        "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+            update: {
+              method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              customDataIdentifier: "id"
+              platformKey: "platform_key"
+            }
+          }
+        }
+      }
     }
     data_status: {
       name: "data_status"
+      path: {
+        "/companies/{companyId}/dataStatus": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+        }
+      }
     }
     data_type: {
       name: "data_type"
+      path: {
+        "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {
+          action: {
+            supplemental_data_config: {
+            }
+          }
+          op: {
+          }
+          rename: {
+            param: {
+              dataType: "id"
+              platformKey: "platform_key"
+            }
+          }
+        }
+      }
     }
     history: {
       name: "history"
+      path: {
+        "/companies/{companyId}/data/history": {
+          op: {
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+        }
+        "/companies/{companyId}/data/history/{datasetId}": {
+          op: {
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              datasetId: "id"
+            }
+          }
+        }
+      }
     }
     integration: {
       name: "integration"
+      path: {
+        "/integrations": {
+          op: {
+            list: {
+              method: "GET"
+            }
+          }
+        }
+        "/integrations/{platformKey}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              platformKey: "id"
+            }
+          }
+        }
+        "/integrations/{platformKey}/branding": {
+          action: {
+            branding: {
+            }
+          }
+          op: {
+          }
+          rename: {
+            param: {
+              platformKey: "platform_key"
+            }
+          }
+        }
+      }
     }
     option: {
       name: "option"
+      path: {
+        "/companies/{companyId}/connections/{connectionId}/options/{dataType}": {
+          op: {
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              connectionId: "connection_id"
+              dataType: "id"
+            }
+          }
+        }
+      }
     }
     product: {
       name: "product"
+      path: {
+        "/companies/{companyId}/products/{productIdentifier}": {
+          op: {
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              productIdentifier: "id"
+            }
+          }
+        }
+        "/companies/{companyId}/products/{productIdentifier}/refresh": {
+          action: {
+            refresh: {
+            }
+          }
+          op: {
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              productIdentifier: "product_identifier"
+            }
+          }
+        }
+      }
     }
     profile: {
       name: "profile"
+      path: {
+        "/profile": {
+          op: {
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.whiteListUrls`"
+              }
+            }
+            update: {
+              method: "PUT"
+            }
+          }
+        }
+      }
     }
     pull_operation: {
       name: "pull_operation"
+      path: {
+        "/companies/{companyId}/connections/{connectionId}/data/queue/custom/{customDataIdentifier}": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              connectionId: "connection_id"
+              customDataIdentifier: "custom_data_identifier"
+            }
+          }
+        }
+        "/companies/{companyId}/data/history": {
+          op: {
+            list: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+        }
+        "/companies/{companyId}/data/history/{datasetId}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              datasetId: "dataset_id"
+            }
+          }
+        }
+        "/companies/{companyId}/data/queue/{dataType}": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              dataType: "data_type"
+            }
+          }
+        }
+      }
     }
     push: {
       name: "push"
+      path: {
+        "/companies/{companyId}/push": {
+          op: {
+            list: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+        }
+        "/companies/{companyId}/push/{pushOperationKey}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              pushOperationKey: "id"
+            }
+          }
+        }
+      }
     }
     push_option: {
       name: "push_option"
+      path: {
+        "/companies/{companyId}/connections/{connectionId}/options/{dataType}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              connectionId: "connection_id"
+              dataType: "id"
+            }
+          }
+        }
+      }
     }
     queue: {
       name: "queue"
+      path: {
+        "/companies/{companyId}/data/queue/{dataType}": {
+          op: {
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              dataType: "id"
+            }
+          }
+        }
+      }
+    }
+    refresh_data: {
+      name: "refresh_data"
+      path: {
+        "/companies/{companyId}/data/all": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+            }
+          }
+        }
+      }
     }
     setting: {
       name: "setting"
+      path: {
+        "/apiKeys": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.results`"
+              }
+            }
+          }
+        }
+        "/apiKeys/{apiKeyId}": {
+          op: {
+            remove: {
+              method: "DELETE"
+            }
+          }
+          rename: {
+            param: {
+              apiKeyId: "api_key_id"
+            }
+          }
+        }
+        "/profile/syncSettings": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+        }
+      }
     }
     supplemental_data: {
       name: "supplemental_data"
+      path: {
+        "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {
+          op: {
+            update: {
+              method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              dataType: "data_type_id"
+              platformKey: "platform_key"
+            }
+          }
+        }
+      }
     }
     supplemental_data_config: {
       name: "supplemental_data_config"
+      path: {
+        "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {
+          op: {
+            load: {
+              method: "GET"
+              transform: {
+                res: "`body.supplementalDataConfig`"
+              }
+            }
+          }
+          rename: {
+            param: {
+              dataType: "data_type_id"
+              platformKey: "platform_key"
+            }
+          }
+        }
+      }
     }
     sync: {
       name: "sync"
+      path: {
+        "/companies/{companyId}/sync/{datasetId}/validation": {
+          action: {
+            validation: {
+            }
+          }
+          op: {
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              datasetId: "id"
+            }
+          }
+        }
+      }
     }
     sync_setting: {
       name: "sync_setting"
+      path: {
+        "/profile/syncSettings": {
+          op: {
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.settings`"
+              }
+            }
+          }
+        }
+      }
     }
     validation: {
       name: "validation"
+      path: {
+        "/companies/{companyId}/sync/{datasetId}/validation": {
+          op: {
+            list: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              companyId: "company_id"
+              datasetId: "sync_id"
+            }
+          }
+        }
+      }
     }
     webhook: {
       name: "webhook"
+      path: {
+        "/webhooks": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.results`"
+              }
+            }
+          }
+        }
+        "/webhooks/{webhookId}": {
+          op: {
+            remove: {
+              method: "DELETE"
+            }
+          }
+          rename: {
+            param: {
+              webhookId: "id"
+            }
+          }
+        }
+      }
     }
     webhook_zapier_key: {
       name: "webhook_zapier_key"
+      path: {
+        "/webhooks/integrationKeys/zapier": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+        }
+      }
     }
   }
 
   metrics: {
     count: {
       entity: 30
-      path: 34
       method: 50
+      path: 34
     }
   }
 

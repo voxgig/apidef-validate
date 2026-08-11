@@ -4,7 +4,129 @@ main: kit: entity: setting: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "apiKey"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "createdDate"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "setting"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          method: "POST"
+          orig: "/apiKeys"
+          parts: [
+            "apiKeys"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "POST"
+          orig: "/profile/syncSettings"
+          parts: [
+            "profile"
+            "syncSettings"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/apiKeys"
+          parts: [
+            "apiKeys"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.results`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                kind: "param"
+                name: "api_key_id"
+                orig: "api_key_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/apiKeys/{apiKeyId}"
+          parts: [
+            "apiKeys"
+            "{api_key_id}"
+          ]
+          rename: {
+            param: {
+              apiKeyId: "api_key_id"
+            }
+          }
+          select: {
+            exist: [
+              "api_key_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "api_key"
+      ]
+    ]
+  }
+
 
 
 }

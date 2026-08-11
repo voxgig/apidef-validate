@@ -6,7 +6,12 @@ main: kit: entity: package: {
 
   fields: [
     {
-      name: "architecture"
+      name: "active"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "architectures"
       req: false
       type: "`$ARRAY`"
     }
@@ -14,6 +19,11 @@ main: kit: entity: package: {
       name: "backend_kind"
       req: false
       type: "`$INTEGER`"
+    }
+    {
+      name: "bandwidth"
+      req: true
+      type: "`$OBJECT`"
     }
     {
       name: "cdn_url"
@@ -81,9 +91,19 @@ main: kit: entity: package: {
       type: "`$OBJECT`"
     }
     {
-      name: "download"
-      req: false
-      type: "`$INTEGER`"
+      name: "downloads"
+      op: {
+        create: {
+          req: false
+          type: "`$INTEGER`"
+        }
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
+      type: "`$OBJECT`"
     }
     {
       name: "epoch"
@@ -96,14 +116,14 @@ main: kit: entity: package: {
       type: "`$STRING`"
     }
     {
-      name: "file"
-      req: false
-      type: "`$ARRAY`"
-    }
-    {
       name: "filename"
       req: false
       type: "`$STRING`"
+    }
+    {
+      name: "files"
+      req: false
+      type: "`$ARRAY`"
     }
     {
       name: "format"
@@ -126,14 +146,19 @@ main: kit: entity: package: {
       type: "`$STRING`"
     }
     {
-      name: "identifier"
+      name: "identifier_perm"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "identifiers"
       req: false
       type: "`$OBJECT`"
     }
     {
-      name: "identifier_perm"
+      name: "inactive"
       req: false
-      type: "`$STRING`"
+      type: "`$INTEGER`"
     }
     {
       name: "indexed"
@@ -236,12 +261,12 @@ main: kit: entity: package: {
       type: "`$STRING`"
     }
     {
-      name: "num_download"
+      name: "num_downloads"
       req: true
       type: "`$INTEGER`"
     }
     {
-      name: "num_file"
+      name: "num_files"
       req: false
       type: "`$INTEGER`"
     }
@@ -259,11 +284,6 @@ main: kit: entity: package: {
       name: "origin_repository_url"
       req: false
       type: "`$STRING`"
-    }
-    {
-      name: "package"
-      req: true
-      type: "`$OBJECT`"
     }
     {
       name: "package_type"
@@ -407,7 +427,7 @@ main: kit: entity: package: {
       type: "`$INTEGER`"
     }
     {
-      name: "tag"
+      name: "tags"
       req: false
       type: "`$OBJECT`"
     }
@@ -415,6 +435,11 @@ main: kit: entity: package: {
       name: "tags_immutable"
       req: false
       type: "`$OBJECT`"
+    }
+    {
+      name: "total"
+      req: false
+      type: "`$INTEGER`"
     }
     {
       name: "type_display"
@@ -3410,7 +3435,7 @@ main: kit: entity: package: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.results`"
           }
         }
         {
@@ -3574,7 +3599,7 @@ main: kit: entity: package: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.dependencies`"
           }
         }
       ]
@@ -3659,7 +3684,7 @@ main: kit: entity: package: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.packages`"
           }
         }
         {
