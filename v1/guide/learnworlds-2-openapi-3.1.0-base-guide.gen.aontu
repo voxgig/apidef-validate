@@ -16,6 +16,7 @@ guide: {
     }
     path: "/v2/affiliates/{id}": {  # ent=affiliate;orig=Affiliates;tag=affiliate;cmp/resolve=affiliate;path=t/p/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: res: *("`body.data`")|top
     }
     path: "/v2/affiliates/{id}/customers": {  # ent=affiliate;orig=Affiliates;no-desc;path=t/p/t/;entres=false/;prob-ent-act
       action: "customer": {}  # ent;affiliate;ent-param-2nd-last;customers;GET
@@ -36,10 +37,12 @@ guide: {
     path: "/v2/affiliates/{id}/payouts/due": {  # ent=affiliate;orig=Affiliates;tag=affiliate;cmp/resolve=affiliate;path=t/;cmp-primary;cmp-infreq
       action: "payout_due": {}  # ent;affiliate;ent-param-3rd-last;payouts/due;GET
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
     path: "/v2/affiliates/{id}/payouts/upcoming": {  # ent=affiliate;orig=Affiliates;tag=affiliate;cmp/resolve=affiliate;path=t/;cmp-primary;cmp-infreq
       action: "payout_upcoming": {}  # ent;affiliate;ent-param-3rd-last;payouts/upcoming;GET
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
   }
 
@@ -76,6 +79,7 @@ guide: {
   entity: calendar: {
     path: "/v2/school/events": {  # ent=calendar;orig=Calendar;tag=calendar;cmp/resolve=calendar;path=t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
   }
 
@@ -93,6 +97,7 @@ guide: {
     path: "/v2/community/collections": {  # ent=community;orig=Community;tag=community;cmp/resolve=community;path=t/;cmp-primary;cmp-infreq
       action: "collection": {}  # ent;community;no-param;collections;GET
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
     path: "/v2/community/posts": {  # ent=community;orig=Community;tag=community;cmp/resolve=community;path=t/;cmp-primary;cmp-infreq
       action: "post": {}  # ent;community;no-param;posts;GET
@@ -108,6 +113,7 @@ guide: {
     path: "/v2/community/spaces/{id}/users": {  # ent=community;orig=Community;tag=community;cmp/resolve=community;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Community
       rename: param: "id": *"space_id"  # parent:space
       op: create: method: *POST  # not-load
+      op: create: transform: res: *("`body.data`")|top
       op: list: method: *GET  # array-prop:data
     }
     path: "/v2/community/spaces/{id}/users/{uid}": {  # ent=community;orig=Community;tag=community;cmp/resolve=community;path=t/p/;cmp-primary;cmp-infreq
@@ -214,6 +220,7 @@ guide: {
   entity: course_content: {
     path: "/v2/courses/{id}/contents": {  # ent=course_content;orig=CourseContent;cmp/resolve=course_content;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=CourseContent
       op: list: method: *GET  # array-prop:sections
+      op: list: transform: res: *("`body.sections`")|top
     }
     path: "/v2/courses/{id}/sections": {  # ent=course_content;orig=CourseContent;cmp/resolve=course_content;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=CourseContent
       action: "sections": {}  # ent;course_content;action-not-parent;id;POST
@@ -301,6 +308,7 @@ guide: {
       action: "coupon": {}  # ent;promotion;ent-param-2nd-last;coupons;GET
       rename: param: "pid": *"id"  # id-parent-ent
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
   }
 
@@ -429,6 +437,7 @@ guide: {
     path: "/v2/users/segments": {  # ent=user;orig=UserResponse;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
       action: "segment": {}  # ent;user;no-param;segments;GET
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
     path: "/v2/users/{id}": {  # ent=user;orig=UserResponse;cmp/resolve=user;path=t/p/;path-primary
       op: load: method: *GET  # end-param
@@ -446,6 +455,7 @@ guide: {
     path: "/v2/users/{id}/products": {  # ent=user;orig=UserResponse;no-desc;path=t/p/t/;entres=false/;prob-ent-act
       action: "product": {}  # ent;user;ent-param-2nd-last;products;GET
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
     path: "/v2/users/{id}/progress": {  # ent=user;orig=UserResponse;no-desc;path=t/p/t/;entres=false/;prob-ent-act
       action: "progress": {}  # ent;user;ent-param-2nd-last;progress;PARAMETERS
@@ -500,12 +510,14 @@ guide: {
       rename: param: "cid": *"course_id"  # parent:course
       rename: param: "id": *"user_id"  # parent:user
       op: list: method: *GET  # array-prop:progress_per_section_unit
+      op: list: transform: res: *("`body.progress_per_section_unit`")|top
     }
   }
 
   entity: user_role: {
     path: "/v2/user-roles": {  # ent=user_role;orig=User roles;no-desc;path=t/;entres=false/;ent-act
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
     path: "/v2/users/{id}/user-role": {  # ent=user_role;orig=User roles;cmp/resolve=user_role_user;path=t/p/t/;path-primary;has-cmp=UserRoleUserResponse
       op: list: method: *GET  # array-prop:assigned_courses;array-prop:assigned_seat_offering_ids;array-prop:assigned_user_group_ids

@@ -4,7 +4,83 @@ main: kit: entity: validation: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "errors"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "warnings"
+      req: false
+      type: "`$ARRAY`"
+    }
+  ]
+
   name: "validation"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                kind: "param"
+                name: "company_id"
+                orig: "company_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "sync_id"
+                orig: "dataset_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/companies/{companyId}/sync/{datasetId}/validation"
+          parts: [
+            "companies"
+            "{company_id}"
+            "sync"
+            "{sync_id}"
+            "validation"
+          ]
+          rename: {
+            param: {
+              companyId: "company_id"
+              datasetId: "sync_id"
+            }
+          }
+          select: {
+            exist: [
+              "company_id"
+              "sync_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "company"
+        "sync"
+      ]
+    ]
+  }
+
 
 
 }

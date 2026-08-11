@@ -6,12 +6,92 @@ main: kit: entity: code_security: {
 
   fields: [
     {
-      name: "configuration"
+      name: "advanced_security"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "code_scanning_default_setup"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "code_scanning_default_setup_options"
       req: false
       type: "`$OBJECT`"
     }
     {
-      name: "default_for_new_repo"
+      name: "code_scanning_delegated_alert_dismissal"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "code_scanning_options"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "default_for_new_repos"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dependabot_alerts"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dependabot_security_updates"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dependency_graph"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dependency_graph_autosubmit_action"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "dependency_graph_autosubmit_action_options"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "enforcement"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "html_url"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "private_vulnerability_reporting"
       req: false
       type: "`$STRING`"
     }
@@ -21,11 +101,71 @@ main: kit: entity: code_security: {
       type: "`$STRING`"
     }
     {
-      name: "selected_repository_id"
+      name: "secret_scanning"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_delegated_alert_dismissal"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_delegated_bypass"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_delegated_bypass_options"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "secret_scanning_generic_secrets"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_non_provider_patterns"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_push_protection"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "secret_scanning_validity_checks"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "selected_repository_ids"
       req: false
       type: "`$ARRAY`"
     }
+    {
+      name: "target_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "url"
+      req: false
+      type: "`$STRING`"
+    }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "code_security"
   op: {
@@ -68,7 +208,9 @@ main: kit: entity: code_security: {
             ]
           }
           transform: {
-            req: "`reqdata`"
+            req: {
+              scope: "`reqdata.scope`"
+            }
             res: "`body`"
           }
         }
@@ -113,7 +255,10 @@ main: kit: entity: code_security: {
             ]
           }
           transform: {
-            req: "`reqdata`"
+            req: {
+              scope: "`reqdata.scope`"
+              selected_repository_ids: "`reqdata.selected_repository_id`"
+            }
             res: "`body`"
           }
         }
@@ -237,7 +382,9 @@ main: kit: entity: code_security: {
             ]
           }
           transform: {
-            req: "`reqdata`"
+            req: {
+              selected_repository_ids: "`reqdata.selected_repository_id`"
+            }
             res: "`body`"
           }
         }
@@ -283,7 +430,7 @@ main: kit: entity: code_security: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.configuration`"
           }
         }
         {
@@ -328,7 +475,7 @@ main: kit: entity: code_security: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.configuration`"
           }
         }
       ]

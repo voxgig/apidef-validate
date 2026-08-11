@@ -13,27 +13,23 @@ main: kit: entity: label: {
     {
       name: "archived"
       op: {
-        update: {
-          req: false
+        list: {
+          req: true
           type: "`$BOOLEAN`"
         }
       }
-      req: true
+      req: false
       type: "`$BOOLEAN`"
     }
     {
       name: "color"
       op: {
-        create: {
-          req: false
-          type: "`$STRING`"
-        }
-        update: {
-          req: false
+        list: {
+          req: true
           type: "`$STRING`"
         }
       }
-      req: true
+      req: false
       type: "`$STRING`"
     }
     {
@@ -44,16 +40,12 @@ main: kit: entity: label: {
     {
       name: "description"
       op: {
-        create: {
-          req: false
-          type: "`$STRING`"
-        }
-        update: {
-          req: false
+        list: {
+          req: true
           type: "`$STRING`"
         }
       }
-      req: true
+      req: false
       type: "`$STRING`"
     }
     {
@@ -64,12 +56,12 @@ main: kit: entity: label: {
     {
       name: "external_id"
       op: {
-        create: {
-          req: false
+        list: {
+          req: true
           type: "`$STRING`"
         }
       }
-      req: true
+      req: false
       type: "`$STRING`"
     }
     {
@@ -94,7 +86,92 @@ main: kit: entity: label: {
       type: "`$STRING`"
     }
     {
-      name: "stat"
+      name: "num_epics"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_epics_completed"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_epics_in_progress"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_epics_total"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_epics_unstarted"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_points_backlog"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_points_completed"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_points_in_progress"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_points_total"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_points_unstarted"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_related_documents"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_stories_backlog"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_stories_completed"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_stories_in_progress"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_stories_total"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_stories_unestimated"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "num_stories_unstarted"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "stats"
       req: true
       type: "`$OBJECT`"
     }
@@ -124,8 +201,13 @@ main: kit: entity: label: {
             "labels"
           ]
           transform: {
-            req: "`reqdata`"
-            res: "`body`"
+            req: {
+              color: "`reqdata.color`"
+              description: "`reqdata.description`"
+              external_id: "`reqdata.external_id`"
+              name: "`reqdata.name`"
+            }
+            res: "`body.stats`"
           }
         }
       ]
@@ -199,7 +281,7 @@ main: kit: entity: label: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.stats`"
           }
         }
       ]
@@ -278,8 +360,13 @@ main: kit: entity: label: {
             ]
           }
           transform: {
-            req: "`reqdata`"
-            res: "`body`"
+            req: {
+              archived: "`reqdata.archived`"
+              color: "`reqdata.color`"
+              description: "`reqdata.description`"
+              name: "`reqdata.name`"
+            }
+            res: "`body.stats`"
           }
         }
       ]

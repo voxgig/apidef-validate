@@ -1,14 +1,7 @@
 {
-  metrics: {
-    count: {
-      entity: 7
-      path: 10
-      method: 14
-    }
-  }
-
   entity: {
     bar: {
+      name: "bar"
       path: {
         "/bar": {
           op: {
@@ -18,33 +11,31 @@
           }
         }
       }
-      active: false
-      name: "bar"
     }
     bax: {
+      name: "bax"
       path: {
         "/bax/{baxid}": {
-          rename: {
-            param: {
-              baxid: "bax"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
           }
+          rename: {
+            param: {
+              baxid: "id"
+            }
+          }
         }
       }
-      name: "bax"
     }
     foo: {
+      name: "foo"
       path: {
         "/foo": {
           op: {
             create: {
               method: "POST"
-              active: false
             }
             list: {
               method: "GET"
@@ -76,9 +67,9 @@
           }
         }
       }
-      name: "foo"
     }
     qaz: {
+      name: "qaz"
       path: {
         "/qaz": {
           op: {
@@ -88,16 +79,19 @@
           }
         }
       }
-      name: "qaz"
     }
     taf: {
+      name: "taf"
       path: {
         "/taf/{id}/": {
           op: {
             create: {
               method: "POST"
               transform: {
-                res: "`body.tafdata`"
+                req: {
+                  taf: "`reqdata`"
+                }
+                res: "`body.taf`"
               }
             }
             load: {
@@ -109,17 +103,45 @@
           }
         }
       }
-      name: "taf"
+    }
+    yike: {
+      name: "yike"
+      path: {
+        "/yike": {
+          op: {
+            list: {
+              method: "GET"
+            }
+          }
+        }
+      }
     }
     zed: {
       name: "zed"
+      path: {
+        "/zed": {
+          op: {
+            list: {
+              method: "GET"
+            }
+          }
+        }
+        "/zed/{id}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+        }
+      }
     }
-    xtra: {
-      active: true
-      name: "xtra"
-    }
-    qiz: {
-      name: "qiz"
+  }
+
+  metrics: {
+    count: {
+      entity: 7
+      method: 14
+      path: 10
     }
   }
 

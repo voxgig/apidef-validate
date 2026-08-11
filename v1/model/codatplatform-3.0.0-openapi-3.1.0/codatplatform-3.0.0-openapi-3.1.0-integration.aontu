@@ -4,7 +4,200 @@ main: kit: entity: integration: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "dataProvidedBy"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "datatypeFeatures"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "enabled"
+      req: true
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "integrationId"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "isBeta"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "isOfflineConnector"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "key"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "links"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "logoUrl"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "pageNumber"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "pageSize"
+      req: true
+      type: "`$INTEGER`"
+    }
+    {
+      name: "results"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "sourceId"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "sourceType"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "totalResults"
+      req: true
+      type: "`$INTEGER`"
+    }
+  ]
+
   name: "integration"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            query: [
+              {
+                example: "-modifiedDate"
+                kind: "query"
+                name: "order_by"
+                orig: "order_by"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                example: 1
+                kind: "query"
+                name: "page"
+                orig: "page"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                example: 100
+                kind: "query"
+                name: "page_size"
+                orig: "page_size"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                example: "id=e3334455-1aed-4e71-ab43-6bccf12092ee"
+                kind: "query"
+                name: "query"
+                orig: "query"
+                reqd: false
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/integrations"
+          parts: [
+            "integrations"
+          ]
+          select: {
+            exist: [
+              "order_by"
+              "page"
+              "page_size"
+              "query"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "gbol"
+                kind: "param"
+                name: "id"
+                orig: "platform_key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/integrations/{platformKey}"
+          parts: [
+            "integrations"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              platformKey: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "integration"
+      ]
+    ]
+  }
+
 
 
 }

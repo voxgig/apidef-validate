@@ -78,6 +78,7 @@ guide: {
       rename: param: "connectionId": *"id"  # end-id;GET;parent=true/connection;cmp=false
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
+      op: patch: transform: req: "status": *("`reqdata.status`")|top
       op: remove: method: *DELETE  # not-load
     }
     path: "/companies/{companyId}/connections/{connectionId}/authorization": {  # ent=connection;orig=Connections;cmp/resolve=connection;path=t/p/t/;cmp-path;cmp-inpath;has-cmp=Connection
@@ -99,10 +100,12 @@ guide: {
     path: "/connectionManagement/corsSettings": {  # ent=connection_management_allowed_origin;orig=ConnectionManagementAllowedOrigins;cmp/resolve=connection_management_allowed_origin;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:allowedOrigins
+      op: list: transform: res: *("`body.allowedOrigins`")|top
     }
     path: "/corsSettings": {  # ent=connection_management_allowed_origin;orig=ConnectionManagementAllowedOrigins;cmp/resolve=connection_management_allowed_origin;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:allowedOrigins
+      op: list: transform: res: *("`body.allowedOrigins`")|top
     }
   }
 
@@ -188,6 +191,7 @@ guide: {
   entity: profile: {
     path: "/profile": {  # ent=profile;orig=Profile;cmp/resolve=profile;path=t/;path-primary
       op: list: method: *GET  # array-prop:whiteListUrls
+      op: list: transform: res: *("`body.whiteListUrls`")|top
       op: update: method: *PUT  # not-load
     }
   }
@@ -254,6 +258,7 @@ guide: {
     path: "/apiKeys": {  # ent=setting;orig=Settings;cmp/resolve=api_key_detail;path=t/;path-primary
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:results
+      op: list: transform: res: *("`body.results`")|top
     }
     path: "/apiKeys/{apiKeyId}": {  # ent=setting;orig=Settings;tag=setting;cmp/resolve=setting;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "apiKeyId": *"api_key_id"  # snake-case
@@ -277,6 +282,7 @@ guide: {
       rename: param: "dataType": *"data_type_id"  # parent:data_type
       rename: param: "platformKey": *"platform_key"  # snake-case
       op: load: method: *GET  # not-list
+      op: load: transform: res: *("`body.supplementalDataConfig`")|top
     }
   }
 
@@ -291,6 +297,7 @@ guide: {
   entity: sync_setting: {
     path: "/profile/syncSettings": {  # ent=sync_setting;orig=SyncSettings;cmp/resolve=sync_setting;path=t/;path-primary
       op: list: method: *GET  # array-prop:settings
+      op: list: transform: res: *("`body.settings`")|top
     }
   }
 
@@ -306,6 +313,7 @@ guide: {
     path: "/webhooks": {  # ent=webhook;orig=WebhookConsumer/definitions/webhookConsumers;cmp/resolve=webhook_consumer;path=t/;path-primary
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:results
+      op: list: transform: res: *("`body.results`")|top
     }
     path: "/webhooks/{webhookId}": {  # ent=webhook;orig=WebhookConsumer/definitions/webhookConsumers;no-desc;path=t/p/;entres=false/;ent-act
       rename: param: "webhookId": *"id"  # end-id;DELETE;parent=true/webhook;cmp=false

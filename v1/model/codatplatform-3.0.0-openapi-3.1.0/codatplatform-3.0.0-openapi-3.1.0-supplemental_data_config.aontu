@@ -4,7 +4,89 @@ main: kit: entity: supplemental_data_config: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "dataSource"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "pullData"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "pushData"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
   name: "supplemental_data_config"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "invoices"
+                kind: "param"
+                name: "data_type_id"
+                orig: "data_type"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                example: "gbol"
+                kind: "param"
+                name: "platform_key"
+                orig: "platform_key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig"
+          parts: [
+            "integrations"
+            "{platform_key}"
+            "dataTypes"
+            "{data_type_id}"
+            "supplementalDataConfig"
+          ]
+          rename: {
+            param: {
+              dataType: "data_type_id"
+              platformKey: "platform_key"
+            }
+          }
+          select: {
+            exist: [
+              "data_type_id"
+              "platform_key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.supplementalDataConfig`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "integration"
+        "data_type"
+      ]
+    ]
+  }
+
 
 
 }

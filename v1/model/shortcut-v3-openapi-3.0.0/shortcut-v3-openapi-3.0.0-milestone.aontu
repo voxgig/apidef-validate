@@ -32,7 +32,7 @@ main: kit: entity: milestone: {
       type: "`$INTEGER`"
     }
     {
-      name: "category"
+      name: "categories"
       op: {
         create: {
           req: false
@@ -107,7 +107,7 @@ main: kit: entity: milestone: {
       type: "`$INTEGER`"
     }
     {
-      name: "key_result_id"
+      name: "key_result_ids"
       req: true
       type: "`$ARRAY`"
     }
@@ -153,11 +153,6 @@ main: kit: entity: milestone: {
       type: "`$STRING`"
     }
     {
-      name: "stat"
-      req: true
-      type: "`$OBJECT`"
-    }
-    {
       name: "state"
       op: {
         create: {
@@ -171,6 +166,11 @@ main: kit: entity: milestone: {
       }
       req: true
       type: "`$STRING`"
+    }
+    {
+      name: "stats"
+      req: true
+      type: "`$OBJECT`"
     }
     {
       name: "updated_at"
@@ -198,7 +198,14 @@ main: kit: entity: milestone: {
             "milestones"
           ]
           transform: {
-            req: "`reqdata`"
+            req: {
+              categories: "`reqdata.category`"
+              completed_at_override: "`reqdata.completed_at_override`"
+              description: "`reqdata.description`"
+              name: "`reqdata.name`"
+              started_at_override: "`reqdata.started_at_override`"
+              state: "`reqdata.state`"
+            }
             res: "`body`"
           }
         }
@@ -408,7 +415,17 @@ main: kit: entity: milestone: {
             ]
           }
           transform: {
-            req: "`reqdata`"
+            req: {
+              after_id: "`reqdata.after_id`"
+              archived: "`reqdata.archived`"
+              before_id: "`reqdata.before_id`"
+              categories: "`reqdata.category`"
+              completed_at_override: "`reqdata.completed_at_override`"
+              description: "`reqdata.description`"
+              name: "`reqdata.name`"
+              started_at_override: "`reqdata.started_at_override`"
+              state: "`reqdata.state`"
+            }
             res: "`body`"
           }
         }
