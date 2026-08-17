@@ -394,12 +394,14 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
   const finalGuide = formatJSONIC(bres.guide).trim()
 
-  /*
+  // Keep the generated final-guide on disk next to the expected one, the same
+  // way base-guide and the entity models do. Without it, final-guide is the
+  // one fixture family that can only be refreshed by deleting the expected
+  // file first.
   const generatedFinalGuideFile =
     Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.gen.aontu`).trim()
 
   fs.writeFileSync(generatedFinalGuideFile, finalGuide)
-  */
 
 
   const expectedFinalGuideFile =
