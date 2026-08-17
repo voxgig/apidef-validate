@@ -8,12 +8,12 @@ main: kit: entity: entity_template: {
     {
       name: "author_id"
       op: {
-        create: {
-          req: false
+        list: {
+          req: true
           type: "`$STRING`"
         }
       }
-      req: true
+      req: false
       type: "`$STRING`"
     }
     {
@@ -22,8 +22,59 @@ main: kit: entity: entity_template: {
       type: "`$STRING`"
     }
     {
+      name: "custom_fields"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "deadline"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "entity_type"
-      req: true
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "epic_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "estimate"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "external_links"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "files"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "follower_ids"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "group_id"
+      req: false
       type: "`$STRING`"
     }
     {
@@ -32,23 +83,57 @@ main: kit: entity: entity_template: {
       type: "`$STRING`"
     }
     {
+      name: "iteration_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "label_ids"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "labels"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
       name: "last_used_at"
       req: true
       type: "`$STRING`"
     }
     {
+      name: "linked_files"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
       name: "name"
       op: {
-        update: {
-          req: false
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+        list: {
+          req: true
           type: "`$STRING`"
         }
       }
-      req: true
+      req: false
       type: "`$STRING`"
     }
     {
-      name: "story_content"
+      name: "owner_ids"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "project_id"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "story_contents"
       op: {
         update: {
           req: false
@@ -59,9 +144,29 @@ main: kit: entity: entity_template: {
       type: "`$OBJECT`"
     }
     {
+      name: "story_type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "sub_tasks"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "tasks"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
       name: "updated_at"
       req: true
       type: "`$STRING`"
+    }
+    {
+      name: "workflow_state_id"
+      req: false
+      type: "`$INTEGER`"
     }
   ]
 
@@ -84,8 +189,12 @@ main: kit: entity: entity_template: {
             "entity-templates"
           ]
           transform: {
-            req: "`reqdata`"
-            res: "`body`"
+            req: {
+              author_id: "`reqdata.author_id`"
+              name: "`reqdata.name`"
+              story_contents: "`reqdata.story_content`"
+            }
+            res: "`body.story_contents`"
           }
         }
       ]
@@ -143,7 +252,7 @@ main: kit: entity: entity_template: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.story_contents`"
           }
         }
       ]
@@ -222,8 +331,11 @@ main: kit: entity: entity_template: {
             ]
           }
           transform: {
-            req: "`reqdata`"
-            res: "`body`"
+            req: {
+              name: "`reqdata.name`"
+              story_contents: "`reqdata.story_content`"
+            }
+            res: "`body.story_contents`"
           }
         }
       ]

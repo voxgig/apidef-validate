@@ -325,12 +325,10 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
   const finalGuide = formatJSONIC(bres.guide).trim()
 
-  /*
   const generatedFinalGuideFile =
     Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.gen.aontu`).trim()
 
   fs.writeFileSync(generatedFinalGuideFile, finalGuide)
-  */
 
 
   const expectedFinalGuideFile =

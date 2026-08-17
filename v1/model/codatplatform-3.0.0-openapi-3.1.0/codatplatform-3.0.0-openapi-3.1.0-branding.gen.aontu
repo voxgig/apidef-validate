@@ -4,7 +4,76 @@ main: kit: entity: branding: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "button"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "logo"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "sourceId"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
   name: "branding"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "gbol"
+                kind: "param"
+                name: "platform_key"
+                orig: "platform_key"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/integrations/{platformKey}/branding"
+          parts: [
+            "integrations"
+            "{platform_key}"
+            "branding"
+          ]
+          rename: {
+            param: {
+              platformKey: "platform_key"
+            }
+          }
+          select: {
+            exist: [
+              "platform_key"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "integration"
+      ]
+    ]
+  }
+
 
 
 }

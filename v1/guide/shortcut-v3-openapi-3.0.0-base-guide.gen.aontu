@@ -1,19 +1,24 @@
 # Guide
 
 guide: {
-  metrics: count: entity: 37
+  metrics: count: entity: 36
   metrics: count: path: 78
   metrics: count: method: 132
 
   entity: bulk: {
     path: "/api/v3/stories/bulk": {  # ent=bulk;no-desc;path=t/;entres=true/204,400,404,422/nores;path-primary-delete
       op: remove: method: *DELETE  # not-load
+      op: remove: transform: req: "story_ids": *("`reqdata.story_id`")|top
     }
   }
 
   entity: category: {
     path: "/api/v3/categories": {  # ent=category;orig=Category;cmp/resolve=category;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: req: "color": *("`reqdata.color`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "type": *("`reqdata.type`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/categories/{category-public-id}": {  # ent=category;orig=Category;no-desc;path=t/p/;entres=true/204,400,404,422/nores;cmp-found-delete
@@ -21,6 +26,9 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "archived": *("`reqdata.archived`")|top
+      op: update: transform: req: "color": *("`reqdata.color`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
     }
   }
 
@@ -41,6 +49,13 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "after_id": *("`reqdata.after_id`")|top
+      op: update: transform: req: "before_id": *("`reqdata.before_id`")|top
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "enabled": *("`reqdata.enabled`")|top
+      op: update: transform: req: "icon_set_identifier": *("`reqdata.icon_set_identifier`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "values": *("`reqdata.value`")|top
     }
   }
 
@@ -56,6 +71,8 @@ guide: {
   entity: doc_slim: {
     path: "/api/v3/documents": {  # ent=doc_slim;orig=DocSlim;cmp/resolve=doc_slim;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
+      op: create: transform: req: "content": *("`reqdata.content`")|top
+      op: create: transform: req: "title": *("`reqdata.title`")|top
       op: list: method: *GET  # array
     }
   }
@@ -72,19 +89,47 @@ guide: {
   entity: entity_template: {
     path: "/api/v3/entity-templates": {  # ent=entity_template;orig=EntityTemplate;cmp/resolve=entity_template;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: res: *("`body.story_contents`")|top
+      op: create: transform: req: "author_id": *("`reqdata.author_id`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "story_contents": *("`reqdata.story_content`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/entity-templates/{entity-template-public-id}": {  # ent=entity_template;orig=EntityTemplate;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
       rename: param: "entity-template-public-id": *"id"  # end-id;GET;parent=true/entity_template;cmp=false
       op: load: method: *GET  # end-param
+      op: load: transform: res: *("`body.story_contents`")|top
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: res: *("`body.story_contents`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "story_contents": *("`reqdata.story_content`")|top
     }
   }
 
   entity: epic: {
     path: "/api/v3/epics": {  # ent=epic;orig=EpicSlim;cmp/resolve=epic;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: req: "completed_at_override": *("`reqdata.completed_at_override`")|top
+      op: create: transform: req: "converted_from_story_id": *("`reqdata.converted_from_story_id`")|top
+      op: create: transform: req: "created_at": *("`reqdata.created_at`")|top
+      op: create: transform: req: "deadline": *("`reqdata.deadline`")|top
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "epic_state_id": *("`reqdata.epic_state_id`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "follower_ids": *("`reqdata.follower_id`")|top
+      op: create: transform: req: "group_id": *("`reqdata.group_id`")|top
+      op: create: transform: req: "group_ids": *("`reqdata.group_id`")|top
+      op: create: transform: req: "labels": *("`reqdata.label`")|top
+      op: create: transform: req: "milestone_id": *("`reqdata.milestone_id`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "objective_ids": *("`reqdata.objective_id`")|top
+      op: create: transform: req: "owner_ids": *("`reqdata.owner_id`")|top
+      op: create: transform: req: "planned_start_date": *("`reqdata.planned_start_date`")|top
+      op: create: transform: req: "requested_by_id": *("`reqdata.requested_by_id`")|top
+      op: create: transform: req: "started_at_override": *("`reqdata.started_at_override`")|top
+      op: create: transform: req: "state": *("`reqdata.state`")|top
+      op: create: transform: req: "updated_at": *("`reqdata.updated_at`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/epics/{epic-public-id}": {  # ent=epic;orig=EpicSlim;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
@@ -92,6 +137,26 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "after_id": *("`reqdata.after_id`")|top
+      op: update: transform: req: "archived": *("`reqdata.archived`")|top
+      op: update: transform: req: "before_id": *("`reqdata.before_id`")|top
+      op: update: transform: req: "completed_at_override": *("`reqdata.completed_at_override`")|top
+      op: update: transform: req: "deadline": *("`reqdata.deadline`")|top
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "epic_state_id": *("`reqdata.epic_state_id`")|top
+      op: update: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: update: transform: req: "follower_ids": *("`reqdata.follower_id`")|top
+      op: update: transform: req: "group_id": *("`reqdata.group_id`")|top
+      op: update: transform: req: "group_ids": *("`reqdata.group_id`")|top
+      op: update: transform: req: "labels": *("`reqdata.label`")|top
+      op: update: transform: req: "milestone_id": *("`reqdata.milestone_id`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "objective_ids": *("`reqdata.objective_id`")|top
+      op: update: transform: req: "owner_ids": *("`reqdata.owner_id`")|top
+      op: update: transform: req: "planned_start_date": *("`reqdata.planned_start_date`")|top
+      op: update: transform: req: "requested_by_id": *("`reqdata.requested_by_id`")|top
+      op: update: transform: req: "started_at_override": *("`reqdata.started_at_override`")|top
+      op: update: transform: req: "state": *("`reqdata.state`")|top
     }
     path: "/api/v3/labels/{label-public-id}/epics": {  # ent=epic;orig=EpicSlim;cmp/resolve=epic_slim;path=t/p/t/;path-primary;has-cmp=EpicSlim
       rename: param: "label-public-id": *"label_id"  # parent:label
@@ -105,14 +170,16 @@ guide: {
       rename: param: "objective-public-id": *"objectif_id"  # parent:objectif
       op: list: method: *GET  # array
     }
-    path: "/api/v3/search/epics": {  # ent=epic;orig=EpicSlim;cmp/resolve=epic_search_result;path=t/;path-primary
+    path: "/api/v3/search/epics": {  # ent=epic;orig=EpicSlim;cmp/resolve=epic;path=t/;path-primary
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
   }
 
   entity: epic_paginated_result: {
     path: "/api/v3/epics/paginated": {  # ent=epic_paginated_result;orig=EpicPaginatedResults;cmp/resolve=epic_paginated_result;path=t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
   }
 
@@ -126,18 +193,37 @@ guide: {
   entity: epic_workflow: {
     path: "/api/v3/epic-workflow": {  # ent=epic_workflow;orig=EpicWorkflow;cmp/resolve=epic_workflow;path=t/;path-primary
       op: list: method: *GET  # array-prop:epic_states
+      op: list: transform: res: *("`body.epic_states`")|top
     }
   }
 
   entity: group: {
     path: "/api/v3/groups": {  # ent=group;orig=Group;cmp/resolve=group;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: req: "color": *("`reqdata.color`")|top
+      op: create: transform: req: "color_key": *("`reqdata.color_key`")|top
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "display_icon_id": *("`reqdata.display_icon_id`")|top
+      op: create: transform: req: "member_ids": *("`reqdata.member_id`")|top
+      op: create: transform: req: "mention_name": *("`reqdata.mention_name`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "workflow_ids": *("`reqdata.workflow_id`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/groups/{group-public-id}": {  # ent=group;orig=Group;cmp/resolve=group;path=t/p/;path-primary
       rename: param: "group-public-id": *"id"  # end-id;GET;parent=true/group;cmp=false
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "archived": *("`reqdata.archived`")|top
+      op: update: transform: req: "color": *("`reqdata.color`")|top
+      op: update: transform: req: "color_key": *("`reqdata.color_key`")|top
+      op: update: transform: req: "default_workflow_id": *("`reqdata.default_workflow_id`")|top
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "display_icon_id": *("`reqdata.display_icon_id`")|top
+      op: update: transform: req: "member_ids": *("`reqdata.member_id`")|top
+      op: update: transform: req: "mention_name": *("`reqdata.mention_name`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "workflow_ids": *("`reqdata.workflow_id`")|top
     }
   }
 
@@ -145,6 +231,8 @@ guide: {
     path: "/api/v3/epics/{epic-public-id}/health": {  # ent=health;orig=Health;cmp/resolve=health;path=t/p/t/;path-primary;has-cmp=Health
       rename: param: "epic-public-id": *"epic_id"  # parent:epic
       op: create: method: *POST  # not-load
+      op: create: transform: req: "status": *("`reqdata.status`")|top
+      op: create: transform: req: "text": *("`reqdata.text`")|top
       op: load: method: *GET  # not-list
     }
     path: "/api/v3/epics/{epic-public-id}/health-history": {  # ent=health;orig=Health;cmp/resolve=health;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Health
@@ -154,6 +242,8 @@ guide: {
     path: "/api/v3/health/{health-public-id}": {  # ent=health;orig=Health;cmp/resolve=health;path=t/p/;path-primary
       rename: param: "health-public-id": *"id"  # end-id;PUT;parent=true/health;cmp=false
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "status": *("`reqdata.status`")|top
+      op: update: transform: req: "text": *("`reqdata.text`")|top
     }
   }
 
@@ -167,6 +257,13 @@ guide: {
   entity: iteration: {
     path: "/api/v3/iterations": {  # ent=iteration;orig=IterationSlim;cmp/resolve=iteration;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "end_date": *("`reqdata.end_date`")|top
+      op: create: transform: req: "follower_ids": *("`reqdata.follower_id`")|top
+      op: create: transform: req: "group_ids": *("`reqdata.group_id`")|top
+      op: create: transform: req: "labels": *("`reqdata.label`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "start_date": *("`reqdata.start_date`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/iterations/{iteration-public-id}": {  # ent=iteration;orig=IterationSlim;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
@@ -174,9 +271,17 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "end_date": *("`reqdata.end_date`")|top
+      op: update: transform: req: "follower_ids": *("`reqdata.follower_id`")|top
+      op: update: transform: req: "group_ids": *("`reqdata.group_id`")|top
+      op: update: transform: req: "labels": *("`reqdata.label`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "start_date": *("`reqdata.start_date`")|top
     }
-    path: "/api/v3/search/iterations": {  # ent=iteration;orig=IterationSlim;cmp/resolve=iteration_search_result;path=t/;path-primary
+    path: "/api/v3/search/iterations": {  # ent=iteration;orig=IterationSlim;cmp/resolve=iteration;path=t/;path-primary
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
   }
 
@@ -185,25 +290,49 @@ guide: {
       rename: param: "key-result-public-id": *"id"  # end-id;GET;parent=true/key_result;cmp=false
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "initial_observed_value": *("`reqdata.initial_observed_value`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "observed_value": *("`reqdata.observed_value`")|top
+      op: update: transform: req: "target_value": *("`reqdata.target_value`")|top
     }
   }
 
   entity: label: {
     path: "/api/v3/labels": {  # ent=label;orig=Label;cmp/resolve=label;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: res: *("`body.stats`")|top
+      op: create: transform: req: "color": *("`reqdata.color`")|top
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/labels/{label-public-id}": {  # ent=label;orig=Label;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
       rename: param: "label-public-id": *"id"  # end-id;GET;parent=true/label;cmp=false
       op: load: method: *GET  # end-param
+      op: load: transform: res: *("`body.stats`")|top
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: res: *("`body.stats`")|top
+      op: update: transform: req: "archived": *("`reqdata.archived`")|top
+      op: update: transform: req: "color": *("`reqdata.color`")|top
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
     }
   }
 
   entity: linked_file: {
     path: "/api/v3/linked-files": {  # ent=linked_file;orig=LinkedFile;cmp/resolve=linked_file;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: req: "content_type": *("`reqdata.content_type`")|top
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "size": *("`reqdata.size`")|top
+      op: create: transform: req: "story_id": *("`reqdata.story_id`")|top
+      op: create: transform: req: "thumbnail_url": *("`reqdata.thumbnail_url`")|top
+      op: create: transform: req: "type": *("`reqdata.type`")|top
+      op: create: transform: req: "uploader_id": *("`reqdata.uploader_id`")|top
+      op: create: transform: req: "url": *("`reqdata.url`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/linked-files/{linked-file-public-id}": {  # ent=linked_file;orig=LinkedFile;no-desc;path=t/p/;entres=true/204,400,404,422/nores;cmp-found-delete
@@ -211,6 +340,14 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "size": *("`reqdata.size`")|top
+      op: update: transform: req: "story_id": *("`reqdata.story_id`")|top
+      op: update: transform: req: "thumbnail_url": *("`reqdata.thumbnail_url`")|top
+      op: update: transform: req: "type": *("`reqdata.type`")|top
+      op: update: transform: req: "uploader_id": *("`reqdata.uploader_id`")|top
+      op: update: transform: req: "url": *("`reqdata.url`")|top
     }
   }
 
@@ -238,6 +375,12 @@ guide: {
     }
     path: "/api/v3/milestones": {  # ent=milestone;orig=Milestone;cmp/resolve=milestone;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: req: "categories": *("`reqdata.category`")|top
+      op: create: transform: req: "completed_at_override": *("`reqdata.completed_at_override`")|top
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "started_at_override": *("`reqdata.started_at_override`")|top
+      op: create: transform: req: "state": *("`reqdata.state`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/milestones/{milestone-public-id}": {  # ent=milestone;orig=Milestone;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
@@ -245,6 +388,15 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "after_id": *("`reqdata.after_id`")|top
+      op: update: transform: req: "archived": *("`reqdata.archived`")|top
+      op: update: transform: req: "before_id": *("`reqdata.before_id`")|top
+      op: update: transform: req: "categories": *("`reqdata.category`")|top
+      op: update: transform: req: "completed_at_override": *("`reqdata.completed_at_override`")|top
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "started_at_override": *("`reqdata.started_at_override`")|top
+      op: update: transform: req: "state": *("`reqdata.state`")|top
     }
   }
 
@@ -258,27 +410,52 @@ guide: {
   entity: objective: {
     path: "/api/v3/objectives": {  # ent=objective;orig=Objective;cmp/resolve=objective;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
+      op: create: transform: req: "categories": *("`reqdata.category`")|top
+      op: create: transform: req: "completed_at_override": *("`reqdata.completed_at_override`")|top
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "started_at_override": *("`reqdata.started_at_override`")|top
+      op: create: transform: req: "state": *("`reqdata.state`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/objectives/{objective-public-id}": {  # ent=objective;orig=Objective;cmp/resolve=objective;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "objective-public-id": *"objective_public_id"  # snake-case
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "after_id": *("`reqdata.after_id`")|top
+      op: update: transform: req: "archived": *("`reqdata.archived`")|top
+      op: update: transform: req: "before_id": *("`reqdata.before_id`")|top
+      op: update: transform: req: "categories": *("`reqdata.category`")|top
+      op: update: transform: req: "completed_at_override": *("`reqdata.completed_at_override`")|top
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "started_at_override": *("`reqdata.started_at_override`")|top
+      op: update: transform: req: "state": *("`reqdata.state`")|top
     }
-  }
-
-  entity: objective_search_result: {
-    path: "/api/v3/search/milestones": {  # ent=objective_search_result;orig=ObjectiveSearchResults;cmp/resolve=objective_search_result;path=t/;cmp-primary;cmp-infreq
+    path: "/api/v3/search/milestones": {  # ent=objective;orig=Objective;cmp/resolve=objective;path=t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
-    path: "/api/v3/search/objectives": {  # ent=objective_search_result;orig=ObjectiveSearchResults;cmp/resolve=objective_search_result;path=t/;cmp-primary;cmp-infreq
+    path: "/api/v3/search/objectives": {  # ent=objective;orig=Objective;cmp/resolve=objective;path=t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
   }
 
   entity: project: {
     path: "/api/v3/projects": {  # ent=project;orig=Project;cmp/resolve=project;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: req: "abbreviation": *("`reqdata.abbreviation`")|top
+      op: create: transform: req: "color": *("`reqdata.color`")|top
+      op: create: transform: req: "created_at": *("`reqdata.created_at`")|top
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "follower_ids": *("`reqdata.follower_id`")|top
+      op: create: transform: req: "iteration_length": *("`reqdata.iteration_length`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "start_time": *("`reqdata.start_time`")|top
+      op: create: transform: req: "team_id": *("`reqdata.team_id`")|top
+      op: create: transform: req: "updated_at": *("`reqdata.updated_at`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/projects/{project-public-id}": {  # ent=project;orig=Project;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
@@ -286,6 +463,15 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "abbreviation": *("`reqdata.abbreviation`")|top
+      op: update: transform: req: "archived": *("`reqdata.archived`")|top
+      op: update: transform: req: "color": *("`reqdata.color`")|top
+      op: update: transform: req: "days_to_thermometer": *("`reqdata.days_to_thermometer`")|top
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "follower_ids": *("`reqdata.follower_id`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "show_thermometer": *("`reqdata.show_thermometer`")|top
+      op: update: transform: req: "team_id": *("`reqdata.team_id`")|top
     }
   }
 
@@ -329,21 +515,128 @@ guide: {
       rename: param: "project-public-id": *"project_id"  # parent:project
       op: list: method: *GET  # array
     }
-    path: "/api/v3/search/stories": {  # ent=story;orig=StorySlim;cmp/resolve=story_search_result;path=t/;path-primary
+    path: "/api/v3/search/stories": {  # ent=story;orig=StorySlim;cmp/resolve=story;path=t/;path-primary
       op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
     path: "/api/v3/stories": {  # ent=story;orig=StorySlim;cmp/resolve=story;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: req: "archived": *("`reqdata.archived`")|top
+      op: create: transform: req: "comments": *("`reqdata.comment`")|top
+      op: create: transform: req: "completed_at_override": *("`reqdata.completed_at_override`")|top
+      op: create: transform: req: "created_at": *("`reqdata.created_at`")|top
+      op: create: transform: req: "custom_fields": *("`reqdata.custom_field`")|top
+      op: create: transform: req: "deadline": *("`reqdata.deadline`")|top
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "epic_id": *("`reqdata.epic_id`")|top
+      op: create: transform: req: "estimate": *("`reqdata.estimate`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "external_links": *("`reqdata.external_link`")|top
+      op: create: transform: req: "file_ids": *("`reqdata.file_id`")|top
+      op: create: transform: req: "follower_ids": *("`reqdata.follower_id`")|top
+      op: create: transform: req: "group_id": *("`reqdata.group_id`")|top
+      op: create: transform: req: "iteration_id": *("`reqdata.iteration_id`")|top
+      op: create: transform: req: "labels": *("`reqdata.label`")|top
+      op: create: transform: req: "linked_file_ids": *("`reqdata.linked_file_id`")|top
+      op: create: transform: req: "move_to": *("`reqdata.move_to`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "owner_ids": *("`reqdata.owner_id`")|top
+      op: create: transform: req: "parent_story_id": *("`reqdata.parent_story_id`")|top
+      op: create: transform: req: "project_id": *("`reqdata.project_id`")|top
+      op: create: transform: req: "requested_by_id": *("`reqdata.requested_by_id`")|top
+      op: create: transform: req: "source_task_id": *("`reqdata.source_task_id`")|top
+      op: create: transform: req: "started_at_override": *("`reqdata.started_at_override`")|top
+      op: create: transform: req: "story_links": *("`reqdata.story_link`")|top
+      op: create: transform: req: "story_template_id": *("`reqdata.story_template_id`")|top
+      op: create: transform: req: "story_type": *("`reqdata.story_type`")|top
+      op: create: transform: req: "sub_tasks": *("`reqdata.sub_task`")|top
+      op: create: transform: req: "tasks": *("`reqdata.task`")|top
+      op: create: transform: req: "updated_at": *("`reqdata.updated_at`")|top
+      op: create: transform: req: "workflow_state_id": *("`reqdata.workflow_state_id`")|top
     }
     path: "/api/v3/stories/from-template": {  # ent=story;orig=StorySlim;cmp/resolve=story;path=t/;cmp-primary;cmp-infreq
       action: "from_template": {}  # ent;story;no-param;from-template;POST
       op: create: method: *POST  # not-load
+      op: create: transform: req: "archived": *("`reqdata.archived`")|top
+      op: create: transform: req: "comments": *("`reqdata.comment`")|top
+      op: create: transform: req: "completed_at_override": *("`reqdata.completed_at_override`")|top
+      op: create: transform: req: "created_at": *("`reqdata.created_at`")|top
+      op: create: transform: req: "custom_fields": *("`reqdata.custom_field`")|top
+      op: create: transform: req: "custom_fields_add": *("`reqdata.custom_fields_add`")|top
+      op: create: transform: req: "custom_fields_remove": *("`reqdata.custom_fields_remove`")|top
+      op: create: transform: req: "deadline": *("`reqdata.deadline`")|top
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "epic_id": *("`reqdata.epic_id`")|top
+      op: create: transform: req: "estimate": *("`reqdata.estimate`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "external_links": *("`reqdata.external_link`")|top
+      op: create: transform: req: "external_links_add": *("`reqdata.external_links_add`")|top
+      op: create: transform: req: "external_links_remove": *("`reqdata.external_links_remove`")|top
+      op: create: transform: req: "file_ids": *("`reqdata.file_id`")|top
+      op: create: transform: req: "file_ids_add": *("`reqdata.file_ids_add`")|top
+      op: create: transform: req: "file_ids_remove": *("`reqdata.file_ids_remove`")|top
+      op: create: transform: req: "follower_ids": *("`reqdata.follower_id`")|top
+      op: create: transform: req: "follower_ids_add": *("`reqdata.follower_ids_add`")|top
+      op: create: transform: req: "follower_ids_remove": *("`reqdata.follower_ids_remove`")|top
+      op: create: transform: req: "group_id": *("`reqdata.group_id`")|top
+      op: create: transform: req: "iteration_id": *("`reqdata.iteration_id`")|top
+      op: create: transform: req: "labels": *("`reqdata.label`")|top
+      op: create: transform: req: "labels_add": *("`reqdata.labels_add`")|top
+      op: create: transform: req: "labels_remove": *("`reqdata.labels_remove`")|top
+      op: create: transform: req: "linked_file_ids": *("`reqdata.linked_file_id`")|top
+      op: create: transform: req: "linked_file_ids_add": *("`reqdata.linked_file_ids_add`")|top
+      op: create: transform: req: "linked_file_ids_remove": *("`reqdata.linked_file_ids_remove`")|top
+      op: create: transform: req: "move_to": *("`reqdata.move_to`")|top
+      op: create: transform: req: "name": *("`reqdata.name`")|top
+      op: create: transform: req: "owner_ids": *("`reqdata.owner_id`")|top
+      op: create: transform: req: "owner_ids_add": *("`reqdata.owner_ids_add`")|top
+      op: create: transform: req: "owner_ids_remove": *("`reqdata.owner_ids_remove`")|top
+      op: create: transform: req: "parent_story_id": *("`reqdata.parent_story_id`")|top
+      op: create: transform: req: "project_id": *("`reqdata.project_id`")|top
+      op: create: transform: req: "requested_by_id": *("`reqdata.requested_by_id`")|top
+      op: create: transform: req: "source_task_id": *("`reqdata.source_task_id`")|top
+      op: create: transform: req: "started_at_override": *("`reqdata.started_at_override`")|top
+      op: create: transform: req: "story_links": *("`reqdata.story_link`")|top
+      op: create: transform: req: "story_template_id": *("`reqdata.story_template_id`")|top
+      op: create: transform: req: "story_type": *("`reqdata.story_type`")|top
+      op: create: transform: req: "sub_tasks": *("`reqdata.sub_task`")|top
+      op: create: transform: req: "tasks": *("`reqdata.task`")|top
+      op: create: transform: req: "updated_at": *("`reqdata.updated_at`")|top
+      op: create: transform: req: "workflow_state_id": *("`reqdata.workflow_state_id`")|top
     }
     path: "/api/v3/stories/{story-public-id}": {  # ent=story;orig=StorySlim;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
       rename: param: "story-public-id": *"id"  # end-id;GET;parent=true/story;cmp=false
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "after_id": *("`reqdata.after_id`")|top
+      op: update: transform: req: "archived": *("`reqdata.archived`")|top
+      op: update: transform: req: "before_id": *("`reqdata.before_id`")|top
+      op: update: transform: req: "branch_ids": *("`reqdata.branch_id`")|top
+      op: update: transform: req: "commit_ids": *("`reqdata.commit_id`")|top
+      op: update: transform: req: "completed_at_override": *("`reqdata.completed_at_override`")|top
+      op: update: transform: req: "custom_fields": *("`reqdata.custom_field`")|top
+      op: update: transform: req: "deadline": *("`reqdata.deadline`")|top
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "epic_id": *("`reqdata.epic_id`")|top
+      op: update: transform: req: "estimate": *("`reqdata.estimate`")|top
+      op: update: transform: req: "external_links": *("`reqdata.external_link`")|top
+      op: update: transform: req: "file_ids": *("`reqdata.file_id`")|top
+      op: update: transform: req: "follower_ids": *("`reqdata.follower_id`")|top
+      op: update: transform: req: "group_id": *("`reqdata.group_id`")|top
+      op: update: transform: req: "iteration_id": *("`reqdata.iteration_id`")|top
+      op: update: transform: req: "labels": *("`reqdata.label`")|top
+      op: update: transform: req: "linked_file_ids": *("`reqdata.linked_file_id`")|top
+      op: update: transform: req: "move_to": *("`reqdata.move_to`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "owner_ids": *("`reqdata.owner_id`")|top
+      op: update: transform: req: "parent_story_id": *("`reqdata.parent_story_id`")|top
+      op: update: transform: req: "project_id": *("`reqdata.project_id`")|top
+      op: update: transform: req: "pull_request_ids": *("`reqdata.pull_request_id`")|top
+      op: update: transform: req: "requested_by_id": *("`reqdata.requested_by_id`")|top
+      op: update: transform: req: "started_at_override": *("`reqdata.started_at_override`")|top
+      op: update: transform: req: "story_type": *("`reqdata.story_type`")|top
+      op: update: transform: req: "workflow_state_id": *("`reqdata.workflow_state_id`")|top
     }
   }
 
@@ -351,6 +644,12 @@ guide: {
     path: "/api/v3/stories/{story-public-id}/comments": {  # ent=story_comment;orig=StoryComment;cmp/resolve=story_comment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=StoryComment
       rename: param: "story-public-id": *"id"  # action-parent:story_comment
       op: create: method: *POST  # not-load
+      op: create: transform: req: "author_id": *("`reqdata.author_id`")|top
+      op: create: transform: req: "created_at": *("`reqdata.created_at`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "parent_id": *("`reqdata.parent_id`")|top
+      op: create: transform: req: "text": *("`reqdata.text`")|top
+      op: create: transform: req: "updated_at": *("`reqdata.updated_at`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}": {  # ent=story_comment;orig=StoryComment;cmp/resolve=story_comment;path=t/p/;cmp-primary;cmp-infreq
@@ -358,6 +657,7 @@ guide: {
       rename: param: "story-public-id": *"story_id"  # parent:story
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "text": *("`reqdata.text`")|top
     }
     path: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/unlink-from-slack": {  # ent=story_comment;orig=StoryComment;cmp/resolve=story_comment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=StoryComment
       rename: param: "comment-public-id": *"comment_id"  # parent:comment
@@ -369,12 +669,18 @@ guide: {
   entity: story_link: {
     path: "/api/v3/story-links": {  # ent=story_link;orig=StoryLink;cmp/resolve=story_link;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: req: "object_id": *("`reqdata.object_id`")|top
+      op: create: transform: req: "subject_id": *("`reqdata.subject_id`")|top
+      op: create: transform: req: "verb": *("`reqdata.verb`")|top
     }
     path: "/api/v3/story-links/{story-link-public-id}": {  # ent=story_link;orig=StoryLink;no-desc;path=t/p/;entres=true/204,400,404,422/nores;cmp-found-delete
       rename: param: "story-link-public-id": *"id"  # end-id;GET;parent=true/story_link;cmp=false
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "object_id": *("`reqdata.object_id`")|top
+      op: update: transform: req: "subject_id": *("`reqdata.subject_id`")|top
+      op: update: transform: req: "verb": *("`reqdata.verb`")|top
     }
   }
 
@@ -383,17 +689,71 @@ guide: {
       rename: param: "comment-public-id": *"comment_id"  # parent:comment
       rename: param: "story-public-id": *"story_id"  # parent:story
       op: create: method: *POST  # not-load
+      op: create: transform: req: "emoji": *("`reqdata.emoji`")|top
       op: remove: method: *DELETE  # not-load
+      op: remove: transform: req: "emoji": *("`reqdata.emoji`")|top
     }
   }
 
   entity: story_slim: {
     path: "/api/v3/stories/bulk": {  # ent=story_slim;orig=StorySlim;cmp/resolve=story_slim;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
+      op: create: transform: req: "stories": *("`reqdata.story`")|top
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "after_id": *("`reqdata.after_id`")|top
+      op: update: transform: req: "archived": *("`reqdata.archived`")|top
+      op: update: transform: req: "before_id": *("`reqdata.before_id`")|top
+      op: update: transform: req: "custom_fields_add": *("`reqdata.custom_fields_add`")|top
+      op: update: transform: req: "custom_fields_remove": *("`reqdata.custom_fields_remove`")|top
+      op: update: transform: req: "deadline": *("`reqdata.deadline`")|top
+      op: update: transform: req: "epic_id": *("`reqdata.epic_id`")|top
+      op: update: transform: req: "estimate": *("`reqdata.estimate`")|top
+      op: update: transform: req: "external_links": *("`reqdata.external_link`")|top
+      op: update: transform: req: "follower_ids_add": *("`reqdata.follower_ids_add`")|top
+      op: update: transform: req: "follower_ids_remove": *("`reqdata.follower_ids_remove`")|top
+      op: update: transform: req: "group_id": *("`reqdata.group_id`")|top
+      op: update: transform: req: "iteration_id": *("`reqdata.iteration_id`")|top
+      op: update: transform: req: "labels_add": *("`reqdata.labels_add`")|top
+      op: update: transform: req: "labels_remove": *("`reqdata.labels_remove`")|top
+      op: update: transform: req: "move_to": *("`reqdata.move_to`")|top
+      op: update: transform: req: "owner_ids_add": *("`reqdata.owner_ids_add`")|top
+      op: update: transform: req: "owner_ids_remove": *("`reqdata.owner_ids_remove`")|top
+      op: update: transform: req: "project_id": *("`reqdata.project_id`")|top
+      op: update: transform: req: "requested_by_id": *("`reqdata.requested_by_id`")|top
+      op: update: transform: req: "story_ids": *("`reqdata.story_id`")|top
+      op: update: transform: req: "story_type": *("`reqdata.story_type`")|top
+      op: update: transform: req: "workflow_state_id": *("`reqdata.workflow_state_id`")|top
     }
     path: "/api/v3/stories/search": {  # ent=story_slim;orig=StorySlim;cmp/resolve=story_slim;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
+      op: create: transform: req: "archived": *("`reqdata.archived`")|top
+      op: create: transform: req: "completed_at_end": *("`reqdata.completed_at_end`")|top
+      op: create: transform: req: "completed_at_start": *("`reqdata.completed_at_start`")|top
+      op: create: transform: req: "created_at_end": *("`reqdata.created_at_end`")|top
+      op: create: transform: req: "created_at_start": *("`reqdata.created_at_start`")|top
+      op: create: transform: req: "deadline_end": *("`reqdata.deadline_end`")|top
+      op: create: transform: req: "deadline_start": *("`reqdata.deadline_start`")|top
+      op: create: transform: req: "epic_id": *("`reqdata.epic_id`")|top
+      op: create: transform: req: "epic_ids": *("`reqdata.epic_id`")|top
+      op: create: transform: req: "estimate": *("`reqdata.estimate`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "group_id": *("`reqdata.group_id`")|top
+      op: create: transform: req: "group_ids": *("`reqdata.group_id`")|top
+      op: create: transform: req: "includes_description": *("`reqdata.includes_description`")|top
+      op: create: transform: req: "iteration_id": *("`reqdata.iteration_id`")|top
+      op: create: transform: req: "iteration_ids": *("`reqdata.iteration_id`")|top
+      op: create: transform: req: "label_ids": *("`reqdata.label_id`")|top
+      op: create: transform: req: "label_name": *("`reqdata.label_name`")|top
+      op: create: transform: req: "owner_id": *("`reqdata.owner_id`")|top
+      op: create: transform: req: "owner_ids": *("`reqdata.owner_id`")|top
+      op: create: transform: req: "project_id": *("`reqdata.project_id`")|top
+      op: create: transform: req: "project_ids": *("`reqdata.project_id`")|top
+      op: create: transform: req: "requested_by_id": *("`reqdata.requested_by_id`")|top
+      op: create: transform: req: "story_type": *("`reqdata.story_type`")|top
+      op: create: transform: req: "updated_at_end": *("`reqdata.updated_at_end`")|top
+      op: create: transform: req: "updated_at_start": *("`reqdata.updated_at_start`")|top
+      op: create: transform: req: "workflow_state_id": *("`reqdata.workflow_state_id`")|top
+      op: create: transform: req: "workflow_state_types": *("`reqdata.workflow_state_type`")|top
     }
   }
 
@@ -401,6 +761,12 @@ guide: {
     path: "/api/v3/stories/{story-public-id}/tasks": {  # ent=task;orig=Task;cmp/resolve=task;path=t/p/t/;path-primary;has-cmp=Task
       rename: param: "story-public-id": *"story_id"  # parent:story
       op: create: method: *POST  # not-load
+      op: create: transform: req: "complete": *("`reqdata.complete`")|top
+      op: create: transform: req: "created_at": *("`reqdata.created_at`")|top
+      op: create: transform: req: "description": *("`reqdata.description`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "owner_ids": *("`reqdata.owner_id`")|top
+      op: create: transform: req: "updated_at": *("`reqdata.updated_at`")|top
     }
     path: "/api/v3/stories/{story-public-id}/tasks/{task-public-id}": {  # ent=task;orig=Task;no-desc;path=t/p/;entres=true/204,400,404,422/nores;cmp-found-delete
       rename: param: "story-public-id": *"story_id"  # parent:story
@@ -408,6 +774,11 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "after_id": *("`reqdata.after_id`")|top
+      op: update: transform: req: "before_id": *("`reqdata.before_id`")|top
+      op: update: transform: req: "complete": *("`reqdata.complete`")|top
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "owner_ids": *("`reqdata.owner_id`")|top
     }
   }
 
@@ -415,15 +786,26 @@ guide: {
     path: "/api/v3/epics/{epic-public-id}/comments": {  # ent=threaded_comment;orig=ThreadedComment;cmp/resolve=threaded_comment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=ThreadedComment
       rename: param: "epic-public-id": *"epic_id"  # parent:epic
       op: create: method: *POST  # not-load
+      op: create: transform: req: "author_id": *("`reqdata.author_id`")|top
+      op: create: transform: req: "created_at": *("`reqdata.created_at`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "text": *("`reqdata.text`")|top
+      op: create: transform: req: "updated_at": *("`reqdata.updated_at`")|top
       op: list: method: *GET  # array
     }
     path: "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}": {  # ent=threaded_comment;orig=ThreadedComment;no-desc;path=t/p/;entres=true/204,400,404,422/nores;cmp-found-delete
       rename: param: "comment-public-id": *"id"  # end-id;GET;parent=true/comment;cmp=false
       rename: param: "epic-public-id": *"epic_id"  # parent:epic
       op: create: method: *POST  # not-load
+      op: create: transform: req: "author_id": *("`reqdata.author_id`")|top
+      op: create: transform: req: "created_at": *("`reqdata.created_at`")|top
+      op: create: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: create: transform: req: "text": *("`reqdata.text`")|top
+      op: create: transform: req: "updated_at": *("`reqdata.updated_at`")|top
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "text": *("`reqdata.text`")|top
     }
   }
 
@@ -437,12 +819,20 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "created_at": *("`reqdata.created_at`")|top
+      op: update: transform: req: "description": *("`reqdata.description`")|top
+      op: update: transform: req: "external_id": *("`reqdata.external_id`")|top
+      op: update: transform: req: "name": *("`reqdata.name`")|top
+      op: update: transform: req: "updated_at": *("`reqdata.updated_at`")|top
+      op: update: transform: req: "uploader_id": *("`reqdata.uploader_id`")|top
     }
   }
 
   entity: webhook: {
     path: "/api/v3/integrations/webhook": {  # ent=webhook;no-desc;path=t/;entres=true/204,400,404,422/nores;path-primary
       op: create: method: *POST  # not-load
+      op: create: transform: req: "secret": *("`reqdata.secret`")|top
+      op: create: transform: req: "webhook_url": *("`reqdata.webhook_url`")|top
     }
     path: "/api/v3/integrations/webhook/{integration-public-id}": {  # ent=webhook;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
       rename: param: "integration-public-id": *"id"  # end-id;GET;parent=true/webhook;cmp=false

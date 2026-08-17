@@ -21,7 +21,7 @@ main: kit: entity: hook: {
       type: "`$BOOLEAN`"
     }
     {
-      name: "add_event"
+      name: "add_events"
       req: false
       type: "`$ARRAY`"
     }
@@ -39,6 +39,11 @@ main: kit: entity: hook: {
       }
       req: true
       type: "`$OBJECT`"
+      union: {
+        branches: 2
+        count: 1
+        depth: 2
+      }
     }
     {
       name: "created_at"
@@ -51,7 +56,7 @@ main: kit: entity: hook: {
       type: "`$STRING`"
     }
     {
-      name: "event"
+      name: "events"
       op: {
         create: {
           req: false
@@ -92,7 +97,7 @@ main: kit: entity: hook: {
       type: "`$STRING`"
     }
     {
-      name: "remove_event"
+      name: "remove_events"
       req: false
       type: "`$ARRAY`"
     }
@@ -162,7 +167,12 @@ main: kit: entity: hook: {
             ]
           }
           transform: {
-            req: "`reqdata`"
+            req: {
+              active: "`reqdata.active`"
+              config: "`reqdata.config`"
+              events: "`reqdata.event`"
+              name: "`reqdata.name`"
+            }
             res: "`body`"
           }
         }

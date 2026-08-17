@@ -121,10 +121,10 @@ func runCase(t *testing.T, c Case, step map[string]any) *apidef.ApiDefResult {
 
 func TestValidate(t *testing.T) {
 	t.Run("happy", func(t *testing.T) {
-		if apidef.Version == "" {
-			t.Fatal("apidef.Version is empty")
+		if apidef.VERSION == "" {
+			t.Fatal("apidef.VERSION is empty")
 		}
-		t.Logf("apidef.Version=%s", apidef.Version)
+		t.Logf("apidef.VERSION=%s", apidef.VERSION)
 	})
 
 	t.Run("guide-case", func(t *testing.T) {

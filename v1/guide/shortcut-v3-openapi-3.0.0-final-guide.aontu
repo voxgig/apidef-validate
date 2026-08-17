@@ -1,31 +1,37 @@
 {
-  metrics: {
-    count: {
-      entity: 37
-      path: 78
-      method: 132
-    }
-  }
-
   entity: {
     bulk: {
+      name: "bulk"
       path: {
         "/api/v3/stories/bulk": {
           op: {
             remove: {
               method: "DELETE"
+              transform: {
+                req: {
+                  story_ids: "`reqdata.story_id`"
+                }
+              }
             }
           }
         }
       }
-      name: "bulk"
     }
     category: {
+      name: "category"
       path: {
         "/api/v3/categories": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  color: "`reqdata.color`"
+                  external_id: "`reqdata.external_id`"
+                  name: "`reqdata.name`"
+                  type: "`reqdata.type`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -33,11 +39,6 @@
           }
         }
         "/api/v3/categories/{category-public-id}": {
-          rename: {
-            param: {
-              "category-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -47,31 +48,43 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  archived: "`reqdata.archived`"
+                  color: "`reqdata.color`"
+                  name: "`reqdata.name`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              "category-public-id": "id"
             }
           }
         }
       }
-      name: "category"
     }
     comment: {
+      name: "comment"
       path: {
         "/api/v3/stories/{story-public-id}/comments/{comment-public-id}": {
+          op: {
+            remove: {
+              method: "DELETE"
+            }
+          }
           rename: {
             param: {
               "comment-public-id": "id"
               "story-public-id": "story_id"
             }
           }
-          op: {
-            remove: {
-              method: "DELETE"
-            }
-          }
         }
       }
-      name: "comment"
     }
     custom_field: {
+      name: "custom_field"
       path: {
         "/api/v3/custom-fields": {
           op: {
@@ -81,11 +94,6 @@
           }
         }
         "/api/v3/custom-fields/{custom-field-public-id}": {
-          rename: {
-            param: {
-              "custom-field-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -95,13 +103,29 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  after_id: "`reqdata.after_id`"
+                  before_id: "`reqdata.before_id`"
+                  description: "`reqdata.description`"
+                  enabled: "`reqdata.enabled`"
+                  icon_set_identifier: "`reqdata.icon_set_identifier`"
+                  name: "`reqdata.name`"
+                  values: "`reqdata.value`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              "custom-field-public-id": "id"
             }
           }
         }
       }
-      name: "custom_field"
     }
     disable: {
+      name: "disable"
       path: {
         "/api/v3/entity-templates/disable": {
           op: {
@@ -118,14 +142,20 @@
           }
         }
       }
-      name: "disable"
     }
     doc_slim: {
+      name: "doc_slim"
       path: {
         "/api/v3/documents": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  content: "`reqdata.content`"
+                  title: "`reqdata.title`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -133,9 +163,9 @@
           }
         }
       }
-      name: "doc_slim"
     }
     enable: {
+      name: "enable"
       path: {
         "/api/v3/entity-templates/enable": {
           op: {
@@ -152,14 +182,22 @@
           }
         }
       }
-      name: "enable"
     }
     entity_template: {
+      name: "entity_template"
       path: {
         "/api/v3/entity-templates": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  author_id: "`reqdata.author_id`"
+                  name: "`reqdata.name`"
+                  story_contents: "`reqdata.story_content`"
+                }
+                res: "`body.story_contents`"
+              }
             }
             list: {
               method: "GET"
@@ -167,32 +205,66 @@
           }
         }
         "/api/v3/entity-templates/{entity-template-public-id}": {
-          rename: {
-            param: {
-              "entity-template-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
+              transform: {
+                res: "`body.story_contents`"
+              }
             }
             remove: {
               method: "DELETE"
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  name: "`reqdata.name`"
+                  story_contents: "`reqdata.story_content`"
+                }
+                res: "`body.story_contents`"
+              }
+            }
+          }
+          rename: {
+            param: {
+              "entity-template-public-id": "id"
             }
           }
         }
       }
-      name: "entity_template"
     }
     epic: {
+      name: "epic"
       path: {
         "/api/v3/epics": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  completed_at_override: "`reqdata.completed_at_override`"
+                  converted_from_story_id: "`reqdata.converted_from_story_id`"
+                  created_at: "`reqdata.created_at`"
+                  deadline: "`reqdata.deadline`"
+                  description: "`reqdata.description`"
+                  epic_state_id: "`reqdata.epic_state_id`"
+                  external_id: "`reqdata.external_id`"
+                  follower_ids: "`reqdata.follower_id`"
+                  group_id: "`reqdata.group_id`"
+                  group_ids: "`reqdata.group_id`"
+                  labels: "`reqdata.label`"
+                  milestone_id: "`reqdata.milestone_id`"
+                  name: "`reqdata.name`"
+                  objective_ids: "`reqdata.objective_id`"
+                  owner_ids: "`reqdata.owner_id`"
+                  planned_start_date: "`reqdata.planned_start_date`"
+                  requested_by_id: "`reqdata.requested_by_id`"
+                  started_at_override: "`reqdata.started_at_override`"
+                  state: "`reqdata.state`"
+                  updated_at: "`reqdata.updated_at`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -200,11 +272,6 @@
           }
         }
         "/api/v3/epics/{epic-public-id}": {
-          rename: {
-            param: {
-              "epic-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -214,42 +281,71 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  after_id: "`reqdata.after_id`"
+                  archived: "`reqdata.archived`"
+                  before_id: "`reqdata.before_id`"
+                  completed_at_override: "`reqdata.completed_at_override`"
+                  deadline: "`reqdata.deadline`"
+                  description: "`reqdata.description`"
+                  epic_state_id: "`reqdata.epic_state_id`"
+                  external_id: "`reqdata.external_id`"
+                  follower_ids: "`reqdata.follower_id`"
+                  group_id: "`reqdata.group_id`"
+                  group_ids: "`reqdata.group_id`"
+                  labels: "`reqdata.label`"
+                  milestone_id: "`reqdata.milestone_id`"
+                  name: "`reqdata.name`"
+                  objective_ids: "`reqdata.objective_id`"
+                  owner_ids: "`reqdata.owner_id`"
+                  planned_start_date: "`reqdata.planned_start_date`"
+                  requested_by_id: "`reqdata.requested_by_id`"
+                  started_at_override: "`reqdata.started_at_override`"
+                  state: "`reqdata.state`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              "epic-public-id": "id"
             }
           }
         }
         "/api/v3/labels/{label-public-id}/epics": {
+          op: {
+            list: {
+              method: "GET"
+            }
+          }
           rename: {
             param: {
               "label-public-id": "label_id"
             }
           }
+        }
+        "/api/v3/milestones/{milestone-public-id}/epics": {
           op: {
             list: {
               method: "GET"
             }
           }
-        }
-        "/api/v3/milestones/{milestone-public-id}/epics": {
           rename: {
             param: {
               "milestone-public-id": "milestone_id"
             }
           }
+        }
+        "/api/v3/objectives/{objective-public-id}/epics": {
           op: {
             list: {
               method: "GET"
             }
           }
-        }
-        "/api/v3/objectives/{objective-public-id}/epics": {
           rename: {
             param: {
               "objective-public-id": "objectif_id"
-            }
-          }
-          op: {
-            list: {
-              method: "GET"
             }
           }
         }
@@ -257,59 +353,80 @@
           op: {
             list: {
               method: "GET"
+              transform: {
+                res: "`body.data`"
+              }
             }
           }
         }
       }
-      name: "epic"
     }
     epic_paginated_result: {
+      name: "epic_paginated_result"
       path: {
         "/api/v3/epics/paginated": {
           op: {
             list: {
               method: "GET"
+              transform: {
+                res: "`body.data`"
+              }
             }
           }
         }
       }
-      name: "epic_paginated_result"
     }
     epic_unlink_productboard: {
+      name: "epic_unlink_productboard"
       path: {
         "/api/v3/epics/{epic-public-id}/unlink-productboard": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
           rename: {
             param: {
               "epic-public-id": "id"
             }
           }
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
         }
       }
-      name: "epic_unlink_productboard"
     }
     epic_workflow: {
+      name: "epic_workflow"
       path: {
         "/api/v3/epic-workflow": {
           op: {
             list: {
               method: "GET"
+              transform: {
+                res: "`body.epic_states`"
+              }
             }
           }
         }
       }
-      name: "epic_workflow"
     }
     group: {
+      name: "group"
       path: {
         "/api/v3/groups": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  color: "`reqdata.color`"
+                  color_key: "`reqdata.color_key`"
+                  description: "`reqdata.description`"
+                  display_icon_id: "`reqdata.display_icon_id`"
+                  member_ids: "`reqdata.member_id`"
+                  mention_name: "`reqdata.mention_name`"
+                  name: "`reqdata.name`"
+                  workflow_ids: "`reqdata.workflow_id`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -317,90 +434,127 @@
           }
         }
         "/api/v3/groups/{group-public-id}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+            update: {
+              method: "PUT"
+              transform: {
+                req: {
+                  archived: "`reqdata.archived`"
+                  color: "`reqdata.color`"
+                  color_key: "`reqdata.color_key`"
+                  default_workflow_id: "`reqdata.default_workflow_id`"
+                  description: "`reqdata.description`"
+                  display_icon_id: "`reqdata.display_icon_id`"
+                  member_ids: "`reqdata.member_id`"
+                  mention_name: "`reqdata.mention_name`"
+                  name: "`reqdata.name`"
+                  workflow_ids: "`reqdata.workflow_id`"
+                }
+              }
+            }
+          }
           rename: {
             param: {
               "group-public-id": "id"
             }
           }
-          op: {
-            load: {
-              method: "GET"
-            }
-            update: {
-              method: "PUT"
-            }
-          }
         }
       }
-      name: "group"
     }
     health: {
+      name: "health"
       path: {
         "/api/v3/epics/{epic-public-id}/health": {
-          rename: {
-            param: {
-              "epic-public-id": "epic_id"
-            }
-          }
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  status: "`reqdata.status`"
+                  text: "`reqdata.text`"
+                }
+              }
             }
             load: {
               method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              "epic-public-id": "epic_id"
             }
           }
         }
         "/api/v3/epics/{epic-public-id}/health-history": {
-          rename: {
-            param: {
-              "epic-public-id": "epic_id"
-            }
-          }
           op: {
             list: {
               method: "GET"
             }
           }
+          rename: {
+            param: {
+              "epic-public-id": "epic_id"
+            }
+          }
         }
         "/api/v3/health/{health-public-id}": {
+          op: {
+            update: {
+              method: "PUT"
+              transform: {
+                req: {
+                  status: "`reqdata.status`"
+                  text: "`reqdata.text`"
+                }
+              }
+            }
+          }
           rename: {
             param: {
               "health-public-id": "id"
             }
           }
-          op: {
-            update: {
-              method: "PUT"
-            }
-          }
         }
       }
-      name: "health"
     }
     history: {
+      name: "history"
       path: {
         "/api/v3/stories/{story-public-id}/history": {
-          rename: {
-            param: {
-              "story-public-id": "story_id"
-            }
-          }
           op: {
             list: {
               method: "GET"
             }
           }
+          rename: {
+            param: {
+              "story-public-id": "story_id"
+            }
+          }
         }
       }
-      name: "history"
     }
     iteration: {
+      name: "iteration"
       path: {
         "/api/v3/iterations": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  description: "`reqdata.description`"
+                  end_date: "`reqdata.end_date`"
+                  follower_ids: "`reqdata.follower_id`"
+                  group_ids: "`reqdata.group_id`"
+                  labels: "`reqdata.label`"
+                  name: "`reqdata.name`"
+                  start_date: "`reqdata.start_date`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -408,11 +562,6 @@
           }
         }
         "/api/v3/iterations/{iteration-public-id}": {
-          rename: {
-            param: {
-              "iteration-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -422,6 +571,22 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  description: "`reqdata.description`"
+                  end_date: "`reqdata.end_date`"
+                  follower_ids: "`reqdata.follower_id`"
+                  group_ids: "`reqdata.group_id`"
+                  labels: "`reqdata.label`"
+                  name: "`reqdata.name`"
+                  start_date: "`reqdata.start_date`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              "iteration-public-id": "id"
             }
           }
         }
@@ -429,38 +594,58 @@
           op: {
             list: {
               method: "GET"
+              transform: {
+                res: "`body.data`"
+              }
             }
           }
         }
       }
-      name: "iteration"
     }
     key_result: {
+      name: "key_result"
       path: {
         "/api/v3/key-results/{key-result-public-id}": {
-          rename: {
-            param: {
-              "key-result-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  initial_observed_value: "`reqdata.initial_observed_value`"
+                  name: "`reqdata.name`"
+                  observed_value: "`reqdata.observed_value`"
+                  target_value: "`reqdata.target_value`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              "key-result-public-id": "id"
             }
           }
         }
       }
-      name: "key_result"
     }
     label: {
+      name: "label"
       path: {
         "/api/v3/labels": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  color: "`reqdata.color`"
+                  description: "`reqdata.description`"
+                  external_id: "`reqdata.external_id`"
+                  name: "`reqdata.name`"
+                }
+                res: "`body.stats`"
+              }
             }
             list: {
               method: "GET"
@@ -468,32 +653,57 @@
           }
         }
         "/api/v3/labels/{label-public-id}": {
-          rename: {
-            param: {
-              "label-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
+              transform: {
+                res: "`body.stats`"
+              }
             }
             remove: {
               method: "DELETE"
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  archived: "`reqdata.archived`"
+                  color: "`reqdata.color`"
+                  description: "`reqdata.description`"
+                  name: "`reqdata.name`"
+                }
+                res: "`body.stats`"
+              }
+            }
+          }
+          rename: {
+            param: {
+              "label-public-id": "id"
             }
           }
         }
       }
-      name: "label"
     }
     linked_file: {
+      name: "linked_file"
       path: {
         "/api/v3/linked-files": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  content_type: "`reqdata.content_type`"
+                  description: "`reqdata.description`"
+                  name: "`reqdata.name`"
+                  size: "`reqdata.size`"
+                  story_id: "`reqdata.story_id`"
+                  thumbnail_url: "`reqdata.thumbnail_url`"
+                  type: "`reqdata.type`"
+                  uploader_id: "`reqdata.uploader_id`"
+                  url: "`reqdata.url`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -501,11 +711,6 @@
           }
         }
         "/api/v3/linked-files/{linked-file-public-id}": {
-          rename: {
-            param: {
-              "linked-file-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -515,13 +720,30 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  description: "`reqdata.description`"
+                  name: "`reqdata.name`"
+                  size: "`reqdata.size`"
+                  story_id: "`reqdata.story_id`"
+                  thumbnail_url: "`reqdata.thumbnail_url`"
+                  type: "`reqdata.type`"
+                  uploader_id: "`reqdata.uploader_id`"
+                  url: "`reqdata.url`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              "linked-file-public-id": "id"
             }
           }
         }
       }
-      name: "linked_file"
     }
     member: {
+      name: "member"
       path: {
         "/api/v3/member": {
           op: {
@@ -538,43 +760,43 @@
           }
         }
         "/api/v3/members/{member-public-id}": {
-          rename: {
-            param: {
-              "member-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
           }
-        }
-      }
-      name: "member"
-    }
-    milestone: {
-      path: {
-        "/api/v3/categories/{category-public-id}/milestones": {
           rename: {
             param: {
-              "category-public-id": "category_id"
+              "member-public-id": "id"
             }
           }
+        }
+      }
+    }
+    milestone: {
+      name: "milestone"
+      path: {
+        "/api/v3/categories/{category-public-id}/milestones": {
           op: {
             list: {
               method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              "category-public-id": "category_id"
             }
           }
         }
         "/api/v3/categories/{category-public-id}/objectives": {
-          rename: {
-            param: {
-              "category-public-id": "category_id"
-            }
-          }
           op: {
             list: {
               method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              "category-public-id": "category_id"
             }
           }
         }
@@ -582,6 +804,16 @@
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  categories: "`reqdata.category`"
+                  completed_at_override: "`reqdata.completed_at_override`"
+                  description: "`reqdata.description`"
+                  name: "`reqdata.name`"
+                  started_at_override: "`reqdata.started_at_override`"
+                  state: "`reqdata.state`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -589,49 +821,72 @@
           }
         }
         "/api/v3/milestones/{milestone-public-id}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+            remove: {
+              method: "DELETE"
+            }
+            update: {
+              method: "PUT"
+              transform: {
+                req: {
+                  after_id: "`reqdata.after_id`"
+                  archived: "`reqdata.archived`"
+                  before_id: "`reqdata.before_id`"
+                  categories: "`reqdata.category`"
+                  completed_at_override: "`reqdata.completed_at_override`"
+                  description: "`reqdata.description`"
+                  name: "`reqdata.name`"
+                  started_at_override: "`reqdata.started_at_override`"
+                  state: "`reqdata.state`"
+                }
+              }
+            }
+          }
           rename: {
             param: {
               "milestone-public-id": "id"
             }
           }
+        }
+      }
+    }
+    objectif: {
+      name: "objectif"
+      path: {
+        "/api/v3/objectives/{objective-public-id}": {
           op: {
-            load: {
-              method: "GET"
-            }
             remove: {
               method: "DELETE"
             }
-            update: {
-              method: "PUT"
-            }
           }
-        }
-      }
-      name: "milestone"
-    }
-    objectif: {
-      path: {
-        "/api/v3/objectives/{objective-public-id}": {
           rename: {
             param: {
               "objective-public-id": "id"
             }
           }
-          op: {
-            remove: {
-              method: "DELETE"
-            }
-          }
         }
       }
-      name: "objectif"
     }
     objective: {
+      name: "objective"
       path: {
         "/api/v3/objectives": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  categories: "`reqdata.category`"
+                  completed_at_override: "`reqdata.completed_at_override`"
+                  description: "`reqdata.description`"
+                  name: "`reqdata.name`"
+                  started_at_override: "`reqdata.started_at_override`"
+                  state: "`reqdata.state`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -639,29 +894,40 @@
           }
         }
         "/api/v3/objectives/{objective-public-id}": {
-          rename: {
-            param: {
-              "objective-public-id": "objective_public_id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  after_id: "`reqdata.after_id`"
+                  archived: "`reqdata.archived`"
+                  before_id: "`reqdata.before_id`"
+                  categories: "`reqdata.category`"
+                  completed_at_override: "`reqdata.completed_at_override`"
+                  description: "`reqdata.description`"
+                  name: "`reqdata.name`"
+                  started_at_override: "`reqdata.started_at_override`"
+                  state: "`reqdata.state`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              "objective-public-id": "objective_public_id"
             }
           }
         }
-      }
-      name: "objective"
-    }
-    objective_search_result: {
-      path: {
         "/api/v3/search/milestones": {
           op: {
             list: {
               method: "GET"
+              transform: {
+                res: "`body.data`"
+              }
             }
           }
         }
@@ -669,18 +935,36 @@
           op: {
             list: {
               method: "GET"
+              transform: {
+                res: "`body.data`"
+              }
             }
           }
         }
       }
-      name: "objective_search_result"
     }
     project: {
+      name: "project"
       path: {
         "/api/v3/projects": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  abbreviation: "`reqdata.abbreviation`"
+                  color: "`reqdata.color`"
+                  created_at: "`reqdata.created_at`"
+                  description: "`reqdata.description`"
+                  external_id: "`reqdata.external_id`"
+                  follower_ids: "`reqdata.follower_id`"
+                  iteration_length: "`reqdata.iteration_length`"
+                  name: "`reqdata.name`"
+                  start_time: "`reqdata.start_time`"
+                  team_id: "`reqdata.team_id`"
+                  updated_at: "`reqdata.updated_at`"
+                }
+              }
             }
             list: {
               method: "GET"
@@ -688,11 +972,6 @@
           }
         }
         "/api/v3/projects/{project-public-id}": {
-          rename: {
-            param: {
-              "project-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -702,13 +981,31 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  abbreviation: "`reqdata.abbreviation`"
+                  archived: "`reqdata.archived`"
+                  color: "`reqdata.color`"
+                  days_to_thermometer: "`reqdata.days_to_thermometer`"
+                  description: "`reqdata.description`"
+                  follower_ids: "`reqdata.follower_id`"
+                  name: "`reqdata.name`"
+                  show_thermometer: "`reqdata.show_thermometer`"
+                  team_id: "`reqdata.team_id`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              "project-public-id": "id"
             }
           }
         }
       }
-      name: "project"
     }
     repository: {
+      name: "repository"
       path: {
         "/api/v3/repositories": {
           op: {
@@ -718,21 +1015,21 @@
           }
         }
         "/api/v3/repositories/{repo-public-id}": {
-          rename: {
-            param: {
-              "repo-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
           }
+          rename: {
+            param: {
+              "repo-public-id": "id"
+            }
+          }
         }
       }
-      name: "repository"
     }
     search: {
+      name: "search"
       path: {
         "/api/v3/search": {
           op: {
@@ -742,19 +1039,19 @@
           }
         }
       }
-      name: "search"
     }
     story: {
+      name: "story"
       path: {
         "/api/v3/epics/{epic-public-id}/stories": {
-          rename: {
-            param: {
-              "epic-public-id": "epic_id"
-            }
-          }
           op: {
             list: {
               method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              "epic-public-id": "epic_id"
             }
           }
         }
@@ -766,50 +1063,50 @@
           }
         }
         "/api/v3/groups/{group-public-id}/stories": {
+          op: {
+            list: {
+              method: "GET"
+            }
+          }
           rename: {
             param: {
               "group-public-id": "group_id"
             }
           }
+        }
+        "/api/v3/iterations/{iteration-public-id}/stories": {
           op: {
             list: {
               method: "GET"
             }
           }
-        }
-        "/api/v3/iterations/{iteration-public-id}/stories": {
           rename: {
             param: {
               "iteration-public-id": "iteration_id"
             }
           }
+        }
+        "/api/v3/labels/{label-public-id}/stories": {
           op: {
             list: {
               method: "GET"
             }
           }
-        }
-        "/api/v3/labels/{label-public-id}/stories": {
           rename: {
             param: {
               "label-public-id": "label_id"
             }
           }
+        }
+        "/api/v3/projects/{project-public-id}/stories": {
           op: {
             list: {
               method: "GET"
             }
           }
-        }
-        "/api/v3/projects/{project-public-id}/stories": {
           rename: {
             param: {
               "project-public-id": "project_id"
-            }
-          }
-          op: {
-            list: {
-              method: "GET"
             }
           }
         }
@@ -817,6 +1114,9 @@
           op: {
             list: {
               method: "GET"
+              transform: {
+                res: "`body.data`"
+              }
             }
           }
         }
@@ -824,6 +1124,42 @@
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  archived: "`reqdata.archived`"
+                  comments: "`reqdata.comment`"
+                  completed_at_override: "`reqdata.completed_at_override`"
+                  created_at: "`reqdata.created_at`"
+                  custom_fields: "`reqdata.custom_field`"
+                  deadline: "`reqdata.deadline`"
+                  description: "`reqdata.description`"
+                  epic_id: "`reqdata.epic_id`"
+                  estimate: "`reqdata.estimate`"
+                  external_id: "`reqdata.external_id`"
+                  external_links: "`reqdata.external_link`"
+                  file_ids: "`reqdata.file_id`"
+                  follower_ids: "`reqdata.follower_id`"
+                  group_id: "`reqdata.group_id`"
+                  iteration_id: "`reqdata.iteration_id`"
+                  labels: "`reqdata.label`"
+                  linked_file_ids: "`reqdata.linked_file_id`"
+                  move_to: "`reqdata.move_to`"
+                  name: "`reqdata.name`"
+                  owner_ids: "`reqdata.owner_id`"
+                  parent_story_id: "`reqdata.parent_story_id`"
+                  project_id: "`reqdata.project_id`"
+                  requested_by_id: "`reqdata.requested_by_id`"
+                  source_task_id: "`reqdata.source_task_id`"
+                  started_at_override: "`reqdata.started_at_override`"
+                  story_links: "`reqdata.story_link`"
+                  story_template_id: "`reqdata.story_template_id`"
+                  story_type: "`reqdata.story_type`"
+                  sub_tasks: "`reqdata.sub_task`"
+                  tasks: "`reqdata.task`"
+                  updated_at: "`reqdata.updated_at`"
+                  workflow_state_id: "`reqdata.workflow_state_id`"
+                }
+              }
             }
           }
         }
@@ -835,15 +1171,60 @@
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  archived: "`reqdata.archived`"
+                  comments: "`reqdata.comment`"
+                  completed_at_override: "`reqdata.completed_at_override`"
+                  created_at: "`reqdata.created_at`"
+                  custom_fields: "`reqdata.custom_field`"
+                  custom_fields_add: "`reqdata.custom_fields_add`"
+                  custom_fields_remove: "`reqdata.custom_fields_remove`"
+                  deadline: "`reqdata.deadline`"
+                  description: "`reqdata.description`"
+                  epic_id: "`reqdata.epic_id`"
+                  estimate: "`reqdata.estimate`"
+                  external_id: "`reqdata.external_id`"
+                  external_links: "`reqdata.external_link`"
+                  external_links_add: "`reqdata.external_links_add`"
+                  external_links_remove: "`reqdata.external_links_remove`"
+                  file_ids: "`reqdata.file_id`"
+                  file_ids_add: "`reqdata.file_ids_add`"
+                  file_ids_remove: "`reqdata.file_ids_remove`"
+                  follower_ids: "`reqdata.follower_id`"
+                  follower_ids_add: "`reqdata.follower_ids_add`"
+                  follower_ids_remove: "`reqdata.follower_ids_remove`"
+                  group_id: "`reqdata.group_id`"
+                  iteration_id: "`reqdata.iteration_id`"
+                  labels: "`reqdata.label`"
+                  labels_add: "`reqdata.labels_add`"
+                  labels_remove: "`reqdata.labels_remove`"
+                  linked_file_ids: "`reqdata.linked_file_id`"
+                  linked_file_ids_add: "`reqdata.linked_file_ids_add`"
+                  linked_file_ids_remove: "`reqdata.linked_file_ids_remove`"
+                  move_to: "`reqdata.move_to`"
+                  name: "`reqdata.name`"
+                  owner_ids: "`reqdata.owner_id`"
+                  owner_ids_add: "`reqdata.owner_ids_add`"
+                  owner_ids_remove: "`reqdata.owner_ids_remove`"
+                  parent_story_id: "`reqdata.parent_story_id`"
+                  project_id: "`reqdata.project_id`"
+                  requested_by_id: "`reqdata.requested_by_id`"
+                  source_task_id: "`reqdata.source_task_id`"
+                  started_at_override: "`reqdata.started_at_override`"
+                  story_links: "`reqdata.story_link`"
+                  story_template_id: "`reqdata.story_template_id`"
+                  story_type: "`reqdata.story_type`"
+                  sub_tasks: "`reqdata.sub_task`"
+                  tasks: "`reqdata.task`"
+                  updated_at: "`reqdata.updated_at`"
+                  workflow_state_id: "`reqdata.workflow_state_id`"
+                }
+              }
             }
           }
         }
         "/api/v3/stories/{story-public-id}": {
-          rename: {
-            param: {
-              "story-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -853,76 +1234,130 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  after_id: "`reqdata.after_id`"
+                  archived: "`reqdata.archived`"
+                  before_id: "`reqdata.before_id`"
+                  branch_ids: "`reqdata.branch_id`"
+                  commit_ids: "`reqdata.commit_id`"
+                  completed_at_override: "`reqdata.completed_at_override`"
+                  custom_fields: "`reqdata.custom_field`"
+                  deadline: "`reqdata.deadline`"
+                  description: "`reqdata.description`"
+                  epic_id: "`reqdata.epic_id`"
+                  estimate: "`reqdata.estimate`"
+                  external_links: "`reqdata.external_link`"
+                  file_ids: "`reqdata.file_id`"
+                  follower_ids: "`reqdata.follower_id`"
+                  group_id: "`reqdata.group_id`"
+                  iteration_id: "`reqdata.iteration_id`"
+                  labels: "`reqdata.label`"
+                  linked_file_ids: "`reqdata.linked_file_id`"
+                  move_to: "`reqdata.move_to`"
+                  name: "`reqdata.name`"
+                  owner_ids: "`reqdata.owner_id`"
+                  parent_story_id: "`reqdata.parent_story_id`"
+                  project_id: "`reqdata.project_id`"
+                  pull_request_ids: "`reqdata.pull_request_id`"
+                  requested_by_id: "`reqdata.requested_by_id`"
+                  started_at_override: "`reqdata.started_at_override`"
+                  story_type: "`reqdata.story_type`"
+                  workflow_state_id: "`reqdata.workflow_state_id`"
+                }
+              }
             }
           }
-        }
-      }
-      name: "story"
-    }
-    story_comment: {
-      path: {
-        "/api/v3/stories/{story-public-id}/comments": {
           rename: {
             param: {
               "story-public-id": "id"
             }
           }
+        }
+      }
+    }
+    story_comment: {
+      name: "story_comment"
+      path: {
+        "/api/v3/stories/{story-public-id}/comments": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  author_id: "`reqdata.author_id`"
+                  created_at: "`reqdata.created_at`"
+                  external_id: "`reqdata.external_id`"
+                  parent_id: "`reqdata.parent_id`"
+                  text: "`reqdata.text`"
+                  updated_at: "`reqdata.updated_at`"
+                }
+              }
             }
             list: {
               method: "GET"
             }
           }
+          rename: {
+            param: {
+              "story-public-id": "id"
+            }
+          }
         }
         "/api/v3/stories/{story-public-id}/comments/{comment-public-id}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+            update: {
+              method: "PUT"
+              transform: {
+                req: {
+                  text: "`reqdata.text`"
+                }
+              }
+            }
+          }
           rename: {
             param: {
               "comment-public-id": "id"
               "story-public-id": "story_id"
             }
           }
-          op: {
-            load: {
-              method: "GET"
-            }
-            update: {
-              method: "PUT"
-            }
-          }
         }
         "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/unlink-from-slack": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
           rename: {
             param: {
               "comment-public-id": "comment_id"
               "story-public-id": "story_id"
             }
           }
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
         }
       }
-      name: "story_comment"
     }
     story_link: {
+      name: "story_link"
       path: {
         "/api/v3/story-links": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  object_id: "`reqdata.object_id`"
+                  subject_id: "`reqdata.subject_id`"
+                  verb: "`reqdata.verb`"
+                }
+              }
             }
           }
         }
         "/api/v3/story-links/{story-link-public-id}": {
-          rename: {
-            param: {
-              "story-link-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -932,42 +1367,96 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  object_id: "`reqdata.object_id`"
+                  subject_id: "`reqdata.subject_id`"
+                  verb: "`reqdata.verb`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              "story-link-public-id": "id"
             }
           }
         }
       }
-      name: "story_link"
     }
     story_reaction: {
+      name: "story_reaction"
       path: {
         "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions": {
+          op: {
+            create: {
+              method: "POST"
+              transform: {
+                req: {
+                  emoji: "`reqdata.emoji`"
+                }
+              }
+            }
+            remove: {
+              method: "DELETE"
+              transform: {
+                req: {
+                  emoji: "`reqdata.emoji`"
+                }
+              }
+            }
+          }
           rename: {
             param: {
               "comment-public-id": "comment_id"
               "story-public-id": "story_id"
             }
           }
-          op: {
-            create: {
-              method: "POST"
-            }
-            remove: {
-              method: "DELETE"
-            }
-          }
         }
       }
-      name: "story_reaction"
     }
     story_slim: {
+      name: "story_slim"
       path: {
         "/api/v3/stories/bulk": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  stories: "`reqdata.story`"
+                }
+              }
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  after_id: "`reqdata.after_id`"
+                  archived: "`reqdata.archived`"
+                  before_id: "`reqdata.before_id`"
+                  custom_fields_add: "`reqdata.custom_fields_add`"
+                  custom_fields_remove: "`reqdata.custom_fields_remove`"
+                  deadline: "`reqdata.deadline`"
+                  epic_id: "`reqdata.epic_id`"
+                  estimate: "`reqdata.estimate`"
+                  external_links: "`reqdata.external_link`"
+                  follower_ids_add: "`reqdata.follower_ids_add`"
+                  follower_ids_remove: "`reqdata.follower_ids_remove`"
+                  group_id: "`reqdata.group_id`"
+                  iteration_id: "`reqdata.iteration_id`"
+                  labels_add: "`reqdata.labels_add`"
+                  labels_remove: "`reqdata.labels_remove`"
+                  move_to: "`reqdata.move_to`"
+                  owner_ids_add: "`reqdata.owner_ids_add`"
+                  owner_ids_remove: "`reqdata.owner_ids_remove`"
+                  project_id: "`reqdata.project_id`"
+                  requested_by_id: "`reqdata.requested_by_id`"
+                  story_ids: "`reqdata.story_id`"
+                  story_type: "`reqdata.story_type`"
+                  workflow_state_id: "`reqdata.workflow_state_id`"
+                }
+              }
             }
           }
         }
@@ -975,34 +1464,139 @@
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  archived: "`reqdata.archived`"
+                  completed_at_end: "`reqdata.completed_at_end`"
+                  completed_at_start: "`reqdata.completed_at_start`"
+                  created_at_end: "`reqdata.created_at_end`"
+                  created_at_start: "`reqdata.created_at_start`"
+                  deadline_end: "`reqdata.deadline_end`"
+                  deadline_start: "`reqdata.deadline_start`"
+                  epic_id: "`reqdata.epic_id`"
+                  epic_ids: "`reqdata.epic_id`"
+                  estimate: "`reqdata.estimate`"
+                  external_id: "`reqdata.external_id`"
+                  group_id: "`reqdata.group_id`"
+                  group_ids: "`reqdata.group_id`"
+                  includes_description: "`reqdata.includes_description`"
+                  iteration_id: "`reqdata.iteration_id`"
+                  iteration_ids: "`reqdata.iteration_id`"
+                  label_ids: "`reqdata.label_id`"
+                  label_name: "`reqdata.label_name`"
+                  owner_id: "`reqdata.owner_id`"
+                  owner_ids: "`reqdata.owner_id`"
+                  project_id: "`reqdata.project_id`"
+                  project_ids: "`reqdata.project_id`"
+                  requested_by_id: "`reqdata.requested_by_id`"
+                  story_type: "`reqdata.story_type`"
+                  updated_at_end: "`reqdata.updated_at_end`"
+                  updated_at_start: "`reqdata.updated_at_start`"
+                  workflow_state_id: "`reqdata.workflow_state_id`"
+                  workflow_state_types: "`reqdata.workflow_state_type`"
+                }
+              }
             }
           }
         }
       }
-      name: "story_slim"
     }
     task: {
+      name: "task"
       path: {
         "/api/v3/stories/{story-public-id}/tasks": {
+          op: {
+            create: {
+              method: "POST"
+              transform: {
+                req: {
+                  complete: "`reqdata.complete`"
+                  created_at: "`reqdata.created_at`"
+                  description: "`reqdata.description`"
+                  external_id: "`reqdata.external_id`"
+                  owner_ids: "`reqdata.owner_id`"
+                  updated_at: "`reqdata.updated_at`"
+                }
+              }
+            }
+          }
           rename: {
             param: {
               "story-public-id": "story_id"
             }
           }
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
         }
         "/api/v3/stories/{story-public-id}/tasks/{task-public-id}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+            remove: {
+              method: "DELETE"
+            }
+            update: {
+              method: "PUT"
+              transform: {
+                req: {
+                  after_id: "`reqdata.after_id`"
+                  before_id: "`reqdata.before_id`"
+                  complete: "`reqdata.complete`"
+                  description: "`reqdata.description`"
+                  owner_ids: "`reqdata.owner_id`"
+                }
+              }
+            }
+          }
           rename: {
             param: {
               "story-public-id": "story_id"
               "task-public-id": "id"
             }
           }
+        }
+      }
+    }
+    threaded_comment: {
+      name: "threaded_comment"
+      path: {
+        "/api/v3/epics/{epic-public-id}/comments": {
           op: {
+            create: {
+              method: "POST"
+              transform: {
+                req: {
+                  author_id: "`reqdata.author_id`"
+                  created_at: "`reqdata.created_at`"
+                  external_id: "`reqdata.external_id`"
+                  text: "`reqdata.text`"
+                  updated_at: "`reqdata.updated_at`"
+                }
+              }
+            }
+            list: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              "epic-public-id": "epic_id"
+            }
+          }
+        }
+        "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}": {
+          op: {
+            create: {
+              method: "POST"
+              transform: {
+                req: {
+                  author_id: "`reqdata.author_id`"
+                  created_at: "`reqdata.created_at`"
+                  external_id: "`reqdata.external_id`"
+                  text: "`reqdata.text`"
+                  updated_at: "`reqdata.updated_at`"
+                }
+              }
+            }
             load: {
               method: "GET"
             }
@@ -1011,55 +1605,24 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  text: "`reqdata.text`"
+                }
+              }
             }
           }
-        }
-      }
-      name: "task"
-    }
-    threaded_comment: {
-      path: {
-        "/api/v3/epics/{epic-public-id}/comments": {
-          rename: {
-            param: {
-              "epic-public-id": "epic_id"
-            }
-          }
-          op: {
-            create: {
-              method: "POST"
-            }
-            list: {
-              method: "GET"
-            }
-          }
-        }
-        "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}": {
           rename: {
             param: {
               "comment-public-id": "id"
               "epic-public-id": "epic_id"
             }
           }
-          op: {
-            create: {
-              method: "POST"
-            }
-            load: {
-              method: "GET"
-            }
-            remove: {
-              method: "DELETE"
-            }
-            update: {
-              method: "PUT"
-            }
-          }
         }
       }
-      name: "threaded_comment"
     }
     uploaded_file: {
+      name: "uploaded_file"
       path: {
         "/api/v3/files": {
           op: {
@@ -1072,11 +1635,6 @@
           }
         }
         "/api/v3/files/{file-public-id}": {
-          rename: {
-            param: {
-              "file-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -1086,27 +1644,43 @@
             }
             update: {
               method: "PUT"
+              transform: {
+                req: {
+                  created_at: "`reqdata.created_at`"
+                  description: "`reqdata.description`"
+                  external_id: "`reqdata.external_id`"
+                  name: "`reqdata.name`"
+                  updated_at: "`reqdata.updated_at`"
+                  uploader_id: "`reqdata.uploader_id`"
+                }
+              }
+            }
+          }
+          rename: {
+            param: {
+              "file-public-id": "id"
             }
           }
         }
       }
-      name: "uploaded_file"
     }
     webhook: {
+      name: "webhook"
       path: {
         "/api/v3/integrations/webhook": {
           op: {
             create: {
               method: "POST"
+              transform: {
+                req: {
+                  secret: "`reqdata.secret`"
+                  webhook_url: "`reqdata.webhook_url`"
+                }
+              }
             }
           }
         }
         "/api/v3/integrations/webhook/{integration-public-id}": {
-          rename: {
-            param: {
-              "integration-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
@@ -1115,11 +1689,16 @@
               method: "DELETE"
             }
           }
+          rename: {
+            param: {
+              "integration-public-id": "id"
+            }
+          }
         }
       }
-      name: "webhook"
     }
     workflow: {
+      name: "workflow"
       path: {
         "/api/v3/workflows": {
           op: {
@@ -1129,19 +1708,26 @@
           }
         }
         "/api/v3/workflows/{workflow-public-id}": {
-          rename: {
-            param: {
-              "workflow-public-id": "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
           }
+          rename: {
+            param: {
+              "workflow-public-id": "id"
+            }
+          }
         }
       }
-      name: "workflow"
+    }
+  }
+
+  metrics: {
+    count: {
+      entity: 36
+      method: 132
+      path: 78
     }
   }
 

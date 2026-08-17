@@ -8,14 +8,17 @@ guide: {
   entity: component: {
     path: "/pages/{page_id}/components": {  # ent=component;orig=Component;cmp/resolve=component;path=t/p/t/;path-primary;has-cmp=Component
       op: create: method: *POST  # not-load
+      op: create: transform: req: "component": *("`reqdata`")|top
       op: list: method: *GET  # array
     }
     path: "/pages/{page_id}/components/{component_id}": {  # ent=component;orig=Component;tag=component;cmp/resolve=component;path=t/p/;path-primary
       rename: param: "component_id": *"id"  # end-id;GET;parent=true/component;cmp=false
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
+      op: patch: transform: req: "component": *("`reqdata`")|top
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "component": *("`reqdata`")|top
     }
     path: "/pages/{page_id}/components/{component_id}/page_access_groups": {  # ent=component;orig=Component;cmp/resolve=component;path=t/p/t/;cmp-path;cmp-inpath;has-cmp=Component
       action: "page_access_group": {}  # ent;component;ent-param-2nd-last;page_access_groups;POST
@@ -33,6 +36,7 @@ guide: {
       action: "uptime": {}  # ent;component;ent-param-2nd-last;uptime;GET
       rename: param: "component_id": *"id"  # id-parent-ent
       op: load: method: *GET  # not-list
+      op: load: transform: res: *("`body.related_events`")|top
     }
     path: "/pages/{page_id}/page_access_groups/{page_access_group_id}/components": {  # ent=component;orig=Component;cmp/resolve=component;path=t/p/t/;path-primary;has-cmp=Component
       op: list: method: *GET  # array
@@ -45,6 +49,7 @@ guide: {
   entity: component_group_uptime: {
     path: "/pages/{page_id}/component-groups/{id}/uptime": {  # ent=component_group_uptime;orig=ComponentGroupUptime;cmp/resolve=component_group_uptime;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=ComponentGroupUptime
       op: load: method: *GET  # not-list
+      op: load: transform: res: *("`body.related_events`")|top
     }
   }
 
@@ -64,6 +69,7 @@ guide: {
   entity: incident: {
     path: "/pages/{page_id}/incidents": {  # ent=incident;orig=Incident;cmp/resolve=incident;path=t/p/t/;path-primary;has-cmp=Incident
       op: create: method: *POST  # not-load
+      op: create: transform: req: "incident": *("`reqdata`")|top
       op: list: method: *GET  # array
     }
     path: "/pages/{page_id}/incidents/active_maintenance": {  # ent=incident;orig=Incident;cmp/resolve=incident;path=t/;cmp-primary;cmp-infreq
@@ -86,8 +92,10 @@ guide: {
       rename: param: "incident_id": *"id"  # end-id;GET;parent=true/incident;cmp=false
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
+      op: patch: transform: req: "incident": *("`reqdata`")|top
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "incident": *("`reqdata`")|top
     }
   }
 
@@ -115,7 +123,9 @@ guide: {
     path: "/pages/{page_id}/incidents/{incident_id}/incident_updates/{incident_update_id}": {  # ent=incident_update;orig=IncidentUpdate;cmp/resolve=incident_update;path=t/p/;path-primary
       rename: param: "incident_update_id": *"id"  # end-id;PUT;parent=true/incident_update;cmp=false
       op: patch: method: *PATCH  # not-load
+      op: patch: transform: req: "incident_update": *("`reqdata`")|top
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "incident_update": *("`reqdata`")|top
     }
   }
 
@@ -131,17 +141,21 @@ guide: {
       rename: param: "metric_id": *"id"  # end-id;GET;parent=true/metric;cmp=false
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
+      op: patch: transform: req: "metric": *("`reqdata`")|top
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "metric": *("`reqdata`")|top
     }
     path: "/pages/{page_id}/metrics/{metric_id}/data": {  # ent=metric;orig=Metric;cmp/resolve=metric;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Metric
       action: "data": {}  # ent;metric;ent-param-2nd-last;data;POST
       rename: param: "metric_id": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
+      op: create: transform: res: *("`body.data`")|top
       op: remove: method: *DELETE  # not-load
     }
     path: "/pages/{page_id}/metrics_providers/{metrics_provider_id}/metrics": {  # ent=metric;orig=Metric;cmp/resolve=metric;path=t/p/t/;path-primary;has-cmp=Metric
       op: create: method: *POST  # not-load
+      op: create: transform: req: "metric": *("`reqdata`")|top
       op: load: method: *GET  # not-list
     }
     path: "/pages/{page_id}/page_access_users/{page_access_user_id}/metrics": {  # ent=metric;orig=Metric;cmp/resolve=metric;path=t/p/t/;path-primary;has-cmp=Metric
@@ -152,14 +166,17 @@ guide: {
   entity: metrics_provider: {
     path: "/pages/{page_id}/metrics_providers": {  # ent=metrics_provider;orig=MetricsProvider;cmp/resolve=metrics_provider;path=t/p/t/;path-primary;has-cmp=MetricsProvider
       op: create: method: *POST  # not-load
+      op: create: transform: req: "metrics_provider": *("`reqdata`")|top
       op: list: method: *GET  # array
     }
     path: "/pages/{page_id}/metrics_providers/{metrics_provider_id}": {  # ent=metrics_provider;orig=MetricsProvider;cmp/resolve=metrics_provider;path=t/p/;path-primary
       rename: param: "metrics_provider_id": *"id"  # end-id;GET;parent=true/metrics_provider;cmp=false
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
+      op: patch: transform: req: "metrics_provider": *("`reqdata`")|top
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "metrics_provider": *("`reqdata`")|top
     }
   }
 
@@ -171,7 +188,9 @@ guide: {
       rename: param: "page_id": *"id"  # end-id;GET;parent=true/page;cmp=false
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
+      op: patch: transform: req: "page": *("`reqdata`")|top
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "page": *("`reqdata`")|top
     }
   }
 
@@ -179,14 +198,17 @@ guide: {
     path: "/pages/{page_id}/page_access_groups": {  # ent=page_access_group;orig=PageAccessGroup;cmp/resolve=page_access_group;path=t/p/t/;path-primary;has-cmp=PageAccessGroup
       rename: param: "page_id": *"id"  # action-parent:page_access_group
       op: create: method: *POST  # not-load
+      op: create: transform: req: "page_access_group": *("`reqdata`")|top
       op: list: method: *GET  # array
     }
     path: "/pages/{page_id}/page_access_groups/{page_access_group_id}": {  # ent=page_access_group;orig=PageAccessGroup;cmp/resolve=page_access_group;path=t/p/;path-primary
       rename: param: "page_access_group_id": *"id"  # end-id;GET;parent=true/page_access_group;cmp=false
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
+      op: patch: transform: req: "page_access_group": *("`reqdata`")|top
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "page_access_group": *("`reqdata`")|top
     }
     path: "/pages/{page_id}/page_access_groups/{page_access_group_id}/components": {  # ent=page_access_group;orig=PageAccessGroup;cmp/resolve=page_access_group;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=PageAccessGroup
       action: "component": {}  # ent;page_access_group;ent-param-2nd-last;components;POST
@@ -206,6 +228,7 @@ guide: {
     path: "/pages/{page_id}/page_access_users": {  # ent=page_access_user;orig=PageAccessUser;cmp/resolve=page_access_user;path=t/p/t/;path-primary;has-cmp=PageAccessUser
       rename: param: "page_id": *"id"  # action-parent:page_access_user
       op: create: method: *POST  # not-load
+      op: create: transform: req: "page_access_user": *("`reqdata`")|top
       op: list: method: *GET  # array
     }
     path: "/pages/{page_id}/page_access_users/{page_access_user_id}": {  # ent=page_access_user;orig=PageAccessUser;tag=page_access_user;cmp/resolve=page_access_user;path=t/p/;path-primary
@@ -245,7 +268,9 @@ guide: {
     path: "/organizations/{organization_id}/permissions/{user_id}": {  # ent=permission;orig=Permissions;cmp/resolve=permission;path=t/p/;path-primary
       rename: param: "user_id": *"id"  # end-id;GET;parent=true/permission;cmp=false
       op: load: method: *GET  # end-param
+      op: load: transform: res: *("`body.data`")|top
       op: update: method: *PUT  # not-load
+      op: update: transform: res: *("`body.data`")|top
     }
   }
 
@@ -253,10 +278,12 @@ guide: {
     path: "/pages/{page_id}/incidents/{incident_id}/postmortem": {  # ent=postmortem;orig=Postmortem;cmp/resolve=postmortem;path=t/p/t/;path-primary;has-cmp=Postmortem
       op: load: method: *GET  # not-list
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "postmortem": *("`reqdata`")|top
     }
     path: "/pages/{page_id}/incidents/{incident_id}/postmortem/publish": {  # ent=postmortem;orig=Postmortem;cmp/resolve=postmortem;path=t/;cmp-primary;cmp-infreq
       action: "publish": {}  # ent;postmortem;no-param;publish;PUT
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "postmortem": *("`reqdata`")|top
     }
     path: "/pages/{page_id}/incidents/{incident_id}/postmortem/revert": {  # ent=postmortem;orig=Postmortem;cmp/resolve=postmortem;path=t/;cmp-primary;cmp-infreq
       action: "revert": {}  # ent;postmortem;no-param;revert;PUT
@@ -268,13 +295,16 @@ guide: {
     path: "/pages/{page_id}/status_embed_config": {  # ent=status_embed_config;orig=StatusEmbedConfig;cmp/resolve=status_embed_config;path=t/p/t/;path-primary;has-cmp=StatusEmbedConfig
       op: load: method: *GET  # not-list
       op: patch: method: *PATCH  # not-load
+      op: patch: transform: req: "status_embed_config": *("`reqdata`")|top
       op: update: method: *PUT  # not-load
+      op: update: transform: req: "status_embed_config": *("`reqdata`")|top
     }
   }
 
   entity: subscriber: {
     path: "/pages/{page_id}/incidents/{incident_id}/subscribers": {  # ent=subscriber;orig=Subscriber;cmp/resolve=subscriber;path=t/p/t/;path-primary;has-cmp=Subscriber
       op: create: method: *POST  # not-load
+      op: create: transform: req: "subscriber": *("`reqdata`")|top
       op: list: method: *GET  # array
     }
     path: "/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}": {  # ent=subscriber;orig=Subscriber;cmp/resolve=subscriber;path=t/p/;path-primary
@@ -284,6 +314,7 @@ guide: {
     }
     path: "/pages/{page_id}/subscribers": {  # ent=subscriber;orig=Subscriber;cmp/resolve=subscriber;path=t/p/t/;path-primary;has-cmp=Subscriber
       op: create: method: *POST  # not-load
+      op: create: transform: req: "subscriber": *("`reqdata`")|top
       op: list: method: *GET  # array
     }
     path: "/pages/{page_id}/subscribers/count": {  # ent=subscriber;orig=Subscriber;tag/path=subscriber;cmp/resolve=subscriber;path=t/;cmp-primary;cmp-infreq
@@ -326,6 +357,7 @@ guide: {
   entity: user: {
     path: "/organizations/{organization_id}/users": {  # ent=user;orig=User;cmp/resolve=user;path=t/p/t/;path-primary;has-cmp=User
       op: create: method: *POST  # not-load
+      op: create: transform: req: "user": *("`reqdata`")|top
       op: list: method: *GET  # array
     }
     path: "/organizations/{organization_id}/users/{user_id}": {  # ent=user;orig=User;cmp/resolve=user;path=t/p/;path-primary

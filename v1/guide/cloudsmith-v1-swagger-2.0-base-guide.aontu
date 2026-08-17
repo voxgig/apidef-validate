@@ -1,7 +1,7 @@
 # Guide
 
 guide: {
-  metrics: count: entity: 140
+  metrics: count: entity: 131
   metrics: count: path: 201
   metrics: count: method: 325
 
@@ -258,9 +258,11 @@ guide: {
     path: "/metrics/entitlements/{owner}/": {  # ent=entitlement;no-desc;path=t/p/;entres=false/;ent-act
       rename: param: "owner": *"id"  # end-id;GET;parent=true/entitlement;cmp=false
       op: load: method: *GET  # end-param
+      op: load: transform: res: *("`body.tokens`")|top
     }
     path: "/metrics/entitlements/{owner}/{repo}/": {  # ent=entitlement;no-desc;path=t/p/p;entres=false/;ent-act
       op: load: method: *GET  # not-list
+      op: load: transform: res: *("`body.tokens`")|top
     }
   }
 
@@ -307,50 +309,16 @@ guide: {
   entity: gon: {
     path: "/packages/{owner}/{repo}/upload/go/": {  # ent=gon;no-desc;path=t/;entres=false/;ent-act
     }
-  }
-
-  entity: gon2: {
-    path: "/packages/{owner}/{repo}/validate-upload/go/": {  # ent=gon2;no-desc;path=t/;entres=false/;ent-act
+    path: "/packages/{owner}/{repo}/validate-upload/go/": {  # ent=gon;no-desc;path=t/;entres=false/;ent-act
     }
-  }
-
-  entity: gon3: {
-    path: "/repos/{owner}/{identifier}/upstream/go/": {  # ent=gon3;orig=GoUpstream;cmp/resolve=go_upstream;path=t/;path-primary
+    path: "/repos/{owner}/{identifier}/upstream/go/": {  # ent=gon;cmp/resolve=go_upstream;path=t/;path-primary
+      op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-  }
-
-  entity: gon4: {
-    path: "/repos/{owner}/{identifier}/upstream/go/": {  # ent=gon4;no-desc;path=t/;entres=false/;ent-act
-    }
-  }
-
-  entity: gon5: {
-    path: "/repos/{owner}/{identifier}/upstream/go/": {  # ent=gon5;orig=GoUpstream;cmp/resolve=go_upstream;path=t/;path-primary
-      op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: gon6: {
-    path: "/repos/{owner}/{identifier}/upstream/go/{slug_perm}/": {  # ent=gon6;orig=GoUpstream;cmp/resolve=go_upstream;path=t/p/;path-primary
+    path: "/repos/{owner}/{identifier}/upstream/go/{slug_perm}/": {  # ent=gon;cmp/resolve=go_upstream;path=t/p/;path-primary
       op: load: method: *GET  # end-param
-    }
-  }
-
-  entity: gon7: {
-    path: "/repos/{owner}/{identifier}/upstream/go/{slug_perm}/": {  # ent=gon7;no-desc;path=t/p/;entres=false/;ent-act
-    }
-  }
-
-  entity: gon8: {
-    path: "/repos/{owner}/{identifier}/upstream/go/{slug_perm}/": {  # ent=gon8;orig=GoUpstream;cmp/resolve=go_upstream;path=t/p/;path-primary
-      op: update: method: *PUT  # not-load
-    }
-  }
-
-  entity: gon9: {
-    path: "/repos/{owner}/{identifier}/upstream/go/{slug_perm}/": {  # ent=gon9;orig=GoUpstream;cmp/resolve=go_upstream;path=t/p/;path-primary
       op: patch: method: *PATCH  # not-load
+      op: update: method: *PUT  # not-load
     }
   }
 
@@ -607,6 +575,7 @@ guide: {
       action: "license_policy_violation": {}  # ent;org;no-param;license-policy-violation;GET
       rename: param: "org": *"id"  # id-parent-ent
       op: list: method: *GET  # array-prop:results
+      op: list: transform: res: *("`body.results`")|top
     }
     path: "/orgs/{org}/license-policy/": {  # ent=org;orig=Organization;no-desc;path=t/p/t/;entres=false/;prob-ent-act
       action: "license_policy": {}  # ent;org;no-param;license-policy;PARAMETERS
@@ -687,6 +656,7 @@ guide: {
       action: "vulnerability_policy_violation": {}  # ent;org;no-param;vulnerability-policy-violation;GET
       rename: param: "org": *"id"  # id-parent-ent
       op: list: method: *GET  # array-prop:results
+      op: list: transform: res: *("`body.results`")|top
     }
     path: "/orgs/{org}/vulnerability-policy/": {  # ent=org;orig=Organization;no-desc;path=t/p/t/;entres=false/;prob-ent-act
       action: "vulnerability_policy": {}  # ent;org;no-param;vulnerability-policy;PARAMETERS
@@ -823,6 +793,7 @@ guide: {
       rename: param: "team": *"team_id"  # parent:team
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:members
+      op: list: transform: res: *("`body.members`")|top
     }
   }
 
@@ -835,22 +806,21 @@ guide: {
   entity: p2n: {
     path: "/packages/{owner}/{repo}/upload/p2/": {  # ent=p2n;no-desc;path=t/;entres=false/;ent-act
     }
-  }
-
-  entity: p2n2: {
-    path: "/packages/{owner}/{repo}/validate-upload/p2/": {  # ent=p2n2;no-desc;path=t/;entres=false/;ent-act
+    path: "/packages/{owner}/{repo}/validate-upload/p2/": {  # ent=p2n;no-desc;path=t/;entres=false/;ent-act
     }
   }
 
   entity: package: {
     path: "/metrics/packages/{owner}/{repo}/": {  # ent=package;orig=PackageUsageMetrics;no-desc;path=t/p/p;entres=false/;ent-act
       op: load: method: *GET  # not-list
+      op: load: transform: res: *("`body.packages`")|top
     }
     path: "/packages/{owner}/{repo}/": {  # ent=package;orig=PackageUsageMetrics;no-desc;path=t/p/p;entres=false/;ent-act
       op: list: method: *GET  # array
     }
     path: "/packages/{owner}/{repo}/groups/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array-prop:results
+      op: list: transform: res: *("`body.results`")|top
     }
     path: "/packages/{owner}/{repo}/upload/alpine/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
@@ -1017,6 +987,7 @@ guide: {
     }
     path: "/packages/{owner}/{repo}/{identifier}/dependencies/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array-prop:dependencies
+      op: list: transform: res: *("`body.dependencies`")|top
     }
     path: "/packages/{owner}/{repo}/{identifier}/move/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
@@ -1069,6 +1040,7 @@ guide: {
     path: "/orgs/{org}/license-policy/{policy_slug_perm}/evaluation/": {  # ent=package_license_policy_evaluation;orig=PackageLicensePolicyEvaluationRequest;cmp/resolve=package_license_policy_evaluation;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=PackageLicensePolicyEvaluationRequest
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
+      op: create: transform: res: *("`body.policy`")|top
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/license-policy/{policy_slug_perm}/evaluation/{slug_perm}/": {  # ent=package_license_policy_evaluation;orig=PackageLicensePolicyEvaluationRequest;cmp/resolve=package_license_policy_evaluation;path=t/p/;cmp-primary;cmp-infreq
@@ -1076,6 +1048,7 @@ guide: {
       rename: param: "policy_slug_perm": *"license_policy_id"  # not-primary
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/evaluation;cmp=false
       op: load: method: *GET  # end-param
+      op: load: transform: res: *("`body.policy`")|top
     }
   }
 
@@ -1090,6 +1063,7 @@ guide: {
     path: "/orgs/{org}/vulnerability-policy/{policy_slug_perm}/evaluation/": {  # ent=package_vulnerability_policy_evaluation;orig=PackageVulnerabilityPolicyEvaluationRequest;cmp/resolve=package_vulnerability_policy_evaluation;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=PackageVulnerabilityPolicyEvaluationRequest
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
+      op: create: transform: res: *("`body.policy`")|top
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/vulnerability-policy/{policy_slug_perm}/evaluation/{slug_perm}/": {  # ent=package_vulnerability_policy_evaluation;orig=PackageVulnerabilityPolicyEvaluationRequest;cmp/resolve=package_vulnerability_policy_evaluation;path=t/p/;cmp-primary;cmp-infreq
@@ -1097,6 +1071,7 @@ guide: {
       rename: param: "policy_slug_perm": *"vulnerability_policy_id"  # not-primary
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/evaluation;cmp=false
       op: load: method: *GET  # end-param
+      op: load: transform: res: *("`body.policy`")|top
     }
   }
 
@@ -1165,10 +1140,12 @@ guide: {
     }
     path: "/quota/oss/{owner}/": {  # ent=quota;cmp/resolve=quota;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
+      op: load: transform: res: *("`body.usage`")|top
     }
     path: "/quota/{owner}/": {  # ent=quota;no-desc;path=t/p/;entres=false/;ent-act
       rename: param: "owner": *"id"  # end-id;GET;parent=true/quota;cmp=false
       op: load: method: *GET  # end-param
+      op: load: transform: res: *("`body.usage`")|top
     }
   }
 
@@ -1326,6 +1303,7 @@ guide: {
   entity: repository_privilege_input: {
     path: "/repos/{owner}/{identifier}/privileges": {  # ent=repository_privilege_input;orig=RepositoryPrivilegeInput;cmp/resolve=repository_privilege_input;path=p/t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array-prop:privileges
+      op: list: transform: res: *("`body.privileges`")|top
     }
   }
 
@@ -1400,6 +1378,7 @@ guide: {
   entity: resources_rate_check: {
     path: "/rates/limits/": {  # ent=resources_rate_check;orig=ResourcesRateCheck;cmp/resolve=resources_rate_check;path=t/;cmp-primary;cmp-infreq
       op: load: method: *GET  # not-list
+      op: load: transform: res: *("`body.resources`")|top
     }
   }
 
@@ -1585,6 +1564,7 @@ guide: {
     path: "/user/tokens/": {  # ent=user;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
       action: "token": {}  # ent;user;no-param;tokens;GET
       op: list: method: *GET  # array-prop:results
+      op: list: transform: res: *("`body.results`")|top
     }
   }
 

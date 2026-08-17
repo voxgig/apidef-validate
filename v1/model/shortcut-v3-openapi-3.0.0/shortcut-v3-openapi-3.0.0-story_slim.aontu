@@ -71,6 +71,11 @@ main: kit: entity: story_slim: {
       type: "`$INTEGER`"
     }
     {
+      name: "epic_ids"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
       name: "estimate"
       req: false
       type: "`$INTEGER`"
@@ -81,7 +86,7 @@ main: kit: entity: story_slim: {
       type: "`$STRING`"
     }
     {
-      name: "external_link"
+      name: "external_links"
       req: false
       type: "`$ARRAY`"
     }
@@ -101,6 +106,11 @@ main: kit: entity: story_slim: {
       type: "`$STRING`"
     }
     {
+      name: "group_ids"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
       name: "includes_description"
       req: false
       type: "`$BOOLEAN`"
@@ -111,7 +121,12 @@ main: kit: entity: story_slim: {
       type: "`$INTEGER`"
     }
     {
-      name: "label_id"
+      name: "iteration_ids"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "label_ids"
       req: false
       type: "`$ARRAY`"
     }
@@ -141,6 +156,11 @@ main: kit: entity: story_slim: {
       type: "`$STRING`"
     }
     {
+      name: "owner_ids"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
       name: "owner_ids_add"
       req: false
       type: "`$ARRAY`"
@@ -156,17 +176,27 @@ main: kit: entity: story_slim: {
       type: "`$INTEGER`"
     }
     {
+      name: "project_ids"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
       name: "requested_by_id"
       req: false
       type: "`$STRING`"
     }
     {
-      name: "story"
+      name: "stories"
       req: true
       type: "`$ARRAY`"
+      union: {
+        branches: 2
+        count: 1
+        depth: 4
+      }
     }
     {
-      name: "story_id"
+      name: "story_ids"
       req: true
       type: "`$ARRAY`"
     }
@@ -191,7 +221,7 @@ main: kit: entity: story_slim: {
       type: "`$INTEGER`"
     }
     {
-      name: "workflow_state_type"
+      name: "workflow_state_types"
       req: false
       type: "`$ARRAY`"
     }
@@ -212,7 +242,9 @@ main: kit: entity: story_slim: {
             "bulk"
           ]
           transform: {
-            req: "`reqdata`"
+            req: {
+              stories: "`reqdata.story`"
+            }
             res: "`body`"
           }
         }
@@ -226,7 +258,36 @@ main: kit: entity: story_slim: {
             "search"
           ]
           transform: {
-            req: "`reqdata`"
+            req: {
+              archived: "`reqdata.archived`"
+              completed_at_end: "`reqdata.completed_at_end`"
+              completed_at_start: "`reqdata.completed_at_start`"
+              created_at_end: "`reqdata.created_at_end`"
+              created_at_start: "`reqdata.created_at_start`"
+              deadline_end: "`reqdata.deadline_end`"
+              deadline_start: "`reqdata.deadline_start`"
+              epic_id: "`reqdata.epic_id`"
+              epic_ids: "`reqdata.epic_id`"
+              estimate: "`reqdata.estimate`"
+              external_id: "`reqdata.external_id`"
+              group_id: "`reqdata.group_id`"
+              group_ids: "`reqdata.group_id`"
+              includes_description: "`reqdata.includes_description`"
+              iteration_id: "`reqdata.iteration_id`"
+              iteration_ids: "`reqdata.iteration_id`"
+              label_ids: "`reqdata.label_id`"
+              label_name: "`reqdata.label_name`"
+              owner_id: "`reqdata.owner_id`"
+              owner_ids: "`reqdata.owner_id`"
+              project_id: "`reqdata.project_id`"
+              project_ids: "`reqdata.project_id`"
+              requested_by_id: "`reqdata.requested_by_id`"
+              story_type: "`reqdata.story_type`"
+              updated_at_end: "`reqdata.updated_at_end`"
+              updated_at_start: "`reqdata.updated_at_start`"
+              workflow_state_id: "`reqdata.workflow_state_id`"
+              workflow_state_types: "`reqdata.workflow_state_type`"
+            }
             res: "`body`"
           }
         }
@@ -245,7 +306,31 @@ main: kit: entity: story_slim: {
             "bulk"
           ]
           transform: {
-            req: "`reqdata`"
+            req: {
+              after_id: "`reqdata.after_id`"
+              archived: "`reqdata.archived`"
+              before_id: "`reqdata.before_id`"
+              custom_fields_add: "`reqdata.custom_fields_add`"
+              custom_fields_remove: "`reqdata.custom_fields_remove`"
+              deadline: "`reqdata.deadline`"
+              epic_id: "`reqdata.epic_id`"
+              estimate: "`reqdata.estimate`"
+              external_links: "`reqdata.external_link`"
+              follower_ids_add: "`reqdata.follower_ids_add`"
+              follower_ids_remove: "`reqdata.follower_ids_remove`"
+              group_id: "`reqdata.group_id`"
+              iteration_id: "`reqdata.iteration_id`"
+              labels_add: "`reqdata.labels_add`"
+              labels_remove: "`reqdata.labels_remove`"
+              move_to: "`reqdata.move_to`"
+              owner_ids_add: "`reqdata.owner_ids_add`"
+              owner_ids_remove: "`reqdata.owner_ids_remove`"
+              project_id: "`reqdata.project_id`"
+              requested_by_id: "`reqdata.requested_by_id`"
+              story_ids: "`reqdata.story_id`"
+              story_type: "`reqdata.story_type`"
+              workflow_state_id: "`reqdata.workflow_state_id`"
+            }
             res: "`body`"
           }
         }

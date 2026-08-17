@@ -1,19 +1,15 @@
 {
-  metrics: {
-    count: {
-      entity: 4
-      path: 7
-      method: 9
-    }
-  }
-
   entity: {
     domain: {
+      name: "domain"
       path: {
         "/{year}/domain": {
           op: {
             list: {
               method: "GET"
+              transform: {
+                res: "`body.items`"
+              }
             }
           }
         }
@@ -22,14 +18,14 @@
             revoke: {
             }
           }
-          rename: {
-            param: {
-              did: "id"
-            }
-          }
           op: {
             create: {
               method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              did: "id"
             }
           }
         }
@@ -44,55 +40,66 @@
           }
         }
       }
-      name: "domain"
     }
     kingdom: {
+      name: "kingdom"
       path: {
         "/{year}/domain/{domain_id}/kingdom/{kingdom_id}": {
-          rename: {
-            param: {
-              kingdom_id: "id"
-            }
-          }
           op: {
             load: {
               method: "GET"
             }
           }
-        }
-        "/{year}/domain/{id}/kingdom": {
           rename: {
             param: {
-              id: "domain_id"
+              kingdom_id: "id"
             }
           }
+        }
+        "/{year}/domain/{id}/kingdom": {
           op: {
             create: {
               method: "POST"
             }
             list: {
               method: "GET"
+              transform: {
+                res: "`body.items`"
+              }
+            }
+          }
+          rename: {
+            param: {
+              id: "domain_id"
             }
           }
         }
       }
-      name: "kingdom"
     }
     paginated_observation: {
+      name: "paginated_observation"
       path: {
         "/{year}/observation": {
           op: {
             list: {
               method: "GET"
+              transform: {
+                res: "`body.items`"
+              }
             }
           }
         }
       }
-      name: "paginated_observation"
     }
     phylum: {
+      name: "phylum"
       path: {
         "/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
           rename: {
             param: {
               domain: "domain_id"
@@ -100,14 +107,16 @@
               kid: "kingdom_id"
             }
           }
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
         }
       }
-      name: "phylum"
+    }
+  }
+
+  metrics: {
+    count: {
+      entity: 4
+      method: 9
+      path: 7
     }
   }
 
