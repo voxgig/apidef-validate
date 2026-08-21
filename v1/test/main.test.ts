@@ -269,11 +269,19 @@ async function prepCaseGuide(c: Case, fs: FST) {
   const realGuideFilePath = Path.join(TOP_FOLDER, 'guide', guideFileName)
   const virtualGuideFilePath = Path.join('/model', 'guide', guideFileName)
 
+  // TWO FILESYSTEMS, AND THE PATH DECIDES WHICH.
+  //
+  // Anything under TOP_FOLDER is this harness's own bookkeeping — guide
+  // sources, .gen output, goldens — and belongs on real disk where a human
+  // can read and diff it. Anything under /model is generated output and
+  // belongs in the sandbox. `fs` is the union with the in-memory fs winning,
+  // so using it for a repo path silently swallows the write: that is exactly
+  // how a golden refresh came back with nothing to refresh.
   let guideFileSrc = ''
-  const realExists = fs.existsSync(realGuideFilePath)
+  const realExists = Fs.existsSync(realGuideFilePath)
 
   if (realExists) {
-    guideFileSrc = fs.readFileSync(realGuideFilePath).toString('utf8')
+    guideFileSrc = Fs.readFileSync(realGuideFilePath).toString('utf8')
   }
   else {
     guideFileSrc = `
@@ -283,10 +291,10 @@ async function prepCaseGuide(c: Case, fs: FST) {
 
 guide:{}
 `
-    fs.writeFileSync(realGuideFilePath, guideFileSrc)
+    Fs.writeFileSync(realGuideFilePath, guideFileSrc)
   }
 
-  // Ensure guilde file is in virtual fs
+  // Ensure guide file is in virtual fs — a /model path, so the injected fs.
   fs.writeFileSync(virtualGuideFilePath, guideFileSrc)
 
   // console.log('PREP-CASE-GUIDE', guideFileName, realGuideFilePath, realExists, virtualGuideFilePath, guideFileSrc)
@@ -358,16 +366,16 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
 
   const generatedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.gen.aontu`)
-  fs.writeFileSync(generatedBaseGuideFile, baseGuide)
+  Fs.writeFileSync(generatedBaseGuideFile, baseGuide)
 
 
   const expectedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.aontu`)
 
-  if (!fs.existsSync(expectedBaseGuideFile)) {
-    fs.writeFileSync(expectedBaseGuideFile, baseGuide)
+  if (!Fs.existsSync(expectedBaseGuideFile)) {
+    Fs.writeFileSync(expectedBaseGuideFile, baseGuide)
   }
 
-  const expectedBaseGuide = fs.readFileSync(expectedBaseGuideFile, 'utf8').trim()
+  const expectedBaseGuide = Fs.readFileSync(expectedBaseGuideFile, 'utf8').trim()
 
 
   // console.log('<' + expectedBaseGuide + '>')
@@ -401,17 +409,17 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
   const generatedFinalGuideFile =
     Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.gen.aontu`).trim()
 
-  fs.writeFileSync(generatedFinalGuideFile, finalGuide)
+  Fs.writeFileSync(generatedFinalGuideFile, finalGuide)
 
 
   const expectedFinalGuideFile =
     Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.aontu`).trim()
 
-  if (!fs.existsSync(expectedFinalGuideFile)) {
-    fs.writeFileSync(expectedFinalGuideFile, finalGuide)
+  if (!Fs.existsSync(expectedFinalGuideFile)) {
+    Fs.writeFileSync(expectedFinalGuideFile, finalGuide)
   }
 
-  const expectedFinalGuide = fs.readFileSync(expectedFinalGuideFile, 'utf8').trim()
+  const expectedFinalGuide = Fs.readFileSync(expectedFinalGuideFile, 'utf8').trim()
 
   printMismatch(expectedFinalGuide, finalGuide, testmetrics, fails, cfn, showtodo)
 }
@@ -459,7 +467,7 @@ function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
   const volJSON = vol.toJSON()
 
-  fs.mkdirSync(__dirname + '/../model/' + `${cfn}`, { recursive: true })
+  Fs.mkdirSync(__dirname + '/../model/' + `${cfn}`, { recursive: true })
 
   each(bres.apimodel.main.kit.entity, (entity: any) => {
     const efn = `${cfn}-${entity.name}`
@@ -467,16 +475,16 @@ function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
     const entitySrc = volJSON[`/model/entity/${efn}.aontu`].trim()
 
     const generatedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.gen.aontu`
-    fs.writeFileSync(generatedSrcFile, entitySrc)
+    Fs.writeFileSync(generatedSrcFile, entitySrc)
 
     const expectedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.aontu`
 
-    if (!fs.existsSync(expectedSrcFile)) {
-      fs.writeFileSync(expectedSrcFile, entitySrc)
+    if (!Fs.existsSync(expectedSrcFile)) {
+      Fs.writeFileSync(expectedSrcFile, entitySrc)
     }
 
     const expectedEntitySrc =
-      fs.readFileSync(expectedSrcFile, 'utf8')
+      Fs.readFileSync(expectedSrcFile, 'utf8')
         .trim()
 
     // console.log('<' + expectedEntitySrc + '>')
