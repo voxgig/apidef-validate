@@ -51,7 +51,9 @@ function isGraphql(c: Case) {
 // a pre-GraphQL apidef simply has no graphql block in its point schema.
 function graphqlCapable(): boolean {
   try {
-    const modelPath = require.resolve('@voxgig/apidef/model/apidef.aontu')
+    let modelPath = ''
+    try { modelPath = require.resolve('@voxgig/apidef/model/apidef.aon') }
+    catch (e: any) { modelPath = require.resolve('@voxgig/apidef/model/apidef.aontu') }
     return Fs.readFileSync(modelPath, 'utf8').includes("'graphql'")
   }
   catch (err: any) {
@@ -230,6 +232,30 @@ describe('main', () => {
 })
 
 
+// APIDEF WRITES `.aon`; IT USED TO WRITE `.aontu`.
+//
+// Model source files (guide, base-guide, entity) were renamed as part of the
+// aontu file-extension change. apidef migrates a legacy `.aontu` guide it is
+// GIVEN, but everything it WRITES is `.aon`. Reading only one extension makes
+// this harness silently version-locked: against the other apidef the memfs
+// lookup is `undefined` and every case dies on `.trim() of undefined`, a
+// harness bug wearing the costume of an apidef regression.
+//
+// So read whichever apidef produced, and if neither is there say so with both
+// names — the failure is then self-explaining.
+function readModelSource(volJSON: any, dir: string, stem: string): string {
+  for (const ext of ['aon', 'aontu']) {
+    const src = volJSON[`${dir}/${stem}.${ext}`]
+    if (null != src) { return String(src).trim() }
+  }
+  throw new Error(
+    `apidef wrote no model source for ${dir}/${stem}: ` +
+    `tried .aon and .aontu; found: ` +
+    Object.keys(volJSON).filter((k: string) => k.startsWith(dir + '/')).join(', ')
+  )
+}
+
+
 function fullname(c: Case) {
   return `${c.name}-${c.version}-${c.spec}`
 }
@@ -362,7 +388,7 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
   const cfn = fullname(c)
 
   const volJSON = vol.toJSON()
-  const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.aontu`].trim()
+  const baseGuide = readModelSource(volJSON, '/model/guide', `${cfn}-base-guide`)
 
 
   const generatedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.gen.aontu`)
@@ -472,7 +498,7 @@ function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
   each(bres.apimodel.main.kit.entity, (entity: any) => {
     const efn = `${cfn}-${entity.name}`
 
-    const entitySrc = volJSON[`/model/entity/${efn}.aontu`].trim()
+    const entitySrc = readModelSource(volJSON, '/model/entity', efn)
 
     const generatedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.gen.aontu`
     Fs.writeFileSync(generatedSrcFile, entitySrc)

@@ -56,7 +56,13 @@ function isGraphql(c) {
 // a pre-GraphQL apidef simply has no graphql block in its point schema.
 function graphqlCapable() {
     try {
-        const modelPath = require.resolve('@voxgig/apidef/model/apidef.aontu');
+        let modelPath = '';
+        try {
+            modelPath = require.resolve('@voxgig/apidef/model/apidef.aon');
+        }
+        catch (e) {
+            modelPath = require.resolve('@voxgig/apidef/model/apidef.aontu');
+        }
         return Fs.readFileSync(modelPath, 'utf8').includes("'graphql'");
     }
     catch (err) {
@@ -190,6 +196,28 @@ if (0 < caseSelector.length) {
         }
     });
 });
+// APIDEF WRITES `.aon`; IT USED TO WRITE `.aontu`.
+//
+// Model source files (guide, base-guide, entity) were renamed as part of the
+// aontu file-extension change. apidef migrates a legacy `.aontu` guide it is
+// GIVEN, but everything it WRITES is `.aon`. Reading only one extension makes
+// this harness silently version-locked: against the other apidef the memfs
+// lookup is `undefined` and every case dies on `.trim() of undefined`, a
+// harness bug wearing the costume of an apidef regression.
+//
+// So read whichever apidef produced, and if neither is there say so with both
+// names — the failure is then self-explaining.
+function readModelSource(volJSON, dir, stem) {
+    for (const ext of ['aon', 'aontu']) {
+        const src = volJSON[`${dir}/${stem}.${ext}`];
+        if (null != src) {
+            return String(src).trim();
+        }
+    }
+    throw new Error(`apidef wrote no model source for ${dir}/${stem}: ` +
+        `tried .aon and .aontu; found: ` +
+        Object.keys(volJSON).filter((k) => k.startsWith(dir + '/')).join(', '));
+}
 function fullname(c) {
     return `${c.name}-${c.version}-${c.spec}`;
 }
@@ -291,7 +319,7 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
     const showtodo = ('' + todoarg).match(/hide/i);
     const cfn = fullname(c);
     const volJSON = vol.toJSON();
-    const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.aontu`].trim();
+    const baseGuide = readModelSource(volJSON, '/model/guide', `${cfn}-base-guide`);
     const generatedBaseGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.gen.aontu`);
     Fs.writeFileSync(generatedBaseGuideFile, baseGuide);
     const expectedBaseGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.aontu`);
@@ -357,7 +385,7 @@ function validateModel(c, fails, bres, fs, vol, testmetrics) {
     Fs.mkdirSync(__dirname + '/../model/' + `${cfn}`, { recursive: true });
     (0, jostraca_1.each)(bres.apimodel.main.kit.entity, (entity) => {
         const efn = `${cfn}-${entity.name}`;
-        const entitySrc = volJSON[`/model/entity/${efn}.aontu`].trim();
+        const entitySrc = readModelSource(volJSON, '/model/entity', efn);
         const generatedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.gen.aontu`;
         Fs.writeFileSync(generatedSrcFile, entitySrc);
         const expectedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.aontu`;
