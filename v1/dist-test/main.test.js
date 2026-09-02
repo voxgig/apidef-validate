@@ -45,31 +45,13 @@ const apidef_1 = require("@voxgig/apidef");
 const jostraca_1 = require("jostraca");
 const __1 = require("../..");
 const __2 = require("..");
+const capability_1 = require("./capability");
 // A GraphQL case is identified by its spec slug, which is also what the def
 // file extension follows.
 function isGraphql(c) {
     return 'graphql' === c.spec;
 }
-// GraphQL ingestion landed after the currently published @voxgig/apidef, so
-// the installed copy may not understand these cases at all. Detect the
-// capability from the shipped model rather than by version arithmetic:
-// a pre-GraphQL apidef simply has no graphql block in its point schema.
-function graphqlCapable() {
-    try {
-        let modelPath = '';
-        try {
-            modelPath = require.resolve('@voxgig/apidef/model/apidef.aon');
-        }
-        catch (e) {
-            modelPath = require.resolve('@voxgig/apidef/model/apidef.aontu');
-        }
-        return Fs.readFileSync(modelPath, 'utf8').includes("'graphql'");
-    }
-    catch (err) {
-        return false;
-    }
-}
-const GRAPHQL_CAPABLE = graphqlCapable();
+const GRAPHQL_CAPABLE = (0, capability_1.graphqlCapable)();
 const TOP_FOLDER = node_path_1.default.join(__dirname, '..');
 let cases = [
     { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },

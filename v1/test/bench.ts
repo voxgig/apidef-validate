@@ -9,6 +9,10 @@ import {
   makefs,
 } from '../..'
 
+import {
+  graphqlCapable
+} from './capability'
+
 
 type FST = typeof Fs
 
@@ -23,19 +27,6 @@ type Case = {
 
 function isGraphql(c: Case) {
   return 'graphql' === c.spec
-}
-
-
-// See the note on the same check in test/main.test.ts.
-function graphqlCapable(): boolean {
-  try {
-    return Fs.readFileSync(
-      require.resolve('@voxgig/apidef/model/apidef.aontu'), 'utf8')
-      .includes("'graphql'")
-  }
-  catch (err: any) {
-    return false
-  }
 }
 
 

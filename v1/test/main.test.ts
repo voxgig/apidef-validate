@@ -20,6 +20,10 @@ import {
   main
 } from '..'
 
+import {
+  graphqlCapable
+} from './capability'
+
 
 
 type FST = typeof Fs
@@ -42,23 +46,6 @@ type Case = {
 // file extension follows.
 function isGraphql(c: Case) {
   return 'graphql' === c.spec
-}
-
-
-// GraphQL ingestion landed after the currently published @voxgig/apidef, so
-// the installed copy may not understand these cases at all. Detect the
-// capability from the shipped model rather than by version arithmetic:
-// a pre-GraphQL apidef simply has no graphql block in its point schema.
-function graphqlCapable(): boolean {
-  try {
-    let modelPath = ''
-    try { modelPath = require.resolve('@voxgig/apidef/model/apidef.aon') }
-    catch (e: any) { modelPath = require.resolve('@voxgig/apidef/model/apidef.aontu') }
-    return Fs.readFileSync(modelPath, 'utf8').includes("'graphql'")
-  }
-  catch (err: any) {
-    return false
-  }
 }
 
 
