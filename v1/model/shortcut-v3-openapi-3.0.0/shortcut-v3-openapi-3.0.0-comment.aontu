@@ -4,6 +4,19 @@ main: kit: entity: comment: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "comment"
   op: {
     remove: {
@@ -30,20 +43,32 @@ main: kit: entity: comment: {
           }
           method: "DELETE"
           orig: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}"
-          parts: [
-            "api"
-            "v3"
-            "stories"
-            "{story_id}"
-            "comments"
-            "{id}"
-          ]
           rename: {
             param: {
               "comment-public-id": "id"
               "story-public-id": "story_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v3"
+            }
+            {
+              lit: "stories"
+            }
+            {
+              var: "story_id"
+            }
+            {
+              lit: "comments"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

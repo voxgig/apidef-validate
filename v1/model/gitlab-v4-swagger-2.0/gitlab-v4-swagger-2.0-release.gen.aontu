@@ -4,6 +4,19 @@ main: kit: entity: release: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "release"
   op: {
     load: {
@@ -39,22 +52,38 @@ main: kit: entity: release: {
           }
           method: "GET"
           orig: "/api/v4/projects/{id}/releases/{tag_name}/downloads/*direct_asset_path"
-          parts: [
-            "api"
-            "v4"
-            "projects"
-            "{project_id}"
-            "releases"
-            "{release_id}"
-            "downloads"
-            "*direct_asset_path"
-          ]
           rename: {
             param: {
               id: "project_id"
               tag_name: "release_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "releases"
+            }
+            {
+              var: "release_id"
+            }
+            {
+              lit: "downloads"
+            }
+            {
+              lit: "*direct_asset_path"
+            }
+          ]
           select: {
             "$action": "download_direct_asset_path"
             exist: [
@@ -91,21 +120,37 @@ main: kit: entity: release: {
           }
           method: "GET"
           orig: "/api/v4/projects/{id}/releases/permalink/latest(/)(*suffix_path)"
-          parts: [
-            "api"
-            "v4"
-            "projects"
-            "{project_id}"
-            "releases"
-            "permalink"
-            "latest("
-            ")(*suffix_path)"
-          ]
           rename: {
             param: {
               id: "project_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "releases"
+            }
+            {
+              lit: "permalink"
+            }
+            {
+              lit: "latest("
+            }
+            {
+              lit: ")(*suffix_path)"
+            }
+          ]
           select: {
             exist: [
               "project_id"
@@ -143,20 +188,32 @@ main: kit: entity: release: {
           }
           method: "DELETE"
           orig: "/api/v4/projects/{id}/releases/{tag_name}"
-          parts: [
-            "api"
-            "v4"
-            "projects"
-            "{project_id}"
-            "releases"
-            "{id}"
-          ]
           rename: {
             param: {
               id: "project_id"
               tag_name: "id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "releases"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

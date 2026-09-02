@@ -4,6 +4,19 @@ main: kit: entity: debian: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "debian"
   op: {
     update: {
@@ -40,21 +53,35 @@ main: kit: entity: debian: {
           }
           method: "PUT"
           orig: "/api/v4/projects/{id}/packages/debian/{file_name}"
-          parts: [
-            "api"
-            "v4"
-            "projects"
-            "{project_id}"
-            "packages"
-            "debian"
-            "{id}"
-          ]
           rename: {
             param: {
               file_name: "id"
               id: "project_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "packages"
+            }
+            {
+              lit: "debian"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

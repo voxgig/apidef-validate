@@ -6,6 +6,11 @@ main: kit: entity: installation_token: {
 
   fields: [
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "permissions"
       req: false
       short: "The permissions granted to the user access token."
@@ -24,6 +29,11 @@ main: kit: entity: installation_token: {
       type: "`$ARRAY`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "installation_token"
   op: {
@@ -45,17 +55,25 @@ main: kit: entity: installation_token: {
           }
           method: "POST"
           orig: "/app/installations/{installation_id}/access_tokens"
-          parts: [
-            "app"
-            "installations"
-            "{id}"
-            "access_tokens"
-          ]
           rename: {
             param: {
               installation_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "app"
+            }
+            {
+              lit: "installations"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "access_tokens"
+            }
+          ]
           select: {
             "$action": "access_tokens"
             exist: [

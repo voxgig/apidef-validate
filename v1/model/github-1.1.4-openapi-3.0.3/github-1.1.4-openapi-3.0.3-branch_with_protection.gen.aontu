@@ -6,12 +6,22 @@ main: kit: entity: branch_with_protection: {
 
   fields: [
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "new_name"
       req: true
       short: "The new name of the branch."
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "branch_with_protection"
   op: {
@@ -46,19 +56,31 @@ main: kit: entity: branch_with_protection: {
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/branches/{branch}/rename"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "branches"
-            "{id}"
-            "rename"
-          ]
           rename: {
             param: {
               branch: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "branches"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "rename"
+            }
+          ]
           select: {
             "$action": "rename"
             exist: [

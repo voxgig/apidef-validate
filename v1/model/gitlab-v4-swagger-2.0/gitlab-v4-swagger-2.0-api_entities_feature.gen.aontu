@@ -17,6 +17,11 @@ main: kit: entity: api_entities_feature: {
       type: "`$OBJECT`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "name"
       req: false
       type: "`$STRING`"
@@ -27,6 +32,11 @@ main: kit: entity: api_entities_feature: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "api_entities_feature"
   op: {
@@ -56,17 +66,25 @@ main: kit: entity: api_entities_feature: {
           }
           method: "POST"
           orig: "/api/v4/features/{name}"
-          parts: [
-            "api"
-            "v4"
-            "features"
-            "{id}"
-          ]
           rename: {
             param: {
               name: "id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "features"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"
@@ -86,10 +104,16 @@ main: kit: entity: api_entities_feature: {
         {
           method: "GET"
           orig: "/api/v4/features"
-          parts: [
-            "api"
-            "v4"
-            "features"
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "features"
+            }
           ]
           transform: {
             req: "`reqdata`"

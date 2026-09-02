@@ -4,6 +4,19 @@ main: kit: entity: unleash_api: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "unleash_api"
   op: {
     load: {
@@ -39,19 +52,31 @@ main: kit: entity: unleash_api: {
           }
           method: "GET"
           orig: "/api/v4/feature_flags/unleash/{project_id}/features"
-          parts: [
-            "api"
-            "v4"
-            "feature_flags"
-            "unleash"
-            "{id}"
-            "features"
-          ]
           rename: {
             param: {
               project_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "feature_flags"
+            }
+            {
+              lit: "unleash"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "features"
+            }
+          ]
           select: {
             "$action": "features"
             exist: [
@@ -95,20 +120,34 @@ main: kit: entity: unleash_api: {
           }
           method: "GET"
           orig: "/api/v4/feature_flags/unleash/{project_id}/client/features"
-          parts: [
-            "api"
-            "v4"
-            "feature_flags"
-            "unleash"
-            "{unleash_id}"
-            "client"
-            "features"
-          ]
           rename: {
             param: {
               project_id: "unleash_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "feature_flags"
+            }
+            {
+              lit: "unleash"
+            }
+            {
+              var: "unleash_id"
+            }
+            {
+              lit: "client"
+            }
+            {
+              lit: "features"
+            }
+          ]
           select: {
             exist: [
               "app_name"

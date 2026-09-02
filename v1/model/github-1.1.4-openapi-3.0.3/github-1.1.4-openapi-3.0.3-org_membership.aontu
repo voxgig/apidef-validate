@@ -18,6 +18,11 @@ main: kit: entity: org_membership: {
       type: "`$ARRAY`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "organization"
       req: true
       short: "A GitHub organization."
@@ -64,6 +69,11 @@ main: kit: entity: org_membership: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "org_membership"
   op: {
     load: {
@@ -90,18 +100,26 @@ main: kit: entity: org_membership: {
           }
           method: "GET"
           orig: "/orgs/{org}/memberships/{username}"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "memberships"
-            "{id}"
-          ]
           rename: {
             param: {
               org: "org_id"
               username: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "memberships"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"
@@ -139,18 +157,26 @@ main: kit: entity: org_membership: {
           }
           method: "PUT"
           orig: "/orgs/{org}/memberships/{username}"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "memberships"
-            "{id}"
-          ]
           rename: {
             param: {
               org: "org_id"
               username: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "memberships"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

@@ -4,6 +4,19 @@ main: kit: entity: cluster_agent: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "cluster_agent"
   op: {
     remove: {
@@ -37,22 +50,38 @@ main: kit: entity: cluster_agent: {
           }
           method: "DELETE"
           orig: "/api/v4/projects/{id}/cluster_agents/{agent_id}/tokens/{token_id}"
-          parts: [
-            "api"
-            "v4"
-            "projects"
-            "{project_id}"
-            "cluster_agents"
-            "{id}"
-            "tokens"
-            "{token_id}"
-          ]
           rename: {
             param: {
               agent_id: "id"
               id: "project_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "cluster_agents"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "tokens"
+            }
+            {
+              var: "token_id"
+            }
+          ]
           select: {
             exist: [
               "id"
@@ -86,20 +115,32 @@ main: kit: entity: cluster_agent: {
           }
           method: "DELETE"
           orig: "/api/v4/projects/{id}/cluster_agents/{agent_id}"
-          parts: [
-            "api"
-            "v4"
-            "projects"
-            "{project_id}"
-            "cluster_agents"
-            "{id}"
-          ]
           rename: {
             param: {
               agent_id: "id"
               id: "project_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "cluster_agents"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

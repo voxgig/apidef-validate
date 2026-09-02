@@ -29,6 +29,11 @@ main: kit: entity: git_commit: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "message"
       req: true
       short: "Message describing the purpose of the commit"
@@ -81,6 +86,11 @@ main: kit: entity: git_commit: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "git_commit"
   op: {
     create: {
@@ -107,12 +117,22 @@ main: kit: entity: git_commit: {
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/git/commits"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "commits"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "commits"
+            }
           ]
           select: {
             exist: [
@@ -158,19 +178,31 @@ main: kit: entity: git_commit: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/git/commits/{commit_sha}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "commits"
-            "{id}"
-          ]
           rename: {
             param: {
               commit_sha: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

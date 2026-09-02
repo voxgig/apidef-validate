@@ -63,6 +63,11 @@ main: kit: entity: global_advisory: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "identifiers"
       req: true
       type: "`$ARRAY`"
@@ -139,6 +144,11 @@ main: kit: entity: global_advisory: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "global_advisory"
   op: {
@@ -282,8 +292,10 @@ main: kit: entity: global_advisory: {
           }
           method: "GET"
           orig: "/advisories"
-          parts: [
-            "advisories"
+          segments: [
+            {
+              lit: "advisories"
+            }
           ]
           select: {
             exist: [
@@ -331,15 +343,19 @@ main: kit: entity: global_advisory: {
           }
           method: "GET"
           orig: "/advisories/{ghsa_id}"
-          parts: [
-            "advisories"
-            "{id}"
-          ]
           rename: {
             param: {
               ghsa_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "advisories"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

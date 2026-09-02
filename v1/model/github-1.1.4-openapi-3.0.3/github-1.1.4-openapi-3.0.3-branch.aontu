@@ -17,6 +17,11 @@ main: kit: entity: branch: {
       }
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "links"
       req: true
       type: "`$OBJECT`"
@@ -59,6 +64,11 @@ main: kit: entity: branch: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "branch"
   op: {
     load: {
@@ -92,18 +102,28 @@ main: kit: entity: branch: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/branches/{branch}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "branches"
-            "{id}"
-          ]
           rename: {
             param: {
               branch: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "branches"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

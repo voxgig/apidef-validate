@@ -21,6 +21,11 @@ main: kit: entity: api_insights_user_stat: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "integration_id"
       req: false
       type: "`$INTEGER`"
@@ -51,6 +56,11 @@ main: kit: entity: api_insights_user_stat: {
       type: "`$INTEGER`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "api_insights_user_stat"
   op: {
@@ -132,20 +142,32 @@ main: kit: entity: api_insights_user_stat: {
           }
           method: "GET"
           orig: "/orgs/{org}/insights/api/user-stats/{user_id}"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "insights"
-            "api"
-            "user-stats"
-            "{id}"
-          ]
           rename: {
             param: {
               org: "org_id"
               user_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "insights"
+            }
+            {
+              lit: "api"
+            }
+            {
+              lit: "user-stats"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "actor_name_substring"

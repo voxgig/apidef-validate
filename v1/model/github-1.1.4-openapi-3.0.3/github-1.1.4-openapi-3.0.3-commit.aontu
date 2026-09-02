@@ -64,6 +64,11 @@ main: kit: entity: commit: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "node_id"
       req: true
       type: "`$STRING`"
@@ -89,6 +94,11 @@ main: kit: entity: commit: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "commit"
   op: {
@@ -116,11 +126,19 @@ main: kit: entity: commit: {
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/merges"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "merges"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "merges"
+            }
           ]
           select: {
             exist: [
@@ -219,11 +237,19 @@ main: kit: entity: commit: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/commits"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "commits"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "commits"
+            }
           ]
           select: {
             exist: [
@@ -290,13 +316,25 @@ main: kit: entity: commit: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/pulls/{pull_number}/commits"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "pulls"
-            "{pull_number}"
-            "commits"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "pull_number"
+            }
+            {
+              lit: "commits"
+            }
           ]
           select: {
             exist: [
@@ -363,18 +401,28 @@ main: kit: entity: commit: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/commits/{ref}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "commits"
-            "{id}"
-          ]
           rename: {
             param: {
               ref: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

@@ -12,6 +12,11 @@ main: kit: entity: git_tree: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "sha"
       req: true
       type: "`$STRING`"
@@ -33,6 +38,11 @@ main: kit: entity: git_tree: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "git_tree"
   op: {
@@ -60,12 +70,22 @@ main: kit: entity: git_tree: {
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/git/trees"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "trees"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "trees"
+            }
           ]
           select: {
             exist: [
@@ -120,19 +140,31 @@ main: kit: entity: git_tree: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/git/trees/{tree_sha}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "trees"
-            "{id}"
-          ]
           rename: {
             param: {
               tree_sha: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "trees"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

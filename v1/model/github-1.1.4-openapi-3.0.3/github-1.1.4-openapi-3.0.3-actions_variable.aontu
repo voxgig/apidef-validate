@@ -12,6 +12,11 @@ main: kit: entity: actions_variable: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "name"
       req: true
       short: "The name of the variable."
@@ -30,6 +35,11 @@ main: kit: entity: actions_variable: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "actions_variable"
   op: {
@@ -71,21 +81,35 @@ main: kit: entity: actions_variable: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/environments/{environment_name}/variables/{name}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "environments"
-            "{environment_id}"
-            "variables"
-            "{id}"
-          ]
           rename: {
             param: {
               environment_name: "environment_id"
               name: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "environments"
+            }
+            {
+              var: "environment_id"
+            }
+            {
+              lit: "variables"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "environment_id"
@@ -127,19 +151,31 @@ main: kit: entity: actions_variable: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/actions/variables/{name}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "actions"
-            "variables"
-            "{id}"
-          ]
           rename: {
             param: {
               name: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "variables"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

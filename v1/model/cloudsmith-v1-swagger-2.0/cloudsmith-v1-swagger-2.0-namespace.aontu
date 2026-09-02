@@ -6,6 +6,11 @@ main: kit: entity: namespace: {
 
   fields: [
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "name"
       req: false
       type: "`$STRING`"
@@ -26,6 +31,11 @@ main: kit: entity: namespace: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "namespace"
   op: {
@@ -53,8 +63,10 @@ main: kit: entity: namespace: {
           }
           method: "GET"
           orig: "/namespaces/"
-          parts: [
-            "namespaces"
+          segments: [
+            {
+              lit: "namespaces"
+            }
           ]
           select: {
             exist: [
@@ -86,15 +98,19 @@ main: kit: entity: namespace: {
           }
           method: "GET"
           orig: "/namespaces/{slug}/"
-          parts: [
-            "namespaces"
-            "{id}"
-          ]
           rename: {
             param: {
               slug: "id"
             }
           }
+          segments: [
+            {
+              lit: "namespaces"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

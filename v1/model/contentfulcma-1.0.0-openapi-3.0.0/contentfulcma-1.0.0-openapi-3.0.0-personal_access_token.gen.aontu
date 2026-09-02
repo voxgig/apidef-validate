@@ -4,6 +4,19 @@ main: kit: entity: personal_access_token: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "personal_access_token"
   op: {
     create: {
@@ -24,10 +37,16 @@ main: kit: entity: personal_access_token: {
           }
           method: "POST"
           orig: "/users/me/access_tokens"
-          parts: [
-            "users"
-            "me"
-            "access_tokens"
+          segments: [
+            {
+              lit: "users"
+            }
+            {
+              lit: "me"
+            }
+            {
+              lit: "access_tokens"
+            }
           ]
           select: {
             exist: [
@@ -58,17 +77,25 @@ main: kit: entity: personal_access_token: {
           }
           method: "GET"
           orig: "/users/me/access_tokens/{token_id}"
-          parts: [
-            "users"
-            "me"
-            "access_tokens"
-            "{id}"
-          ]
           rename: {
             param: {
               token_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "users"
+            }
+            {
+              lit: "me"
+            }
+            {
+              lit: "access_tokens"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"
@@ -82,10 +109,16 @@ main: kit: entity: personal_access_token: {
         {
           method: "GET"
           orig: "/users/me/access_tokens"
-          parts: [
-            "users"
-            "me"
-            "access_tokens"
+          segments: [
+            {
+              lit: "users"
+            }
+            {
+              lit: "me"
+            }
+            {
+              lit: "access_tokens"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -129,18 +162,28 @@ main: kit: entity: personal_access_token: {
           }
           method: "PUT"
           orig: "/users/me/access_tokens/{token_id}/revoked"
-          parts: [
-            "users"
-            "me"
-            "access_tokens"
-            "{access_token_id}"
-            "revoked"
-          ]
           rename: {
             param: {
               token_id: "access_token_id"
             }
           }
+          segments: [
+            {
+              lit: "users"
+            }
+            {
+              lit: "me"
+            }
+            {
+              lit: "access_tokens"
+            }
+            {
+              var: "access_token_id"
+            }
+            {
+              lit: "revoked"
+            }
+          ]
           select: {
             exist: [
               "access_token_id"

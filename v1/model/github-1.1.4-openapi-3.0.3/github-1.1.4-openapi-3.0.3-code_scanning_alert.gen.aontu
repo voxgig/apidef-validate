@@ -66,6 +66,11 @@ main: kit: entity: code_scanning_alert: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "instances_url"
       req: true
       short: "The REST API URL for fetching the list of instances for an alert."
@@ -112,6 +117,11 @@ main: kit: entity: code_scanning_alert: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "code_scanning_alert"
   op: {
     load: {
@@ -145,19 +155,31 @@ main: kit: entity: code_scanning_alert: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "code-scanning"
-            "alerts"
-            "{id}"
-          ]
           rename: {
             param: {
               alert_number: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "alerts"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"
@@ -203,19 +225,31 @@ main: kit: entity: code_scanning_alert: {
           }
           method: "PATCH"
           orig: "/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "code-scanning"
-            "alerts"
-            "{id}"
-          ]
           rename: {
             param: {
               alert_number: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "alerts"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

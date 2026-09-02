@@ -72,6 +72,11 @@ main: kit: entity: dependabot_alert: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "number"
       req: true
       short: "The security alert number."
@@ -108,6 +113,11 @@ main: kit: entity: dependabot_alert: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "dependabot_alert"
   op: {
@@ -254,12 +264,22 @@ main: kit: entity: dependabot_alert: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/dependabot/alerts"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "dependabot"
-            "alerts"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "dependabot"
+            }
+            {
+              lit: "alerts"
+            }
           ]
           select: {
             exist: [
@@ -321,19 +341,31 @@ main: kit: entity: dependabot_alert: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/dependabot/alerts/{alert_number}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "dependabot"
-            "alerts"
-            "{id}"
-          ]
           rename: {
             param: {
               alert_number: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "dependabot"
+            }
+            {
+              lit: "alerts"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"
@@ -379,19 +411,31 @@ main: kit: entity: dependabot_alert: {
           }
           method: "PATCH"
           orig: "/repos/{owner}/{repo}/dependabot/alerts/{alert_number}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "dependabot"
-            "alerts"
-            "{id}"
-          ]
           rename: {
             param: {
               alert_number: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "dependabot"
+            }
+            {
+              lit: "alerts"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

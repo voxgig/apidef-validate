@@ -57,6 +57,11 @@ main: kit: entity: license: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "implementation"
       req: true
       type: "`$STRING`"
@@ -129,6 +134,11 @@ main: kit: entity: license: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "license"
   op: {
     list: {
@@ -164,8 +174,10 @@ main: kit: entity: license: {
           }
           method: "GET"
           orig: "/licenses"
-          parts: [
-            "licenses"
+          segments: [
+            {
+              lit: "licenses"
+            }
           ]
           select: {
             exist: [
@@ -214,11 +226,19 @@ main: kit: entity: license: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/license"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "license"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "license"
+            }
           ]
           select: {
             exist: [
@@ -246,15 +266,19 @@ main: kit: entity: license: {
           }
           method: "GET"
           orig: "/licenses/{license}"
-          parts: [
-            "licenses"
-            "{id}"
-          ]
           rename: {
             param: {
               license: "id"
             }
           }
+          segments: [
+            {
+              lit: "licenses"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

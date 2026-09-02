@@ -12,6 +12,11 @@ main: kit: entity: git_ref: {
       type: "`$BOOLEAN`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "node_id"
       req: true
       type: "`$STRING`"
@@ -45,6 +50,11 @@ main: kit: entity: git_ref: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "git_ref"
   op: {
     create: {
@@ -71,12 +81,22 @@ main: kit: entity: git_ref: {
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/git/refs"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "refs"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "refs"
+            }
           ]
           select: {
             exist: [
@@ -123,19 +143,31 @@ main: kit: entity: git_ref: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/git/ref/{ref}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "ref"
-            "{id}"
-          ]
           rename: {
             param: {
               ref: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "ref"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"
@@ -177,13 +209,25 @@ main: kit: entity: git_ref: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/git/matching-refs/{ref}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "matching-refs"
-            "{ref}"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "matching-refs"
+            }
+            {
+              var: "ref"
+            }
           ]
           select: {
             exist: [
@@ -231,19 +275,31 @@ main: kit: entity: git_ref: {
           }
           method: "PATCH"
           orig: "/repos/{owner}/{repo}/git/refs/{ref}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "refs"
-            "{id}"
-          ]
           rename: {
             param: {
               ref: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "refs"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

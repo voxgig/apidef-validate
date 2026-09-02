@@ -51,6 +51,11 @@ main: kit: entity: namespace_audit_log: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "object"
       req: true
       type: "`$STRING`"
@@ -86,6 +91,11 @@ main: kit: entity: namespace_audit_log: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "namespace_audit_log"
   op: {
@@ -129,15 +139,19 @@ main: kit: entity: namespace_audit_log: {
           }
           method: "GET"
           orig: "/audit-log/{owner}/"
-          parts: [
-            "audit-log"
-            "{id}"
-          ]
           rename: {
             param: {
               owner: "id"
             }
           }
+          segments: [
+            {
+              lit: "audit-log"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

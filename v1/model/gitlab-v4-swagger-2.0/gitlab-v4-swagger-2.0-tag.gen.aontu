@@ -4,6 +4,19 @@ main: kit: entity: tag: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "tag"
   op: {
     remove: {
@@ -30,21 +43,35 @@ main: kit: entity: tag: {
           }
           method: "DELETE"
           orig: "/api/v4/projects/{id}/repository/tags/{tag_name}"
-          parts: [
-            "api"
-            "v4"
-            "projects"
-            "{project_id}"
-            "repository"
-            "tags"
-            "{id}"
-          ]
           rename: {
             param: {
               id: "project_id"
               tag_name: "id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "tags"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

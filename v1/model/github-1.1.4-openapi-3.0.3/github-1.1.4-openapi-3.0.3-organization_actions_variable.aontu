@@ -12,6 +12,11 @@ main: kit: entity: organization_actions_variable: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "name"
       req: true
       short: "The name of the variable."
@@ -42,6 +47,11 @@ main: kit: entity: organization_actions_variable: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "organization_actions_variable"
   op: {
     load: {
@@ -68,19 +78,29 @@ main: kit: entity: organization_actions_variable: {
           }
           method: "GET"
           orig: "/orgs/{org}/actions/variables/{name}"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "actions"
-            "variables"
-            "{id}"
-          ]
           rename: {
             param: {
               name: "id"
               org: "org_id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "variables"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

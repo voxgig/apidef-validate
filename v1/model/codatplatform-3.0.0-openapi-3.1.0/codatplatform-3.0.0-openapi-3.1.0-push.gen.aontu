@@ -42,6 +42,11 @@ main: kit: entity: push: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "links"
       req: true
       type: "`$OBJECT`"
@@ -113,6 +118,11 @@ main: kit: entity: push: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "push"
   op: {
     list: {
@@ -167,16 +177,22 @@ main: kit: entity: push: {
           }
           method: "GET"
           orig: "/companies/{companyId}/push"
-          parts: [
-            "companies"
-            "{company_id}"
-            "push"
-          ]
           rename: {
             param: {
               companyId: "company_id"
             }
           }
+          segments: [
+            {
+              lit: "companies"
+            }
+            {
+              var: "company_id"
+            }
+            {
+              lit: "push"
+            }
+          ]
           select: {
             exist: [
               "company_id"
@@ -218,18 +234,26 @@ main: kit: entity: push: {
           }
           method: "GET"
           orig: "/companies/{companyId}/push/{pushOperationKey}"
-          parts: [
-            "companies"
-            "{company_id}"
-            "push"
-            "{id}"
-          ]
           rename: {
             param: {
               companyId: "company_id"
               pushOperationKey: "id"
             }
           }
+          segments: [
+            {
+              lit: "companies"
+            }
+            {
+              var: "company_id"
+            }
+            {
+              lit: "push"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "company_id"

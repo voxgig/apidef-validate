@@ -18,6 +18,11 @@ main: kit: entity: unit_analytics: {
       type: "`$NUMBER`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "name"
       req: false
       short: "Name of the learning activity"
@@ -48,6 +53,11 @@ main: kit: entity: unit_analytics: {
       type: "`$INTEGER`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "unit_analytics"
   op: {
@@ -91,20 +101,32 @@ main: kit: entity: unit_analytics: {
           }
           method: "GET"
           orig: "/v2/courses/{id}/units/{uid}/analytics"
-          parts: [
-            "v2"
-            "courses"
-            "{course_id}"
-            "units"
-            "{id}"
-            "analytics"
-          ]
           rename: {
             param: {
               id: "course_id"
               uid: "id"
             }
           }
+          segments: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "courses"
+            }
+            {
+              var: "course_id"
+            }
+            {
+              lit: "units"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "analytics"
+            }
+          ]
           select: {
             exist: [
               "authorization"

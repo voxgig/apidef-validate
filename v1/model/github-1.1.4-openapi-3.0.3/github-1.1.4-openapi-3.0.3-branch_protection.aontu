@@ -38,6 +38,11 @@ main: kit: entity: branch_protection: {
       type: "`$OBJECT`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "lock_branch"
       req: false
       short: "Whether to set the branch as read-only."
@@ -98,6 +103,11 @@ main: kit: entity: branch_protection: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "branch_protection"
   op: {
     load: {
@@ -131,19 +141,31 @@ main: kit: entity: branch_protection: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/branches/{branch}/protection"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "branches"
-            "{id}"
-            "protection"
-          ]
           rename: {
             param: {
               branch: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "branches"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "protection"
+            }
+          ]
           select: {
             exist: [
               "id"

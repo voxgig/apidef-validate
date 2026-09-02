@@ -17,6 +17,11 @@ main: kit: entity: organization_invite: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "inviter"
       req: false
       type: "`$STRING`"
@@ -60,6 +65,11 @@ main: kit: entity: organization_invite: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "organization_invite"
   op: {
     create: {
@@ -88,16 +98,22 @@ main: kit: entity: organization_invite: {
           }
           method: "POST"
           orig: "/orgs/{org}/invites/"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "invites"
-          ]
           rename: {
             param: {
               org: "org_id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "invites"
+            }
+          ]
           select: {
             exist: [
               "data"
@@ -144,16 +160,22 @@ main: kit: entity: organization_invite: {
           }
           method: "GET"
           orig: "/orgs/{org}/invites/"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "invites"
-          ]
           rename: {
             param: {
               org: "org_id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "invites"
+            }
+          ]
           select: {
             exist: [
               "org_id"
@@ -201,18 +223,26 @@ main: kit: entity: organization_invite: {
           }
           method: "PATCH"
           orig: "/orgs/{org}/invites/{slug_perm}/"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "invites"
-            "{id}"
-          ]
           rename: {
             param: {
               org: "org_id"
               slug_perm: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "invites"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "data"

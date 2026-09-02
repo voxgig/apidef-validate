@@ -18,12 +18,22 @@ main: kit: entity: company_access_token: {
       type: "`$INTEGER`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "tokenType"
       req: true
       short: "The type of token."
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "company_access_token"
   op: {
@@ -45,16 +55,22 @@ main: kit: entity: company_access_token: {
           }
           method: "GET"
           orig: "/companies/{companyId}/accessToken"
-          parts: [
-            "companies"
-            "{id}"
-            "accessToken"
-          ]
           rename: {
             param: {
               companyId: "id"
             }
           }
+          segments: [
+            {
+              lit: "companies"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "accessToken"
+            }
+          ]
           select: {
             exist: [
               "id"

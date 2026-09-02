@@ -4,6 +4,19 @@ main: kit: entity: snippet: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "snippet"
   op: {
     load: {
@@ -37,21 +50,37 @@ main: kit: entity: snippet: {
           }
           method: "GET"
           orig: "/api/v4/snippets/{id}/files/{ref}/{file_path}/raw"
-          parts: [
-            "api"
-            "v4"
-            "snippets"
-            "{id}"
-            "files"
-            "{file_id}"
-            "{file_path}"
-            "raw"
-          ]
           rename: {
             param: {
               ref: "file_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "files"
+            }
+            {
+              var: "file_id"
+            }
+            {
+              var: "file_path"
+            }
+            {
+              lit: "raw"
+            }
+          ]
           select: {
             exist: [
               "file_id"
@@ -78,12 +107,22 @@ main: kit: entity: snippet: {
           }
           method: "GET"
           orig: "/api/v4/snippets/{id}/raw"
-          parts: [
-            "api"
-            "v4"
-            "snippets"
-            "{id}"
-            "raw"
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "raw"
+            }
           ]
           select: {
             "$action": "raw"
@@ -115,11 +154,19 @@ main: kit: entity: snippet: {
           }
           method: "DELETE"
           orig: "/api/v4/snippets/{id}"
-          parts: [
-            "api"
-            "v4"
-            "snippets"
-            "{id}"
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [

@@ -6,6 +6,11 @@ main: kit: entity: storage_region: {
 
   fields: [
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "label"
       req: true
       short: "Name of the storage region"
@@ -19,6 +24,11 @@ main: kit: entity: storage_region: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "storage_region"
   op: {
     list: {
@@ -27,8 +37,10 @@ main: kit: entity: storage_region: {
         {
           method: "GET"
           orig: "/storage-regions/"
-          parts: [
-            "storage-regions"
+          segments: [
+            {
+              lit: "storage-regions"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -54,15 +66,19 @@ main: kit: entity: storage_region: {
           }
           method: "GET"
           orig: "/storage-regions/{slug}/"
-          parts: [
-            "storage-regions"
-            "{id}"
-          ]
           rename: {
             param: {
               slug: "id"
             }
           }
+          segments: [
+            {
+              lit: "storage-regions"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"
