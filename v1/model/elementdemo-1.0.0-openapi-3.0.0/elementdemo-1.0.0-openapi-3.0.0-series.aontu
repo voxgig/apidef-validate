@@ -1,0 +1,105 @@
+# Entity: series
+
+main: kit: entity: series: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "color"
+      req: true
+      short: "Display color used by the element card renderer."
+      type: "`$STRING`"
+    }
+    {
+      name: "description"
+      req: true
+      short: "One-line description of the series."
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      short: "Series identifier."
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      short: "Series name."
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "series"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/series"
+          segments: [
+            {
+              lit: "series"
+            }
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "series_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/series/{series_id}"
+          rename: {
+            param: {
+              series_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "series"
+            }
+            {
+              var: "id"
+            }
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

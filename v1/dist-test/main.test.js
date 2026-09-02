@@ -76,6 +76,19 @@ let cases = [
     { name: 'petstore', version: '1.0.7', spec: 'swagger-2.0', format: 'json' },
     { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
     { name: 'foo', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
+    // The elementdemo reference SDK's own spec, and the only case in this
+    // corpus that puts a SERVER VARIABLE in the base URL: the account id is
+    // `/api/{account_id}/...`, declared on the server rather than repeated as
+    // a path parameter on all seventeen operations. That is the one shape a
+    // generated SDK substitutes at CONSTRUCTION time instead of per call, and
+    // nothing else here exercised it.
+    //
+    // It is also the only spec with a token EXCHANGE — POST /auth/token
+    // answering `expires_in_requests` — so the auth-exchange classification
+    // has a regression case, and it nests sub-resources two deep
+    // (/element/{element_id}/isotope/{isotope_id}/decay) with action ops
+    // (ionize, decay) hanging off both levels.
+    { name: 'elementdemo', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
     { name: 'learnworlds', version: '2', spec: 'openapi-3.1.0', format: 'yaml' },
     { name: 'statuspage', version: '1.0.0', spec: 'openapi-3.0.0', format: 'json' },
     { name: 'contentfulcma', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },

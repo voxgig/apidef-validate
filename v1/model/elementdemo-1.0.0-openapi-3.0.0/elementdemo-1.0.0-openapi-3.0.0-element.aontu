@@ -1,0 +1,305 @@
+# Entity: element
+
+main: kit: entity: element: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "block"
+      req: true
+      short: "Orbital block, one of s, p, d, f."
+      type: "`$STRING`"
+    }
+    {
+      name: "charge"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "discovered"
+      req: false
+      short: "Year of discovery, absent for elements known since antiquity."
+      type: "`$INTEGER`"
+    }
+    {
+      name: "group"
+      req: false
+      short: "Periodic table column, 1 to 18, absent for the f-block."
+      type: "`$INTEGER`"
+    }
+    {
+      name: "id"
+      req: true
+      short: "Element identifier, the lowercase symbol."
+      type: "`$STRING`"
+    }
+    {
+      name: "ion"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "mass"
+      req: true
+      short: "Standard atomic weight in daltons."
+      type: "`$NUMBER`"
+    }
+    {
+      name: "name"
+      req: true
+      short: "Element name."
+      type: "`$STRING`"
+    }
+    {
+      name: "number"
+      req: true
+      short: "Atomic number."
+      type: "`$INTEGER`"
+    }
+    {
+      name: "ok"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "period"
+      req: true
+      short: "Periodic table row, 1 to 7."
+      type: "`$INTEGER`"
+    }
+    {
+      name: "phase"
+      req: false
+      short: "Phase at standard temperature and pressure."
+      type: "`$STRING`"
+    }
+    {
+      name: "series_id"
+      req: true
+      short: "Chemical series this element belongs to."
+      type: "`$STRING`"
+    }
+    {
+      name: "symbol"
+      req: true
+      short: "Chemical symbol."
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "element"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "element_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/element/{element_id}/ionize"
+          rename: {
+            param: {
+              element_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "element"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "ionize"
+            }
+          ]
+          select: {
+            "$action": "ionize"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "POST"
+          orig: "/element"
+          segments: [
+            {
+              lit: "element"
+            }
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/element"
+          segments: [
+            {
+              lit: "element"
+            }
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "element_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/element/{element_id}"
+          rename: {
+            param: {
+              element_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "element"
+            }
+            {
+              var: "id"
+            }
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "element_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/element/{element_id}"
+          rename: {
+            param: {
+              element_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "element"
+            }
+            {
+              var: "id"
+            }
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "element_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/element/{element_id}"
+          rename: {
+            param: {
+              element_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "element"
+            }
+            {
+              var: "id"
+            }
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

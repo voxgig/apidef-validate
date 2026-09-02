@@ -1,0 +1,105 @@
+# Entity: group
+
+main: kit: entity: group: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "cas"
+      req: true
+      short: "CAS group designation."
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      short: "Group identifier, g1 to g18."
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: false
+      short: "Trivial name, where one exists."
+      type: "`$STRING`"
+    }
+    {
+      name: "number"
+      req: true
+      short: "Group number, 1 to 18."
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "group"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/group"
+          segments: [
+            {
+              lit: "group"
+            }
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "group_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/group/{group_id}"
+          rename: {
+            param: {
+              group_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "group"
+            }
+            {
+              var: "id"
+            }
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}
