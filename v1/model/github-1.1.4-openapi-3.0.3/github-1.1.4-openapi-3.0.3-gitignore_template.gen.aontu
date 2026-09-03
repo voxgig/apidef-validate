@@ -6,6 +6,11 @@ main: kit: entity: gitignore_template: {
 
   fields: [
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "name"
       req: true
       type: "`$STRING`"
@@ -16,6 +21,11 @@ main: kit: entity: gitignore_template: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "gitignore_template"
   op: {
@@ -36,16 +46,22 @@ main: kit: entity: gitignore_template: {
           }
           method: "GET"
           orig: "/gitignore/templates/{name}"
-          parts: [
-            "gitignore"
-            "templates"
-            "{id}"
-          ]
           rename: {
             param: {
               name: "id"
             }
           }
+          segments: [
+            {
+              lit: "gitignore"
+            }
+            {
+              lit: "templates"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

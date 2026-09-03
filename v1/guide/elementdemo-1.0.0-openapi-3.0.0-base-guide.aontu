@@ -1,0 +1,72 @@
+# Guide
+
+guide: {
+  metrics: count: entity: 5
+  metrics: count: path: 11
+  metrics: count: method: 17
+
+  entity: element: {
+    path: "/element": {  # ent=element;orig=Element;cmp/resolve=element;path=t/;path-primary
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/element/{element_id}": {  # ent=element;orig=Element;no-desc;path=t/p/;entres=true/204,401,404,500/nores;path-primary-delete
+      rename: param: "element_id": *"id"  # end-id;GET;parent=true/element;cmp=false
+      op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+    path: "/element/{element_id}/ionize": {  # ent=element;orig=Element;no-desc;path=t/p/t/;entres=false/200,400,401,404,500;prob-ent-act
+      action: "ionize": {}  # ent;element;ent-param-2nd-last;ionize;POST
+      rename: param: "element_id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: group: {
+    path: "/group": {  # ent=group;orig=Group;cmp/resolve=group;path=t/;path-primary
+      op: list: method: *GET  # array
+    }
+    path: "/group/{group_id}": {  # ent=group;orig=Group;cmp/resolve=group;path=t/p/;path-primary
+      rename: param: "group_id": *"id"  # end-id;GET;parent=true/group;cmp=false
+      op: load: method: *GET  # end-param
+    }
+  }
+
+  entity: isotope: {
+    path: "/element/{element_id}/isotope": {  # ent=isotope;orig=Isotope;cmp/resolve=isotope;path=t/p/t/;path-primary;has-cmp=Isotope
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/element/{element_id}/isotope/{isotope_id}": {  # ent=isotope;orig=Isotope;no-desc;path=t/p/;entres=true/204,401,404,500/nores;path-primary-delete
+      rename: param: "isotope_id": *"id"  # end-id;GET;parent=true/isotope;cmp=false
+      op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+    path: "/element/{element_id}/isotope/{isotope_id}/decay": {  # ent=isotope;orig=Isotope;no-desc;path=t/p/t/;entres=false/200,400,401,404,500;prob-ent-act
+      action: "decay": {}  # ent;isotope;ent-param-2nd-last;decay;POST
+      rename: param: "isotope_id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: series: {
+    path: "/series": {  # ent=series;orig=Series;cmp/resolve=series;path=t/;path-primary
+      op: list: method: *GET  # array
+    }
+    path: "/series/{series_id}": {  # ent=series;orig=Series;cmp/resolve=series;path=t/p/;path-primary
+      rename: param: "series_id": *"id"  # end-id;GET;parent=true/series;cmp=false
+      op: load: method: *GET  # end-param
+    }
+  }
+
+  entity: token: {
+    # Deactivated by the heuristic (auth-exchange). Set `active: true` here in guide.aon to generate it as an entity.
+    active: *false
+    path: "/auth/token": {  # ent=token;orig=TokenResponse;cmp/resolve=token;path=t/;path-primary
+      op: create: method: *POST  # not-load
+    }
+  }
+
+}

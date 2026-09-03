@@ -4,6 +4,19 @@ main: kit: entity: security_advisory: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "security_advisory"
   op: {
     create: {
@@ -37,19 +50,31 @@ main: kit: entity: security_advisory: {
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "security-advisories"
-            "{id}"
-            "cve"
-          ]
           rename: {
             param: {
               ghsa_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "security-advisories"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "cve"
+            }
+          ]
           select: {
             "$action": "cve"
             exist: [
@@ -91,19 +116,31 @@ main: kit: entity: security_advisory: {
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "security-advisories"
-            "{id}"
-            "forks"
-          ]
           rename: {
             param: {
               ghsa_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "security-advisories"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "forks"
+            }
+          ]
           select: {
             "$action": "fork"
             exist: [

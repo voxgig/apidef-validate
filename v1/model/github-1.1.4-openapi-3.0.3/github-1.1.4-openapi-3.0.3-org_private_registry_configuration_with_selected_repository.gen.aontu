@@ -12,6 +12,11 @@ main: kit: entity: org_private_registry_configuration_with_selected_repository: 
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "key_id"
       req: true
       short: "The ID of the key you used to encrypt the secret."
@@ -49,6 +54,11 @@ main: kit: entity: org_private_registry_configuration_with_selected_repository: 
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "org_private_registry_configuration_with_selected_repository"
   op: {
     create: {
@@ -68,16 +78,22 @@ main: kit: entity: org_private_registry_configuration_with_selected_repository: 
           }
           method: "POST"
           orig: "/orgs/{org}/private-registries"
-          parts: [
-            "orgs"
-            "{id}"
-            "private-registries"
-          ]
           rename: {
             param: {
               org: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "private-registries"
+            }
+          ]
           select: {
             "$action": "private-registries"
             exist: [

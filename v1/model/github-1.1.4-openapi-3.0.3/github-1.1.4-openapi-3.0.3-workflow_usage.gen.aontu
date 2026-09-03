@@ -20,7 +20,17 @@ main: kit: entity: workflow_usage: {
       req: false
       type: "`$OBJECT`"
     }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "workflow_usage"
   op: {
@@ -55,20 +65,34 @@ main: kit: entity: workflow_usage: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "actions"
-            "workflows"
-            "{id}"
-            "timing"
-          ]
           rename: {
             param: {
               workflow_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "workflows"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "timing"
+            }
+          ]
           select: {
             "$action": "timing"
             exist: [

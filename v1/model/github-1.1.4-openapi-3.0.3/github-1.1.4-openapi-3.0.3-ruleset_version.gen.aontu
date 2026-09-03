@@ -12,6 +12,11 @@ main: kit: entity: ruleset_version: {
       type: "`$OBJECT`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "updated_at"
       req: true
       type: "`$STRING`"
@@ -23,6 +28,11 @@ main: kit: entity: ruleset_version: {
       type: "`$INTEGER`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "ruleset_version"
   op: {
@@ -75,19 +85,31 @@ main: kit: entity: ruleset_version: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/rulesets/{ruleset_id}/history"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "rulesets"
-            "{id}"
-            "history"
-          ]
           rename: {
             param: {
               ruleset_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "rulesets"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "history"
+            }
+          ]
           select: {
             "$action": "history"
             exist: [
@@ -142,19 +164,29 @@ main: kit: entity: ruleset_version: {
           }
           method: "GET"
           orig: "/orgs/{org}/rulesets/{ruleset_id}/history"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "rulesets"
-            "{id}"
-            "history"
-          ]
           rename: {
             param: {
               org: "org_id"
               ruleset_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "rulesets"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "history"
+            }
+          ]
           select: {
             "$action": "history"
             exist: [

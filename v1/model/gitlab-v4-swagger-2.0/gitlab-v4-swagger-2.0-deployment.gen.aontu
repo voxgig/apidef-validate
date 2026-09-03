@@ -4,6 +4,19 @@ main: kit: entity: deployment: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "deployment"
   op: {
     remove: {
@@ -30,20 +43,32 @@ main: kit: entity: deployment: {
           }
           method: "DELETE"
           orig: "/api/v4/projects/{id}/deployments/{deployment_id}"
-          parts: [
-            "api"
-            "v4"
-            "projects"
-            "{project_id}"
-            "deployments"
-            "{id}"
-          ]
           rename: {
             param: {
               deployment_id: "id"
               id: "project_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "deployments"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

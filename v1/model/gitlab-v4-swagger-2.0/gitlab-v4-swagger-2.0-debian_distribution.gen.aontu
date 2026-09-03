@@ -4,6 +4,19 @@ main: kit: entity: debian_distribution: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "debian_distribution"
   op: {
     remove: {
@@ -97,21 +110,35 @@ main: kit: entity: debian_distribution: {
           }
           method: "DELETE"
           orig: "/api/v4/groups/{id}/-/debian_distributions/{codename}"
-          parts: [
-            "api"
-            "v4"
-            "groups"
-            "{group_id}"
-            "-"
-            "debian_distributions"
-            "{id}"
-          ]
           rename: {
             param: {
               codename: "id"
               id: "group_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "-"
+            }
+            {
+              lit: "debian_distributions"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "architecture"
@@ -219,20 +246,32 @@ main: kit: entity: debian_distribution: {
           }
           method: "DELETE"
           orig: "/api/v4/projects/{id}/debian_distributions/{codename}"
-          parts: [
-            "api"
-            "v4"
-            "projects"
-            "{project_id}"
-            "debian_distributions"
-            "{id}"
-          ]
           rename: {
             param: {
               codename: "id"
               id: "project_id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "debian_distributions"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "architecture"

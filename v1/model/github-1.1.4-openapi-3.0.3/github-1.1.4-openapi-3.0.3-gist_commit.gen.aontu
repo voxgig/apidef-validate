@@ -16,6 +16,11 @@ main: kit: entity: gist_commit: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "url"
       req: true
       type: "`$STRING`"
@@ -32,6 +37,11 @@ main: kit: entity: gist_commit: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "gist_commit"
   op: {
@@ -70,16 +80,22 @@ main: kit: entity: gist_commit: {
           }
           method: "GET"
           orig: "/gists/{gist_id}/commits"
-          parts: [
-            "gists"
-            "{id}"
-            "commits"
-          ]
           rename: {
             param: {
               gist_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "gists"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "commits"
+            }
+          ]
           select: {
             exist: [
               "id"

@@ -55,11 +55,19 @@ main: kit: entity: interaction_limit: {
           }
           method: "PUT"
           orig: "/repos/{owner}/{repo}/interaction-limits"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "interaction-limits"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "interaction-limits"
+            }
           ]
           select: {
             exist: [
@@ -86,16 +94,22 @@ main: kit: entity: interaction_limit: {
           }
           method: "PUT"
           orig: "/orgs/{org}/interaction-limits"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "interaction-limits"
-          ]
           rename: {
             param: {
               org: "org_id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "interaction-limits"
+            }
+          ]
           select: {
             exist: [
               "org_id"
@@ -109,9 +123,13 @@ main: kit: entity: interaction_limit: {
         {
           method: "PUT"
           orig: "/user/interaction-limits"
-          parts: [
-            "user"
-            "interaction-limits"
+          segments: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "interaction-limits"
+            }
           ]
           transform: {
             req: "`reqdata`"

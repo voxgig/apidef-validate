@@ -24,6 +24,11 @@ main: kit: entity: format: {
       type: "`$ARRAY`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "name"
       req: true
       short: "Name for the package format"
@@ -61,6 +66,11 @@ main: kit: entity: format: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "format"
   op: {
     list: {
@@ -69,8 +79,10 @@ main: kit: entity: format: {
         {
           method: "GET"
           orig: "/formats/"
-          parts: [
-            "formats"
+          segments: [
+            {
+              lit: "formats"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -96,15 +108,19 @@ main: kit: entity: format: {
           }
           method: "GET"
           orig: "/formats/{slug}/"
-          parts: [
-            "formats"
-            "{id}"
-          ]
           rename: {
             param: {
               slug: "id"
             }
           }
+          segments: [
+            {
+              lit: "formats"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

@@ -17,6 +17,11 @@ main: kit: entity: private_registry: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "key"
       req: true
       short: "The Base64 encoded public key."
@@ -89,6 +94,11 @@ main: kit: entity: private_registry: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "private_registry"
   op: {
     list: {
@@ -126,16 +136,22 @@ main: kit: entity: private_registry: {
           }
           method: "GET"
           orig: "/orgs/{org}/private-registries"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "private-registries"
-          ]
           rename: {
             param: {
               org: "org_id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "private-registries"
+            }
+          ]
           select: {
             exist: [
               "org_id"
@@ -167,17 +183,25 @@ main: kit: entity: private_registry: {
           }
           method: "GET"
           orig: "/orgs/{org}/private-registries/public-key"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "private-registries"
-            "public-key"
-          ]
           rename: {
             param: {
               org: "org_id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "private-registries"
+            }
+            {
+              lit: "public-key"
+            }
+          ]
           select: {
             "$action": "public_key"
             exist: [
@@ -215,18 +239,26 @@ main: kit: entity: private_registry: {
           }
           method: "DELETE"
           orig: "/orgs/{org}/private-registries/{secret_name}"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "private-registries"
-            "{id}"
-          ]
           rename: {
             param: {
               org: "org_id"
               secret_name: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "private-registries"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"
@@ -264,18 +296,26 @@ main: kit: entity: private_registry: {
           }
           method: "PATCH"
           orig: "/orgs/{org}/private-registries/{secret_name}"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "private-registries"
-            "{id}"
-          ]
           rename: {
             param: {
               org: "org_id"
               secret_name: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "private-registries"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

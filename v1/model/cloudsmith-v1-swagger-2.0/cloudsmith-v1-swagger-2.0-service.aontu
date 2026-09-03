@@ -27,6 +27,11 @@ main: kit: entity: service: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "key"
       req: false
       short: "The API key of the service"
@@ -63,6 +68,11 @@ main: kit: entity: service: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "service"
   op: {
     create: {
@@ -91,16 +101,22 @@ main: kit: entity: service: {
           }
           method: "POST"
           orig: "/orgs/{org}/services/"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "services"
-          ]
           rename: {
             param: {
               org: "org_id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "services"
+            }
+          ]
           select: {
             exist: [
               "data"
@@ -133,19 +149,29 @@ main: kit: entity: service: {
           }
           method: "POST"
           orig: "/orgs/{org}/services/{service}/refresh/"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "services"
-            "{id}"
-            "refresh"
-          ]
           rename: {
             param: {
               org: "org_id"
               service: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "services"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "refresh"
+            }
+          ]
           select: {
             "$action": "refresh"
             exist: [
@@ -207,16 +233,22 @@ main: kit: entity: service: {
           }
           method: "GET"
           orig: "/orgs/{org}/services/"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "services"
-          ]
           rename: {
             param: {
               org: "org_id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "services"
+            }
+          ]
           select: {
             exist: [
               "org_id"
@@ -257,18 +289,26 @@ main: kit: entity: service: {
           }
           method: "GET"
           orig: "/orgs/{org}/services/{service}/"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "services"
-            "{id}"
-          ]
           rename: {
             param: {
               org: "org_id"
               service: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "services"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"
@@ -315,18 +355,26 @@ main: kit: entity: service: {
           }
           method: "PATCH"
           orig: "/orgs/{org}/services/{service}/"
-          parts: [
-            "orgs"
-            "{org_id}"
-            "services"
-            "{id}"
-          ]
           rename: {
             param: {
               org: "org_id"
               service: "id"
             }
           }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "services"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "data"

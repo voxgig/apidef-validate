@@ -26,6 +26,11 @@ main: kit: entity: page_build: {
       type: "`$OBJECT`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "pusher"
       req: true
       short: "A GitHub user."
@@ -47,6 +52,11 @@ main: kit: entity: page_build: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "page_build"
   op: {
@@ -92,12 +102,22 @@ main: kit: entity: page_build: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/pages/builds"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "pages"
-            "builds"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pages"
+            }
+            {
+              lit: "builds"
+            }
           ]
           select: {
             exist: [
@@ -145,19 +165,31 @@ main: kit: entity: page_build: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/pages/builds/{build_id}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "pages"
-            "builds"
-            "{id}"
-          ]
           rename: {
             param: {
               build_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pages"
+            }
+            {
+              lit: "builds"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"
@@ -191,13 +223,25 @@ main: kit: entity: page_build: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/pages/builds/latest"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "pages"
-            "builds"
-            "latest"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pages"
+            }
+            {
+              lit: "builds"
+            }
+            {
+              lit: "latest"
+            }
           ]
           select: {
             exist: [

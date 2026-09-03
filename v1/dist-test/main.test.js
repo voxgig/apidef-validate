@@ -45,31 +45,32 @@ const apidef_1 = require("@voxgig/apidef");
 const jostraca_1 = require("jostraca");
 const __1 = require("../..");
 const __2 = require("..");
+const capability_1 = require("./capability");
 // A GraphQL case is identified by its spec slug, which is also what the def
 // file extension follows.
 function isGraphql(c) {
     return 'graphql' === c.spec;
 }
-// GraphQL ingestion landed after the currently published @voxgig/apidef, so
-// the installed copy may not understand these cases at all. Detect the
-// capability from the shipped model rather than by version arithmetic:
-// a pre-GraphQL apidef simply has no graphql block in its point schema.
-function graphqlCapable() {
-    try {
-        const modelPath = require.resolve('@voxgig/apidef/model/apidef.aontu');
-        return Fs.readFileSync(modelPath, 'utf8').includes("'graphql'");
-    }
-    catch (err) {
-        return false;
-    }
-}
-const GRAPHQL_CAPABLE = graphqlCapable();
+const GRAPHQL_CAPABLE = (0, capability_1.graphqlCapable)();
 const TOP_FOLDER = node_path_1.default.join(__dirname, '..');
 let cases = [
     { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
     { name: 'petstore', version: '1.0.7', spec: 'swagger-2.0', format: 'json' },
     { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
     { name: 'foo', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
+    // The elementdemo reference SDK's own spec, and the only case in this
+    // corpus that puts a SERVER VARIABLE in the base URL: the account id is
+    // `/api/{account_id}/...`, declared on the server rather than repeated as
+    // a path parameter on all seventeen operations. That is the one shape a
+    // generated SDK substitutes at CONSTRUCTION time instead of per call, and
+    // nothing else here exercised it.
+    //
+    // It is also the only spec with a token EXCHANGE — POST /auth/token
+    // answering `expires_in_requests` — so the auth-exchange classification
+    // has a regression case, and it nests sub-resources two deep
+    // (/element/{element_id}/isotope/{isotope_id}/decay) with action ops
+    // (ionize, decay) hanging off both levels.
+    { name: 'elementdemo', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
     { name: 'learnworlds', version: '2', spec: 'openapi-3.1.0', format: 'yaml' },
     { name: 'statuspage', version: '1.0.0', spec: 'openapi-3.0.0', format: 'json' },
     { name: 'contentfulcma', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
@@ -190,6 +191,28 @@ if (0 < caseSelector.length) {
         }
     });
 });
+// APIDEF WRITES `.aon`; IT USED TO WRITE `.aontu`.
+//
+// Model source files (guide, base-guide, entity) were renamed as part of the
+// aontu file-extension change. apidef migrates a legacy `.aontu` guide it is
+// GIVEN, but everything it WRITES is `.aon`. Reading only one extension makes
+// this harness silently version-locked: against the other apidef the memfs
+// lookup is `undefined` and every case dies on `.trim() of undefined`, a
+// harness bug wearing the costume of an apidef regression.
+//
+// So read whichever apidef produced, and if neither is there say so with both
+// names — the failure is then self-explaining.
+function readModelSource(volJSON, dir, stem) {
+    for (const ext of ['aon', 'aontu']) {
+        const src = volJSON[`${dir}/${stem}.${ext}`];
+        if (null != src) {
+            return String(src).trim();
+        }
+    }
+    throw new Error(`apidef wrote no model source for ${dir}/${stem}: ` +
+        `tried .aon and .aontu; found: ` +
+        Object.keys(volJSON).filter((k) => k.startsWith(dir + '/')).join(', '));
+}
 function fullname(c) {
     return `${c.name}-${c.version}-${c.spec}`;
 }
@@ -291,7 +314,7 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
     const showtodo = ('' + todoarg).match(/hide/i);
     const cfn = fullname(c);
     const volJSON = vol.toJSON();
-    const baseGuide = volJSON[`/model/guide/${cfn}-base-guide.aontu`].trim();
+    const baseGuide = readModelSource(volJSON, '/model/guide', `${cfn}-base-guide`);
     const generatedBaseGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.gen.aontu`);
     Fs.writeFileSync(generatedBaseGuideFile, baseGuide);
     const expectedBaseGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.aontu`);
@@ -357,7 +380,7 @@ function validateModel(c, fails, bres, fs, vol, testmetrics) {
     Fs.mkdirSync(__dirname + '/../model/' + `${cfn}`, { recursive: true });
     (0, jostraca_1.each)(bres.apimodel.main.kit.entity, (entity) => {
         const efn = `${cfn}-${entity.name}`;
-        const entitySrc = volJSON[`/model/entity/${efn}.aontu`].trim();
+        const entitySrc = readModelSource(volJSON, '/model/entity', efn);
         const generatedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.gen.aontu`;
         Fs.writeFileSync(generatedSrcFile, entitySrc);
         const expectedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.aontu`;

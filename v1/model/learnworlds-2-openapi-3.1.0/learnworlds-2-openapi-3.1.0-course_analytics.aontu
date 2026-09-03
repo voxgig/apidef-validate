@@ -24,6 +24,11 @@ main: kit: entity: course_analytics: {
       type: "`$INTEGER`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "learning_units"
       req: false
       short: "Number of learning activities"
@@ -73,6 +78,11 @@ main: kit: entity: course_analytics: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "course_analytics"
   op: {
     load: {
@@ -108,11 +118,19 @@ main: kit: entity: course_analytics: {
           }
           method: "GET"
           orig: "/v2/courses/{id}/analytics"
-          parts: [
-            "v2"
-            "courses"
-            "{id}"
-            "analytics"
+          segments: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "courses"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "analytics"
+            }
           ]
           select: {
             exist: [

@@ -4,6 +4,19 @@ main: kit: entity: error_tracking_client_key: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "error_tracking_client_key"
   op: {
     remove: {
@@ -30,21 +43,35 @@ main: kit: entity: error_tracking_client_key: {
           }
           method: "DELETE"
           orig: "/api/v4/projects/{id}/error_tracking/client_keys/{key_id}"
-          parts: [
-            "api"
-            "v4"
-            "projects"
-            "{project_id}"
-            "error_tracking"
-            "client_keys"
-            "{id}"
-          ]
           rename: {
             param: {
               id: "project_id"
               key_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "error_tracking"
+            }
+            {
+              lit: "client_keys"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

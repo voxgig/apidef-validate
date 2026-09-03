@@ -6,6 +6,11 @@ main: kit: entity: git_tag: {
 
   fields: [
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "message"
       req: true
       short: "Message describing the purpose of the tag"
@@ -58,6 +63,11 @@ main: kit: entity: git_tag: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "git_tag"
   op: {
     create: {
@@ -84,12 +94,22 @@ main: kit: entity: git_tag: {
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/git/tags"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "tags"
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "tags"
+            }
           ]
           select: {
             exist: [
@@ -135,19 +155,31 @@ main: kit: entity: git_tag: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/git/tags/{tag_sha}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "tags"
-            "{id}"
-          ]
           rename: {
             param: {
               tag_sha: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "tags"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

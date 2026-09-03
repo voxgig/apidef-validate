@@ -1,0 +1,402 @@
+# Entity: isotope
+
+main: kit: entity: isotope: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "abundance"
+      req: false
+      short: "Natural abundance as a fraction, absent for synthetic isotopes."
+      type: "`$NUMBER`"
+    }
+    {
+      name: "element_id"
+      req: true
+      short: "Parent element identifier."
+      type: "`$STRING`"
+    }
+    {
+      name: "halflife"
+      req: false
+      short: "Half-life, absent for stable isotopes."
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: true
+      short: "Isotope identifier, symbol dash mass number."
+      type: "`$STRING`"
+    }
+    {
+      name: "mass"
+      req: true
+      short: "Isotopic mass in daltons."
+      type: "`$NUMBER`"
+    }
+    {
+      name: "mass_number"
+      req: true
+      short: "Total protons and neutrons."
+      type: "`$INTEGER`"
+    }
+    {
+      name: "mode"
+      req: false
+      short: "Primary decay mode, absent for stable isotopes."
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      short: "Isotope name."
+      type: "`$STRING`"
+    }
+    {
+      name: "ok"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "product"
+      req: false
+      short: "Primary decay product isotope, absent for stable isotopes."
+      type: "`$STRING`"
+    }
+    {
+      name: "stable"
+      req: true
+      short: "True if the isotope is stable."
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "steps"
+      req: false
+      type: "`$INTEGER`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "isotope"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "element_id"
+                orig: "element_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "isotope_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/element/{element_id}/isotope/{isotope_id}/decay"
+          rename: {
+            param: {
+              isotope_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "element"
+            }
+            {
+              var: "element_id"
+            }
+            {
+              lit: "isotope"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "decay"
+            }
+          ]
+          select: {
+            "$action": "decay"
+            exist: [
+              "element_id"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "element_id"
+                orig: "element_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/element/{element_id}/isotope"
+          segments: [
+            {
+              lit: "element"
+            }
+            {
+              var: "element_id"
+            }
+            {
+              lit: "isotope"
+            }
+          ]
+          select: {
+            exist: [
+              "element_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "element_id"
+                orig: "element_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/element/{element_id}/isotope"
+          segments: [
+            {
+              lit: "element"
+            }
+            {
+              var: "element_id"
+            }
+            {
+              lit: "isotope"
+            }
+          ]
+          select: {
+            exist: [
+              "element_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "element_id"
+                orig: "element_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "isotope_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/element/{element_id}/isotope/{isotope_id}"
+          rename: {
+            param: {
+              isotope_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "element"
+            }
+            {
+              var: "element_id"
+            }
+            {
+              lit: "isotope"
+            }
+            {
+              var: "id"
+            }
+          ]
+          select: {
+            exist: [
+              "element_id"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "element_id"
+                orig: "element_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "isotope_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/element/{element_id}/isotope/{isotope_id}"
+          rename: {
+            param: {
+              isotope_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "element"
+            }
+            {
+              var: "element_id"
+            }
+            {
+              lit: "isotope"
+            }
+            {
+              var: "id"
+            }
+          ]
+          select: {
+            exist: [
+              "element_id"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "element_id"
+                orig: "element_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "id"
+                orig: "isotope_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/element/{element_id}/isotope/{isotope_id}"
+          rename: {
+            param: {
+              isotope_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "element"
+            }
+            {
+              var: "element_id"
+            }
+            {
+              lit: "isotope"
+            }
+            {
+              var: "id"
+            }
+          ]
+          select: {
+            exist: [
+              "element_id"
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "element"
+      ]
+    ]
+  }
+
+
+
+}

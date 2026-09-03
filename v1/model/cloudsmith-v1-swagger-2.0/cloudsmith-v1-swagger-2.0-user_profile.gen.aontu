@@ -16,6 +16,11 @@ main: kit: entity: user_profile: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "job_title"
       req: false
       type: "`$STRING`"
@@ -58,6 +63,11 @@ main: kit: entity: user_profile: {
     }
   ]
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "user_profile"
   op: {
     load: {
@@ -77,16 +87,22 @@ main: kit: entity: user_profile: {
           }
           method: "GET"
           orig: "/users/profile/{slug}/"
-          parts: [
-            "users"
-            "profile"
-            "{id}"
-          ]
           rename: {
             param: {
               slug: "id"
             }
           }
+          segments: [
+            {
+              lit: "users"
+            }
+            {
+              lit: "profile"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

@@ -21,6 +21,11 @@ main: kit: entity: blob: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "node_id"
       req: true
       type: "`$STRING`"
@@ -41,6 +46,11 @@ main: kit: entity: blob: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "blob"
   op: {
@@ -75,19 +85,31 @@ main: kit: entity: blob: {
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/git/blobs/{file_sha}"
-          parts: [
-            "repos"
-            "{owner}"
-            "{repo}"
-            "git"
-            "blobs"
-            "{id}"
-          ]
           rename: {
             param: {
               file_sha: "id"
             }
           }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "blobs"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

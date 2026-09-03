@@ -4,6 +4,19 @@ main: kit: entity: incident_postmortem: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "incident_postmortem"
   op: {
     remove: {
@@ -30,18 +43,28 @@ main: kit: entity: incident_postmortem: {
           }
           method: "DELETE"
           orig: "/pages/{page_id}/incidents/{incident_id}/postmortem"
-          parts: [
-            "pages"
-            "{page_id}"
-            "incidents"
-            "{id}"
-            "postmortem"
-          ]
           rename: {
             param: {
               incident_id: "id"
             }
           }
+          segments: [
+            {
+              lit: "pages"
+            }
+            {
+              var: "page_id"
+            }
+            {
+              lit: "incidents"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "postmortem"
+            }
+          ]
           select: {
             exist: [
               "id"
