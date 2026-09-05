@@ -14,7 +14,7 @@ where the change shows up as a diff a human can read.
 | `v1/guide/` | the golden guides, one base guide and one final guide per definition, plus the `*-guide.aontu` source each case starts from |
 | `v1/model/<case>/` | the golden entity models, one file per entity |
 | `v1/test/main.test.ts` | the case list and the TypeScript harness |
-| `v1/go/validate_test.go` | the Go harness, with the same case list minus the GraphQL cases |
+| `v1/go/validate_test.go` | the Go harness, with the same case list minus the GraphQL cases and `elementdemo` |
 | `src/main.ts` | the sandbox both TypeScript suites share: a union filesystem that keeps generated output in memory, and the line differ |
 
 A case is named after its definition file, so `petstore-1.0.7-swagger-2.0`
@@ -67,8 +67,9 @@ that they emit the same bytes. `TEST_CASE` selects cases here too, and
 
 ## Goldens
 
-Every run writes a `.gen.aontu` twin beside each golden, so the generated
-output is always on disk next to what was expected. A golden that does not
+Every TypeScript run writes a `.gen.aontu` twin beside each golden it
+compares, so the generated output is always on disk next to what was
+expected; the Go check writes nothing, since it does not compare. A golden that does not
 exist yet is created from the run's output, which is how a new case pins
 itself on its first run. A golden line carrying a `##` comment marks a known
 gap: it is dropped before the comparison and counted as an open TODO.
