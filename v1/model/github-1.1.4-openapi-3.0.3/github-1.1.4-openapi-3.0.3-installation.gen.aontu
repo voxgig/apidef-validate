@@ -6,6 +6,7 @@ main: kit: entity: installation: {
 
   fields: [
     {
+      format: "uri"
       name: "access_tokens_url"
       req: true
       type: "`$STRING`"
@@ -41,6 +42,7 @@ main: kit: entity: installation: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "created_at"
       req: true
       type: "`$STRING`"
@@ -56,6 +58,7 @@ main: kit: entity: installation: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "uri"
       name: "html_url"
       req: true
       type: "`$STRING`"
@@ -73,6 +76,7 @@ main: kit: entity: installation: {
       type: "`$OBJECT`"
     }
     {
+      format: "uri"
       name: "repositories_url"
       req: true
       type: "`$STRING`"
@@ -94,6 +98,7 @@ main: kit: entity: installation: {
       type: "`$ARRAY`"
     }
     {
+      format: "date-time"
       name: "suspended_at"
       req: true
       type: "`$STRING`"
@@ -116,6 +121,7 @@ main: kit: entity: installation: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       req: true
       type: "`$STRING`"
@@ -348,6 +354,106 @@ main: kit: entity: installation: {
             }
           ]
           select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: 1
+                kind: "param"
+                name: "id"
+                orig: "installation_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/app/installations/{installation_id}/suspended"
+          rename: {
+            param: {
+              installation_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "app"
+            }
+            {
+              lit: "installations"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "suspended"
+            }
+          ]
+          select: {
+            "$action": "suspended"
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: 1
+                kind: "param"
+                name: "id"
+                orig: "installation_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/app/installations/{installation_id}/suspended"
+          rename: {
+            param: {
+              installation_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "app"
+            }
+            {
+              lit: "installations"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "suspended"
+            }
+          ]
+          select: {
+            "$action": "suspended"
             exist: [
               "id"
             ]

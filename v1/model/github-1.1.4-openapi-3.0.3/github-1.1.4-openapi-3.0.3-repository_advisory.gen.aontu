@@ -7,12 +7,15 @@ main: kit: entity: repository_advisory: {
   fields: [
     {
       name: "author"
+      readOnly: true
       req: true
       short: "The author of the advisory."
       type: "`$ANY`"
     }
     {
+      format: "date-time"
       name: "closed_at"
+      readOnly: true
       req: true
       short: "The date and time of when the advisory was closed, in ISO 8601 format."
       type: "`$STRING`"
@@ -42,7 +45,9 @@ main: kit: entity: repository_advisory: {
       type: "`$ARRAY`"
     }
     {
+      format: "date-time"
       name: "created_at"
+      readOnly: true
       req: true
       short: "The date and time of when the advisory was created, in ISO 8601 format."
       type: "`$STRING`"
@@ -65,6 +70,7 @@ main: kit: entity: repository_advisory: {
     }
     {
       name: "credits_detailed"
+      readOnly: true
       req: true
       type: "`$ARRAY`"
     }
@@ -118,6 +124,7 @@ main: kit: entity: repository_advisory: {
     }
     {
       name: "cwes"
+      readOnly: true
       req: true
       type: "`$ARRAY`"
     }
@@ -135,35 +142,43 @@ main: kit: entity: repository_advisory: {
     }
     {
       name: "ghsa_id"
+      readOnly: true
       req: true
       short: "The GitHub Security Advisory ID."
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "html_url"
+      readOnly: true
       req: true
       short: "The URL for the advisory."
       type: "`$STRING`"
     }
     {
       name: "identifiers"
+      readOnly: true
       req: true
       type: "`$ARRAY`"
     }
     {
       name: "private_fork"
+      readOnly: true
       req: true
       short: "A temporary private fork of the advisory's repository for collaborating on a fix."
       type: "`$ANY`"
     }
     {
+      format: "date-time"
       name: "published_at"
+      readOnly: true
       req: true
       short: "The date and time of when the advisory was published, in ISO 8601 format."
       type: "`$STRING`"
     }
     {
       name: "publisher"
+      readOnly: true
       req: true
       short: "The publisher of the advisory."
       type: "`$ANY`"
@@ -204,6 +219,7 @@ main: kit: entity: repository_advisory: {
     }
     {
       name: "submission"
+      readOnly: true
       req: true
       type: "`$OBJECT`"
     }
@@ -220,13 +236,17 @@ main: kit: entity: repository_advisory: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "updated_at"
+      readOnly: true
       req: true
       short: "The date and time of when the advisory was last updated, in ISO 8601 format."
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "url"
+      readOnly: true
       req: true
       short: "The API URL for the advisory."
       type: "`$STRING`"
@@ -248,7 +268,9 @@ main: kit: entity: repository_advisory: {
       type: "`$ARRAY`"
     }
     {
+      format: "date-time"
       name: "withdrawn_at"
+      readOnly: true
       req: true
       short: "The date and time of when the advisory was withdrawn, in ISO 8601 format."
       type: "`$STRING`"
@@ -260,6 +282,72 @@ main: kit: entity: repository_advisory: {
     create: {
       name: "create"
       points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "security_advisory_id"
+                orig: "ghsa_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve"
+          rename: {
+            param: {
+              ghsa_id: "security_advisory_id"
+            }
+          }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "security-advisories"
+            }
+            {
+              var: "security_advisory_id"
+            }
+            {
+              lit: "cve"
+            }
+          ]
+          select: {
+            "$action": "cve"
+            exist: [
+              "owner"
+              "repo"
+              "security_advisory_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           args: {
             params: [

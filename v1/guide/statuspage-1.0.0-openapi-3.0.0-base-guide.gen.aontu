@@ -1,7 +1,7 @@
 # Guide
 
 guide: {
-  metrics: count: entity: 18
+  metrics: count: entity: 17
   metrics: count: path: 54
   metrics: count: method: 112
 
@@ -106,12 +106,6 @@ guide: {
     }
   }
 
-  entity: incident_subscriber: {
-    path: "/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}/resend_confirmation": {  # ent=incident_subscriber;orig=incident subscribers;tag=incident_subscriber;cmp/resolve=incident_subscriber;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=incident subscribers
-      op: create: method: *POST  # not-load
-    }
-  }
-
   entity: incident_template: {
     path: "/pages/{page_id}/incident_templates": {  # ent=incident_template;orig=IncidentTemplate;cmp/resolve=incident_template;path=t/p/t/;path-primary;has-cmp=IncidentTemplate
       op: create: method: *POST  # not-load
@@ -147,7 +141,7 @@ guide: {
       op: update: transform: req: "metric": *("`reqdata`")|top
     }
     path: "/pages/{page_id}/metrics/{metric_id}/data": {  # ent=metric;orig=Metric;cmp/resolve=metric;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Metric
-      action: "data": {}  # ent;metric;ent-param-2nd-last;data;POST
+      action: "data": {}  # ent;metric;verb-on-parent;data;POST
       rename: param: "metric_id": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
       op: create: transform: res: *("`body.data`")|top
@@ -312,6 +306,11 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
     }
+    path: "/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}/resend_confirmation": {  # ent=subscriber;orig=Subscriber;tag=incident_subscriber;cmp/resolve=incident_subscriber;path=t/p/t/;verb-on-parent=subscriber
+      action: "resend_confirmation": {}  # ent;subscriber;verb-on-parent;resend_confirmation;POST
+      rename: param: "subscriber_id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
+    }
     path: "/pages/{page_id}/subscribers": {  # ent=subscriber;orig=Subscriber;cmp/resolve=subscriber;path=t/p/t/;path-primary;has-cmp=Subscriber
       op: create: method: *POST  # not-load
       op: create: transform: req: "subscriber": *("`reqdata`")|top
@@ -347,8 +346,8 @@ guide: {
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
     }
-    path: "/pages/{page_id}/subscribers/{subscriber_id}/resend_confirmation": {  # ent=subscriber;orig=Subscriber;tag=subscriber;cmp/resolve=subscriber;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=subscribers
-      action: "resend_confirmation": {}  # ent;subscriber;ent-param-2nd-last;resend_confirmation;POST
+    path: "/pages/{page_id}/subscribers/{subscriber_id}/resend_confirmation": {  # ent=subscriber;orig=Subscriber;tag=subscriber;cmp/resolve=subscriber;path=t/p/t/;verb-on-parent=subscriber
+      action: "resend_confirmation": {}  # ent;subscriber;verb-on-parent;resend_confirmation;POST
       rename: param: "subscriber_id": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
     }

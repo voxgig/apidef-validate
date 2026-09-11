@@ -66,6 +66,7 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "build_timeout"
       req: false
       type: "`$INTEGER`"
@@ -91,11 +92,13 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "ci_default_git_depth"
       req: false
       type: "`$INTEGER`"
     }
     {
+      format: "int32"
       name: "ci_delete_pipelines_in_seconds"
       req: false
       type: "`$INTEGER`"
@@ -166,11 +169,13 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "created_at"
       req: false
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "creator_id"
       req: false
       type: "`$INTEGER`"
@@ -248,6 +253,7 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "forks_count"
       req: false
       type: "`$INTEGER`"
@@ -263,6 +269,7 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "id"
       req: false
       type: "`$INTEGER`"
@@ -323,6 +330,7 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "date-time"
       name: "last_activity_at"
       req: false
       type: "`$STRING`"
@@ -358,6 +366,7 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "max_artifacts_size"
       req: false
       type: "`$INTEGER`"
@@ -488,6 +497,7 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "open_issues_count"
       req: false
       type: "`$INTEGER`"
@@ -609,6 +619,7 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "int32"
       name: "runner_token_expiration_interval"
       req: false
       type: "`$INTEGER`"
@@ -690,6 +701,7 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "star_count"
       req: false
       type: "`$INTEGER`"
@@ -715,6 +727,7 @@ main: kit: entity: api_entities_project_with_access: {
       type: "`$ARRAY`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       req: false
       type: "`$STRING`"
@@ -758,6 +771,162 @@ main: kit: entity: api_entities_project_with_access: {
 
   name: "api_entities_project_with_access"
   op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "post_api_v4_projects_id_housekeeping"
+                orig: "post_api_v4_projects_id_housekeeping"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/projects/{id}/housekeeping"
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "housekeeping"
+            }
+          ]
+          select: {
+            "$action": "housekeeping"
+            exist: [
+              "post_api_v4_projects_id_housekeeping"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/projects/{id}/create_ci_config"
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "create_ci_config"
+            }
+          ]
+          select: {
+            "$action": "create_ci_config"
+            exist: [
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/projects/{id}/repository_size"
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository_size"
+            }
+          ]
+          select: {
+            "$action": "repository_size"
+            exist: [
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [
@@ -827,6 +996,14 @@ main: kit: entity: api_entities_project_with_access: {
         }
       ]
     }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "project"
+      ]
+    ]
   }
 
 

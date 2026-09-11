@@ -1,7 +1,7 @@
 # Guide
 
 guide: {
-  metrics: count: entity: 39
+  metrics: count: entity: 37
   metrics: count: path: 85
   metrics: count: method: 155
 
@@ -125,8 +125,8 @@ guide: {
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-    path: "/spaces/{space_id}/environments/{environment_id}/assets/{asset_id}/archived": {  # ent=asset;orig=Assets;tag=asset;cmp/resolve=asset;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Assets
-      action: "archived": {}  # ent;asset;ent-param-2nd-last;archived;PUT
+    path: "/spaces/{space_id}/environments/{environment_id}/assets/{asset_id}/archived": {  # ent=asset;orig=Assets;tag=asset;cmp/resolve=asset;path=t/p/t/;verb-on-parent=asset
+      action: "archived": {}  # ent;asset;verb-on-parent;archived;PUT
       rename: param: "asset_id": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
@@ -135,8 +135,8 @@ guide: {
       rename: param: "asset_id": *"id"  # id-parent-ent
       op: update: method: *PUT  # not-load
     }
-    path: "/spaces/{space_id}/environments/{environment_id}/assets/{asset_id}/published": {  # ent=asset;orig=Assets;tag=asset;cmp/resolve=asset;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Assets
-      action: "published": {}  # ent;asset;ent-param-2nd-last;published;PUT
+    path: "/spaces/{space_id}/environments/{environment_id}/assets/{asset_id}/published": {  # ent=asset;orig=Assets;tag=asset;cmp/resolve=asset;path=t/p/t/;verb-on-parent=asset
+      action: "published": {}  # ent;asset;verb-on-parent;published;PUT
       rename: param: "asset_id": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
@@ -199,8 +199,8 @@ guide: {
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-    path: "/spaces/{space_id}/environments/{environment_id}/content_types/{content_type_id}/published": {  # ent=content_type;orig=Content Types;tag=content_type;cmp/resolve=content_type;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Content Types
-      action: "published": {}  # ent;content_type;ent-param-2nd-last;published;PUT
+    path: "/spaces/{space_id}/environments/{environment_id}/content_types/{content_type_id}/published": {  # ent=content_type;orig=Content Types;tag=content_type;cmp/resolve=content_type;path=t/p/t/;verb-on-parent=content_type
+      action: "published": {}  # ent;content_type;verb-on-parent;published;PUT
       rename: param: "content_type_id": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
@@ -235,21 +235,15 @@ guide: {
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-  }
-
-  entity: entry_archiving: {
-    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/archived": {  # ent=entry_archiving;orig=Entry archiving;tag=entry_archiving;cmp/resolve=entry_archiving;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Entry archiving
-      action: "archived": {}  # ent;entry_archiving;action-not-parent;entry_id;PUT
-      rename: param: "entry_id": *"id"  # action-parent:entry_archiving
+    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/archived": {  # ent=entry;orig=Entry;tag=entry_archiving;cmp/resolve=entry_archiving;path=t/p/t/;verb-on-parent=entry
+      action: "archived": {}  # ent;entry;verb-on-parent;archived;PUT
+      rename: param: "entry_id": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-  }
-
-  entity: entry_publishing: {
-    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/published": {  # ent=entry_publishing;orig=Entry publishing;tag=entry_publishing;cmp/resolve=entry_publishing;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Entry publishing
-      action: "published": {}  # ent;entry_publishing;action-not-parent;entry_id;PUT
-      rename: param: "entry_id": *"id"  # action-parent:entry_publishing
+    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/published": {  # ent=entry;orig=Entry;tag=entry_publishing;cmp/resolve=entry_publishing;path=t/p/t/;verb-on-parent=entry
+      action: "published": {}  # ent;entry;verb-on-parent;published;PUT
+      rename: param: "entry_id": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
@@ -310,7 +304,8 @@ guide: {
       rename: param: "token_id": *"id"  # end-id;GET;parent=true/access_token;cmp=false
       op: load: method: *GET  # end-param
     }
-    path: "/users/me/access_tokens/{token_id}/revoked": {  # ent=personal_access_token;orig=Personal Access token;tag=personal_access_token;cmp/resolve=personal_access_token;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Personal Access token
+    path: "/users/me/access_tokens/{token_id}/revoked": {  # ent=personal_access_token;orig=Personal Access token;tag=personal_access_token;cmp/resolve=personal_access_token;path=t/p/t/;verb-on-parent=personal_access_token
+      action: "revoked": {}  # ent;personal_access_token;verb-on-parent;revoked;PUT
       rename: param: "token_id": *"access_token_id"  # parent:access_token
       op: update: method: *PUT  # not-load
     }
@@ -336,14 +331,14 @@ guide: {
       rename: param: "releases_id": *"id"  # id-parent-ent
       op: load: method: *GET  # end-param
     }
-    path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/published": {  # ent=release;orig=Releases;tag=release;cmp/resolve=release;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Releases
-      action: "published": {}  # ent;release;ent-param-2nd-last;published;PUT
+    path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/published": {  # ent=release;orig=Releases;tag=release;cmp/resolve=release;path=t/p/t/;verb-on-parent=release
+      action: "published": {}  # ent;release;verb-on-parent;published;PUT
       rename: param: "releases_id": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-    path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/validate": {  # ent=release;orig=Releases;tag=release;cmp/resolve=release;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Releases
-      action: "validate": {}  # ent;release;ent-param-2nd-last;validate;POST
+    path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/validate": {  # ent=release;orig=Releases;tag=release;cmp/resolve=release;path=t/p/t/;verb-on-parent=release
+      action: "validate": {}  # ent;release;verb-on-parent;validate;POST
       rename: param: "releases_id": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
     }

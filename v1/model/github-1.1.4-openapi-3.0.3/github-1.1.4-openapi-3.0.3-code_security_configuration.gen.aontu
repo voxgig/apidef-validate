@@ -42,6 +42,7 @@ main: kit: entity: code_security_configuration: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "created_at"
       req: false
       type: "`$STRING`"
@@ -95,6 +96,7 @@ main: kit: entity: code_security_configuration: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "html_url"
       req: false
       short: "The URL of the configuration"
@@ -122,6 +124,12 @@ main: kit: entity: code_security_configuration: {
       name: "private_vulnerability_reporting"
       req: false
       short: "The enablement status of private vulnerability reporting"
+      type: "`$STRING`"
+    }
+    {
+      name: "scope"
+      req: true
+      short: "The type of repositories to attach the configuration to."
       type: "`$STRING`"
     }
     {
@@ -179,17 +187,25 @@ main: kit: entity: code_security_configuration: {
       type: "`$STRING`"
     }
     {
+      name: "selected_repository_ids"
+      req: false
+      short: "An array of repository IDs to attach the configuration to."
+      type: "`$ARRAY`"
+    }
+    {
       name: "target_type"
       req: false
       short: "The type of the code security configuration."
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       req: false
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "url"
       req: false
       short: "The URL of the configuration"
@@ -207,6 +223,122 @@ main: kit: entity: code_security_configuration: {
     create: {
       name: "create"
       points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "configuration_id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "enterprise"
+                orig: "enterprise"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}/attach"
+          segments: [
+            {
+              lit: "enterprises"
+            }
+            {
+              var: "enterprise"
+            }
+            {
+              lit: "code-security"
+            }
+            {
+              lit: "configurations"
+            }
+            {
+              var: "configuration_id"
+            }
+            {
+              lit: "attach"
+            }
+          ]
+          select: {
+            "$action": "attach"
+            exist: [
+              "configuration_id"
+              "enterprise"
+            ]
+          }
+          transform: {
+            req: {
+              scope: "`reqdata.scope`"
+            }
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "configuration_id"
+                orig: "configuration_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "org_id"
+                orig: "org"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/orgs/{org}/code-security/configurations/{configuration_id}/attach"
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+          segments: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "code-security"
+            }
+            {
+              lit: "configurations"
+            }
+            {
+              var: "configuration_id"
+            }
+            {
+              lit: "attach"
+            }
+          ]
+          select: {
+            "$action": "attach"
+            exist: [
+              "configuration_id"
+              "org_id"
+            ]
+          }
+          transform: {
+            req: {
+              scope: "`reqdata.scope`"
+              selected_repository_ids: "`reqdata.selected_repository_id`"
+            }
+            res: "`body`"
+          }
+        }
         {
           args: {
             params: [
@@ -819,6 +951,14 @@ main: kit: entity: code_security_configuration: {
       ]
       [
         "repo"
+      ]
+      [
+        "enterpris"
+        "configuration"
+      ]
+      [
+        "org"
+        "configuration"
       ]
     ]
   }

@@ -22,6 +22,7 @@ main: kit: entity: gist: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "uri"
       name: "comments_url"
       op: {
         list: {
@@ -33,6 +34,7 @@ main: kit: entity: gist: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "commits_url"
       op: {
         list: {
@@ -44,6 +46,7 @@ main: kit: entity: gist: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "created_at"
       op: {
         list: {
@@ -89,11 +92,13 @@ main: kit: entity: gist: {
       type: "`$OBJECT`"
     }
     {
+      deprecated: true
       name: "forks"
       req: false
       type: "`$ARRAY`"
     }
     {
+      format: "uri"
       name: "forks_url"
       op: {
         list: {
@@ -105,6 +110,7 @@ main: kit: entity: gist: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "git_pull_url"
       op: {
         list: {
@@ -116,6 +122,7 @@ main: kit: entity: gist: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "git_push_url"
       op: {
         list: {
@@ -127,11 +134,13 @@ main: kit: entity: gist: {
       type: "`$STRING`"
     }
     {
+      deprecated: true
       name: "history"
       req: false
       type: "`$ARRAY`"
     }
     {
+      format: "uri"
       name: "html_url"
       op: {
         list: {
@@ -187,6 +196,7 @@ main: kit: entity: gist: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       op: {
         list: {
@@ -198,6 +208,7 @@ main: kit: entity: gist: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "url"
       op: {
         list: {
@@ -425,48 +436,6 @@ main: kit: entity: gist: {
         }
       ]
     }
-    patch: {
-      name: "patch"
-      points: [
-        {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "gist_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          method: "PATCH"
-          orig: "/gists/{gist_id}"
-          rename: {
-            param: {
-              gist_id: "id"
-            }
-          }
-          segments: [
-            {
-              lit: "gists"
-            }
-            {
-              var: "id"
-            }
-          ]
-          select: {
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
     remove: {
       name: "remove"
       points: [
@@ -604,6 +573,43 @@ main: kit: entity: gist: {
     update: {
       name: "update"
       points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "gist_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/gists/{gist_id}"
+          rename: {
+            param: {
+              gist_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "gists"
+            }
+            {
+              var: "id"
+            }
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           args: {
             params: [

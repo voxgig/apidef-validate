@@ -4,6 +4,12 @@ main: kit: entity: activity: {
 
   alias: field: {}
 
+  alias: {
+    field: {
+      github_id: "id"
+    }
+  }
+
   fields: [
     {
       name: "activity_type"
@@ -160,6 +166,17 @@ main: kit: entity: activity: {
       type: "`$STRING`"
     }
     {
+      name: "github_id"
+      op: {
+        list: {
+          req: true
+          type: "`$INTEGER`"
+        }
+      }
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
       name: "gravatar_id"
       req: false
       type: "`$STRING`"
@@ -184,11 +201,10 @@ main: kit: entity: activity: {
       op: {
         list: {
           req: true
-          type: "`$INTEGER`"
         }
       }
       req: false
-      type: "`$INTEGER`"
+      type: "`$STRING`"
     }
     {
       name: "issue_comment_url"
@@ -226,6 +242,7 @@ main: kit: entity: activity: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "last_read_at"
       req: false
       short: "Describes the last point that notifications were checked."
@@ -375,6 +392,7 @@ main: kit: entity: activity: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "timestamp"
       req: true
       short: "The time when the activity occurred."
@@ -400,6 +418,11 @@ main: kit: entity: activity: {
   id: {
     field: "id"
     name: "id"
+    parts: [
+      "owner"
+      "repo"
+    ]
+    sep: "/"
   }
 
   name: "activity"
@@ -871,44 +894,6 @@ main: kit: entity: activity: {
             }
             {
               var: "thread_id"
-            }
-          ]
-          select: {
-            exist: [
-              "thread_id"
-            ]
-          }
-          transform: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "thread_id"
-                orig: "thread_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          method: "DELETE"
-          orig: "/notifications/threads/{thread_id}/subscription"
-          segments: [
-            {
-              lit: "notifications"
-            }
-            {
-              lit: "threads"
-            }
-            {
-              var: "thread_id"
-            }
-            {
-              lit: "subscription"
             }
           ]
           select: {

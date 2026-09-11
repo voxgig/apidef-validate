@@ -15,6 +15,14 @@ main: kit: entity: debian_package: {
   id: {
     field: "id"
     name: "id"
+    parts: [
+      "distribution"
+      "letter"
+      "package_name"
+      "package_version"
+      "file_name"
+    ]
+    sep: "/"
   }
 
   name: "debian_package"
@@ -1881,85 +1889,6 @@ main: kit: entity: debian_package: {
         }
       ]
     }
-    update: {
-      name: "update"
-      points: [
-        {
-          args: {
-            params: [
-              {
-                example: "example_1.0.0~alpha2_amd64.deb"
-                kind: "param"
-                name: "file_name"
-                orig: "file_name"
-                reqd: true
-                type: "`$ANY`"
-              }
-              {
-                kind: "param"
-                name: "project_id"
-                orig: "id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "put_api_v4_projects_id_packages_debian_file_name_authorize"
-                orig: "put_api_v4_projects_id_packages_debian_file_name_authorize"
-                reqd: true
-                type: "`$OBJECT`"
-              }
-            ]
-          }
-          method: "PUT"
-          orig: "/api/v4/projects/{id}/packages/debian/{file_name}/authorize"
-          rename: {
-            param: {
-              id: "project_id"
-            }
-          }
-          segments: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              lit: "debian"
-            }
-            {
-              var: "file_name"
-            }
-            {
-              lit: "authorize"
-            }
-          ]
-          select: {
-            exist: [
-              "file_name"
-              "project_id"
-              "put_api_v4_projects_id_packages_debian_file_name_authorize"
-            ]
-          }
-          transform: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
   }
 
   relations: {
@@ -1980,10 +1909,6 @@ main: kit: entity: debian_package: {
       [
         "project"
         "*distribution"
-      ]
-      [
-        "project"
-        "debian"
       ]
       [
         "group"

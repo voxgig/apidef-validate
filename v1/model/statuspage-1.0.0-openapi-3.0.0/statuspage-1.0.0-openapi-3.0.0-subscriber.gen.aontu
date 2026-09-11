@@ -18,6 +18,7 @@ main: kit: entity: subscriber: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "created_at"
       req: false
       type: "`$STRING`"
@@ -29,6 +30,7 @@ main: kit: entity: subscriber: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "email"
       req: false
       short: "The email address to use to contact the subscriber."
@@ -47,6 +49,7 @@ main: kit: entity: subscriber: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "integration_partner"
       req: false
       short: "The number of integration partners found by the query."
@@ -83,12 +86,14 @@ main: kit: entity: subscriber: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "purge_at"
       req: false
       short: "The timestamp when a quarantined subscriber will be purged (unsubscribed)."
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "quarantined_at"
       req: false
       short: "The timestamp when the subscriber was quarantined due to an issue reaching them."
@@ -107,12 +112,14 @@ main: kit: entity: subscriber: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "int32"
       name: "slack"
       req: false
       short: "The number of Slack subscribers found by the query."
       type: "`$INTEGER`"
     }
     {
+      format: "int32"
       name: "sms"
       req: false
       short: "The number of Webhook subscribers found by the query."
@@ -136,6 +143,7 @@ main: kit: entity: subscriber: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "teams"
       req: false
       short: "The number of MS teams subscribers found by the query."
@@ -148,6 +156,7 @@ main: kit: entity: subscriber: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "webhook"
       req: false
       short: "The number of SMS subscribers found by the query."
@@ -171,6 +180,75 @@ main: kit: entity: subscriber: {
     create: {
       name: "create"
       points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "subscriber_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "incident_id"
+                orig: "incident_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "page_id"
+                orig: "page_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}/resend_confirmation"
+          rename: {
+            param: {
+              subscriber_id: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "pages"
+            }
+            {
+              var: "page_id"
+            }
+            {
+              lit: "incidents"
+            }
+            {
+              var: "incident_id"
+            }
+            {
+              lit: "subscribers"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "resend_confirmation"
+            }
+          ]
+          select: {
+            "$action": "resend_confirmation"
+            exist: [
+              "id"
+              "incident_id"
+              "page_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           args: {
             params: [

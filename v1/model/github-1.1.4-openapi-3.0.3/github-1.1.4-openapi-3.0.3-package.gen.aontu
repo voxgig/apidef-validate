@@ -4,6 +4,12 @@ main: kit: entity: package: {
 
   alias: field: {}
 
+  alias: {
+    field: {
+      github_id: "id"
+    }
+  }
+
   fields: [
     {
       name: "container"
@@ -11,11 +17,13 @@ main: kit: entity: package: {
       type: "`$OBJECT`"
     }
     {
+      format: "date-time"
       name: "created_at"
       req: true
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "deleted_at"
       req: false
       type: "`$STRING`"
@@ -29,6 +37,12 @@ main: kit: entity: package: {
       name: "docker"
       req: true
       type: "`$OBJECT`"
+    }
+    {
+      name: "github_id"
+      req: true
+      short: "Unique identifier of the package."
+      type: "`$INTEGER`"
     }
     {
       name: "html_url"
@@ -45,7 +59,7 @@ main: kit: entity: package: {
       name: "id"
       req: true
       short: "Unique identifier of the package."
-      type: "`$INTEGER`"
+      type: "`$STRING`"
     }
     {
       name: "included_gigabytes_bandwidth"
@@ -104,6 +118,7 @@ main: kit: entity: package: {
       type: "`$INTEGER`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       req: true
       type: "`$STRING`"
@@ -129,6 +144,11 @@ main: kit: entity: package: {
   id: {
     field: "id"
     name: "id"
+    parts: [
+      "package_type"
+      "package_name"
+    ]
+    sep: "/"
   }
 
   name: "package"
@@ -281,6 +301,7 @@ main: kit: entity: package: {
             }
           ]
           select: {
+            "$action": "restore"
             exist: [
               "org_id"
               "package_id"
@@ -436,6 +457,7 @@ main: kit: entity: package: {
             }
           ]
           select: {
+            "$action": "restore"
             exist: [
               "package_id"
               "package_name"
@@ -570,6 +592,7 @@ main: kit: entity: package: {
             }
           ]
           select: {
+            "$action": "restore"
             exist: [
               "package_id"
               "package_name"

@@ -21,6 +21,7 @@ main: kit: entity: api_entities_remote_mirror: {
       type: "`$ARRAY`"
     }
     {
+      format: "int32"
       name: "id"
       req: false
       type: "`$INTEGER`"
@@ -31,21 +32,25 @@ main: kit: entity: api_entities_remote_mirror: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "int32"
       name: "last_error"
       req: false
       type: "`$INTEGER`"
     }
     {
+      format: "date-time"
       name: "last_successful_update_at"
       req: false
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "last_update_at"
       req: false
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "last_update_started_at"
       req: false
       type: "`$STRING`"
@@ -131,6 +136,68 @@ main: kit: entity: api_entities_remote_mirror: {
             exist: [
               "post_api_v4_projects_id_remote_mirror"
               "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "remote_mirror_id"
+                orig: "mirror_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/projects/{id}/remote_mirrors/{mirror_id}/sync"
+          rename: {
+            param: {
+              id: "project_id"
+              mirror_id: "remote_mirror_id"
+            }
+          }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "remote_mirrors"
+            }
+            {
+              var: "remote_mirror_id"
+            }
+            {
+              lit: "sync"
+            }
+          ]
+          select: {
+            "$action": "sync"
+            exist: [
+              "project_id"
+              "remote_mirror_id"
             ]
           }
           transform: {
@@ -353,6 +420,10 @@ main: kit: entity: api_entities_remote_mirror: {
     ancestors: [
       [
         "project"
+      ]
+      [
+        "project"
+        "remote_mirror"
       ]
     ]
   }

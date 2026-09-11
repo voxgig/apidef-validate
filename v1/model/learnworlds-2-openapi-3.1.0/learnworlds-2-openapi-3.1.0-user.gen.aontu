@@ -41,6 +41,7 @@ main: kit: entity: user: {
       type: "`$OBJECT`"
     }
     {
+      format: "float"
       name: "created"
       req: false
       short: "Date the user was created, in UNIX timestamp format"
@@ -95,6 +96,7 @@ main: kit: entity: user: {
       ]
     }
     {
+      format: "float"
       name: "expires"
       req: false
       short: "Date the enrollment expires, in UNIX timestamp format"
@@ -125,6 +127,7 @@ main: kit: entity: user: {
       ]
     }
     {
+      format: "float"
       name: "got_seat_on"
       req: false
       short: "Date user was added to the seat offering, in UNIX timestamp"
@@ -191,6 +194,7 @@ main: kit: entity: user: {
       ]
     }
     {
+      format: "float"
       name: "last_login"
       req: false
       short: "Date of the last login of the user, in UNIX timestamp format"
@@ -203,6 +207,7 @@ main: kit: entity: user: {
       ]
     }
     {
+      format: "float"
       name: "modified"
       req: false
       short: "Date the submission was modified for the last time, in UNIX timestamp format"
@@ -257,6 +262,7 @@ main: kit: entity: user: {
       type: "`$STRING`"
     }
     {
+      format: "float"
       name: "price"
       req: true
       short: "Price of the product"
@@ -335,6 +341,7 @@ main: kit: entity: user: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "float"
       name: "submittedTimestamp"
       req: false
       short: "Date the submission was finished (submitted), in UNIX timestamp format"
@@ -418,80 +425,6 @@ main: kit: entity: user: {
     create: {
       name: "create"
       points: [
-        {
-          args: {
-            header: [
-              {
-                kind: "header"
-                name: "authorization"
-                orig: "authorization"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "header"
-                name: "lw_client"
-                orig: "lw_client"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            params: [
-              {
-                kind: "param"
-                name: "score_id"
-                orig: "id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: ""
-                orig: ""
-                reqd: false
-                type: "`$STRING`"
-              }
-            ]
-          }
-          method: "POST"
-          orig: "/v2/assessments/scores/{id}/review"
-          rename: {
-            param: {
-              id: "score_id"
-            }
-          }
-          segments: [
-            {
-              lit: "v2"
-            }
-            {
-              lit: "assessments"
-            }
-            {
-              lit: "scores"
-            }
-            {
-              var: "score_id"
-            }
-            {
-              lit: "review"
-            }
-          ]
-          select: {
-            exist: [
-              ""
-              "authorization"
-              "lw_client"
-              "score_id"
-            ]
-          }
-          transform: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           args: {
             header: [
@@ -615,6 +548,70 @@ main: kit: entity: user: {
               "authorization"
               "id"
               "lw_client"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            header: [
+              {
+                kind: "header"
+                name: "authorization"
+                orig: "authorization"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "header"
+                name: "lw_client"
+                orig: "lw_client"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                kind: "param"
+                name: "score_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/v2/assessments/scores/{id}/review"
+          rename: {
+            param: {
+              id: "score_id"
+            }
+          }
+          segments: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "assessments"
+            }
+            {
+              lit: "scores"
+            }
+            {
+              var: "score_id"
+            }
+            {
+              lit: "review"
+            }
+          ]
+          select: {
+            exist: [
+              "authorization"
+              "lw_client"
+              "score_id"
             ]
           }
           transform: {

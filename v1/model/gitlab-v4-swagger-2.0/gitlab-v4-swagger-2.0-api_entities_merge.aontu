@@ -60,6 +60,7 @@ main: kit: entity: api_entities_merge: {
       type: "`$OBJECT`"
     }
     {
+      format: "date-time"
       name: "created_at"
       req: false
       type: "`$STRING`"
@@ -131,11 +132,13 @@ main: kit: entity: api_entities_merge: {
       type: "`$OBJECT`"
     }
     {
+      format: "int32"
       name: "id"
       req: false
       type: "`$INTEGER`"
     }
     {
+      format: "int32"
       name: "iid"
       req: false
       type: "`$INTEGER`"
@@ -224,6 +227,7 @@ main: kit: entity: api_entities_merge: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "project_id"
       req: false
       type: "`$INTEGER`"
@@ -326,6 +330,7 @@ main: kit: entity: api_entities_merge: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       req: false
       type: "`$STRING`"
@@ -641,6 +646,78 @@ main: kit: entity: api_entities_merge: {
               "merge_request_id"
               "project_id"
               "put_api_v4_projects_id_merge_requests_merge_request_iid_merge"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "merge_request_id"
+                orig: "merge_request_iid"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                kind: "query"
+                name: "put_api_v4_projects_id_merge_requests_merge_request_iid_rebase"
+                orig: "put_api_v4_projects_id_merge_requests_merge_request_iid_rebase"
+                reqd: true
+                type: "`$OBJECT`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/rebase"
+          rename: {
+            param: {
+              id: "project_id"
+              merge_request_iid: "merge_request_id"
+            }
+          }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "merge_requests"
+            }
+            {
+              var: "merge_request_id"
+            }
+            {
+              lit: "rebase"
+            }
+          ]
+          select: {
+            "$action": "rebase"
+            exist: [
+              "merge_request_id"
+              "project_id"
+              "put_api_v4_projects_id_merge_requests_merge_request_iid_rebase"
             ]
           }
           transform: {

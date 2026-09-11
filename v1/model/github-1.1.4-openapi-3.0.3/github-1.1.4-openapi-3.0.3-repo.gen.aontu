@@ -4,6 +4,12 @@ main: kit: entity: repo: {
 
   alias: field: {}
 
+  alias: {
+    field: {
+      github_id: "id"
+    }
+  }
+
   fields: [
     {
       name: "allow_auto_merge"
@@ -150,11 +156,13 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "contributors_url"
       req: true
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "created_at"
       req: true
       short: "The time that the environment was created, in ISO 8601 format."
@@ -185,6 +193,7 @@ main: kit: entity: repo: {
       type: "`$OBJECT`"
     }
     {
+      format: "uri"
       name: "deployments_url"
       req: true
       type: "`$STRING`"
@@ -206,6 +215,7 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "downloads_url"
       req: true
       type: "`$STRING`"
@@ -228,6 +238,7 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "events_url"
       req: true
       type: "`$STRING`"
@@ -248,6 +259,7 @@ main: kit: entity: repo: {
       type: "`$INTEGER`"
     }
     {
+      format: "uri"
       name: "forks_url"
       req: true
       type: "`$STRING`"
@@ -284,12 +296,26 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      format: "int64"
+      name: "github_id"
+      op: {
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      req: true
+      short: "Unique identifier of the repository"
+      type: "`$INTEGER`"
+    }
+    {
       name: "has_discussions"
       req: false
       short: "Whether discussions are enabled."
       type: "`$BOOLEAN`"
     }
     {
+      deprecated: true
       name: "has_downloads"
       req: true
       short: "Whether downloads are enabled."
@@ -319,16 +345,19 @@ main: kit: entity: repo: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "uri"
       name: "homepage"
       req: true
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "hooks_url"
       req: true
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "html_url"
       op: {
         list: {
@@ -350,12 +379,11 @@ main: kit: entity: repo: {
       op: {
         list: {
           req: false
-          type: "`$INTEGER`"
         }
       }
       req: true
       short: "Unique identifier of the repository"
-      type: "`$INTEGER`"
+      type: "`$STRING`"
     }
     {
       name: "integration_url"
@@ -400,6 +428,7 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "languages_url"
       req: true
       type: "`$STRING`"
@@ -433,6 +462,7 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "merges_url"
       req: true
       type: "`$STRING`"
@@ -443,6 +473,7 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "mirror_url"
       req: true
       type: "`$STRING`"
@@ -554,6 +585,7 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "pushed_at"
       req: true
       type: "`$STRING`"
@@ -619,6 +651,7 @@ main: kit: entity: repo: {
       type: "`$INTEGER`"
     }
     {
+      format: "uri"
       name: "stargazers_url"
       req: true
       type: "`$STRING`"
@@ -634,21 +667,25 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "subscribers_url"
       req: true
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "subscription_url"
       req: true
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "svn_url"
       req: true
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "tags_url"
       req: true
       type: "`$STRING`"
@@ -660,6 +697,7 @@ main: kit: entity: repo: {
       type: "`$ARRAY`"
     }
     {
+      format: "uri"
       name: "teams_url"
       req: true
       type: "`$STRING`"
@@ -686,12 +724,14 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       req: true
       short: "The time that the environment was last updated, in ISO 8601 format."
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "url"
       op: {
         list: {
@@ -703,6 +743,7 @@ main: kit: entity: repo: {
       type: "`$STRING`"
     }
     {
+      deprecated: true
       name: "use_squash_pr_title_as_default"
       req: false
       short: "Whether a squash merge commit can use the pull request title as default."
@@ -735,6 +776,11 @@ main: kit: entity: repo: {
   id: {
     field: "id"
     name: "id"
+    parts: [
+      "owner"
+      "repo"
+    ]
+    sep: "/"
   }
 
   name: "repo"
@@ -878,74 +924,6 @@ main: kit: entity: repo: {
           select: {
             exist: [
               "branch_id"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "deployment_id"
-                orig: "pages_deployment_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel"
-          rename: {
-            param: {
-              pages_deployment_id: "deployment_id"
-            }
-          }
-          segments: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "pages"
-            }
-            {
-              lit: "deployments"
-            }
-            {
-              var: "deployment_id"
-            }
-            {
-              lit: "cancel"
-            }
-          ]
-          select: {
-            exist: [
-              "deployment_id"
               "owner"
               "repo"
             ]
@@ -4200,6 +4178,10 @@ main: kit: entity: repo: {
       ]
       [
         "repo"
+        "deployment"
+      ]
+      [
+        "repo"
         "environment"
       ]
       [
@@ -4213,10 +4195,6 @@ main: kit: entity: repo: {
       [
         "repo"
         "key"
-      ]
-      [
-        "repo"
-        "deployment"
       ]
       [
         "repo"

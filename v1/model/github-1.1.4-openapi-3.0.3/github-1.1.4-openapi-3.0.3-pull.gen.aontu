@@ -41,7 +41,7 @@ main: kit: entity: pull: {
     {
       name: "base"
       op: {
-        patch: {
+        update: {
           req: false
           type: "`$STRING`"
         }
@@ -57,7 +57,7 @@ main: kit: entity: pull: {
           req: false
           type: "`$STRING`"
         }
-        patch: {
+        update: {
           req: false
           type: "`$STRING`"
         }
@@ -72,6 +72,7 @@ main: kit: entity: pull: {
       type: "`$INTEGER`"
     }
     {
+      format: "date-time"
       name: "closed_at"
       req: true
       type: "`$STRING`"
@@ -82,8 +83,21 @@ main: kit: entity: pull: {
       type: "`$INTEGER`"
     }
     {
+      format: "uri"
       name: "comments_url"
       req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "commit_message"
+      req: false
+      short: "Extra detail to append to automatic commit message."
+      type: "`$STRING`"
+    }
+    {
+      name: "commit_title"
+      req: false
+      short: "Title for the automatic commit message."
       type: "`$STRING`"
     }
     {
@@ -92,11 +106,13 @@ main: kit: entity: pull: {
       type: "`$INTEGER`"
     }
     {
+      format: "uri"
       name: "commits_url"
       req: true
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "created_at"
       req: true
       type: "`$STRING`"
@@ -107,6 +123,7 @@ main: kit: entity: pull: {
       type: "`$INTEGER`"
     }
     {
+      format: "uri"
       name: "diff_url"
       req: true
       type: "`$STRING`"
@@ -130,28 +147,33 @@ main: kit: entity: pull: {
       type: "`$OBJECT`"
     }
     {
+      format: "repo.nwo"
       name: "head_repo"
       req: false
       short: "The name of the repository where the changes in the pull request were made."
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "html_url"
       req: true
       type: "`$STRING`"
     }
     {
+      format: "int64"
       name: "id"
       req: true
       type: "`$INTEGER`"
     }
     {
+      format: "int64"
       name: "issue"
       req: false
       short: "An issue in the repository to convert to a pull request."
       type: "`$INTEGER`"
     }
     {
+      format: "uri"
       name: "issue_url"
       req: true
       type: "`$STRING`"
@@ -178,7 +200,7 @@ main: kit: entity: pull: {
           req: false
           type: "`$BOOLEAN`"
         }
-        patch: {
+        update: {
           req: false
           type: "`$BOOLEAN`"
         }
@@ -190,6 +212,12 @@ main: kit: entity: pull: {
     {
       name: "merge_commit_sha"
       req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "merge_method"
+      req: false
+      short: "The merge method to use."
       type: "`$STRING`"
     }
     {
@@ -208,6 +236,7 @@ main: kit: entity: pull: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "date-time"
       name: "merged_at"
       req: true
       type: "`$STRING`"
@@ -217,6 +246,11 @@ main: kit: entity: pull: {
       req: true
       short: "A GitHub user."
       type: "`$OBJECT`"
+    }
+    {
+      name: "message"
+      req: true
+      type: "`$STRING`"
     }
     {
       name: "milestone"
@@ -236,6 +270,7 @@ main: kit: entity: pull: {
       type: "`$INTEGER`"
     }
     {
+      format: "uri"
       name: "patch_url"
       req: true
       type: "`$STRING`"
@@ -266,14 +301,27 @@ main: kit: entity: pull: {
       type: "`$INTEGER`"
     }
     {
+      format: "uri"
       name: "review_comments_url"
       req: true
       type: "`$STRING`"
     }
     {
+      name: "sha"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      req: true
+      short: "SHA that pull request head must match to allow merge."
+      type: "`$STRING`"
+    }
+    {
       name: "state"
       op: {
-        patch: {
+        update: {
           req: false
           type: "`$STRING`"
         }
@@ -283,6 +331,7 @@ main: kit: entity: pull: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "statuses_url"
       req: true
       type: "`$STRING`"
@@ -294,7 +343,7 @@ main: kit: entity: pull: {
           req: false
           type: "`$STRING`"
         }
-        patch: {
+        update: {
           req: false
           type: "`$STRING`"
         }
@@ -304,11 +353,13 @@ main: kit: entity: pull: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       req: true
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "url"
       req: true
       type: "`$STRING`"
@@ -642,72 +693,6 @@ main: kit: entity: pull: {
             params: [
               {
                 kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "pull_number"
-                orig: "pull_number"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/merge"
-          segments: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "pulls"
-            }
-            {
-              var: "pull_number"
-            }
-            {
-              lit: "merge"
-            }
-          ]
-          select: {
-            "$action": "merge"
-            exist: [
-              "owner"
-              "pull_number"
-              "repo"
-            ]
-          }
-          transform: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    patch: {
-      name: "patch"
-      points: [
-        {
-          args: {
-            params: [
-              {
-                kind: "param"
                 name: "id"
                 orig: "pull_number"
                 reqd: true
@@ -729,8 +714,8 @@ main: kit: entity: pull: {
               }
             ]
           }
-          method: "PATCH"
-          orig: "/repos/{owner}/{repo}/pulls/{pull_number}"
+          method: "GET"
+          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/merge"
           rename: {
             param: {
               pull_number: "id"
@@ -752,8 +737,12 @@ main: kit: entity: pull: {
             {
               var: "id"
             }
+            {
+              lit: "merge"
+            }
           ]
           select: {
+            "$action": "merge"
             exist: [
               "id"
               "owner"
@@ -840,17 +829,17 @@ main: kit: entity: pull: {
             params: [
               {
                 kind: "param"
+                name: "id"
+                orig: "pull_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
                 name: "owner"
                 orig: "owner"
                 reqd: true
                 type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "pull_number"
-                orig: "pull_number"
-                reqd: true
-                type: "`$INTEGER`"
               }
               {
                 kind: "param"
@@ -861,8 +850,13 @@ main: kit: entity: pull: {
               }
             ]
           }
-          method: "PUT"
-          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/update-branch"
+          method: "PATCH"
+          orig: "/repos/{owner}/{repo}/pulls/{pull_number}"
+          rename: {
+            param: {
+              pull_number: "id"
+            }
+          }
           segments: [
             {
               lit: "repos"
@@ -877,7 +871,135 @@ main: kit: entity: pull: {
               lit: "pulls"
             }
             {
-              var: "pull_number"
+              var: "id"
+            }
+          ]
+          select: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "pull_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/merge"
+          rename: {
+            param: {
+              pull_number: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "merge"
+            }
+          ]
+          select: {
+            "$action": "merge"
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "pull_number"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+              {
+                kind: "param"
+                name: "owner"
+                orig: "owner"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "repo"
+                orig: "repo"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/update-branch"
+          rename: {
+            param: {
+              pull_number: "id"
+            }
+          }
+          segments: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "id"
             }
             {
               lit: "update-branch"
@@ -886,8 +1008,8 @@ main: kit: entity: pull: {
           select: {
             "$action": "update_branch"
             exist: [
+              "id"
               "owner"
-              "pull_number"
               "repo"
             ]
           }
@@ -912,10 +1034,6 @@ main: kit: entity: pull: {
       [
         "repo"
         "comment"
-      ]
-      [
-        "repo"
-        "pull"
       ]
     ]
   }

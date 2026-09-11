@@ -6,21 +6,25 @@ main: kit: entity: api_entities_draft_note: {
 
   fields: [
     {
+      format: "int32"
       name: "author_id"
       req: false
       type: "`$INTEGER`"
     }
     {
+      format: "int32"
       name: "commit_id"
       req: false
       type: "`$INTEGER`"
     }
     {
+      format: "int32"
       name: "discussion_id"
       req: false
       type: "`$INTEGER`"
     }
     {
+      format: "int32"
       name: "id"
       req: false
       type: "`$INTEGER`"
@@ -31,6 +35,7 @@ main: kit: entity: api_entities_draft_note: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "merge_request_id"
       req: false
       type: "`$INTEGER`"
@@ -365,6 +370,82 @@ main: kit: entity: api_entities_draft_note: {
             res: "`body.position`"
           }
         }
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "draft_note_id"
+                orig: "draft_note_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "merge_request_id"
+                orig: "merge_request_iid"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}/publish"
+          rename: {
+            param: {
+              id: "project_id"
+              merge_request_iid: "merge_request_id"
+            }
+          }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "merge_requests"
+            }
+            {
+              var: "merge_request_id"
+            }
+            {
+              lit: "draft_notes"
+            }
+            {
+              var: "draft_note_id"
+            }
+            {
+              lit: "publish"
+            }
+          ]
+          select: {
+            "$action": "publish"
+            exist: [
+              "draft_note_id"
+              "merge_request_id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
       ]
     }
   }
@@ -374,6 +455,11 @@ main: kit: entity: api_entities_draft_note: {
       [
         "project"
         "merge_request"
+      ]
+      [
+        "project"
+        "merge_request"
+        "draft_note"
       ]
     ]
   }

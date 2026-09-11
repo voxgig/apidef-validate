@@ -11,6 +11,7 @@ main: kit: entity: api_entities_ci_pipeline_schedule_detail: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "date-time"
       name: "created_at"
       req: false
       type: "`$STRING`"
@@ -31,6 +32,7 @@ main: kit: entity: api_entities_ci_pipeline_schedule_detail: {
       type: "`$STRING`"
     }
     {
+      format: "int32"
       name: "id"
       req: false
       type: "`$INTEGER`"
@@ -47,6 +49,7 @@ main: kit: entity: api_entities_ci_pipeline_schedule_detail: {
       type: "`$OBJECT`"
     }
     {
+      format: "date-time"
       name: "next_run_at"
       req: false
       type: "`$STRING`"
@@ -63,6 +66,7 @@ main: kit: entity: api_entities_ci_pipeline_schedule_detail: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       req: false
       type: "`$STRING`"
@@ -85,6 +89,69 @@ main: kit: entity: api_entities_ci_pipeline_schedule_detail: {
     create: {
       name: "create"
       points: [
+        {
+          args: {
+            params: [
+              {
+                example: 13
+                kind: "param"
+                name: "pipeline_schedule_id"
+                orig: "pipeline_schedule_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                example: 18
+                kind: "param"
+                name: "project_id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/play"
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+          segments: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "pipeline_schedules"
+            }
+            {
+              var: "pipeline_schedule_id"
+            }
+            {
+              lit: "play"
+            }
+          ]
+          select: {
+            "$action": "play"
+            exist: [
+              "pipeline_schedule_id"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           args: {
             params: [
