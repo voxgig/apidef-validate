@@ -6,51 +6,8 @@ main: kit: entity: org_private_registry_configuration_with_selected_repository: 
 
   fields: [
     {
-      name: "encrypted_value"
-      req: true
-      short: "The value for your secret, encrypted with [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages) using the public key retrieved from the [Get private registries public key for an organization](https://docs.github.com/re…"
-      type: "`$STRING`"
-    }
-    {
       name: "id"
       req: false
-      type: "`$STRING`"
-    }
-    {
-      name: "key_id"
-      req: true
-      short: "The ID of the key you used to encrypt the secret."
-      type: "`$STRING`"
-    }
-    {
-      name: "registry_type"
-      req: true
-      short: "The registry type."
-      type: "`$STRING`"
-    }
-    {
-      name: "selected_repository_ids"
-      req: false
-      short: "An array of repository IDs that can access the organization private registry."
-      type: "`$ARRAY`"
-    }
-    {
-      format: "uri"
-      name: "url"
-      req: true
-      short: "The URL of the private registry."
-      type: "`$STRING`"
-    }
-    {
-      name: "username"
-      req: false
-      short: "The username to use when authenticating with the private registry."
-      type: "`$STRING`"
-    }
-    {
-      name: "visibility"
-      req: true
-      short: "Which type of organization repositories have access to the private registry."
       type: "`$STRING`"
     }
   ]
@@ -76,6 +33,12 @@ main: kit: entity: org_private_registry_configuration_with_selected_repository: 
                 type: "`$STRING`"
               }
             ]
+          }
+          contract: {
+            id: "POST /orgs/{org}/private-registries"
+            json: "{\"operationId\":\"private-registries/create-org-private-registry\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"org-private-registry-with-private-visibility\":{\"summary\":\"Example of a private registry configuration with private visibility\",\"value\":{\"encrypted_value\":\"c2VjcmV0\",\"key_id\":\"012345678912345678\",\"registry_type\":\"maven_repository\",\"url\":\"https://maven.pkg.github.com/organization/\",\"username\":\"monalisa\",\"visibility\":\"private\"}},\"org-private-registry-with-selected-visibility\":{\"summary\":\"Example of a private registry configuration with selected visibility\",\"value\":{\"encrypted_value\":\"c2VjcmV0\",\"key_id\":\"012345678912345678\",\"registry_type\":\"maven_repository\",\"selected_repository_ids\":[1296269,1296280],\"url\":\"https://maven.pkg.github.com/organization/\",\"username\":\"monalisa\",\"visibility\":\"selected\"}}},\"schema\":{\"properties\":{\"encrypted_value\":{\"description\":\"The value for your secret, encrypted with [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages) using the public key retrieved from the [Get private registries public key for an organization](https://docs.github.com/rest/private-registries/organization-configurations#get-private-registries-public-key-for-an-organization) endpoint.\",\"pattern\":\"^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$\",\"type\":\"string\"},\"key_id\":{\"description\":\"The ID of the key you used to encrypt the secret.\",\"type\":\"string\"},\"registry_type\":{\"description\":\"The registry type.\",\"enum\":[\"maven_repository\",\"nuget_feed\",\"goproxy_server\",\"npm_registry\",\"rubygems_server\",\"cargo_registry\",\"composer_repository\",\"docker_registry\",\"git_source\",\"helm_registry\",\"hex_organization\",\"hex_repository\",\"pub_repository\",\"python_index\",\"terraform_registry\"],\"type\":\"string\"},\"selected_repository_ids\":{\"description\":\"An array of repository IDs that can access the organization private registry. You can only provide a list of repository IDs when `visibility` is set to `selected`. You can manage the list of selected repositories using the [Update a private registry for an organization](https://docs.github.com/rest/private-registries/organization-configurations#update-a-private-registry-for-an-organization) endpoint. This field should be omitted if `visibility` is set to `all` or `private`.\",\"items\":{\"type\":\"integer\"},\"type\":\"array\"},\"url\":{\"description\":\"The URL of the private registry.\",\"format\":\"uri\",\"type\":\"string\"},\"username\":{\"description\":\"The username to use when authenticating with the private registry. This field should be omitted if the private registry does not require a username for authentication.\",\"nullable\":true,\"type\":\"string\"},\"visibility\":{\"description\":\"Which type of organization repositories have access to the private registry. `selected` means only the repositories specified by `selected_repository_ids` can access the private registry.\",\"enum\":[\"all\",\"private\",\"selected\"],\"type\":\"string\"}},\"required\":[\"registry_type\",\"url\",\"encrypted_value\",\"key_id\",\"visibility\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"org-private-registry-with-private-visibility\":{\"value\":{\"created_at\":\"2019-08-10T14:59:22Z\",\"name\":\"MAVEN_REPOSITORY_SECRET\",\"registry_type\":\"maven_repository\",\"selected_repository_ids\":[1296269,1296280],\"updated_at\":\"2020-01-10T14:59:22Z\",\"username\":\"monalisa\",\"visibility\":\"selected\"}},\"org-private-registry-with-selected-visibility\":{\"value\":{\"created_at\":\"2019-08-10T14:59:22Z\",\"name\":\"MAVEN_REPOSITORY_SECRET\",\"registry_type\":\"maven_repository\",\"updated_at\":\"2020-01-10T14:59:22Z\",\"username\":\"monalisa\",\"visibility\":\"private\"}}},\"schema\":{\"description\":\"Private registry configuration for an organization\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the private registry configuration.\",\"example\":\"MAVEN_REPOSITORY_SECRET\",\"type\":\"string\"},\"registry_type\":{\"description\":\"The registry type.\",\"enum\":[\"maven_repository\",\"nuget_feed\",\"goproxy_server\",\"npm_registry\",\"rubygems_server\",\"cargo_registry\",\"composer_repository\",\"docker_registry\",\"git_source\",\"helm_registry\",\"hex_organization\",\"hex_repository\",\"pub_repository\",\"python_index\",\"terraform_registry\"],\"type\":\"string\"},\"selected_repository_ids\":{\"description\":\"An array of repository IDs that can access the organization private registry when `visibility` is set to `selected`.\",\"items\":{\"type\":\"integer\"},\"type\":\"array\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"username\":{\"description\":\"The username to use when authenticating with the private registry.\",\"example\":\"monalisa\",\"type\":\"string\"},\"visibility\":{\"description\":\"Which type of organization repositories have access to the private registry. `selected` means only the repositories specified by `selected_repository_ids` can access the private registry.\",\"enum\":[\"all\",\"private\",\"selected\"],\"type\":\"string\"}},\"required\":[\"name\",\"registry_type\",\"visibility\",\"created_at\",\"updated_at\"],\"title\":\"Organization private registry\",\"type\":\"object\"}}},\"description\":\"The organization private registry configuration\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
           }
           method: "POST"
           orig: "/orgs/{org}/private-registries"

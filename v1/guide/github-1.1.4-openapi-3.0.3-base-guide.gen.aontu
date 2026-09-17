@@ -727,7 +727,7 @@ guide: {
   }
 
   entity: branch: {
-    path: "/repos/{owner}/{repo}/branches/{branch}": {  # ent=branch;orig=branch-with-protection;cmp/resolve=branch_with_protection;path=t/p/;path-primary
+    path: "/repos/{owner}/{repo}/branches/{branch}": {  # ent=branch;orig=branch-with-protection;cmp/resolve=branch_with_protection;path=t/p/;path-primary;resplit-from-cmp=branch
       rename: param: "branch": *"id"  # end-id;GET;parent=true/branch;cmp=false
       op: load: method: *GET  # end-param
     }
@@ -762,7 +762,7 @@ guide: {
   }
 
   entity: campaign: {
-    path: "/orgs/{org}/campaigns": {  # ent=campaign;orig=campaign-summary;cmp/resolve=campaign_summary;path=t/p/t/;path-primary;has-cmp=campaign-summary
+    path: "/orgs/{org}/campaigns": {  # ent=campaign;orig=campaign-summary;cmp/resolve=campaign_summary;path=t/p/t/;path-primary;has-cmp=campaign-summary;resplit-from-cmp=campaign
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
       op: create: transform: req: "code_scanning_alerts": *("`reqdata.code_scanning_alert`")|top
@@ -876,7 +876,7 @@ guide: {
   }
 
   entity: clone: {
-    path: "/repos/{owner}/{repo}/traffic/clones": {  # ent=clone;orig=clone-traffic;cmp/resolve=clone_traffic;path=t/;path-primary
+    path: "/repos/{owner}/{repo}/traffic/clones": {  # ent=clone;orig=clone-traffic;cmp/resolve=clone_traffic;path=t/;path-primary;resplit-from-cmp=clone
       op: list: method: *GET  # array-prop:clones
       op: list: transform: res: *("`body.clones`")|top
     }
@@ -1460,7 +1460,7 @@ guide: {
     path: "/repos/{owner}/{repo}/contributors": {  # ent=contributor;cmp/resolve=contributor;path=p/t/;path-primary
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{repo}/stats/contributors": {  # ent=contributor;cmp/resolve=contributor_activity;path=t/;path-primary
+    path: "/repos/{owner}/{repo}/stats/contributors": {  # ent=contributor;cmp/resolve=contributor_activity;path=t/;path-primary;resplit-from-cmp=contributor
       op: list: method: *GET  # array
     }
   }
@@ -1481,7 +1481,7 @@ guide: {
       op: create: method: *POST  # not-load
       op: remove: method: *DELETE  # not-load
     }
-    path: "/orgs/{org}/members/{username}/copilot": {  # ent=copilot;cmp/resolve=copilot_seat_detail;path=t/p/t/;path-primary;has-cmp=copilot-seat-details
+    path: "/orgs/{org}/members/{username}/copilot": {  # ent=copilot;cmp/resolve=copilot_seat_detail;path=t/p/t/;path-primary;has-cmp=copilot-seat-details;resplit-from-cmp=copilot
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # not-list
     }
@@ -1534,7 +1534,7 @@ guide: {
   }
 
   entity: dependabot: {
-    path: "/organizations": {  # ent=dependabot;cmp/resolve=organization_simple;path=t/;path-primary
+    path: "/organizations": {  # ent=dependabot;cmp/resolve=organization_simple;path=t/;path-primary;resplit-from-cmp=organization
       op: list: method: *GET  # array
     }
     path: "/organizations/{org}/dependabot/repository-access": {  # ent=dependabot;tag=dependabot;cmp/resolve=dependabot;path=t/;cmp-primary;cmp-infreq
@@ -1928,7 +1928,7 @@ guide: {
   }
 
   entity: gist: {
-    path: "/gists": {  # ent=gist;orig=gist-simple;cmp/resolve=gist_simple;path=t/;path-primary
+    path: "/gists": {  # ent=gist;orig=gist-simple;cmp/resolve=gist_simple;path=t/;path-primary;resplit-from-cmp=gist
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
@@ -1949,7 +1949,7 @@ guide: {
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-    path: "/gists/{gist_id}/{sha}": {  # ent=gist;orig=gist-simple;cmp/resolve=gist_simple;path=t/p/p;path-primary
+    path: "/gists/{gist_id}/{sha}": {  # ent=gist;orig=gist-simple;cmp/resolve=gist_simple;path=t/p/p;path-primary;resplit-from-cmp=gist
       op: load: method: *GET  # end-param
     }
   }
@@ -2403,7 +2403,7 @@ guide: {
       rename: param: "key_id": *"id"  # end-id;GET;parent=true/key;cmp=false
       op: load: method: *GET  # end-param
     }
-    path: "/users/{username}/keys": {  # ent=key;cmp/resolve=key_simple;path=t/p/t/;path-primary;has-cmp=key-simple
+    path: "/users/{username}/keys": {  # ent=key;cmp/resolve=key_simple;path=t/p/t/;path-primary;has-cmp=key-simple;resplit-from-cmp=key
       op: list: method: *GET  # array
     }
   }
@@ -2430,14 +2430,14 @@ guide: {
   }
 
   entity: license: {
-    path: "/licenses": {  # ent=license;orig=license-simple;cmp/resolve=license_simple;path=t/;path-primary
+    path: "/licenses": {  # ent=license;orig=license-simple;cmp/resolve=license_simple;path=t/;path-primary;resplit-from-cmp=license
       op: list: method: *GET  # array
     }
     path: "/licenses/{license}": {  # ent=license;orig=license-simple;cmp/resolve=license;path=t/p/;path-primary
       rename: param: "license": *"id"  # end-id;GET;parent=true/license;cmp=false
       op: load: method: *GET  # end-param
     }
-    path: "/repos/{owner}/{repo}/license": {  # ent=license;orig=license-simple;cmp/resolve=license_content;path=p/t/;path-primary
+    path: "/repos/{owner}/{repo}/license": {  # ent=license;orig=license-simple;cmp/resolve=license_content;path=p/t/;path-primary;resplit-from-cmp=license
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.license`")|top
     }
@@ -2810,10 +2810,10 @@ guide: {
     path: "/orgs/{org}/{security_product}/{enablement}": {  # ent=org;orig=organization-full;tag=org;cmp/resolve=org;path=t/p/p;path-primary
       op: create: method: *POST  # not-load
     }
-    path: "/user/memberships/orgs": {  # ent=org;orig=organization-full;cmp/resolve=org_membership;path=t/;path-primary
+    path: "/user/memberships/orgs": {  # ent=org;orig=organization-full;cmp/resolve=org_membership;path=t/;path-primary;resplit-from-cmp=org
       op: list: method: *GET  # array
     }
-    path: "/user/memberships/orgs/{org}": {  # ent=org;orig=organization-full;cmp/resolve=org_membership;path=t/p/;path-primary
+    path: "/user/memberships/orgs/{org}": {  # ent=org;orig=organization-full;cmp/resolve=org_membership;path=t/p/;path-primary;resplit-from-cmp=org
       rename: param: "org": *"id"  # end-id;GET;parent=true/org;cmp=false
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -3104,7 +3104,7 @@ guide: {
   }
 
   entity: participation: {
-    path: "/repos/{owner}/{repo}/stats/participation": {  # ent=participation;orig=participation-stats;cmp/resolve=participation_stat;path=t/;path-primary
+    path: "/repos/{owner}/{repo}/stats/participation": {  # ent=participation;orig=participation-stats;cmp/resolve=participation_stat;path=t/;path-primary;resplit-from-cmp=participation
       op: list: method: *GET  # array-prop:all;array-prop:owner
     }
   }
@@ -3333,7 +3333,7 @@ guide: {
   }
 
   entity: pull: {
-    path: "/repos/{owner}/{repo}/commits/{commit_sha}/pulls": {  # ent=pull;orig=pull-request-simple;cmp/resolve=pull_request_simple;path=t/p/t/;path-primary;has-cmp=pull-request-simple
+    path: "/repos/{owner}/{repo}/commits/{commit_sha}/pulls": {  # ent=pull;orig=pull-request-simple;cmp/resolve=pull_request_simple;path=t/p/t/;path-primary;has-cmp=pull-request-simple;resplit-from-cmp=pull
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/pulls": {  # ent=pull;orig=pull-request-simple;cmp/resolve=pull;path=p/t/;path-primary
@@ -3348,7 +3348,7 @@ guide: {
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
-    path: "/repos/{owner}/{repo}/pulls/{pull_number}/merge": {  # ent=pull;orig=pull-request-simple;cmp/resolve=pull_request_merge_result;path=t/p/t/;verb-on-parent=pull
+    path: "/repos/{owner}/{repo}/pulls/{pull_number}/merge": {  # ent=pull;orig=pull-request-simple;cmp/resolve=pull_request_merge_result;path=t/p/t/;verb-on-parent=pull;resplit-from-cmp=pull
       action: "merge": {}  # ent;pull;ent-param-2nd-last;merge;GET
       rename: param: "pull_number": *"id"  # id-parent-ent
       op: load: method: *GET  # no-schema
@@ -3509,7 +3509,7 @@ guide: {
   }
 
   entity: referrer: {
-    path: "/repos/{owner}/{repo}/traffic/popular/referrers": {  # ent=referrer;orig=referrer-traffic;cmp/resolve=referrer_traffic;path=t/;path-primary
+    path: "/repos/{owner}/{repo}/traffic/popular/referrers": {  # ent=referrer;orig=referrer-traffic;cmp/resolve=referrer_traffic;path=t/;path-primary;resplit-from-cmp=referrer
       op: list: method: *GET  # array
     }
   }
@@ -4133,12 +4133,12 @@ guide: {
       rename: param: "org": *"org_id"  # parent:org
       op: list: method: *GET  # array
     }
-    path: "/orgs/{org}/organization-roles/{role_id}/teams": {  # ent=team;cmp/resolve=team_role_assignment;path=t/p/t/;path-primary;has-cmp=team-role-assignment
+    path: "/orgs/{org}/organization-roles/{role_id}/teams": {  # ent=team;cmp/resolve=team_role_assignment;path=t/p/t/;path-primary;has-cmp=team-role-assignment;resplit-from-cmp=team
       rename: param: "org": *"org_id"  # parent:org
       rename: param: "role_id": *"organization_role_id"  # parent:organization_role
       op: list: method: *GET  # array
     }
-    path: "/orgs/{org}/teams": {  # ent=team;cmp/resolve=team_full;path=t/p/t/;path-primary;has-cmp=team-full
+    path: "/orgs/{org}/teams": {  # ent=team;cmp/resolve=team_full;path=t/p/t/;path-primary;has-cmp=team-full;resplit-from-cmp=team
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
@@ -4307,7 +4307,7 @@ guide: {
       rename: param: "team_id": *"id"  # id-parent-ent
       op: list: method: *GET  # array
     }
-    path: "/user/teams": {  # ent=team;cmp/resolve=team_full;path=t/;path-primary
+    path: "/user/teams": {  # ent=team;cmp/resolve=team_full;path=t/;path-primary;resplit-from-cmp=team
       op: list: method: *GET  # array
     }
   }
@@ -4354,7 +4354,7 @@ guide: {
   }
 
   entity: user: {
-    path: "/orgs/{org}/organization-roles/{role_id}/users": {  # ent=user;orig=user-role-assignment;cmp/resolve=user_role_assignment;path=t/p/t/;path-primary;has-cmp=user-role-assignment
+    path: "/orgs/{org}/organization-roles/{role_id}/users": {  # ent=user;orig=user-role-assignment;cmp/resolve=user_role_assignment;path=t/p/t/;path-primary;has-cmp=user-role-assignment;resplit-from-cmp=user
       rename: param: "org": *"org_id"  # parent:org
       rename: param: "role_id": *"organization_role_id"  # parent:organization_role
       op: list: method: *GET  # array
@@ -4438,7 +4438,7 @@ guide: {
   }
 
   entity: view: {
-    path: "/repos/{owner}/{repo}/traffic/views": {  # ent=view;orig=view-traffic;cmp/resolve=view_traffic;path=t/;path-primary
+    path: "/repos/{owner}/{repo}/traffic/views": {  # ent=view;orig=view-traffic;cmp/resolve=view_traffic;path=t/;path-primary;resplit-from-cmp=view
       op: list: method: *GET  # array-prop:views
       op: list: transform: res: *("`body.views`")|top
     }

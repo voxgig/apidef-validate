@@ -23,21 +23,9 @@ main: kit: entity: private_registry: {
       type: "`$STRING`"
     }
     {
-      name: "key"
-      req: true
-      short: "The Base64 encoded public key."
-      type: "`$STRING`"
-    }
-    {
       name: "key_id"
-      op: {
-        update: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
-      req: true
-      short: "The identifier for the key."
+      req: false
+      short: "The ID of the key you used to encrypt the secret."
       type: "`$STRING`"
     }
     {
@@ -137,6 +125,12 @@ main: kit: entity: private_registry: {
               }
             ]
           }
+          contract: {
+            id: "GET /orgs/{org}/private-registries"
+            json: "{\"operationId\":\"private-registries/list-org-private-registries\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"configurations\":[{\"created_at\":\"2019-08-10T14:59:22Z\",\"name\":\"MAVEN_REPOSITORY_SECRET\",\"registry_type\":\"maven_repository\",\"updated_at\":\"2020-01-10T14:59:22Z\",\"username\":\"monalisa\",\"visibility\":\"selected\"}],\"total_count\":1}}},\"schema\":{\"properties\":{\"configurations\":{\"items\":{\"description\":\"Private registry configuration for an organization\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the private registry configuration.\",\"example\":\"MAVEN_REPOSITORY_SECRET\",\"type\":\"string\"},\"registry_type\":{\"description\":\"The registry type.\",\"enum\":[\"maven_repository\",\"nuget_feed\",\"goproxy_server\",\"npm_registry\",\"rubygems_server\",\"cargo_registry\",\"composer_repository\",\"docker_registry\",\"git_source\",\"helm_registry\",\"hex_organization\",\"hex_repository\",\"pub_repository\",\"python_index\",\"terraform_registry\"],\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"username\":{\"description\":\"The username to use when authenticating with the private registry.\",\"example\":\"monalisa\",\"nullable\":true,\"type\":\"string\"},\"visibility\":{\"description\":\"Which type of organization repositories have access to the private registry.\",\"enum\":[\"all\",\"private\",\"selected\"],\"type\":\"string\"}},\"required\":[\"name\",\"registry_type\",\"visibility\",\"created_at\",\"updated_at\"],\"title\":\"Organization private registry\",\"type\":\"object\"},\"type\":\"array\"},\"total_count\":{\"type\":\"integer\"}},\"required\":[\"total_count\",\"configurations\"],\"type\":\"object\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}},\"application/scim+json\":{\"schema\":{\"description\":\"Scim Error\",\"properties\":{\"detail\":{\"nullable\":true,\"type\":\"string\"},\"documentation_url\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"schemas\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"scimType\":{\"nullable\":true,\"type\":\"string\"},\"status\":{\"type\":\"integer\"}},\"title\":\"Scim Error\",\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "GET"
           orig: "/orgs/{org}/private-registries"
           rename: {
@@ -183,6 +177,12 @@ main: kit: entity: private_registry: {
                 type: "`$STRING`"
               }
             ]
+          }
+          contract: {
+            id: "GET /orgs/{org}/private-registries/public-key"
+            json: "{\"operationId\":\"private-registries/get-org-public-key\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"key\":\"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234\",\"key_id\":\"012345678912345678\"}}},\"schema\":{\"properties\":{\"key\":{\"description\":\"The Base64 encoded public key.\",\"example\":\"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234\",\"type\":\"string\"},\"key_id\":{\"description\":\"The identifier for the key.\",\"example\":\"012345678912345678\",\"type\":\"string\"}},\"required\":[\"key_id\",\"key\"],\"type\":\"object\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
           }
           method: "GET"
           orig: "/orgs/{org}/private-registries/public-key"
@@ -240,6 +240,12 @@ main: kit: entity: private_registry: {
               }
             ]
           }
+          contract: {
+            id: "DELETE /orgs/{org}/private-registries/{secret_name}"
+            json: "{\"operationId\":\"private-registries/delete-org-private-registry\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the secret.\",\"in\":\"path\",\"name\":\"secret_name\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"204\":{\"description\":\"Response\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}},\"application/scim+json\":{\"schema\":{\"description\":\"Scim Error\",\"properties\":{\"detail\":{\"nullable\":true,\"type\":\"string\"},\"documentation_url\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"schemas\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"scimType\":{\"nullable\":true,\"type\":\"string\"},\"status\":{\"type\":\"integer\"}},\"title\":\"Scim Error\",\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "DELETE"
           orig: "/orgs/{org}/private-registries/{secret_name}"
           rename: {
@@ -296,6 +302,12 @@ main: kit: entity: private_registry: {
                 type: "`$STRING`"
               }
             ]
+          }
+          contract: {
+            id: "PATCH /orgs/{org}/private-registries/{secret_name}"
+            json: "{\"operationId\":\"private-registries/update-org-private-registry\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the secret.\",\"in\":\"path\",\"name\":\"secret_name\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"encrypted_value\":\"c2VjcmV0\",\"key_id\":\"012345678912345678\",\"username\":\"monalisa\"}}},\"schema\":{\"properties\":{\"encrypted_value\":{\"description\":\"The value for your secret, encrypted with [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages) using the public key retrieved from the [Get private registries public key for an organization](https://docs.github.com/rest/private-registries/organization-configurations#get-private-registries-public-key-for-an-organization) endpoint.\",\"pattern\":\"^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$\",\"type\":\"string\"},\"key_id\":{\"description\":\"The ID of the key you used to encrypt the secret.\",\"type\":\"string\"},\"registry_type\":{\"description\":\"The registry type.\",\"enum\":[\"maven_repository\",\"nuget_feed\",\"goproxy_server\",\"npm_registry\",\"rubygems_server\",\"cargo_registry\",\"composer_repository\",\"docker_registry\",\"git_source\",\"helm_registry\",\"hex_organization\",\"hex_repository\",\"pub_repository\",\"python_index\",\"terraform_registry\"],\"type\":\"string\"},\"selected_repository_ids\":{\"description\":\"An array of repository IDs that can access the organization private registry. You can only provide a list of repository IDs when `visibility` is set to `selected`. This field should be omitted if `visibility` is set to `all` or `private`.\",\"items\":{\"type\":\"integer\"},\"type\":\"array\"},\"url\":{\"description\":\"The URL of the private registry.\",\"format\":\"uri\",\"type\":\"string\"},\"username\":{\"description\":\"The username to use when authenticating with the private registry. This field should be omitted if the private registry does not require a username for authentication.\",\"nullable\":true,\"type\":\"string\"},\"visibility\":{\"description\":\"Which type of organization repositories have access to the private registry. `selected` means only the repositories specified by `selected_repository_ids` can access the private registry.\",\"enum\":[\"all\",\"private\",\"selected\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"204\":{\"description\":\"Response\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
           }
           method: "PATCH"
           orig: "/orgs/{org}/private-registries/{secret_name}"
