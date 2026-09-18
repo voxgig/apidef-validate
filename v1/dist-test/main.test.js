@@ -58,18 +58,6 @@ let cases = [
     { name: 'petstore', version: '1.0.7', spec: 'swagger-2.0', format: 'json' },
     { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
     { name: 'foo', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
-    // The elementdemo reference SDK's own spec, and the only case in this
-    // corpus that puts a SERVER VARIABLE in the base URL: the account id is
-    // `/api/{account_id}/...`, declared on the server rather than repeated as
-    // a path parameter on all seventeen operations. That is the one shape a
-    // generated SDK substitutes at CONSTRUCTION time instead of per call, and
-    // nothing else here exercised it.
-    //
-    // It is also the only spec with a token EXCHANGE — POST /auth/token
-    // answering `expires_in_requests` — so the auth-exchange classification
-    // has a regression case, and it nests sub-resources two deep
-    // (/element/{element_id}/isotope/{isotope_id}/decay) with action ops
-    // (ionize, decay) hanging off both levels.
     { name: 'elementdemo', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
     { name: 'learnworlds', version: '2', spec: 'openapi-3.1.0', format: 'yaml' },
     { name: 'statuspage', version: '1.0.0', spec: 'openapi-3.0.0', format: 'json' },
@@ -87,10 +75,6 @@ let cases = [
         name: 'linear', version: '2026.08', spec: 'graphql', format: 'graphql',
         endpoint: 'https://api.linear.app/graphql',
     },
-    // GitHub's GraphQL API, alongside its OpenAPI def above: the one API in
-    // this corpus present in both formats, so the two models can be compared.
-    // Its mutations are overwhelmingly commands rather than CRUD, which is
-    // what exercises action folding at scale.
     {
         name: 'github', version: '2026.08', spec: 'graphql', format: 'graphql',
         endpoint: 'https://api.github.com/graphql',
@@ -154,7 +138,6 @@ if (0 < caseSelector.length) {
         }
     });
     (0, node_test_1.test)('model-case', async () => {
-        // console.log('MODEL-CASES', cases)
         const { fs, vol } = prepfs(cases);
         const fails = [];
         const testmetrics = {
@@ -162,7 +145,6 @@ if (0 < caseSelector.length) {
         };
         for (let c of cases) {
             try {
-                // console.log('MODEL-CASE', c)
                 await prepCaseGuide(c, fs);
                 const build = await makeBuild(c, fs);
                 const bres = await runBuild(c, build, {
@@ -172,7 +154,6 @@ if (0 < caseSelector.length) {
                     builders: true,
                     generate: true,
                 });
-                // console.log('BRES', c, bres)
                 if (!bres?.ok) {
                     fails.push('BUILD FAIL: ' + fullname(c) + ' build not ok');
                 }
@@ -191,17 +172,6 @@ if (0 < caseSelector.length) {
         }
     });
 });
-// APIDEF WRITES `.aon`; IT USED TO WRITE `.aontu`.
-//
-// Model source files (guide, base-guide, entity) were renamed as part of the
-// aontu file-extension change. apidef migrates a legacy `.aontu` guide it is
-// GIVEN, but everything it WRITES is `.aon`. Reading only one extension makes
-// this harness silently version-locked: against the other apidef the memfs
-// lookup is `undefined` and every case dies on `.trim() of undefined`, a
-// harness bug wearing the costume of an apidef regression.
-//
-// So read whichever apidef produced, and if neither is there say so with both
-// names — the failure is then self-explaining.
 function readModelSource(volJSON, dir, stem) {
     for (const ext of ['aon', 'aontu']) {
         const src = volJSON[`${dir}/${stem}.${ext}`];
@@ -220,19 +190,6 @@ function prepfs(cases) {
     const vol = {
         'model': {
             'guide': {}
-            /*
-        
-              cases.reduce((a: any, c: Case) => {
-                  a[fullname(c) + '-guide.aontu'] = `
-        @"@voxgig/apidef/model/guide.aontu"
-        
-        @"${fullname(c)}-base-guide.aontu"
-        
-        guide:{}
-        `
-                  return a
-                  }, {})
-                          */
         }
     };
     const ufs = (0, __1.makefs)(vol);
@@ -242,14 +199,6 @@ async function prepCaseGuide(c, fs) {
     const guideFileName = fullname(c) + '-guide.aontu';
     const realGuideFilePath = node_path_1.default.join(TOP_FOLDER, 'guide', guideFileName);
     const virtualGuideFilePath = node_path_1.default.join('/model', 'guide', guideFileName);
-    // TWO FILESYSTEMS, AND THE PATH DECIDES WHICH.
-    //
-    // Anything under TOP_FOLDER is this harness's own bookkeeping — guide
-    // sources, .gen output, goldens — and belongs on real disk where a human
-    // can read and diff it. Anything under /model is generated output and
-    // belongs in the sandbox. `fs` is the union with the in-memory fs winning,
-    // so using it for a repo path silently swallows the write: that is exactly
-    // how a golden refresh came back with nothing to refresh.
     let guideFileSrc = '';
     const realExists = Fs.existsSync(realGuideFilePath);
     if (realExists) {
@@ -267,11 +216,9 @@ guide:{}
     }
     // Ensure guide file is in virtual fs — a /model path, so the injected fs.
     fs.writeFileSync(virtualGuideFilePath, guideFileSrc);
-    // console.log('PREP-CASE-GUIDE', guideFileName, realGuideFilePath, realExists, virtualGuideFilePath, guideFileSrc)
 }
 async function makeBuild(c, fs) {
     let folder = '/model';
-    // let folder = TOP_FOLDER
     let outprefix = fullname(c) + '-';
     const buildSpec = {
         folder,
@@ -322,7 +269,6 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
         Fs.writeFileSync(expectedBaseGuideFile, baseGuide);
     }
     const expectedBaseGuide = Fs.readFileSync(expectedBaseGuideFile, 'utf8').trim();
-    // console.log('<' + expectedBaseGuide + '>')
     if (expectedBaseGuide !== baseGuide) {
         const difflines = __1.Diff.diffLines(expectedBaseGuide, baseGuide);
         // Comments with ## are considered TODOs
@@ -354,7 +300,6 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
     printMismatch(expectedFinalGuide, finalGuide, testmetrics, fails, cfn, showtodo);
 }
 function printMismatch(expected, found, testmetrics, fails, cfn, showtodo) {
-    // console.log('<' + expectedBaseGuide + '>')
     if (expected !== found) {
         const difflines = __1.Diff.diffLines(expected, found);
         // Comments with ## are considered TODOs
@@ -389,7 +334,6 @@ function validateModel(c, fails, bres, fs, vol, testmetrics) {
         }
         const expectedEntitySrc = Fs.readFileSync(expectedSrcFile, 'utf8')
             .trim();
-        // console.log('<' + expectedEntitySrc + '>')
         if (expectedEntitySrc !== entitySrc) {
             const difflines = __1.Diff.diffLines(expectedEntitySrc, entitySrc);
             // Comments with ## are considered TODOs

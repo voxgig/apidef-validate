@@ -58,10 +58,6 @@ let cases: Case[] = [
     endpoint: 'https://api.linear.app/graphql',
   },
 
-  // GitHub's GraphQL API, alongside its OpenAPI def above: the one API in
-  // this corpus present in both formats, so the two models can be compared.
-  // Its mutations are overwhelmingly commands rather than CRUD, which is
-  // what exercises action folding at scale.
   {
     name: 'github', version: '2026.08', spec: 'graphql', format: 'graphql',
     endpoint: 'https://api.github.com/graphql',
