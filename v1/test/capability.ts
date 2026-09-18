@@ -3,17 +3,6 @@
 import * as Fs from 'node:fs'
 
 
-// GraphQL ingestion landed after some published @voxgig/apidef versions, so
-// the installed copy may not understand those cases at all. Detect the
-// capability from the shipped model rather than by version arithmetic: a
-// pre-GraphQL apidef simply has no graphql block in its point schema.
-//
-// SHARED BECAUSE THE DUPLICATE DRIFTED. main.test.ts and bench.ts both need
-// this probe, and when apidef renamed `model/apidef.aontu` to `.aon` only
-// one copy was updated. The other went on resolving the old name, threw
-// MODULE_NOT_FOUND straight into its own catch, and reported "not capable"
-// — so every GraphQL case vanished from the benchmark with nothing logged.
-// A probe whose failure mode is silent must not exist twice.
 function graphqlCapable(): boolean {
   for (const ext of ['aon', 'aontu']) {
     try {
