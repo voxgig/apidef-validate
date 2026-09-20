@@ -109,6 +109,7 @@ if (0 < caseSelector.length) {
         const selected = cases.filter(c => ['solar', 'petstore', 'taxonomy', 'foo', 'linear', 'shopifystorefront'].includes(c.name));
         const { fs } = prepfs(selected);
         let fieldCount = 0;
+        const stepFields = new Set();
         for (const c of selected) {
             await prepCaseGuide(c, fs);
             const build = await makeBuild(c, fs);
@@ -118,6 +119,7 @@ if (0 < caseSelector.length) {
             node_assert_1.default.ok(result.ok, fullname(c) + ': build failed');
             for (const flow of Object.values(result.apimodel.main.kit.flow)) {
                 for (const step of flow.step ?? []) {
+                    Object.keys(step).forEach(key => stepFields.add(key));
                     node_assert_1.default.equal(typeof step.o, 'string');
                     for (const key of ['active', 'op', 'input', 'match', 'data', 'spec', 'valid']) {
                         node_assert_1.default.ok(!(key in step), fullname(c) + ': legacy flow-step attribute ' + key);
@@ -172,8 +174,12 @@ if (0 < caseSelector.length) {
                 }
             }
         }
-        if (selected.length)
+        if (selected.length) {
             node_assert_1.default.ok(fieldCount > 0);
+            for (const key of ['o', 'i', 'm', 'd', 's', 'v']) {
+                node_assert_1.default.ok(stepFields.has(key), 'corpus must exercise flow-step attribute ' + key);
+            }
+        }
     });
     (0, node_test_1.test)('guide-case', async () => {
         const { fs, vol } = prepfs(cases);

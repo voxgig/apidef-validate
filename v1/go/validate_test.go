@@ -151,6 +151,8 @@ func TestValidate(t *testing.T) {
 	})
 
 	t.Run("model-case", func(t *testing.T) {
+		stepFields := map[string]bool{}
+		caseCount := 0
 		for _, c := range selectedCases() {
 			c := c
 			t.Run(fullName(c), func(t *testing.T) {
@@ -161,6 +163,7 @@ func TestValidate(t *testing.T) {
 					"builders":     true,
 					"generate":     true,
 				})
+				caseCount++
 				main, ok := result.ApiModel["main"].(map[string]any)
 				if !ok {
 					t.Fatal("model main must be a map")
@@ -175,6 +178,9 @@ func TestValidate(t *testing.T) {
 					steps, _ := flow["step"].([]any)
 					for _, value := range steps {
 						step := value.(map[string]any)
+						for key := range step {
+							stepFields[key] = true
+						}
 						if _, ok := step["o"].(string); !ok {
 							t.Errorf("%s: missing flow-step operation", name)
 						}
@@ -287,6 +293,13 @@ func TestValidate(t *testing.T) {
 				t.Logf("%s: model OK, %d entities, steps=%v",
 					fullName(c), len(entities), result.Steps)
 			})
+		}
+		if caseCount > 0 {
+			for _, key := range []string{"o", "i", "m", "d", "s", "v"} {
+				if !stepFields[key] {
+					t.Errorf("corpus must exercise flow-step attribute %s", key)
+				}
+			}
 		}
 	})
 }
