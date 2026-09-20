@@ -253,32 +253,38 @@ main: kit: entity: release: {
       name: "create"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /repos/{owner}/{repo}/releases"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/releases"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/releases"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -292,13 +298,7 @@ main: kit: entity: release: {
               lit: "releases"
             }
           ]
-          select: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -309,50 +309,58 @@ main: kit: entity: release: {
       name: "list"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                example: 1
-                kind: "query"
-                name: "page"
-                orig: "page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/releases"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/releases"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/releases"
+          q: {
+            exist: [
+              "owner"
+              "page"
+              "per_page"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -366,46 +374,45 @@ main: kit: entity: release: {
               lit: "releases"
             }
           ]
-          select: {
-            exist: [
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/releases/latest"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/releases/latest"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/releases/latest"
+          q: {
+            "$action": "latest"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -422,14 +429,7 @@ main: kit: entity: release: {
               lit: "latest"
             }
           ]
-          select: {
-            "$action": "latest"
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -440,44 +440,51 @@ main: kit: entity: release: {
       name: "load"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "release_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/releases/{release_id}"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/releases/{release_id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "release_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/releases/{release_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
             param: {
               release_id: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "repos"
             }
@@ -494,52 +501,52 @@ main: kit: entity: release: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "tag"
-                orig: "tag"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/releases/tags/{tag}"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/releases/tags/{tag}"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "tag"
+                or: "tag"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/releases/tags/{tag}"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "tag"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -559,14 +566,7 @@ main: kit: entity: release: {
               var: "tag"
             }
           ]
-          select: {
-            exist: [
-              "owner"
-              "repo"
-              "tag"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -577,44 +577,51 @@ main: kit: entity: release: {
       name: "update"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "release_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "PATCH /repos/{owner}/{repo}/releases/{release_id}"
             source: "openapi3"
             version: 2
           }
-          method: "PATCH"
-          orig: "/repos/{owner}/{repo}/releases/{release_id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "release_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/repos/{owner}/{repo}/releases/{release_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
             param: {
               release_id: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "repos"
             }
@@ -631,14 +638,7 @@ main: kit: entity: release: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

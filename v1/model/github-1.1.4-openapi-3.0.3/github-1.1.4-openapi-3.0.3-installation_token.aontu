@@ -24,31 +24,37 @@ main: kit: entity: installation_token: {
       name: "create"
       points: [
         {
-          args: {
-            params: [
-              {
-                example: 1
-                kind: "param"
-                name: "id"
-                orig: "installation_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /app/installations/{installation_id}/access_tokens"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/app/installations/{installation_id}/access_tokens"
-          rename: {
+          g: {
+            params: [
+              {
+                ex: 1
+                k: "param"
+                n: "id"
+                or: "installation_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/app/installations/{installation_id}/access_tokens"
+          q: {
+            "$action": "access_tokens"
+            exist: [
+              "id"
+            ]
+          }
+          r: {
             param: {
               installation_id: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "app"
             }
@@ -62,13 +68,7 @@ main: kit: entity: installation_token: {
               lit: "access_tokens"
             }
           ]
-          select: {
-            "$action": "access_tokens"
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

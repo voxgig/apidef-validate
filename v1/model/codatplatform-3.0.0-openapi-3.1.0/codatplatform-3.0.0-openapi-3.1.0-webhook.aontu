@@ -55,19 +55,19 @@ main: kit: entity: webhook: {
       name: "create"
       points: [
         {
-          contract: {
+          co: {
             id: "POST /webhooks"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/webhooks"
-          segments: [
+          m: "POST"
+          o: "/webhooks"
+          s: [
             {
               lit: "webhooks"
             }
           ]
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -78,19 +78,19 @@ main: kit: entity: webhook: {
       name: "list"
       points: [
         {
-          contract: {
+          co: {
             id: "GET /webhooks"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/webhooks"
-          segments: [
+          m: "GET"
+          o: "/webhooks"
+          s: [
             {
               lit: "webhooks"
             }
           ]
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.results`"
           }
@@ -101,31 +101,36 @@ main: kit: entity: webhook: {
       name: "remove"
       points: [
         {
-          args: {
-            params: [
-              {
-                example: "8a210b68-6988-11ed-a1eb-0242ac120002"
-                kind: "param"
-                name: "id"
-                orig: "webhook_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /webhooks/{webhookId}"
             source: "openapi3"
             version: 2
           }
-          method: "DELETE"
-          orig: "/webhooks/{webhookId}"
-          rename: {
+          g: {
+            params: [
+              {
+                ex: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                k: "param"
+                n: "id"
+                or: "webhook_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/webhooks/{webhookId}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
             param: {
               webhookId: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "webhooks"
             }
@@ -133,12 +138,7 @@ main: kit: entity: webhook: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

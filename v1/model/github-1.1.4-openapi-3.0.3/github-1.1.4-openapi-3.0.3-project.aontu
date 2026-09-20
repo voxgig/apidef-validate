@@ -251,32 +251,38 @@ main: kit: entity: project: {
       name: "create"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /repos/{owner}/{repo}/projects"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/projects"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/projects"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -290,42 +296,41 @@ main: kit: entity: project: {
               lit: "projects"
             }
           ]
-          select: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.creator`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "org_id"
-                orig: "org"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /orgs/{org}/projects"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/orgs/{org}/projects"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/projects"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
             param: {
               org: "org_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "orgs"
             }
@@ -336,25 +341,20 @@ main: kit: entity: project: {
               lit: "projects"
             }
           ]
-          select: {
-            exist: [
-              "org_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.creator`"
           }
         }
         {
-          contract: {
+          co: {
             id: "POST /user/projects"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/user/projects"
-          segments: [
+          m: "POST"
+          o: "/user/projects"
+          s: [
             {
               lit: "user"
             }
@@ -362,7 +362,7 @@ main: kit: entity: project: {
               lit: "projects"
             }
           ]
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.creator`"
           }
@@ -373,58 +373,67 @@ main: kit: entity: project: {
       name: "list"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                example: 1
-                kind: "query"
-                name: "page"
-                orig: "page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: "open"
-                kind: "query"
-                name: "state"
-                orig: "state"
-                reqd: false
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/projects"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/projects"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "open"
+                k: "query"
+                n: "state"
+                or: "state"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/projects"
+          q: {
+            exist: [
+              "owner"
+              "page"
+              "per_page"
+              "repo"
+              "state"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -438,71 +447,70 @@ main: kit: entity: project: {
               lit: "projects"
             }
           ]
-          select: {
-            exist: [
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-              "state"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "org_id"
-                orig: "org"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                example: 1
-                kind: "query"
-                name: "page"
-                orig: "page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: "open"
-                kind: "query"
-                name: "state"
-                orig: "state"
-                reqd: false
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /orgs/{org}/projects"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/orgs/{org}/projects"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "open"
+                k: "query"
+                n: "state"
+                or: "state"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/projects"
+          q: {
+            exist: [
+              "org_id"
+              "page"
+              "per_page"
+              "state"
+            ]
+          }
+          r: {
             param: {
               org: "org_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "orgs"
             }
@@ -513,65 +521,65 @@ main: kit: entity: project: {
               lit: "projects"
             }
           ]
-          select: {
-            exist: [
-              "org_id"
-              "page"
-              "per_page"
-              "state"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "username"
-                orig: "username"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                example: 1
-                kind: "query"
-                name: "page"
-                orig: "page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: "open"
-                kind: "query"
-                name: "state"
-                orig: "state"
-                reqd: false
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /users/{username}/projects"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/users/{username}/projects"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "open"
+                k: "query"
+                n: "state"
+                or: "state"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/users/{username}/projects"
+          q: {
+            exist: [
+              "page"
+              "per_page"
+              "state"
+              "username"
+            ]
+          }
+          s: [
             {
               lit: "users"
             }
@@ -582,15 +590,7 @@ main: kit: entity: project: {
               lit: "projects"
             }
           ]
-          select: {
-            exist: [
-              "page"
-              "per_page"
-              "state"
-              "username"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -601,30 +601,35 @@ main: kit: entity: project: {
       name: "load"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "project_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /projects/{project_id}"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/projects/{project_id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "project_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/projects/{project_id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
             param: {
               project_id: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "projects"
             }
@@ -632,12 +637,7 @@ main: kit: entity: project: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.creator`"
           }
@@ -648,45 +648,52 @@ main: kit: entity: project: {
       name: "remove"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "item_id"
-                orig: "item_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "org_id"
-                orig: "org"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "projects_v2_id"
-                orig: "project_number"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /orgs/{org}/projectsV2/{project_number}/items/{item_id}"
             source: "openapi3"
             version: 2
           }
-          method: "DELETE"
-          orig: "/orgs/{org}/projectsV2/{project_number}/items/{item_id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "item_id"
+                or: "item_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "projects_v2_id"
+                or: "project_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/projectsV2/{project_number}/items/{item_id}"
+          q: {
+            exist: [
+              "item_id"
+              "org_id"
+              "projects_v2_id"
+            ]
+          }
+          r: {
             param: {
               org: "org_id"
               project_number: "projects_v2_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "orgs"
             }
@@ -706,57 +713,57 @@ main: kit: entity: project: {
               var: "item_id"
             }
           ]
-          select: {
-            exist: [
-              "item_id"
-              "org_id"
-              "projects_v2_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "item_id"
-                orig: "item_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "projects_v2_id"
-                orig: "project_number"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "username"
-                orig: "username"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /users/{username}/projectsV2/{project_number}/items/{item_id}"
             source: "openapi3"
             version: 2
           }
-          method: "DELETE"
-          orig: "/users/{username}/projectsV2/{project_number}/items/{item_id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "item_id"
+                or: "item_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "projects_v2_id"
+                or: "project_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/users/{username}/projectsV2/{project_number}/items/{item_id}"
+          q: {
+            exist: [
+              "item_id"
+              "projects_v2_id"
+              "username"
+            ]
+          }
+          r: {
             param: {
               project_number: "projects_v2_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "users"
             }
@@ -776,43 +783,41 @@ main: kit: entity: project: {
               var: "item_id"
             }
           ]
-          select: {
-            exist: [
-              "item_id"
-              "projects_v2_id"
-              "username"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "project_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /projects/{project_id}"
             source: "openapi3"
             version: 2
           }
-          method: "DELETE"
-          orig: "/projects/{project_id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "project_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/projects/{project_id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
             param: {
               project_id: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "projects"
             }
@@ -820,12 +825,7 @@ main: kit: entity: project: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -836,30 +836,35 @@ main: kit: entity: project: {
       name: "update"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "project_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "PATCH /projects/{project_id}"
             source: "openapi3"
             version: 2
           }
-          method: "PATCH"
-          orig: "/projects/{project_id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "project_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/projects/{project_id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
             param: {
               project_id: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "projects"
             }
@@ -867,12 +872,7 @@ main: kit: entity: project: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.creator`"
           }

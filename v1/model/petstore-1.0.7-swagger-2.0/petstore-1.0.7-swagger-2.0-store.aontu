@@ -10,14 +10,17 @@ main: kit: entity: store: {
       name: "load"
       points: [
         {
-          contract: {
+          co: {
             id: "GET /store/inventory"
             source: "swagger2"
             version: 2
           }
-          method: "GET"
-          orig: "/store/inventory"
-          segments: [
+          m: "GET"
+          o: "/store/inventory"
+          q: {
+            "$action": "inventory"
+          }
+          s: [
             {
               lit: "store"
             }
@@ -25,10 +28,7 @@ main: kit: entity: store: {
               lit: "inventory"
             }
           ]
-          select: {
-            "$action": "inventory"
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -39,30 +39,35 @@ main: kit: entity: store: {
       name: "remove"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "order_id"
-                orig: "order_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /store/order/{orderId}"
             source: "swagger2"
             version: 2
           }
-          method: "DELETE"
-          orig: "/store/order/{orderId}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "order_id"
+                or: "order_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/store/order/{orderId}"
+          q: {
+            exist: [
+              "order_id"
+            ]
+          }
+          r: {
             param: {
               orderId: "order_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "store"
             }
@@ -73,12 +78,7 @@ main: kit: entity: store: {
               var: "order_id"
             }
           ]
-          select: {
-            exist: [
-              "order_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

@@ -124,32 +124,38 @@ main: kit: entity: commit: {
       name: "create"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /repos/{owner}/{repo}/merges"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/merges"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/merges"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -163,13 +169,7 @@ main: kit: entity: commit: {
               lit: "merges"
             }
           ]
-          select: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.commit`"
           }
@@ -180,106 +180,92 @@ main: kit: entity: commit: {
       name: "list"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "author"
-                orig: "author"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                kind: "query"
-                name: "committer"
-                orig: "committer"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                example: 1
-                kind: "query"
-                name: "page"
-                orig: "page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "query"
-                name: "path"
-                orig: "path"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "query"
-                name: "sha"
-                orig: "sha"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                kind: "query"
-                name: "since"
-                orig: "since"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                kind: "query"
-                name: "until"
-                orig: "until"
-                reqd: false
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/commits"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/commits"
-          segments: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "commits"
-            }
-          ]
-          select: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "author"
+                or: "author"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "committer"
+                or: "committer"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "path"
+                or: "path"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "sha"
+                or: "sha"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "since"
+                or: "since"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "until"
+                or: "until"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/commits"
+          q: {
             exist: [
               "author"
               "committer"
@@ -293,63 +279,86 @@ main: kit: entity: commit: {
               "until"
             ]
           }
-          transform: {
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "commits"
+            }
+          ]
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "pull_number"
-                orig: "pull_number"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                example: 1
-                kind: "query"
-                name: "page"
-                orig: "page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/commits"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "pull_number"
+                or: "pull_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/pulls/{pull_number}/commits"
+          q: {
+            exist: [
+              "owner"
+              "page"
+              "per_page"
+              "pull_number"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -369,16 +378,7 @@ main: kit: entity: commit: {
               lit: "commits"
             }
           ]
-          select: {
-            exist: [
-              "owner"
-              "page"
-              "per_page"
-              "pull_number"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -389,62 +389,71 @@ main: kit: entity: commit: {
       name: "load"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "ref"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                example: 1
-                kind: "query"
-                name: "page"
-                orig: "page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/commits/{ref}"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/commits/{ref}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "ref"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/commits/{ref}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "page"
+              "per_page"
+              "repo"
+            ]
+          }
+          r: {
             param: {
               ref: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "repos"
             }
@@ -461,16 +470,7 @@ main: kit: entity: commit: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.commit`"
           }

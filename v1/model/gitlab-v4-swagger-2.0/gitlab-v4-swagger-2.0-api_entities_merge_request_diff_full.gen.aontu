@@ -86,54 +86,62 @@ main: kit: entity: api_entities_merge_request_diff_full: {
       name: "load"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "merge_request_id"
-                orig: "merge_request_iid"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "project_id"
-                orig: "id"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "version_id"
-                orig: "version_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "unidiff"
-                orig: "unidiff"
-                reqd: false
-                type: "`$ANY`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/versions/{version_id}"
             source: "swagger2"
             version: 2
           }
-          method: "GET"
-          orig: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/versions/{version_id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "merge_request_id"
+                or: "merge_request_iid"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "version_id"
+                or: "version_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "unidiff"
+                or: "unidiff"
+                r: false
+                t: "`$ANY`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/versions/{version_id}"
+          q: {
+            exist: [
+              "merge_request_id"
+              "project_id"
+              "unidiff"
+              "version_id"
+            ]
+          }
+          r: {
             param: {
               id: "project_id"
               merge_request_iid: "merge_request_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -159,15 +167,7 @@ main: kit: entity: api_entities_merge_request_diff_full: {
               var: "version_id"
             }
           ]
-          select: {
-            exist: [
-              "merge_request_id"
-              "project_id"
-              "unidiff"
-              "version_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

@@ -266,32 +266,38 @@ main: kit: entity: milestone: {
       name: "create"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /repos/{owner}/{repo}/milestones"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/milestones"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/milestones"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -305,13 +311,7 @@ main: kit: entity: milestone: {
               lit: "milestones"
             }
           ]
-          select: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.creator`"
           }
@@ -322,88 +322,74 @@ main: kit: entity: milestone: {
       name: "list"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                example: "asc"
-                kind: "query"
-                name: "direction"
-                orig: "direction"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                example: 1
-                kind: "query"
-                name: "page"
-                orig: "page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: "due_on"
-                kind: "query"
-                name: "sort"
-                orig: "sort"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                example: "open"
-                kind: "query"
-                name: "state"
-                orig: "state"
-                reqd: false
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/milestones"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/milestones"
-          segments: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "milestones"
-            }
-          ]
-          select: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "asc"
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "due_on"
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: "open"
+                k: "query"
+                n: "state"
+                or: "state"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/milestones"
+          q: {
             exist: [
               "direction"
               "owner"
@@ -414,7 +400,21 @@ main: kit: entity: milestone: {
               "state"
             ]
           }
-          transform: {
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "milestones"
+            }
+          ]
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -425,44 +425,51 @@ main: kit: entity: milestone: {
       name: "load"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "milestone_number"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/milestones/{milestone_number}"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/milestones/{milestone_number}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "milestone_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/milestones/{milestone_number}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
             param: {
               milestone_number: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "repos"
             }
@@ -479,14 +486,7 @@ main: kit: entity: milestone: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.creator`"
           }
@@ -497,44 +497,51 @@ main: kit: entity: milestone: {
       name: "update"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "milestone_number"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "PATCH /repos/{owner}/{repo}/milestones/{milestone_number}"
             source: "openapi3"
             version: 2
           }
-          method: "PATCH"
-          orig: "/repos/{owner}/{repo}/milestones/{milestone_number}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "milestone_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/repos/{owner}/{repo}/milestones/{milestone_number}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
             param: {
               milestone_number: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "repos"
             }
@@ -551,14 +558,7 @@ main: kit: entity: milestone: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.creator`"
           }

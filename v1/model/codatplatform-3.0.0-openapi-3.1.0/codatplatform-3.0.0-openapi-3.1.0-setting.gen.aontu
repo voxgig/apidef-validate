@@ -46,32 +46,32 @@ main: kit: entity: setting: {
       name: "create"
       points: [
         {
-          contract: {
+          co: {
             id: "POST /apiKeys"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/apiKeys"
-          segments: [
+          m: "POST"
+          o: "/apiKeys"
+          s: [
             {
               lit: "apiKeys"
             }
           ]
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          contract: {
+          co: {
             id: "POST /profile/syncSettings"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/profile/syncSettings"
-          segments: [
+          m: "POST"
+          o: "/profile/syncSettings"
+          s: [
             {
               lit: "profile"
             }
@@ -79,7 +79,7 @@ main: kit: entity: setting: {
               lit: "syncSettings"
             }
           ]
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -90,19 +90,19 @@ main: kit: entity: setting: {
       name: "list"
       points: [
         {
-          contract: {
+          co: {
             id: "GET /apiKeys"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/apiKeys"
-          segments: [
+          m: "GET"
+          o: "/apiKeys"
+          s: [
             {
               lit: "apiKeys"
             }
           ]
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.results`"
           }
@@ -113,31 +113,36 @@ main: kit: entity: setting: {
       name: "remove"
       points: [
         {
-          args: {
-            params: [
-              {
-                example: "8a210b68-6988-11ed-a1eb-0242ac120002"
-                kind: "param"
-                name: "api_key_id"
-                orig: "api_key_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /apiKeys/{apiKeyId}"
             source: "openapi3"
             version: 2
           }
-          method: "DELETE"
-          orig: "/apiKeys/{apiKeyId}"
-          rename: {
+          g: {
+            params: [
+              {
+                ex: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                k: "param"
+                n: "api_key_id"
+                or: "api_key_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/apiKeys/{apiKeyId}"
+          q: {
+            exist: [
+              "api_key_id"
+            ]
+          }
+          r: {
             param: {
               apiKeyId: "api_key_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "apiKeys"
             }
@@ -145,12 +150,7 @@ main: kit: entity: setting: {
               var: "api_key_id"
             }
           ]
-          select: {
-            exist: [
-              "api_key_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

@@ -820,14 +820,14 @@ main: kit: entity: story: {
       name: "create"
       points: [
         {
-          contract: {
+          co: {
             id: "POST /api/v3/stories"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/api/v3/stories"
-          segments: [
+          m: "POST"
+          o: "/api/v3/stories"
+          s: [
             {
               lit: "api"
             }
@@ -838,7 +838,7 @@ main: kit: entity: story: {
               lit: "stories"
             }
           ]
-          transform: {
+          t: {
             req: {
               archived: "`reqdata.archived`"
               comments: "`reqdata.comment`"
@@ -877,14 +877,17 @@ main: kit: entity: story: {
           }
         }
         {
-          contract: {
+          co: {
             id: "POST /api/v3/stories/from-template"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/api/v3/stories/from-template"
-          segments: [
+          m: "POST"
+          o: "/api/v3/stories/from-template"
+          q: {
+            "$action": "from_template"
+          }
+          s: [
             {
               lit: "api"
             }
@@ -898,10 +901,7 @@ main: kit: entity: story: {
               lit: "from-template"
             }
           ]
-          select: {
-            "$action": "from_template"
-          }
-          transform: {
+          t: {
             req: {
               archived: "`reqdata.archived`"
               comments: "`reqdata.comment`"
@@ -959,53 +959,62 @@ main: kit: entity: story: {
       name: "list"
       points: [
         {
-          args: {
-            query: [
-              {
-                kind: "query"
-                name: "detail"
-                orig: "detail"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                kind: "query"
-                name: "entity_type"
-                orig: "entity_type"
-                reqd: false
-                type: "`$ARRAY`"
-              }
-              {
-                kind: "query"
-                name: "next"
-                orig: "next"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                kind: "query"
-                name: "page_size"
-                orig: "page_size"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "query"
-                name: "query"
-                orig: "query"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /api/v3/search/stories"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/api/v3/search/stories"
-          segments: [
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "detail"
+                or: "detail"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "entity_type"
+                or: "entity_type"
+                r: false
+                t: "`$ARRAY`"
+              }
+              {
+                k: "query"
+                n: "next"
+                or: "next"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "page_size"
+                or: "page_size"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "query"
+                or: "query"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/search/stories"
+          q: {
+            exist: [
+              "detail"
+              "entity_type"
+              "next"
+              "page_size"
+              "query"
+            ]
+          }
+          s: [
             {
               lit: "api"
             }
@@ -1019,61 +1028,59 @@ main: kit: entity: story: {
               lit: "stories"
             }
           ]
-          select: {
-            exist: [
-              "detail"
-              "entity_type"
-              "next"
-              "page_size"
-              "query"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body.data`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "group_id"
-                orig: "group_public_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "limit"
-                orig: "limit"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "query"
-                name: "offset"
-                orig: "offset"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /api/v3/groups/{group-public-id}/stories"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/api/v3/groups/{group-public-id}/stories"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "group_public_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "limit"
+                or: "limit"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "offset"
+                or: "offset"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/groups/{group-public-id}/stories"
+          q: {
+            exist: [
+              "group_id"
+              "limit"
+              "offset"
+            ]
+          }
+          r: {
             param: {
               "group-public-id": "group_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -1090,52 +1097,51 @@ main: kit: entity: story: {
               lit: "stories"
             }
           ]
-          select: {
-            exist: [
-              "group_id"
-              "limit"
-              "offset"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "epic_id"
-                orig: "epic_public_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "includes_description"
-                orig: "includes_description"
-                reqd: false
-                type: "`$BOOLEAN`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /api/v3/epics/{epic-public-id}/stories"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/api/v3/epics/{epic-public-id}/stories"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "epic_id"
+                or: "epic_public_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "includes_description"
+                or: "includes_description"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/epics/{epic-public-id}/stories"
+          q: {
+            exist: [
+              "epic_id"
+              "includes_description"
+            ]
+          }
+          r: {
             param: {
               "epic-public-id": "epic_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -1152,51 +1158,51 @@ main: kit: entity: story: {
               lit: "stories"
             }
           ]
-          select: {
-            exist: [
-              "epic_id"
-              "includes_description"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "iteration_id"
-                orig: "iteration_public_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "includes_description"
-                orig: "includes_description"
-                reqd: false
-                type: "`$BOOLEAN`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /api/v3/iterations/{iteration-public-id}/stories"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/api/v3/iterations/{iteration-public-id}/stories"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "iteration_id"
+                or: "iteration_public_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "includes_description"
+                or: "includes_description"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/iterations/{iteration-public-id}/stories"
+          q: {
+            exist: [
+              "includes_description"
+              "iteration_id"
+            ]
+          }
+          r: {
             param: {
               "iteration-public-id": "iteration_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -1213,51 +1219,51 @@ main: kit: entity: story: {
               lit: "stories"
             }
           ]
-          select: {
-            exist: [
-              "includes_description"
-              "iteration_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "label_id"
-                orig: "label_public_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "includes_description"
-                orig: "includes_description"
-                reqd: false
-                type: "`$BOOLEAN`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /api/v3/labels/{label-public-id}/stories"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/api/v3/labels/{label-public-id}/stories"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "label_id"
+                or: "label_public_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "includes_description"
+                or: "includes_description"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/labels/{label-public-id}/stories"
+          q: {
+            exist: [
+              "includes_description"
+              "label_id"
+            ]
+          }
+          r: {
             param: {
               "label-public-id": "label_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -1274,51 +1280,51 @@ main: kit: entity: story: {
               lit: "stories"
             }
           ]
-          select: {
-            exist: [
-              "includes_description"
-              "label_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "project_id"
-                orig: "project_public_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "includes_description"
-                orig: "includes_description"
-                reqd: false
-                type: "`$BOOLEAN`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /api/v3/projects/{project-public-id}/stories"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/api/v3/projects/{project-public-id}/stories"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "project_public_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "includes_description"
+                or: "includes_description"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/projects/{project-public-id}/stories"
+          q: {
+            exist: [
+              "includes_description"
+              "project_id"
+            ]
+          }
+          r: {
             param: {
               "project-public-id": "project_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -1335,37 +1341,36 @@ main: kit: entity: story: {
               lit: "stories"
             }
           ]
-          select: {
-            exist: [
-              "includes_description"
-              "project_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            query: [
-              {
-                kind: "query"
-                name: "external_link"
-                orig: "external_link"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /api/v3/external-link/stories"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/api/v3/external-link/stories"
-          segments: [
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "external_link"
+                or: "external_link"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/external-link/stories"
+          q: {
+            exist: [
+              "external_link"
+            ]
+          }
+          s: [
             {
               lit: "api"
             }
@@ -1379,12 +1384,7 @@ main: kit: entity: story: {
               lit: "stories"
             }
           ]
-          select: {
-            exist: [
-              "external_link"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -1395,30 +1395,35 @@ main: kit: entity: story: {
       name: "load"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "story_public_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /api/v3/stories/{story-public-id}"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/api/v3/stories/{story-public-id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "story_public_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/stories/{story-public-id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
             param: {
               "story-public-id": "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -1432,12 +1437,7 @@ main: kit: entity: story: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -1448,30 +1448,35 @@ main: kit: entity: story: {
       name: "remove"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "story_public_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /api/v3/stories/{story-public-id}"
             source: "openapi3"
             version: 2
           }
-          method: "DELETE"
-          orig: "/api/v3/stories/{story-public-id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "story_public_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v3/stories/{story-public-id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
             param: {
               "story-public-id": "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -1485,12 +1490,7 @@ main: kit: entity: story: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -1501,30 +1501,35 @@ main: kit: entity: story: {
       name: "update"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "story_public_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "PUT /api/v3/stories/{story-public-id}"
             source: "openapi3"
             version: 2
           }
-          method: "PUT"
-          orig: "/api/v3/stories/{story-public-id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "story_public_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v3/stories/{story-public-id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
             param: {
               "story-public-id": "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -1538,12 +1543,7 @@ main: kit: entity: story: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: {
               after_id: "`reqdata.after_id`"
               archived: "`reqdata.archived`"

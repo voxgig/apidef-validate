@@ -67,44 +67,51 @@ main: kit: entity: blob: {
       name: "load"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "file_sha"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/git/blobs/{file_sha}"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/git/blobs/{file_sha}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "file_sha"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/git/blobs/{file_sha}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
             param: {
               file_sha: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "repos"
             }
@@ -124,14 +131,7 @@ main: kit: entity: blob: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

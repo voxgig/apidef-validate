@@ -56,46 +56,54 @@ main: kit: entity: pet: {
       name: "create"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "pet_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "additional_metadata"
-                orig: "additional_metadata"
-                reqd: false
-                type: "`$ANY`"
-              }
-              {
-                kind: "query"
-                name: "file"
-                orig: "file"
-                reqd: false
-                type: "`$ANY`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /pet/{petId}/uploadImage"
             source: "swagger2"
             version: 2
           }
-          method: "POST"
-          orig: "/pet/{petId}/uploadImage"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "pet_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "additional_metadata"
+                or: "additional_metadata"
+                r: false
+                t: "`$ANY`"
+              }
+              {
+                k: "query"
+                n: "file"
+                or: "file"
+                r: false
+                t: "`$ANY`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/pet/{petId}/uploadImage"
+          q: {
+            "$action": "upload_image"
+            exist: [
+              "additional_metadata"
+              "file"
+              "id"
+            ]
+          }
+          r: {
             param: {
               petId: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "pet"
             }
@@ -106,60 +114,59 @@ main: kit: entity: pet: {
               lit: "uploadImage"
             }
           ]
-          select: {
-            "$action": "upload_image"
-            exist: [
-              "additional_metadata"
-              "file"
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "pet_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "name"
-                orig: "name"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                kind: "query"
-                name: "status"
-                orig: "status"
-                reqd: false
-                type: "`$ANY`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /pet/{petId}"
             source: "swagger2"
             version: 2
           }
-          method: "POST"
-          orig: "/pet/{petId}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "pet_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "name"
+                or: "name"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "status"
+                or: "status"
+                r: false
+                t: "`$ANY`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/pet/{petId}"
+          q: {
+            exist: [
+              "id"
+              "name"
+              "status"
+            ]
+          }
+          r: {
             param: {
               petId: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "pet"
             }
@@ -167,48 +174,41 @@ main: kit: entity: pet: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-              "name"
-              "status"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            query: [
-              {
-                kind: "query"
-                name: "body"
-                orig: "body"
-                reqd: true
-                type: "`$OBJECT`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /pet"
             source: "swagger2"
             version: 2
           }
-          method: "POST"
-          orig: "/pet"
-          segments: [
-            {
-              lit: "pet"
-            }
-          ]
-          select: {
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "body"
+                or: "body"
+                r: true
+                t: "`$OBJECT`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/pet"
+          q: {
             exist: [
               "body"
             ]
           }
-          transform: {
+          s: [
+            {
+              lit: "pet"
+            }
+          ]
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -219,25 +219,31 @@ main: kit: entity: pet: {
       name: "list"
       points: [
         {
-          args: {
-            query: [
-              {
-                kind: "query"
-                name: "status"
-                orig: "status"
-                reqd: true
-                type: "`$ANY`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /pet/findByStatus"
             source: "swagger2"
             version: 2
           }
-          method: "GET"
-          orig: "/pet/findByStatus"
-          segments: [
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "status"
+                or: "status"
+                r: true
+                t: "`$ANY`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/pet/findByStatus"
+          q: {
+            "$action": "find_by_status"
+            exist: [
+              "status"
+            ]
+          }
+          s: [
             {
               lit: "pet"
             }
@@ -245,37 +251,37 @@ main: kit: entity: pet: {
               lit: "findByStatus"
             }
           ]
-          select: {
-            "$action": "find_by_status"
-            exist: [
-              "status"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            query: [
-              {
-                kind: "query"
-                name: "tag"
-                orig: "tag"
-                reqd: true
-                type: "`$ANY`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /pet/findByTags"
             source: "swagger2"
             version: 2
           }
-          method: "GET"
-          orig: "/pet/findByTags"
-          segments: [
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "tag"
+                or: "tag"
+                r: true
+                t: "`$ANY`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/pet/findByTags"
+          q: {
+            "$action": "find_by_tag"
+            exist: [
+              "tag"
+            ]
+          }
+          s: [
             {
               lit: "pet"
             }
@@ -283,13 +289,7 @@ main: kit: entity: pet: {
               lit: "findByTags"
             }
           ]
-          select: {
-            "$action": "find_by_tag"
-            exist: [
-              "tag"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -300,30 +300,35 @@ main: kit: entity: pet: {
       name: "load"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "pet_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /pet/{petId}"
             source: "swagger2"
             version: 2
           }
-          method: "GET"
-          orig: "/pet/{petId}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "pet_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/pet/{petId}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
             param: {
               petId: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "pet"
             }
@@ -331,12 +336,7 @@ main: kit: entity: pet: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -347,39 +347,45 @@ main: kit: entity: pet: {
       name: "remove"
       points: [
         {
-          args: {
-            header: [
-              {
-                kind: "header"
-                name: "api_key"
-                orig: "api_key"
-                reqd: false
-                type: "`$ANY`"
-              }
-            ]
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "pet_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /pet/{petId}"
             source: "swagger2"
             version: 2
           }
-          method: "DELETE"
-          orig: "/pet/{petId}"
-          rename: {
+          g: {
+            header: [
+              {
+                k: "header"
+                n: "api_key"
+                or: "api_key"
+                r: false
+                t: "`$ANY`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "pet_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/pet/{petId}"
+          q: {
+            exist: [
+              "api_key"
+              "id"
+            ]
+          }
+          r: {
             param: {
               petId: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "pet"
             }
@@ -387,13 +393,7 @@ main: kit: entity: pet: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "api_key"
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -404,35 +404,35 @@ main: kit: entity: pet: {
       name: "update"
       points: [
         {
-          args: {
-            query: [
-              {
-                kind: "query"
-                name: "body"
-                orig: "body"
-                reqd: true
-                type: "`$OBJECT`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "PUT /pet"
             source: "swagger2"
             version: 2
           }
-          method: "PUT"
-          orig: "/pet"
-          segments: [
-            {
-              lit: "pet"
-            }
-          ]
-          select: {
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "body"
+                or: "body"
+                r: true
+                t: "`$OBJECT`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/pet"
+          q: {
             exist: [
               "body"
             ]
           }
-          transform: {
+          s: [
+            {
+              lit: "pet"
+            }
+          ]
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
