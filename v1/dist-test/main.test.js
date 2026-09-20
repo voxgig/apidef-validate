@@ -116,6 +116,23 @@ if (0 < caseSelector.length) {
                 parse: true, guide: true, transformers: true, builders: true, generate: true,
             });
             node_assert_1.default.ok(result.ok, fullname(c) + ': build failed');
+            for (const flow of Object.values(result.apimodel.main.kit.flow)) {
+                for (const step of flow.step ?? []) {
+                    node_assert_1.default.equal(typeof step.o, 'string');
+                    for (const key of ['active', 'op', 'input', 'match', 'data', 'spec', 'valid']) {
+                        node_assert_1.default.ok(!(key in step), fullname(c) + ': legacy flow-step attribute ' + key);
+                    }
+                    for (const key of ['i', 'm', 'd']) {
+                        if (key in step)
+                            node_assert_1.default.ok(step[key] && typeof step[key] === 'object' &&
+                                !Array.isArray(step[key]), fullname(c) + ': invalid step ' + key);
+                    }
+                    for (const key of ['s', 'v']) {
+                        if (key in step)
+                            node_assert_1.default.ok(Array.isArray(step[key]), fullname(c) + ': invalid step ' + key);
+                    }
+                }
+            }
             for (const entity of Object.values(result.apimodel.main.kit.entity)) {
                 for (const operation of Object.values(entity.op ?? {})) {
                     for (const point of operation.points ?? []) {
