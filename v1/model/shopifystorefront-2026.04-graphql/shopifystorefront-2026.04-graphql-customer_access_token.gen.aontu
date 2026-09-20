@@ -4,20 +4,22 @@ main: kit: entity: customer_access_token: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "accessToken"
-      req: true
-      short: "The customer’s access token."
-      type: "`$STRING`"
+  fields: {
+    accessToken: {
+      h: "Access Token"
+      n: "accessToken"
+      r: true
+      sh: "The customer’s access token."
+      t: "`$STRING`"
     }
-    {
-      name: "expiresAt"
-      req: true
-      short: "The date and time when the customer access token expires."
-      type: "`$ANY`"
+    expiresAt: {
+      h: "Expires At"
+      n: "expiresAt"
+      r: true
+      sh: "The date and time when the customer access token expires."
+      t: "`$ANY`"
     }
-  ]
+  }
 
   name: "customer_access_token"
   op: {
@@ -38,9 +40,8 @@ main: kit: entity: customer_access_token: {
           }
           contract: {
             id: "POST customerAccessTokenCreateWithMultipass"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"String!\",\"name\":\"multipassToken\",\"reqd\":true,\"type\":\"String\"}],\"deprecated\":false,\"desc\":\"Creates a [`CustomerAccessToken`](https://shopify.dev/docs/api/storefront/current/objects/CustomerAccessToken) using a [multipass token](https://shopify.dev/docs/api/multipass) instead of email and password. This enables single sign-on for customers who authenticate through an external system.\\n\\nIf the customer doesn't exist in Shopify, then a new customer record is created automatically. If the customer exists but the record is disabled, then the customer record is re-enabled.\\n\\n> Caution:\\n> Multipass tokens are only valid for 15 minutes and can only be used once. Generate tokens on-the-fly when needed rather than in advance.\\n\",\"gqltype\":\"CustomerAccessTokenCreateWithMultipassPayload\",\"list\":false,\"name\":\"customerAccessTokenCreateWithMultipass\",\"reqd\":false,\"type\":\"CustomerAccessTokenCreateWithMultipassPayload\"},\"invocation\":{\"doc\":\"mutation CustomerAccessTokenCreateCreateWithMultipass($multipassToken: String!) { customerAccessTokenCreateWithMultipass(multipassToken: $multipassToken) { customerAccessToken { ...CustomerAccessTokenFields } } } fragment CustomerAccessTokenFields on CustomerAccessToken { accessToken expiresAt }\",\"field\":\"customerAccessTokenCreateWithMultipass\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"multipassToken\",\"gqltype\":\"String!\",\"name\":\"multipassToken\"}]},\"protocol\":\"graphql\",\"types\":{\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation CustomerAccessTokenCreateCreateWithMultipass($multipassToken: String!) { customerAccessTokenCreateWithMultipass(multipassToken: $multipassToken) { customerAccessToken { ...CustomerAccessTokenFields } } } fragment CustomerAccessTokenFields on CustomerAccessToken { accessToken expiresAt }"
@@ -82,9 +83,8 @@ main: kit: entity: customer_access_token: {
           }
           contract: {
             id: "POST customerAccessTokenRenew"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"String!\",\"name\":\"customerAccessToken\",\"reqd\":true,\"type\":\"String\"}],\"deprecated\":false,\"desc\":\"Extends the validity of a [`CustomerAccessToken`](https://shopify.dev/docs/api/storefront/current/objects/CustomerAccessToken) before it expires. The renewed token maintains authenticated access to customer operations.\\n\\nRenewal must happen before the token's [`expiresAt`](https://shopify.dev/docs/api/storefront/current/objects/CustomerAccessToken#field-CustomerAccessToken.fields.expiresAt) time. If a token has already expired, then use [`customerAccessTokenCreate`](https://shopify.dev/docs/api/storefront/current/mutations/customerAccessTokenCreate) to generate a new token with the customer's credentials.\\n\\n> Caution:\\n> Store access tokens securely. Never store tokens in plain text or insecure locations, and avoid exposing them in URLs or logs.\\n\",\"gqltype\":\"CustomerAccessTokenRenewPayload\",\"list\":false,\"name\":\"customerAccessTokenRenew\",\"reqd\":false,\"type\":\"CustomerAccessTokenRenewPayload\"},\"invocation\":{\"doc\":\"mutation CustomerAccessTokenCreateRenew($customerAccessToken: String!) { customerAccessTokenRenew(customerAccessToken: $customerAccessToken) { customerAccessToken { ...CustomerAccessTokenFields } } } fragment CustomerAccessTokenFields on CustomerAccessToken { accessToken expiresAt }\",\"field\":\"customerAccessTokenRenew\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"customerAccessToken\",\"gqltype\":\"String!\",\"name\":\"customerAccessToken\"}]},\"protocol\":\"graphql\",\"types\":{\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation CustomerAccessTokenCreateRenew($customerAccessToken: String!) { customerAccessTokenRenew(customerAccessToken: $customerAccessToken) { customerAccessToken { ...CustomerAccessTokenFields } } } fragment CustomerAccessTokenFields on CustomerAccessToken { accessToken expiresAt }"
@@ -115,9 +115,8 @@ main: kit: entity: customer_access_token: {
         {
           contract: {
             id: "POST customerAccessTokenCreate"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"CustomerAccessTokenCreateInput!\",\"name\":\"input\",\"reqd\":true,\"type\":\"CustomerAccessTokenCreateInput\"}],\"deprecated\":false,\"desc\":\"For legacy customer accounts only.\\n\\nCreates a [`CustomerAccessToken`](https://shopify.dev/docs/api/storefront/current/objects/CustomerAccessToken) using the customer's email and password. The access token is required to read or modify the [`Customer`](https://shopify.dev/docs/api/storefront/current/objects/Customer) object, such as updating account information or managing addresses.\\n\\nThe token has an expiration time. Use [`customerAccessTokenRenew`](https://shopify.dev/docs/api/storefront/current/mutations/customerAccessTokenRenew) to extend the token before it expires, or create a new token if it's already expired.\\n\\n> Caution:\\n> This mutation handles customer credentials. Always transmit requests over HTTPS and never log or expose the password.\\n\",\"gqltype\":\"CustomerAccessTokenCreatePayload\",\"list\":false,\"name\":\"customerAccessTokenCreate\",\"reqd\":false,\"type\":\"CustomerAccessTokenCreatePayload\"},\"invocation\":{\"doc\":\"mutation CustomerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) { customerAccessTokenCreate(input: $input) { customerAccessToken { ...CustomerAccessTokenFields } } } fragment CustomerAccessTokenFields on CustomerAccessToken { accessToken expiresAt }\",\"field\":\"customerAccessTokenCreate\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"\",\"gqltype\":\"CustomerAccessTokenCreateInput!\",\"name\":\"input\"}]},\"protocol\":\"graphql\",\"types\":{\"CustomerAccessTokenCreateInput\":{\"desc\":\"The input fields for authenticating a customer with email and password. Used by the [`customerAccessTokenCreate`](https://shopify.dev/docs/api/storefront/current/mutations/customerAccessTokenCreate) mutation to generate a [`CustomerAccessToken`](https://shopify.dev/docs/api/storefront/current/objects/CustomerAccessToken), which is required to read or modify customer data.\\n\",\"fields\":{\"email\":{\"args\":[],\"deprecated\":false,\"desc\":\"The email associated to the customer.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"email\",\"reqd\":true,\"type\":\"String\"},\"password\":{\"args\":[],\"deprecated\":false,\"desc\":\"The login password to be used by the customer.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"password\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"CustomerAccessTokenCreateInput\"},\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation CustomerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) { customerAccessTokenCreate(input: $input) { customerAccessToken { ...CustomerAccessTokenFields } } } fragment CustomerAccessTokenFields on CustomerAccessToken { accessToken expiresAt }"
@@ -158,9 +157,8 @@ main: kit: entity: customer_access_token: {
           }
           contract: {
             id: "POST customerAccessTokenDelete"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"String!\",\"name\":\"customerAccessToken\",\"reqd\":true,\"type\":\"String\"}],\"deprecated\":false,\"desc\":\"Permanently destroys a [`CustomerAccessToken`](https://shopify.dev/docs/api/storefront/current/objects/CustomerAccessToken). Use this mutation when a customer explicitly signs out or when you need to revoke the token. Use [`customerAccessTokenCreate`](https://shopify.dev/docs/api/storefront/current/mutations/customerAccessTokenCreate) to generate a new token with the customer's credentials.\\n\\n> Caution:\\n> This action is irreversible. The customer needs to sign in again to obtain a new access token.\\n\",\"gqltype\":\"CustomerAccessTokenDeletePayload\",\"list\":false,\"name\":\"customerAccessTokenDelete\",\"reqd\":false,\"type\":\"CustomerAccessTokenDeletePayload\"},\"invocation\":{\"doc\":\"mutation CustomerAccessTokenRemove($customerAccessToken: String!) { customerAccessTokenDelete(customerAccessToken: $customerAccessToken) { deletedAccessToken deletedCustomerAccessTokenId } }\",\"field\":\"customerAccessTokenDelete\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"customerAccessToken\",\"gqltype\":\"String!\",\"name\":\"customerAccessToken\"}]},\"protocol\":\"graphql\",\"types\":{\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation CustomerAccessTokenRemove($customerAccessToken: String!) { customerAccessTokenDelete(customerAccessToken: $customerAccessToken) { deletedAccessToken deletedCustomerAccessTokenId } }"

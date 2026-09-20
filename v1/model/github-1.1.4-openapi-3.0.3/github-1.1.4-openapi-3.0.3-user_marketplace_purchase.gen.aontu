@@ -4,52 +4,60 @@ main: kit: entity: user_marketplace_purchase: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "account"
-      req: true
-      type: "`$OBJECT`"
+  fields: {
+    account: {
+      h: "Account"
+      n: "account"
+      r: true
+      t: "`$OBJECT`"
     }
-    {
-      name: "billing_cycle"
-      req: true
-      type: "`$STRING`"
+    billing_cycle: {
+      h: "Billing Cycle"
+      n: "billing_cycle"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "free_trial_ends_on"
-      req: true
-      type: "`$STRING`"
+    free_trial_ends_on: {
+      fo: "date-time"
+      h: "Free Trial Ends On"
+      n: "free_trial_ends_on"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "next_billing_date"
-      req: true
-      type: "`$STRING`"
+    next_billing_date: {
+      fo: "date-time"
+      h: "Next Billing Date"
+      n: "next_billing_date"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "on_free_trial"
-      req: true
-      type: "`$BOOLEAN`"
+    on_free_trial: {
+      h: "On Free Trial"
+      n: "on_free_trial"
+      r: true
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "plan"
-      req: true
-      short: "Marketplace Listing Plan"
-      type: "`$OBJECT`"
+    plan: {
+      h: "Plan"
+      n: "plan"
+      r: true
+      sh: "Marketplace Listing Plan"
+      t: "`$OBJECT`"
     }
-    {
-      name: "unit_count"
-      req: true
-      type: "`$INTEGER`"
+    unit_count: {
+      h: "Unit Count"
+      n: "unit_count"
+      r: true
+      t: "`$INTEGER`"
     }
-    {
-      format: "date-time"
-      name: "updated_at"
-      req: true
-      type: "`$STRING`"
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: true
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "user_marketplace_purchase"
   op: {
@@ -79,9 +87,8 @@ main: kit: entity: user_marketplace_purchase: {
           }
           contract: {
             id: "GET /user/marketplace_purchases"
-            json: "{\"operationId\":\"apps/list-subscriptions-for-authenticated-user\",\"parameters\":[{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"billing_cycle\":\"monthly\",\"next_billing_date\":\"2017-11-11T00:00:00Z\",\"unit_count\":{\"account\":{\"email\":null,\"id\":4,\"login\":\"github\",\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjE=\",\"organization_billing_email\":\"billing@github.com\",\"type\":\"Organization\",\"url\":\"https://api.github.com/orgs/github\"},\"free_trial_ends_on\":\"2017-11-11T00:00:00Z\",\"on_free_trial\":true,\"plan\":{\"accounts_url\":\"https://api.github.com/marketplace_listing/plans/1313/accounts\",\"bullets\":[\"Up to 25 private repositories\",\"11 concurrent builds\"],\"description\":\"A professional-grade CI solution\",\"has_free_trial\":true,\"id\":1313,\"monthly_price_in_cents\":1099,\"name\":\"Pro\",\"number\":3,\"price_model\":\"FLAT_RATE\",\"state\":\"published\",\"unit_name\":null,\"url\":\"https://api.github.com/marketplace_listing/plans/1313\",\"yearly_price_in_cents\":11870},\"updated_at\":\"2017-11-02T01:12:12Z\"}}]}},\"schema\":{\"items\":{\"description\":\"User Marketplace Purchase\",\"properties\":{\"account\":{\"properties\":{\"email\":{\"format\":\"email\",\"nullable\":true,\"type\":\"string\"},\"id\":{\"type\":\"integer\"},\"login\":{\"type\":\"string\"},\"node_id\":{\"type\":\"string\"},\"organization_billing_email\":{\"format\":\"email\",\"nullable\":true,\"type\":\"string\"},\"type\":{\"type\":\"string\"},\"url\":{\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"url\",\"id\",\"type\",\"login\"],\"title\":\"Marketplace Account\",\"type\":\"object\"},\"billing_cycle\":{\"example\":\"monthly\",\"type\":\"string\"},\"free_trial_ends_on\":{\"example\":\"2017-11-11T00:00:00Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"next_billing_date\":{\"example\":\"2017-11-11T00:00:00Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"on_free_trial\":{\"example\":true,\"type\":\"boolean\"},\"plan\":{\"description\":\"Marketplace Listing Plan\",\"properties\":{\"accounts_url\":{\"example\":\"https://api.github.com/marketplace_listing/plans/1313/accounts\",\"format\":\"uri\",\"type\":\"string\"},\"bullets\":{\"example\":[\"Up to 25 private repositories\",\"11 concurrent builds\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"description\":{\"example\":\"A professional-grade CI solution\",\"type\":\"string\"},\"has_free_trial\":{\"example\":true,\"type\":\"boolean\"},\"id\":{\"example\":1313,\"type\":\"integer\"},\"monthly_price_in_cents\":{\"example\":1099,\"type\":\"integer\"},\"name\":{\"example\":\"Pro\",\"type\":\"string\"},\"number\":{\"example\":3,\"type\":\"integer\"},\"price_model\":{\"enum\":[\"FREE\",\"FLAT_RATE\",\"PER_UNIT\"],\"example\":\"FLAT_RATE\",\"type\":\"string\"},\"state\":{\"example\":\"published\",\"type\":\"string\"},\"unit_name\":{\"nullable\":true,\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/marketplace_listing/plans/1313\",\"format\":\"uri\",\"type\":\"string\"},\"yearly_price_in_cents\":{\"example\":11870,\"type\":\"integer\"}},\"required\":[\"url\",\"accounts_url\",\"id\",\"number\",\"name\",\"description\",\"has_free_trial\",\"price_model\",\"unit_name\",\"monthly_price_in_cents\",\"state\",\"yearly_price_in_cents\",\"bullets\"],\"title\":\"Marketplace Listing Plan\",\"type\":\"object\"},\"unit_count\":{\"nullable\":true,\"type\":\"integer\"},\"updated_at\":{\"example\":\"2017-11-02T01:12:12Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"}},\"required\":[\"billing_cycle\",\"next_billing_date\",\"unit_count\",\"updated_at\",\"on_free_trial\",\"free_trial_ends_on\",\"account\",\"plan\"],\"title\":\"User Marketplace Purchase\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/user/marketplace_purchases"
@@ -127,9 +134,8 @@ main: kit: entity: user_marketplace_purchase: {
           }
           contract: {
             id: "GET /user/marketplace_purchases/stubbed"
-            json: "{\"operationId\":\"apps/list-subscriptions-for-authenticated-user-stubbed\",\"parameters\":[{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"billing_cycle\":\"monthly\",\"next_billing_date\":\"2017-11-11T00:00:00Z\",\"unit_count\":{\"account\":{\"email\":null,\"id\":4,\"login\":\"github\",\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjE=\",\"organization_billing_email\":\"billing@github.com\",\"type\":\"Organization\",\"url\":\"https://api.github.com/orgs/github\"},\"free_trial_ends_on\":\"2017-11-11T00:00:00Z\",\"on_free_trial\":true,\"plan\":{\"accounts_url\":\"https://api.github.com/marketplace_listing/plans/1313/accounts\",\"bullets\":[\"Up to 25 private repositories\",\"11 concurrent builds\"],\"description\":\"A professional-grade CI solution\",\"has_free_trial\":true,\"id\":1313,\"monthly_price_in_cents\":1099,\"name\":\"Pro\",\"number\":3,\"price_model\":\"FLAT_RATE\",\"state\":\"published\",\"unit_name\":null,\"url\":\"https://api.github.com/marketplace_listing/plans/1313\",\"yearly_price_in_cents\":11870},\"updated_at\":\"2017-11-02T01:12:12Z\"}}]}},\"schema\":{\"items\":{\"description\":\"User Marketplace Purchase\",\"properties\":{\"account\":{\"properties\":{\"email\":{\"format\":\"email\",\"nullable\":true,\"type\":\"string\"},\"id\":{\"type\":\"integer\"},\"login\":{\"type\":\"string\"},\"node_id\":{\"type\":\"string\"},\"organization_billing_email\":{\"format\":\"email\",\"nullable\":true,\"type\":\"string\"},\"type\":{\"type\":\"string\"},\"url\":{\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"url\",\"id\",\"type\",\"login\"],\"title\":\"Marketplace Account\",\"type\":\"object\"},\"billing_cycle\":{\"example\":\"monthly\",\"type\":\"string\"},\"free_trial_ends_on\":{\"example\":\"2017-11-11T00:00:00Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"next_billing_date\":{\"example\":\"2017-11-11T00:00:00Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"on_free_trial\":{\"example\":true,\"type\":\"boolean\"},\"plan\":{\"description\":\"Marketplace Listing Plan\",\"properties\":{\"accounts_url\":{\"example\":\"https://api.github.com/marketplace_listing/plans/1313/accounts\",\"format\":\"uri\",\"type\":\"string\"},\"bullets\":{\"example\":[\"Up to 25 private repositories\",\"11 concurrent builds\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"description\":{\"example\":\"A professional-grade CI solution\",\"type\":\"string\"},\"has_free_trial\":{\"example\":true,\"type\":\"boolean\"},\"id\":{\"example\":1313,\"type\":\"integer\"},\"monthly_price_in_cents\":{\"example\":1099,\"type\":\"integer\"},\"name\":{\"example\":\"Pro\",\"type\":\"string\"},\"number\":{\"example\":3,\"type\":\"integer\"},\"price_model\":{\"enum\":[\"FREE\",\"FLAT_RATE\",\"PER_UNIT\"],\"example\":\"FLAT_RATE\",\"type\":\"string\"},\"state\":{\"example\":\"published\",\"type\":\"string\"},\"unit_name\":{\"nullable\":true,\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/marketplace_listing/plans/1313\",\"format\":\"uri\",\"type\":\"string\"},\"yearly_price_in_cents\":{\"example\":11870,\"type\":\"integer\"}},\"required\":[\"url\",\"accounts_url\",\"id\",\"number\",\"name\",\"description\",\"has_free_trial\",\"price_model\",\"unit_name\",\"monthly_price_in_cents\",\"state\",\"yearly_price_in_cents\",\"bullets\"],\"title\":\"Marketplace Listing Plan\",\"type\":\"object\"},\"unit_count\":{\"nullable\":true,\"type\":\"integer\"},\"updated_at\":{\"example\":\"2017-11-02T01:12:12Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"}},\"required\":[\"billing_cycle\",\"next_billing_date\",\"unit_count\",\"updated_at\",\"on_free_trial\",\"free_trial_ends_on\",\"account\",\"plan\"],\"title\":\"User Marketplace Purchase\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/user/marketplace_purchases/stubbed"

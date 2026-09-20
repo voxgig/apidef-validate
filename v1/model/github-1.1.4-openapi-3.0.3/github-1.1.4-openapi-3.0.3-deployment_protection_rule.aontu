@@ -4,38 +4,43 @@ main: kit: entity: deployment_protection_rule: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "id"
-      req: true
-      short: "The unique identifier of the deployment protection rule integration."
-      type: "`$INTEGER`"
+  fields: {
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "The unique identifier of the deployment protection rule integration."
+      t: "`$INTEGER`"
     }
-    {
-      name: "integration_id"
-      req: false
-      short: "The ID of the custom app that will be enabled on the environment."
-      type: "`$INTEGER`"
+    integration_id: {
+      h: "Integration Id"
+      n: "integration_id"
+      r: false
+      sh: "The ID of the custom app that will be enabled on the environment."
+      t: "`$INTEGER`"
     }
-    {
-      name: "integration_url"
-      req: true
-      short: "The URL for the endpoint to get details about the app."
-      type: "`$STRING`"
+    integration_url: {
+      h: "Integration Url"
+      n: "integration_url"
+      r: true
+      sh: "The URL for the endpoint to get details about the app."
+      t: "`$STRING`"
     }
-    {
-      name: "node_id"
-      req: true
-      short: "The node ID for the deployment protection rule integration."
-      type: "`$STRING`"
+    node_id: {
+      h: "Node Id"
+      n: "node_id"
+      r: true
+      sh: "The node ID for the deployment protection rule integration."
+      t: "`$STRING`"
     }
-    {
-      name: "slug"
-      req: true
-      short: "The slugified name of the deployment protection rule integration."
-      type: "`$STRING`"
+    slug: {
+      h: "Slug"
+      n: "slug"
+      r: true
+      sh: "The slugified name of the deployment protection rule integration."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -75,9 +80,8 @@ main: kit: entity: deployment_protection_rule: {
           }
           contract: {
             id: "POST /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules"
-            json: "{\"operationId\":\"repos/create-deployment-protection-rule\",\"parameters\":[{\"description\":\"The name of the environment. The name must be URL encoded. For example, any slashes in the name must be replaced with `%2F`.\",\"in\":\"path\",\"name\":\"environment_name\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"integration_id\":5}}},\"schema\":{\"properties\":{\"integration_id\":{\"description\":\"The ID of the custom app that will be enabled on the environment.\",\"type\":\"integer\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"app\":{\"id\":1,\"integration_url\":\"https://api.github.com/apps/a-custom-app\",\"node_id\":\"GHT58kRlcGxveW1lbnRTdTY!bbcy\",\"slug\":\"a-custom-app\"},\"enabled\":true,\"id\":3,\"node_id\":\"IEH37kRlcGxveW1lbnRTdGF0ddiv\"}}},\"schema\":{\"description\":\"Deployment protection rule\",\"properties\":{\"app\":{\"description\":\"A GitHub App that is providing a custom deployment protection rule.\",\"properties\":{\"id\":{\"description\":\"The unique identifier of the deployment protection rule integration.\",\"example\":3515,\"type\":\"integer\"},\"integration_url\":{\"description\":\"The URL for the endpoint to get details about the app.\",\"example\":\"https://api.github.com/apps/custom-app-slug\",\"type\":\"string\"},\"node_id\":{\"description\":\"The node ID for the deployment protection rule integration.\",\"example\":\"MDQ6R2F0ZTM1MTU=\",\"type\":\"string\"},\"slug\":{\"description\":\"The slugified name of the deployment protection rule integration.\",\"example\":\"my-custom-app\",\"type\":\"string\"}},\"required\":[\"id\",\"slug\",\"integration_url\",\"node_id\"],\"title\":\"Custom deployment protection rule app\",\"type\":\"object\"},\"enabled\":{\"description\":\"Whether the deployment protection rule is enabled for the environment.\",\"example\":true,\"type\":\"boolean\"},\"id\":{\"description\":\"The unique identifier for the deployment protection rule.\",\"example\":3515,\"type\":\"integer\"},\"node_id\":{\"description\":\"The node ID for the deployment protection rule.\",\"example\":\"MDQ6R2F0ZTM1MTU=\",\"type\":\"string\"}},\"required\":[\"id\",\"node_id\",\"enabled\",\"app\"],\"title\":\"Deployment protection rule\",\"type\":\"object\"}}},\"description\":\"The enabled custom deployment protection rule\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules"
@@ -153,9 +157,8 @@ main: kit: entity: deployment_protection_rule: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}"
-            json: "{\"operationId\":\"repos/get-custom-deployment-protection-rule\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the environment. The name must be URL encoded. For example, any slashes in the name must be replaced with `%2F`.\",\"in\":\"path\",\"name\":\"environment_name\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the protection rule.\",\"in\":\"path\",\"name\":\"protection_rule_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"app\":{\"id\":1,\"integration_url\":\"https://api.github.com/apps/a-custom-app\",\"node_id\":\"GHT58kRlcGxveW1lbnRTdTY!bbcy\",\"slug\":\"a-custom-app\"},\"enabled\":true,\"id\":3,\"node_id\":\"IEH37kRlcGxveW1lbnRTdGF0ddiv\"}}},\"schema\":{\"description\":\"Deployment protection rule\",\"properties\":{\"app\":{\"description\":\"A GitHub App that is providing a custom deployment protection rule.\",\"properties\":{\"id\":{\"description\":\"The unique identifier of the deployment protection rule integration.\",\"example\":3515,\"type\":\"integer\"},\"integration_url\":{\"description\":\"The URL for the endpoint to get details about the app.\",\"example\":\"https://api.github.com/apps/custom-app-slug\",\"type\":\"string\"},\"node_id\":{\"description\":\"The node ID for the deployment protection rule integration.\",\"example\":\"MDQ6R2F0ZTM1MTU=\",\"type\":\"string\"},\"slug\":{\"description\":\"The slugified name of the deployment protection rule integration.\",\"example\":\"my-custom-app\",\"type\":\"string\"}},\"required\":[\"id\",\"slug\",\"integration_url\",\"node_id\"],\"title\":\"Custom deployment protection rule app\",\"type\":\"object\"},\"enabled\":{\"description\":\"Whether the deployment protection rule is enabled for the environment.\",\"example\":true,\"type\":\"boolean\"},\"id\":{\"description\":\"The unique identifier for the deployment protection rule.\",\"example\":3515,\"type\":\"integer\"},\"node_id\":{\"description\":\"The node ID for the deployment protection rule.\",\"example\":\"MDQ6R2F0ZTM1MTU=\",\"type\":\"string\"}},\"required\":[\"id\",\"node_id\",\"enabled\",\"app\"],\"title\":\"Deployment protection rule\",\"type\":\"object\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}"

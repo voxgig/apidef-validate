@@ -4,59 +4,68 @@ main: kit: entity: dependency_graph_spdx_sbom: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "SPDXID"
-      req: true
-      short: "The SPDX identifier for the SPDX document."
-      type: "`$STRING`"
+  fields: {
+    SPDXID: {
+      h: "Spdxid"
+      n: "SPDXID"
+      r: true
+      sh: "The SPDX identifier for the SPDX document."
+      t: "`$STRING`"
     }
-    {
-      name: "comment"
-      req: false
-      short: "An optional comment about the SPDX document."
-      type: "`$STRING`"
+    comment: {
+      h: "Comment"
+      n: "comment"
+      r: false
+      sh: "An optional comment about the SPDX document."
+      t: "`$STRING`"
     }
-    {
-      name: "creationInfo"
-      req: true
-      type: "`$OBJECT`"
+    creationInfo: {
+      h: "Creation Info"
+      n: "creationInfo"
+      r: true
+      t: "`$OBJECT`"
     }
-    {
-      name: "dataLicense"
-      req: true
-      short: "The license under which the SPDX document is licensed."
-      type: "`$STRING`"
+    dataLicense: {
+      h: "Data License"
+      n: "dataLicense"
+      r: true
+      sh: "The license under which the SPDX document is licensed."
+      t: "`$STRING`"
     }
-    {
-      name: "documentNamespace"
-      req: true
-      short: "The namespace for the SPDX document."
-      type: "`$STRING`"
+    documentNamespace: {
+      h: "Document Namespace"
+      n: "documentNamespace"
+      r: true
+      sh: "The namespace for the SPDX document."
+      t: "`$STRING`"
     }
-    {
-      name: "name"
-      req: true
-      short: "The name of the SPDX document."
-      type: "`$STRING`"
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "The name of the SPDX document."
+      t: "`$STRING`"
     }
-    {
-      name: "packages"
-      req: true
-      type: "`$ARRAY`"
+    packages: {
+      h: "Packages"
+      n: "packages"
+      r: true
+      t: "`$ARRAY`"
     }
-    {
-      name: "relationships"
-      req: true
-      type: "`$ARRAY`"
+    relationships: {
+      h: "Relationships"
+      n: "relationships"
+      r: true
+      t: "`$ARRAY`"
     }
-    {
-      name: "spdxVersion"
-      req: true
-      short: "The version of the SPDX specification that this document conforms to."
-      type: "`$STRING`"
+    spdxVersion: {
+      h: "Spdx Version"
+      n: "spdxVersion"
+      r: true
+      sh: "The version of the SPDX specification that this document conforms to."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "dependency_graph_spdx_sbom"
   op: {
@@ -84,9 +93,8 @@ main: kit: entity: dependency_graph_spdx_sbom: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/dependency-graph/sbom"
-            json: "{\"operationId\":\"dependency-graph/export-sbom\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"sbom\":{\"SPDXID\":\"SPDXRef-DOCUMENT\",\"creationInfo\":{\"created\":\"2021-09-01T00:00:00Z\",\"creators\":[\"Tool: GitHub.com-Dependency-Graph\"]},\"dataLicense\":\"CC0-1.0\",\"documentNamespace\":\"https://spdx.org/spdxdocs/protobom/15e41dd2-f961-4f4d-b8dc-f8f57ad70d57\",\"name\":\"github/example\",\"packages\":[{\"SPDXID\":\"SPDXRef-Package\",\"copyrightText\":\"Copyright (c) 1985 GitHub.com\",\"downloadLocation\":\"NOASSERTION\",\"externalRefs\":[{\"referenceCategory\":\"PACKAGE-MANAGER\",\"referenceLocator\":\"pkg:gem/rails@1.0.0\",\"referenceType\":\"purl\"}],\"filesAnalyzed\":false,\"licenseConcluded\":\"MIT\",\"licenseDeclared\":\"MIT\",\"name\":\"rails\",\"versionInfo\":\"1.0.0\"},{\"SPDXID\":\"SPDXRef-Repository\",\"downloadLocation\":\"NOASSERTION\",\"externalRefs\":[{\"referenceCategory\":\"PACKAGE-MANAGER\",\"referenceLocator\":\"pkg:github/example@main\",\"referenceType\":\"purl\"}],\"filesAnalyzed\":false,\"name\":\"github/example\",\"versionInfo\":\"main\"}],\"relationships\":[{\"relatedSpdxElement\":\"SPDXRef-Package\",\"relationshipType\":\"DEPENDS_ON\",\"spdxElementId\":\"SPDXRef-Repository\"},{\"relatedSpdxElement\":\"SPDXRef-Repository\",\"relationshipType\":\"DESCRIBES\",\"spdxElementId\":\"SPDXRef-DOCUMENT\"}],\"spdxVersion\":\"SPDX-2.3\"}}}},\"schema\":{\"description\":\"A schema for the SPDX JSON format returned by the Dependency Graph.\",\"properties\":{\"sbom\":{\"properties\":{\"SPDXID\":{\"description\":\"The SPDX identifier for the SPDX document.\",\"example\":\"SPDXRef-DOCUMENT\",\"type\":\"string\"},\"comment\":{\"description\":\"An optional comment about the SPDX document.\",\"example\":\"Exact versions could not be resolved for some packages. For more information: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/\",\"type\":\"string\"},\"creationInfo\":{\"properties\":{\"created\":{\"description\":\"The date and time the SPDX document was created.\",\"example\":\"2021-11-03T00:00:00Z\",\"type\":\"string\"},\"creators\":{\"description\":\"The tools that were used to generate the SPDX document.\",\"items\":{\"example\":\"GitHub\",\"type\":\"string\"},\"type\":\"array\"}},\"required\":[\"created\",\"creators\"],\"type\":\"object\"},\"dataLicense\":{\"description\":\"The license under which the SPDX document is licensed.\",\"example\":\"CC0-1.0\",\"type\":\"string\"},\"documentNamespace\":{\"description\":\"The namespace for the SPDX document.\",\"example\":\"https://spdx.org/spdxdocs/protobom/15e41dd2-f961-4f4d-b8dc-f8f57ad70d57\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the SPDX document.\",\"example\":\"github/github\",\"type\":\"string\"},\"packages\":{\"items\":{\"properties\":{\"SPDXID\":{\"description\":\"A unique SPDX identifier for the package.\",\"example\":\"SPDXRef-Package\",\"type\":\"string\"},\"copyrightText\":{\"description\":\"The copyright holders of the package, and any dates present with those notices, if available.\",\"example\":\"Copyright (c) 1985 GitHub.com\",\"type\":\"string\"},\"downloadLocation\":{\"description\":\"The location where the package can be downloaded,\\nor NOASSERTION if this has not been determined.\",\"example\":\"NOASSERTION\",\"type\":\"string\"},\"externalRefs\":{\"items\":{\"properties\":{\"referenceCategory\":{\"description\":\"The category of reference to an external resource this reference refers to.\",\"example\":\"PACKAGE-MANAGER\",\"type\":\"string\"},\"referenceLocator\":{\"description\":\"A locator for the particular external resource this reference refers to.\",\"example\":\"pkg:gem/rails@6.0.1\",\"type\":\"string\"},\"referenceType\":{\"description\":\"The category of reference to an external resource this reference refers to.\",\"example\":\"purl\",\"type\":\"string\"}},\"required\":[\"referenceCategory\",\"referenceLocator\",\"referenceType\"],\"type\":\"object\"},\"type\":\"array\"},\"filesAnalyzed\":{\"description\":\"Whether the package's file content has been subjected to\\nanalysis during the creation of the SPDX document.\",\"example\":false,\"type\":\"boolean\"},\"licenseConcluded\":{\"description\":\"The license of the package as determined while creating the SPDX document.\",\"example\":\"MIT\",\"type\":\"string\"},\"licenseDeclared\":{\"description\":\"The license of the package as declared by its author, or NOASSERTION if this information\\nwas not available when the SPDX document was created.\",\"example\":\"NOASSERTION\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the package.\",\"example\":\"github/github\",\"type\":\"string\"},\"supplier\":{\"description\":\"The distribution source of this package, or NOASSERTION if this was not determined.\",\"example\":\"NOASSERTION\",\"type\":\"string\"},\"versionInfo\":{\"description\":\"The version of the package. If the package does not have an exact version specified,\\na version range is given.\",\"example\":\"1.0.0\",\"type\":\"string\"}},\"type\":\"object\"},\"required\":[\"SPDXID\",\"name\",\"versionInfo\",\"downloadLocation\",\"filesAnalyzed\"],\"type\":\"array\"},\"relationships\":{\"items\":{\"properties\":{\"relatedSpdxElement\":{\"description\":\"The SPDX identifier of the package that is the target of the relationship.\",\"type\":\"string\"},\"relationshipType\":{\"description\":\"The type of relationship between the two SPDX elements.\",\"example\":\"DEPENDS_ON\",\"type\":\"string\"},\"spdxElementId\":{\"description\":\"The SPDX identifier of the package that is the source of the relationship.\",\"type\":\"string\"}},\"type\":\"object\"},\"required\":[\"relationshipType\",\"spdxElementId\",\"relatedSpdxElement\"],\"type\":\"array\"},\"spdxVersion\":{\"description\":\"The version of the SPDX specification that this document conforms to.\",\"example\":\"SPDX-2.3\",\"type\":\"string\"}},\"required\":[\"SPDXID\",\"spdxVersion\",\"creationInfo\",\"name\",\"dataLicense\",\"documentNamespace\",\"packages\"],\"type\":\"object\"}},\"required\":[\"sbom\"],\"title\":\"Dependency Graph SPDX SBOM\",\"type\":\"object\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/dependency-graph/sbom"

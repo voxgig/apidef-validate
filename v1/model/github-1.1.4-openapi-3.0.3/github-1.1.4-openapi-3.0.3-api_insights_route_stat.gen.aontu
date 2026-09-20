@@ -4,44 +4,50 @@ main: kit: entity: api_insights_route_stat: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "api_route"
-      req: false
-      short: "The API path's route template"
-      type: "`$STRING`"
+  fields: {
+    api_route: {
+      h: "Api Route"
+      n: "api_route"
+      r: false
+      sh: "The API path's route template"
+      t: "`$STRING`"
     }
-    {
-      name: "http_method"
-      req: false
-      short: "The HTTP method"
-      type: "`$STRING`"
+    http_method: {
+      h: "Http Method"
+      n: "http_method"
+      r: false
+      sh: "The HTTP method"
+      t: "`$STRING`"
     }
-    {
-      name: "last_rate_limited_timestamp"
-      req: false
-      type: "`$STRING`"
+    last_rate_limited_timestamp: {
+      h: "Last Rate Limited Timestamp"
+      n: "last_rate_limited_timestamp"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "last_request_timestamp"
-      req: false
-      type: "`$STRING`"
+    last_request_timestamp: {
+      h: "Last Request Timestamp"
+      n: "last_request_timestamp"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      format: "int64"
-      name: "rate_limited_request_count"
-      req: false
-      short: "The total number of requests that were rate limited within the queried time period"
-      type: "`$INTEGER`"
+    rate_limited_request_count: {
+      fo: "int64"
+      h: "Rate Limited Request Count"
+      n: "rate_limited_request_count"
+      r: false
+      sh: "The total number of requests that were rate limited within the queried time period"
+      t: "`$INTEGER`"
     }
-    {
-      format: "int64"
-      name: "total_request_count"
-      req: false
-      short: "The total number of requests within the queried time period"
-      type: "`$INTEGER`"
+    total_request_count: {
+      fo: "int64"
+      h: "Total Request Count"
+      n: "total_request_count"
+      r: false
+      sh: "The total number of requests within the queried time period"
+      t: "`$INTEGER`"
     }
-  ]
+  }
 
   name: "api_insights_route_stat"
   op: {
@@ -130,9 +136,8 @@ main: kit: entity: api_insights_route_stat: {
           }
           contract: {
             id: "GET /orgs/{org}/insights/api/route-stats/{actor_type}/{actor_id}"
-            json: "{\"operationId\":\"api-insights/get-route-stats-by-actor\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The type of the actor\",\"in\":\"path\",\"name\":\"actor_type\",\"required\":true,\"schema\":{\"enum\":[\"installation\",\"classic_pat\",\"fine_grained_pat\",\"oauth_app\",\"github_app_user_to_server\"],\"type\":\"string\"}},{\"description\":\"The ID of the actor\",\"in\":\"path\",\"name\":\"actor_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}},{\"description\":\"The minimum timestamp to query for stats. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.\",\"in\":\"query\",\"name\":\"min_timestamp\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The maximum timestamp to query for stats. Defaults to the time 30 days ago. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.\",\"in\":\"query\",\"name\":\"max_timestamp\",\"required\":false,\"schema\":{\"type\":\"string\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The direction to sort the results by.\",\"in\":\"query\",\"name\":\"direction\",\"required\":false,\"schema\":{\"default\":\"desc\",\"enum\":[\"asc\",\"desc\"],\"type\":\"string\"}},{\"description\":\"The property to sort the results by.\",\"in\":\"query\",\"name\":\"sort\",\"required\":false,\"schema\":{\"items\":{\"default\":\"total_request_count\",\"enum\":[\"last_rate_limited_timestamp\",\"last_request_timestamp\",\"rate_limited_request_count\",\"http_method\",\"api_route\",\"total_request_count\"],\"type\":\"string\"},\"type\":\"array\"}},{\"description\":\"Providing a substring will filter results where the API route contains the substring. This is a case-insensitive search.\",\"in\":\"query\",\"name\":\"api_route_substring\",\"required\":false,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"api_route\":\"/repositories/:repository_id\",\"http_method\":\"GET\",\"last_rate_limited_timestamp\":\"2024-09-18T06:30:09Z\",\"last_request_timestamp\":\"2024-09-18T15:43:03Z\",\"rate_limited_request_count\":13,\"total_request_count\":544665}]}},\"schema\":{\"description\":\"API Insights usage route stats for an actor\",\"items\":{\"properties\":{\"api_route\":{\"description\":\"The API path's route template\",\"type\":\"string\"},\"http_method\":{\"description\":\"The HTTP method\",\"type\":\"string\"},\"last_rate_limited_timestamp\":{\"nullable\":true,\"type\":\"string\"},\"last_request_timestamp\":{\"type\":\"string\"},\"rate_limited_request_count\":{\"description\":\"The total number of requests that were rate limited within the queried time period\",\"format\":\"int64\",\"type\":\"integer\"},\"total_request_count\":{\"description\":\"The total number of requests within the queried time period\",\"format\":\"int64\",\"type\":\"integer\"}},\"type\":\"object\"},\"title\":\"Route Stats\",\"type\":\"array\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/insights/api/route-stats/{actor_type}/{actor_id}"

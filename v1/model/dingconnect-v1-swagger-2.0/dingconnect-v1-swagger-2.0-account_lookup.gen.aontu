@@ -4,37 +4,42 @@ main: kit: entity: account_lookup: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "AccountNumberNormalized"
-      req: false
-      short: "We attempt to normalize phone numbers following the public telecommunication numbering plan <a href=\"https://en.wikipedia.org/wiki/E.164\" target=\"_blank\">E.164</a>, if we succeed the normalized number will be returned in this field formatt…"
-      type: "`$STRING`"
+  fields: {
+    AccountNumberNormalized: {
+      h: "Account Number Normalized"
+      n: "AccountNumberNormalized"
+      r: false
+      sh: "We attempt to normalize phone numbers following the public telecommunication numbering plan <a href=\"https://en.wikipedia.org/wiki/E.164\" target=\"_blank\">E.164</a>, if we succeed the normalized number will be returned in this field formatt…"
+      t: "`$STRING`"
     }
-    {
-      name: "CountryIso"
-      req: false
-      short: "The country of the account number"
-      type: "`$STRING`"
+    CountryIso: {
+      h: "Country Iso"
+      n: "CountryIso"
+      r: false
+      sh: "The country of the account number"
+      t: "`$STRING`"
     }
-    {
-      name: "ErrorCodes"
-      req: true
-      type: "`$ARRAY`"
+    ErrorCodes: {
+      h: "Error Codes"
+      n: "ErrorCodes"
+      r: true
+      t: "`$ARRAY`"
     }
-    {
-      name: "Items"
-      req: true
-      short: "This will contain provider information associated to the account number."
-      type: "`$ARRAY`"
+    Items: {
+      h: "Items"
+      n: "Items"
+      r: true
+      sh: "This will contain provider information associated to the account number."
+      t: "`$ARRAY`"
     }
-    {
-      format: "int32"
-      name: "ResultCode"
-      req: true
-      type: "`$INTEGER`"
+    ResultCode: {
+      fo: "int32"
+      h: "Result Code"
+      n: "ResultCode"
+      r: true
+      t: "`$INTEGER`"
     }
-  ]
+  }
 
   name: "account_lookup"
   op: {
@@ -64,9 +69,8 @@ main: kit: entity: account_lookup: {
           }
           contract: {
             id: "GET /api/V1/GetAccountLookup"
-            json: "{\"operationId\":\"GetAccountLookup\",\"parameters\":[{\"default\":\"\",\"description\":\"For phone number based products, the account number should be in international phone number format.\",\"in\":\"query\",\"name\":\"accountNumber\",\"type\":\"string\"},{\"description\":\"Correlates HTTP requests between a client and server\",\"in\":\"header\",\"name\":\"X-Correlation-Id\",\"type\":\"String\"}],\"produces\":[\"application/json\",\"text/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"OK\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"AccountNumberNormalized\":{\"description\":\"We attempt to normalize phone numbers following the public telecommunication numbering plan <a href=\\\"https://en.wikipedia.org/wiki/E.164\\\" target=\\\"_blank\\\">E.164</a>, if we succeed the normalized number will be returned in this field formatted as E164 without leading '+'\",\"type\":\"string\"},\"CountryIso\":{\"description\":\"The country of the account number\",\"type\":\"string\"},\"ErrorCodes\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"Code\":{\"description\":\"The code that can be used to lookup the explanatory message associated with the error\",\"type\":\"string\"},\"Context\":{\"description\":\"API specific context as to the reason for the specific code\",\"type\":\"string\"}},\"required\":[\"Code\"],\"type\":\"object\"},\"type\":\"array\"},\"Items\":{\"description\":\"This will contain provider information associated to the account number. If we can succesfully lookup the account number \\nthe list will contain the info for products associated to it.\",\"items\":{\"additionalProperties\":false,\"properties\":{\"ProviderCode\":{\"description\":\"ProviderCode of the account provided\",\"type\":\"string\"},\"RegionCode\":{\"description\":\"RegioCode of the account provided\",\"type\":\"string\"}},\"required\":[\"ProviderCode\",\"RegionCode\"],\"type\":\"object\"},\"type\":\"array\"},\"ResultCode\":{\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"Items\",\"ResultCode\",\"ErrorCodes\"],\"type\":\"object\"}},\"400\":{\"description\":\"BadRequest\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"ErrorCodes\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"Code\":{\"description\":\"The code that can be used to lookup the explanatory message associated with the error\",\"type\":\"string\"},\"Context\":{\"description\":\"API specific context as to the reason for the specific code\",\"type\":\"string\"}},\"required\":[\"Code\"],\"type\":\"object\"},\"type\":\"array\"},\"ResultCode\":{\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"ResultCode\",\"ErrorCodes\"],\"type\":\"object\"}},\"401\":{\"description\":\"Unauthorized\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"ErrorCodes\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"Code\":{\"description\":\"The code that can be used to lookup the explanatory message associated with the error\",\"type\":\"string\"},\"Context\":{\"description\":\"API specific context as to the reason for the specific code\",\"type\":\"string\"}},\"required\":[\"Code\"],\"type\":\"object\"},\"type\":\"array\"},\"ResultCode\":{\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"ResultCode\",\"ErrorCodes\"],\"type\":\"object\"}},\"500\":{\"description\":\"InternalServerError\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"ErrorCodes\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"Code\":{\"description\":\"The code that can be used to lookup the explanatory message associated with the error\",\"type\":\"string\"},\"Context\":{\"description\":\"API specific context as to the reason for the specific code\",\"type\":\"string\"}},\"required\":[\"Code\"],\"type\":\"object\"},\"type\":\"array\"},\"ResultCode\":{\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"ResultCode\",\"ErrorCodes\"],\"type\":\"object\"}},\"503\":{\"description\":\"ServiceUnavailable\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"ErrorCodes\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"Code\":{\"description\":\"The code that can be used to lookup the explanatory message associated with the error\",\"type\":\"string\"},\"Context\":{\"description\":\"API specific context as to the reason for the specific code\",\"type\":\"string\"}},\"required\":[\"Code\"],\"type\":\"object\"},\"type\":\"array\"},\"ResultCode\":{\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"ResultCode\",\"ErrorCodes\"],\"type\":\"object\"}}},\"securitySchemes\":{\"APIKeyHeader\":{\"description\":\"Use the API key that was issued to you.\",\"in\":\"header\",\"name\":\"api_key\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/api/V1/GetAccountLookup"

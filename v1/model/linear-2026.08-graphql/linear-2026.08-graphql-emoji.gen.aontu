@@ -4,62 +4,71 @@ main: kit: entity: emoji: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "archivedAt"
-      req: false
-      short: "The time at which the entity was archived."
-      type: "`$ANY`"
+  fields: {
+    archivedAt: {
+      h: "Archived At"
+      n: "archivedAt"
+      r: false
+      sh: "The time at which the entity was archived."
+      t: "`$ANY`"
     }
-    {
-      name: "createdAt"
-      req: true
-      short: "The time at which the entity was created."
-      type: "`$ANY`"
+    createdAt: {
+      h: "Created At"
+      n: "createdAt"
+      r: true
+      sh: "The time at which the entity was created."
+      t: "`$ANY`"
     }
-    {
-      name: "creator"
-      req: false
-      short: "The user who created the emoji."
-      type: "`$OBJECT`"
+    creator: {
+      h: "Creator"
+      n: "creator"
+      r: false
+      sh: "The user who created the emoji."
+      t: "`$OBJECT`"
     }
-    {
-      name: "id"
-      req: true
-      short: "The unique identifier of the entity."
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "The unique identifier of the entity."
+      t: "`$STRING`"
     }
-    {
-      name: "name"
-      req: true
-      short: "The unique name of the custom emoji within the workspace."
-      type: "`$STRING`"
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "The unique name of the custom emoji within the workspace."
+      t: "`$STRING`"
     }
-    {
-      name: "organization"
-      req: false
-      short: "The workspace that the emoji belongs to."
-      type: "`$OBJECT`"
+    organization: {
+      h: "Organization"
+      n: "organization"
+      r: false
+      sh: "The workspace that the emoji belongs to."
+      t: "`$OBJECT`"
     }
-    {
-      name: "source"
-      req: true
-      short: "The source of the emoji, indicating how it was created (e.g., uploaded by a user or imported)."
-      type: "`$STRING`"
+    source: {
+      h: "Source"
+      n: "source"
+      r: true
+      sh: "The source of the emoji, indicating how it was created (e.g., uploaded by a user or imported)."
+      t: "`$STRING`"
     }
-    {
-      name: "updatedAt"
-      req: true
-      short: "The last time at which the entity was meaningfully updated."
-      type: "`$ANY`"
+    updatedAt: {
+      h: "Updated At"
+      n: "updatedAt"
+      r: true
+      sh: "The last time at which the entity was meaningfully updated."
+      t: "`$ANY`"
     }
-    {
-      name: "url"
-      req: true
-      short: "The URL of the uploaded image for this custom emoji."
-      type: "`$STRING`"
+    url: {
+      h: "Url"
+      n: "url"
+      r: true
+      sh: "The URL of the uploaded image for this custom emoji."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -74,9 +83,8 @@ main: kit: entity: emoji: {
         {
           contract: {
             id: "POST emojiCreate"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"EmojiCreateInput!\",\"name\":\"input\",\"reqd\":true,\"type\":\"EmojiCreateInput\"}],\"deprecated\":false,\"desc\":\"Creates a custom emoji.\",\"gqltype\":\"EmojiPayload!\",\"list\":false,\"name\":\"emojiCreate\",\"reqd\":true,\"type\":\"EmojiPayload\"},\"invocation\":{\"doc\":\"mutation EmojiCreate($input: EmojiCreateInput!) { emojiCreate(input: $input) { emoji { ...EmojiFields } success } } fragment EmojiFields on Emoji { archivedAt createdAt creator { id } id name organization { id } source updatedAt url }\",\"field\":\"emojiCreate\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"\",\"gqltype\":\"EmojiCreateInput!\",\"name\":\"input\"}]},\"protocol\":\"graphql\",\"types\":{\"EmojiCreateInput\":{\"desc\":\"Input for creating a new custom emoji.\",\"fields\":{\"id\":{\"args\":[],\"deprecated\":false,\"desc\":\"The identifier in UUID v4 format. If none is provided, the backend will generate one.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"id\",\"reqd\":false,\"type\":\"String\"},\"name\":{\"args\":[],\"deprecated\":false,\"desc\":\"The name of the custom emoji.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"name\",\"reqd\":true,\"type\":\"String\"},\"url\":{\"args\":[],\"deprecated\":false,\"desc\":\"The URL for the emoji.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"url\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"EmojiCreateInput\"},\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation EmojiCreate($input: EmojiCreateInput!) { emojiCreate(input: $input) { emoji { ...EmojiFields } success } } fragment EmojiFields on Emoji { archivedAt createdAt creator { id } id name organization { id } source updatedAt url }"
@@ -152,9 +160,8 @@ main: kit: entity: emoji: {
           }
           contract: {
             id: "POST emojis"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"String\",\"name\":\"after\",\"reqd\":false,\"type\":\"String\"},{\"gqltype\":\"String\",\"name\":\"before\",\"reqd\":false,\"type\":\"String\"},{\"gqltype\":\"Int\",\"name\":\"first\",\"reqd\":false,\"type\":\"Int\"},{\"gqltype\":\"Boolean\",\"name\":\"includeArchived\",\"reqd\":false,\"type\":\"Boolean\"},{\"gqltype\":\"Int\",\"name\":\"last\",\"reqd\":false,\"type\":\"Int\"},{\"gqltype\":\"PaginationOrderBy\",\"name\":\"orderBy\",\"reqd\":false,\"type\":\"PaginationOrderBy\"}],\"deprecated\":false,\"desc\":\"All custom emojis in the workspace.\",\"gqltype\":\"EmojiConnection!\",\"list\":false,\"name\":\"emojis\",\"reqd\":true,\"type\":\"EmojiConnection\"},\"invocation\":{\"doc\":\"query EmojiList($after: String, $before: String, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { emojis(after: $after, before: $before, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...EmojiFields } pageInfo { endCursor hasNextPage } } } fragment EmojiFields on Emoji { archivedAt createdAt creator { id } id name organization { id } source updatedAt url }\",\"field\":\"emojis\",\"optype\":\"query\",\"page\":{\"cursor\":\"pageInfo.endCursor\",\"more\":\"pageInfo.hasNextPage\",\"nodes\":\"nodes\",\"style\":\"relay\"},\"vars\":[{\"from\":\"after\",\"gqltype\":\"String\",\"name\":\"after\"},{\"from\":\"before\",\"gqltype\":\"String\",\"name\":\"before\"},{\"from\":\"first\",\"gqltype\":\"Int\",\"name\":\"first\"},{\"from\":\"includeArchived\",\"gqltype\":\"Boolean\",\"name\":\"includeArchived\"},{\"from\":\"last\",\"gqltype\":\"Int\",\"name\":\"last\"},{\"from\":\"orderBy\",\"gqltype\":\"PaginationOrderBy\",\"name\":\"orderBy\"}]},\"protocol\":\"graphql\",\"types\":{\"Boolean\":{\"desc\":\"The `Boolean` scalar type represents `true` or `false`.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"Boolean\"},\"Int\":{\"desc\":\"The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"Int\"},\"PaginationOrderBy\":{\"desc\":\"By which field should the pagination order by\",\"fields\":{},\"kind\":\"ENUM\",\"name\":\"PaginationOrderBy\",\"values\":[\"createdAt\",\"updatedAt\"]},\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "query EmojiList($after: String, $before: String, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { emojis(after: $after, before: $before, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...EmojiFields } pageInfo { endCursor hasNextPage } } } fragment EmojiFields on Emoji { archivedAt createdAt creator { id } id name organization { id } source updatedAt url }"
@@ -226,9 +233,8 @@ main: kit: entity: emoji: {
           }
           contract: {
             id: "POST emoji"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"String!\",\"name\":\"id\",\"reqd\":true,\"type\":\"String\"}],\"deprecated\":false,\"desc\":\"A specific custom emoji by ID or name.\",\"gqltype\":\"Emoji!\",\"list\":false,\"name\":\"emoji\",\"reqd\":true,\"type\":\"Emoji\"},\"invocation\":{\"doc\":\"query EmojiLoad($id: String!) { emoji(id: $id) { ...EmojiFields } } fragment EmojiFields on Emoji { archivedAt createdAt creator { id } id name organization { id } source updatedAt url }\",\"field\":\"emoji\",\"optype\":\"query\",\"vars\":[{\"from\":\"id\",\"gqltype\":\"String!\",\"name\":\"id\"}]},\"protocol\":\"graphql\",\"types\":{\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "query EmojiLoad($id: String!) { emoji(id: $id) { ...EmojiFields } } fragment EmojiFields on Emoji { archivedAt createdAt creator { id } id name organization { id } source updatedAt url }"
@@ -274,9 +280,8 @@ main: kit: entity: emoji: {
           }
           contract: {
             id: "POST emojiDelete"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"String!\",\"name\":\"id\",\"reqd\":true,\"type\":\"String\"}],\"deprecated\":false,\"desc\":\"Deletes an emoji.\",\"gqltype\":\"DeletePayload!\",\"list\":false,\"name\":\"emojiDelete\",\"reqd\":true,\"type\":\"DeletePayload\"},\"invocation\":{\"doc\":\"mutation EmojiRemove($id: String!) { emojiDelete(id: $id) { entityId lastSyncId success } }\",\"field\":\"emojiDelete\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"id\",\"gqltype\":\"String!\",\"name\":\"id\"}]},\"protocol\":\"graphql\",\"types\":{\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation EmojiRemove($id: String!) { emojiDelete(id: $id) { entityId lastSyncId success } }"

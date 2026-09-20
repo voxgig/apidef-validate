@@ -4,64 +4,74 @@ main: kit: entity: organization_package_license_policy: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "allow_unknown_licenses"
-      req: false
-      type: "`$BOOLEAN`"
+  fields: {
+    allow_unknown_licenses: {
+      h: "Allow Unknown Licenses"
+      n: "allow_unknown_licenses"
+      r: false
+      t: "`$BOOLEAN`"
     }
-    {
-      format: "date-time"
-      name: "created_at"
-      readOnly: true
-      req: false
-      type: "`$STRING`"
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      ro: true
+      t: "`$STRING`"
     }
-    {
-      name: "description"
-      req: false
-      type: "`$STRING`"
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "id"
-      req: false
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "name"
-      req: true
-      type: "`$STRING`"
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "on_violation_quarantine"
-      req: false
-      type: "`$BOOLEAN`"
+    on_violation_quarantine: {
+      h: "On Violation Quarantine"
+      n: "on_violation_quarantine"
+      r: false
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "package_query_string"
-      req: false
-      type: "`$STRING`"
+    package_query_string: {
+      h: "Package Query String"
+      n: "package_query_string"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      format: "slug"
-      name: "slug_perm"
-      readOnly: true
-      req: false
-      type: "`$STRING`"
+    slug_perm: {
+      fo: "slug"
+      h: "Slug Perm"
+      n: "slug_perm"
+      r: false
+      ro: true
+      t: "`$STRING`"
     }
-    {
-      name: "spdx_identifiers"
-      req: true
-      type: "`$ARRAY`"
+    spdx_identifiers: {
+      h: "Spdx Identifiers"
+      n: "spdx_identifiers"
+      r: true
+      t: "`$ARRAY`"
     }
-    {
-      format: "date-time"
-      name: "updated_at"
-      readOnly: true
-      req: false
-      type: "`$STRING`"
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      ro: true
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -96,9 +106,8 @@ main: kit: entity: organization_package_license_policy: {
           }
           contract: {
             id: "POST /orgs/{org}/license-policy/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_license-policy_create\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"body\",\"name\":\"data\",\"required\":false,\"schema\":{\"properties\":{\"allow_unknown_licenses\":{\"title\":\"Allow unknown licenses\",\"type\":\"boolean\"},\"description\":{\"maxLength\":250,\"minLength\":1,\"title\":\"Description\",\"type\":\"string\"},\"name\":{\"maxLength\":100,\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"on_violation_quarantine\":{\"title\":\"On violation quarantine\",\"type\":\"boolean\"},\"package_query_string\":{\"minLength\":1,\"title\":\"Package query string\",\"type\":\"string\"},\"spdx_identifiers\":{\"items\":{\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true}},\"required\":[\"name\",\"spdx_identifiers\"],\"type\":\"object\"}}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"201\":{\"description\":\"Created\",\"schema\":{\"properties\":{\"allow_unknown_licenses\":{\"title\":\"Allow unknown licenses\",\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Created at\",\"type\":\"string\"},\"description\":{\"maxLength\":250,\"minLength\":1,\"title\":\"Description\",\"type\":\"string\"},\"name\":{\"maxLength\":100,\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"on_violation_quarantine\":{\"title\":\"On violation quarantine\",\"type\":\"boolean\"},\"package_query_string\":{\"minLength\":1,\"title\":\"Package query string\",\"type\":\"string\"},\"slug_perm\":{\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug perm\",\"type\":\"string\"},\"spdx_identifiers\":{\"items\":{\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true},\"updated_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Updated at\",\"type\":\"string\"}},\"required\":[\"name\",\"spdx_identifiers\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/orgs/{org}/license-policy/"
@@ -164,9 +173,8 @@ main: kit: entity: organization_package_license_policy: {
           }
           contract: {
             id: "GET /orgs/{org}/license-policy/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_license-policy_list\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"description\":\"A page number within the paginated result set.\",\"in\":\"query\",\"name\":\"page\",\"required\":false,\"type\":\"integer\"},{\"description\":\"Number of results to return per page.\",\"in\":\"query\",\"name\":\"page_size\",\"required\":false,\"type\":\"integer\"}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"OK\",\"schema\":{\"items\":{\"properties\":{\"allow_unknown_licenses\":{\"title\":\"Allow unknown licenses\",\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Created at\",\"type\":\"string\"},\"description\":{\"maxLength\":250,\"minLength\":1,\"title\":\"Description\",\"type\":\"string\"},\"name\":{\"maxLength\":100,\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"on_violation_quarantine\":{\"title\":\"On violation quarantine\",\"type\":\"boolean\"},\"package_query_string\":{\"minLength\":1,\"title\":\"Package query string\",\"type\":\"string\"},\"slug_perm\":{\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug perm\",\"type\":\"string\"},\"spdx_identifiers\":{\"items\":{\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true},\"updated_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Updated at\",\"type\":\"string\"}},\"required\":[\"name\",\"spdx_identifiers\"],\"type\":\"object\"},\"type\":\"array\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/license-policy/"
@@ -224,9 +232,8 @@ main: kit: entity: organization_package_license_policy: {
           }
           contract: {
             id: "GET /orgs/{org}/license-policy/{slug_perm}/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_license-policy_read\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"slug_perm\",\"required\":true,\"type\":\"string\"}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"OK\",\"schema\":{\"properties\":{\"allow_unknown_licenses\":{\"title\":\"Allow unknown licenses\",\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Created at\",\"type\":\"string\"},\"description\":{\"maxLength\":250,\"minLength\":1,\"title\":\"Description\",\"type\":\"string\"},\"name\":{\"maxLength\":100,\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"on_violation_quarantine\":{\"title\":\"On violation quarantine\",\"type\":\"boolean\"},\"package_query_string\":{\"minLength\":1,\"title\":\"Package query string\",\"type\":\"string\"},\"slug_perm\":{\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug perm\",\"type\":\"string\"},\"spdx_identifiers\":{\"items\":{\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true},\"updated_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Updated at\",\"type\":\"string\"}},\"required\":[\"name\",\"spdx_identifiers\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/license-policy/{slug_perm}/"
@@ -296,9 +303,8 @@ main: kit: entity: organization_package_license_policy: {
           }
           contract: {
             id: "PATCH /orgs/{org}/license-policy/{slug_perm}/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_license-policy_partial_update\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"slug_perm\",\"required\":true,\"type\":\"string\"},{\"in\":\"body\",\"name\":\"data\",\"required\":false,\"schema\":{\"properties\":{\"allow_unknown_licenses\":{\"title\":\"Allow unknown licenses\",\"type\":\"boolean\"},\"description\":{\"maxLength\":250,\"minLength\":1,\"title\":\"Description\",\"type\":\"string\"},\"name\":{\"maxLength\":100,\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"on_violation_quarantine\":{\"title\":\"On violation quarantine\",\"type\":\"boolean\"},\"package_query_string\":{\"minLength\":1,\"title\":\"Package query string\",\"type\":\"string\"},\"spdx_identifiers\":{\"items\":{\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true}},\"type\":\"object\"}}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"OK\",\"schema\":{\"properties\":{\"allow_unknown_licenses\":{\"title\":\"Allow unknown licenses\",\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Created at\",\"type\":\"string\"},\"description\":{\"maxLength\":250,\"minLength\":1,\"title\":\"Description\",\"type\":\"string\"},\"name\":{\"maxLength\":100,\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"on_violation_quarantine\":{\"title\":\"On violation quarantine\",\"type\":\"boolean\"},\"package_query_string\":{\"minLength\":1,\"title\":\"Package query string\",\"type\":\"string\"},\"slug_perm\":{\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug perm\",\"type\":\"string\"},\"spdx_identifiers\":{\"items\":{\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true},\"updated_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Updated at\",\"type\":\"string\"}},\"required\":[\"name\",\"spdx_identifiers\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/orgs/{org}/license-policy/{slug_perm}/"
@@ -369,9 +375,8 @@ main: kit: entity: organization_package_license_policy: {
           }
           contract: {
             id: "PUT /orgs/{org}/license-policy/{slug_perm}/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_license-policy_update\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"slug_perm\",\"required\":true,\"type\":\"string\"},{\"in\":\"body\",\"name\":\"data\",\"required\":false,\"schema\":{\"properties\":{\"allow_unknown_licenses\":{\"title\":\"Allow unknown licenses\",\"type\":\"boolean\"},\"description\":{\"maxLength\":250,\"minLength\":1,\"title\":\"Description\",\"type\":\"string\"},\"name\":{\"maxLength\":100,\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"on_violation_quarantine\":{\"title\":\"On violation quarantine\",\"type\":\"boolean\"},\"package_query_string\":{\"minLength\":1,\"title\":\"Package query string\",\"type\":\"string\"},\"spdx_identifiers\":{\"items\":{\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true}},\"required\":[\"name\",\"spdx_identifiers\"],\"type\":\"object\"}}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"OK\",\"schema\":{\"properties\":{\"allow_unknown_licenses\":{\"title\":\"Allow unknown licenses\",\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Created at\",\"type\":\"string\"},\"description\":{\"maxLength\":250,\"minLength\":1,\"title\":\"Description\",\"type\":\"string\"},\"name\":{\"maxLength\":100,\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"on_violation_quarantine\":{\"title\":\"On violation quarantine\",\"type\":\"boolean\"},\"package_query_string\":{\"minLength\":1,\"title\":\"Package query string\",\"type\":\"string\"},\"slug_perm\":{\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug perm\",\"type\":\"string\"},\"spdx_identifiers\":{\"items\":{\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true},\"updated_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Updated at\",\"type\":\"string\"}},\"required\":[\"name\",\"spdx_identifiers\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "PUT"
           orig: "/orgs/{org}/license-policy/{slug_perm}/"

@@ -4,56 +4,64 @@ main: kit: entity: access_key_release: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "archivedAt"
-      req: false
-      short: "The time at which the release was archived."
-      type: "`$ANY`"
+  fields: {
+    archivedAt: {
+      h: "Archived At"
+      n: "archivedAt"
+      r: false
+      sh: "The time at which the release was archived."
+      t: "`$ANY`"
     }
-    {
-      name: "commitSha"
-      req: false
-      short: "The Git commit SHA associated with the release."
-      type: "`$STRING`"
+    commitSha: {
+      h: "Commit Sha"
+      n: "commitSha"
+      r: false
+      sh: "The Git commit SHA associated with the release."
+      t: "`$STRING`"
     }
-    {
-      name: "completedAt"
-      req: false
-      short: "The time at which the release was completed."
-      type: "`$ANY`"
+    completedAt: {
+      h: "Completed At"
+      n: "completedAt"
+      r: false
+      sh: "The time at which the release was completed."
+      t: "`$ANY`"
     }
-    {
-      name: "createdAt"
-      req: true
-      short: "The time at which the release was created."
-      type: "`$ANY`"
+    createdAt: {
+      h: "Created At"
+      n: "createdAt"
+      r: true
+      sh: "The time at which the release was created."
+      t: "`$ANY`"
     }
-    {
-      name: "id"
-      req: true
-      short: "The unique identifier of the release."
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "The unique identifier of the release."
+      t: "`$STRING`"
     }
-    {
-      name: "name"
-      req: true
-      short: "The name of the release."
-      type: "`$STRING`"
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "The name of the release."
+      t: "`$STRING`"
     }
-    {
-      name: "url"
-      req: true
-      short: "The URL to the release page in the Linear app."
-      type: "`$STRING`"
+    url: {
+      h: "Url"
+      n: "url"
+      r: true
+      sh: "The URL to the release page in the Linear app."
+      t: "`$STRING`"
     }
-    {
-      name: "version"
-      req: false
-      short: "The version identifier for this release."
-      type: "`$STRING`"
+    version: {
+      h: "Version"
+      n: "version"
+      r: false
+      sh: "The version identifier for this release."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -68,9 +76,8 @@ main: kit: entity: access_key_release: {
         {
           contract: {
             id: "POST releaseCompleteByAccessKey"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"ReleaseCompleteInputBase!\",\"name\":\"input\",\"reqd\":true,\"type\":\"ReleaseCompleteInputBase\"}],\"deprecated\":false,\"desc\":\"Marks a release as completed using an access key. If version is provided, completes that specific release; otherwise completes the most recent started release. The pipeline is inferred from the access key.\",\"gqltype\":\"AccessKeyReleasePayload!\",\"list\":false,\"name\":\"releaseCompleteByAccessKey\",\"reqd\":true,\"type\":\"AccessKeyReleasePayload\"},\"invocation\":{\"doc\":\"mutation AccessKeyReleaseCreateReleaseCompleteByAccessKey($input: ReleaseCompleteInputBase!) { releaseCompleteByAccessKey(input: $input) { release { ...AccessKeyReleaseFields } success } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }\",\"field\":\"releaseCompleteByAccessKey\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"\",\"gqltype\":\"ReleaseCompleteInputBase!\",\"name\":\"input\"}]},\"protocol\":\"graphql\",\"types\":{\"ReleaseCompleteInputBase\":{\"desc\":\"Base input for completing a release. Contains the optional version and commit SHA. The pipeline ID is provided separately or inferred from the access key.\",\"fields\":{\"commitSha\":{\"args\":[],\"deprecated\":false,\"desc\":\"The commit SHA to store when moving a release to completed. With a version, an existing SHA is preserved. Without a version, this SHA replaces the started release's SHA and is used to detect retries.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"commitSha\",\"reqd\":false,\"type\":\"String\"},\"documents\":{\"args\":[],\"deprecated\":false,\"desc\":\"Documents to attach to the completed release. Existing documents with the same title are updated.\",\"gqltype\":\"[ReleaseDocumentInput!]\",\"list\":true,\"name\":\"documents\",\"reqd\":false,\"type\":\"ReleaseDocumentInput\"},\"links\":{\"args\":[],\"deprecated\":false,\"desc\":\"External links to attach to the completed release.\",\"gqltype\":\"[ReleaseLinkInput!]\",\"list\":true,\"name\":\"links\",\"reqd\":false,\"type\":\"ReleaseLinkInput\"},\"name\":{\"args\":[],\"deprecated\":false,\"desc\":\"Optional release name to apply when completing the release.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"name\",\"reqd\":false,\"type\":\"String\"},\"releaseNotes\":{\"args\":[],\"deprecated\":false,\"desc\":\"Release notes covering the completed release.\",\"gqltype\":\"ReleaseNoteInput\",\"list\":false,\"name\":\"releaseNotes\",\"reqd\":false,\"type\":\"ReleaseNoteInput\"},\"version\":{\"args\":[],\"deprecated\":false,\"desc\":\"The version of the release to complete. If not provided, the latest started release will be completed.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"version\",\"reqd\":false,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseCompleteInputBase\"},\"ReleaseDocumentInput\":{\"desc\":\"A document to attach to the release. Existing documents on the release with the same title are updated in place. Bad rows (empty title, oversized title/body) are skipped with a warning rather than failing the release command.\",\"fields\":{\"content\":{\"args\":[],\"deprecated\":false,\"desc\":\"The document body as markdown.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"content\",\"reqd\":true,\"type\":\"String\"},\"title\":{\"args\":[],\"deprecated\":false,\"desc\":\"The title of the document. Used to match existing documents on the release for upsert.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"title\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseDocumentInput\"},\"ReleaseLinkInput\":{\"desc\":\"An external link to attach to the release.\",\"fields\":{\"label\":{\"args\":[],\"deprecated\":false,\"desc\":\"Optional label for the link. If omitted, the API derives one from the URL.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"label\",\"reqd\":false,\"type\":\"String\"},\"url\":{\"args\":[],\"deprecated\":false,\"desc\":\"The URL of the link.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"url\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseLinkInput\"},\"ReleaseNoteInput\":{\"desc\":\"Release notes to attach to the release. Upserts the existing release notes that cover only this release. Bad input (empty title, oversized title/body) is skipped with a warning rather than failing the release command.\",\"fields\":{\"content\":{\"args\":[],\"deprecated\":false,\"desc\":\"The release notes body as markdown.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"content\",\"reqd\":true,\"type\":\"String\"},\"title\":{\"args\":[],\"deprecated\":false,\"desc\":\"Optional title. If omitted, the UI derives one from the release range.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"title\",\"reqd\":false,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseNoteInput\"},\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation AccessKeyReleaseCreateReleaseCompleteByAccessKey($input: ReleaseCompleteInputBase!) { releaseCompleteByAccessKey(input: $input) { release { ...AccessKeyReleaseFields } success } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }"
@@ -98,9 +105,8 @@ main: kit: entity: access_key_release: {
         {
           contract: {
             id: "POST releaseSyncByAccessKey"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"ReleaseSyncInputBase!\",\"name\":\"input\",\"reqd\":true,\"type\":\"ReleaseSyncInputBase\"}],\"deprecated\":false,\"desc\":\"Syncs release data using an access key for CI/CD integration. The pipeline is automatically inferred from the access key's configured resources, so no pipeline ID is needed in the input.\",\"gqltype\":\"AccessKeyReleasePayload!\",\"list\":false,\"name\":\"releaseSyncByAccessKey\",\"reqd\":true,\"type\":\"AccessKeyReleasePayload\"},\"invocation\":{\"doc\":\"mutation AccessKeyReleaseCreateReleaseSyncByAccessKey($input: ReleaseSyncInputBase!) { releaseSyncByAccessKey(input: $input) { release { ...AccessKeyReleaseFields } success } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }\",\"field\":\"releaseSyncByAccessKey\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"\",\"gqltype\":\"ReleaseSyncInputBase!\",\"name\":\"input\"}]},\"protocol\":\"graphql\",\"types\":{\"Int\":{\"desc\":\"The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"Int\"},\"IssueReferenceInput\":{\"desc\":\"A reference to an issue discovered during release sync, linking the issue identifier to the commit SHA where the reference was found.\",\"fields\":{\"commitSha\":{\"args\":[],\"deprecated\":false,\"desc\":\"The commit SHA where this issue reference was found.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"commitSha\",\"reqd\":true,\"type\":\"String\"},\"identifier\":{\"args\":[],\"deprecated\":false,\"desc\":\"The issue identifier (e.g. ENG-123).\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"identifier\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"IssueReferenceInput\"},\"JSONObject\":{\"desc\":\"The `JSONObject` scalar type represents arbitrary values as *embedded* JSON\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"JSONObject\"},\"PullRequestReferenceInput\":{\"desc\":\"A reference to a pull request by its repository owner, name, and pull request number. Used during release sync to look up pull requests and associate their linked issues with the release.\",\"fields\":{\"number\":{\"args\":[],\"deprecated\":false,\"desc\":\"The pull request number.\",\"gqltype\":\"Int!\",\"list\":false,\"name\":\"number\",\"reqd\":true,\"type\":\"Int\"},\"repositoryName\":{\"args\":[],\"deprecated\":false,\"desc\":\"The name of the repository.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"repositoryName\",\"reqd\":true,\"type\":\"String\"},\"repositoryOwner\":{\"args\":[],\"deprecated\":false,\"desc\":\"The owner of the repository (e.g., organization or user name).\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"repositoryOwner\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"PullRequestReferenceInput\"},\"ReleaseDebugSinkInput\":{\"desc\":\"Diagnostic data captured during release sync, including inspected commits, discovered issue references, and pull request metadata. Stored on the release for debugging release association issues.\",\"fields\":{\"includePaths\":{\"args\":[],\"deprecated\":false,\"desc\":\"List of paths applied during commit scanning.\",\"gqltype\":\"[String!]\",\"list\":true,\"name\":\"includePaths\",\"reqd\":false,\"type\":\"String\"},\"includeSubjects\":{\"args\":[],\"deprecated\":false,\"desc\":\"Regex used to filter commit subjects during scanning.\",\"gqltype\":\"[String!]\",\"list\":true,\"name\":\"includeSubjects\",\"reqd\":false,\"type\":\"String\"},\"inspectedShas\":{\"args\":[],\"deprecated\":false,\"desc\":\"List of commit SHAs that were inspected.\",\"gqltype\":\"[String!]!\",\"list\":true,\"name\":\"inspectedShas\",\"reqd\":true,\"type\":\"String\"},\"issuePattern\":{\"args\":[],\"deprecated\":false,\"desc\":\"Custom regex used to extract issue identifiers from commit subjects.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"issuePattern\",\"reqd\":false,\"type\":\"String\"},\"issues\":{\"args\":[],\"deprecated\":false,\"desc\":\"Map of issue identifiers to their source information.\",\"gqltype\":\"JSONObject!\",\"list\":false,\"name\":\"issues\",\"reqd\":true,\"type\":\"JSONObject\"},\"pullRequests\":{\"args\":[],\"deprecated\":false,\"desc\":\"Pull request debug information.\",\"gqltype\":\"[JSONObject!]!\",\"list\":true,\"name\":\"pullRequests\",\"reqd\":true,\"type\":\"JSONObject\"},\"revertedIssues\":{\"args\":[],\"deprecated\":false,\"desc\":\"Map of reverted issue identifiers to their source information.\",\"gqltype\":\"JSONObject\",\"list\":false,\"name\":\"revertedIssues\",\"reqd\":false,\"type\":\"JSONObject\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseDebugSinkInput\"},\"ReleaseDocumentInput\":{\"desc\":\"A document to attach to the release. Existing documents on the release with the same title are updated in place. Bad rows (empty title, oversized title/body) are skipped with a warning rather than failing the release command.\",\"fields\":{\"content\":{\"args\":[],\"deprecated\":false,\"desc\":\"The document body as markdown.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"content\",\"reqd\":true,\"type\":\"String\"},\"title\":{\"args\":[],\"deprecated\":false,\"desc\":\"The title of the document. Used to match existing documents on the release for upsert.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"title\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseDocumentInput\"},\"ReleaseLinkInput\":{\"desc\":\"An external link to attach to the release.\",\"fields\":{\"label\":{\"args\":[],\"deprecated\":false,\"desc\":\"Optional label for the link. If omitted, the API derives one from the URL.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"label\",\"reqd\":false,\"type\":\"String\"},\"url\":{\"args\":[],\"deprecated\":false,\"desc\":\"The URL of the link.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"url\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseLinkInput\"},\"ReleaseNoteInput\":{\"desc\":\"Release notes to attach to the release. Upserts the existing release notes that cover only this release. Bad input (empty title, oversized title/body) is skipped with a warning rather than failing the release command.\",\"fields\":{\"content\":{\"args\":[],\"deprecated\":false,\"desc\":\"The release notes body as markdown.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"content\",\"reqd\":true,\"type\":\"String\"},\"title\":{\"args\":[],\"deprecated\":false,\"desc\":\"Optional title. If omitted, the UI derives one from the release range.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"title\",\"reqd\":false,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseNoteInput\"},\"ReleaseSyncInputBase\":{\"desc\":\"Base input for syncing release data, containing the commit SHA, issue references, pull request references, and optional metadata. Does not include the pipeline ID, which is provided separately or inferred from the access key.\",\"fields\":{\"commitSha\":{\"args\":[],\"deprecated\":false,\"desc\":\"The commit SHA associated with this release.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"commitSha\",\"reqd\":true,\"type\":\"String\"},\"debugSink\":{\"args\":[],\"deprecated\":false,\"desc\":\"Debug information for release creation diagnostics.\",\"gqltype\":\"ReleaseDebugSinkInput\",\"list\":false,\"name\":\"debugSink\",\"reqd\":false,\"type\":\"ReleaseDebugSinkInput\"},\"documents\":{\"args\":[],\"deprecated\":false,\"desc\":\"Documents to attach to the release. Existing documents on the release with the same title are updated.\",\"gqltype\":\"[ReleaseDocumentInput!]\",\"list\":true,\"name\":\"documents\",\"reqd\":false,\"type\":\"ReleaseDocumentInput\"},\"issueReferences\":{\"args\":[],\"deprecated\":false,\"desc\":\"Issue references (e.g. ENG-123) to associate with this release.\",\"gqltype\":\"[IssueReferenceInput!]\",\"list\":true,\"name\":\"issueReferences\",\"reqd\":false,\"type\":\"IssueReferenceInput\"},\"links\":{\"args\":[],\"deprecated\":false,\"desc\":\"External links to attach to the release.\",\"gqltype\":\"[ReleaseLinkInput!]\",\"list\":true,\"name\":\"links\",\"reqd\":false,\"type\":\"ReleaseLinkInput\"},\"name\":{\"args\":[],\"deprecated\":false,\"desc\":\"The name of the release.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"name\",\"reqd\":false,\"type\":\"String\"},\"pullRequestReferences\":{\"args\":[],\"deprecated\":false,\"desc\":\"Pull request references to look up. Issues linked to found PRs will be associated with this release.\",\"gqltype\":\"[PullRequestReferenceInput!]\",\"list\":true,\"name\":\"pullRequestReferences\",\"reqd\":false,\"type\":\"PullRequestReferenceInput\"},\"releaseNotes\":{\"args\":[],\"deprecated\":false,\"desc\":\"Release notes covering this release. Upserts the existing release notes that cover only this release.\",\"gqltype\":\"ReleaseNoteInput\",\"list\":false,\"name\":\"releaseNotes\",\"reqd\":false,\"type\":\"ReleaseNoteInput\"},\"repository\":{\"args\":[],\"deprecated\":false,\"desc\":\"Information about the source repository.\",\"gqltype\":\"RepositoryDataInput\",\"list\":false,\"name\":\"repository\",\"reqd\":false,\"type\":\"RepositoryDataInput\"},\"revertedIssueReferences\":{\"args\":[],\"deprecated\":false,\"desc\":\"Issue references that were reverted and should be removed from the release.\",\"gqltype\":\"[IssueReferenceInput!]\",\"list\":true,\"name\":\"revertedIssueReferences\",\"reqd\":false,\"type\":\"IssueReferenceInput\"},\"version\":{\"args\":[],\"deprecated\":false,\"desc\":\"The version of the release.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"version\",\"reqd\":false,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseSyncInputBase\"},\"RepositoryDataInput\":{\"desc\":\"Metadata about the source code repository from which a release is being synced, including the hosting provider and repository coordinates.\",\"fields\":{\"name\":{\"args\":[],\"deprecated\":false,\"desc\":\"The name of the repository.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"name\",\"reqd\":true,\"type\":\"String\"},\"owner\":{\"args\":[],\"deprecated\":false,\"desc\":\"The owner of the repository (e.g., organization or user name).\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"owner\",\"reqd\":true,\"type\":\"String\"},\"provider\":{\"args\":[],\"deprecated\":false,\"desc\":\"The VCS provider hosting the repository (e.g., 'github', 'gitlab', 'bitbucket').\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"provider\",\"reqd\":true,\"type\":\"String\"},\"url\":{\"args\":[],\"deprecated\":false,\"desc\":\"The base URL of the repository on the hosting provider (e.g., 'https://github.com/linear/linear-app').\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"url\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"RepositoryDataInput\"},\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation AccessKeyReleaseCreateReleaseSyncByAccessKey($input: ReleaseSyncInputBase!) { releaseSyncByAccessKey(input: $input) { release { ...AccessKeyReleaseFields } success } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }"
@@ -128,9 +134,8 @@ main: kit: entity: access_key_release: {
         {
           contract: {
             id: "POST releaseUpdateByPipelineByAccessKey"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"ReleaseUpdateByPipelineInputBase!\",\"name\":\"input\",\"reqd\":true,\"type\":\"ReleaseUpdateByPipelineInputBase\"}],\"deprecated\":false,\"desc\":\"Updates a release by pipeline using an access key.\",\"gqltype\":\"AccessKeyReleasePayload!\",\"list\":false,\"name\":\"releaseUpdateByPipelineByAccessKey\",\"reqd\":true,\"type\":\"AccessKeyReleasePayload\"},\"invocation\":{\"doc\":\"mutation AccessKeyReleaseCreateReleaseUpdateByPipelineByAccessKey($input: ReleaseUpdateByPipelineInputBase!) { releaseUpdateByPipelineByAccessKey(input: $input) { release { ...AccessKeyReleaseFields } success } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }\",\"field\":\"releaseUpdateByPipelineByAccessKey\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"\",\"gqltype\":\"ReleaseUpdateByPipelineInputBase!\",\"name\":\"input\"}]},\"protocol\":\"graphql\",\"types\":{\"ReleaseDocumentInput\":{\"desc\":\"A document to attach to the release. Existing documents on the release with the same title are updated in place. Bad rows (empty title, oversized title/body) are skipped with a warning rather than failing the release command.\",\"fields\":{\"content\":{\"args\":[],\"deprecated\":false,\"desc\":\"The document body as markdown.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"content\",\"reqd\":true,\"type\":\"String\"},\"title\":{\"args\":[],\"deprecated\":false,\"desc\":\"The title of the document. Used to match existing documents on the release for upsert.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"title\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseDocumentInput\"},\"ReleaseLinkInput\":{\"desc\":\"An external link to attach to the release.\",\"fields\":{\"label\":{\"args\":[],\"deprecated\":false,\"desc\":\"Optional label for the link. If omitted, the API derives one from the URL.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"label\",\"reqd\":false,\"type\":\"String\"},\"url\":{\"args\":[],\"deprecated\":false,\"desc\":\"The URL of the link.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"url\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseLinkInput\"},\"ReleaseNoteInput\":{\"desc\":\"Release notes to attach to the release. Upserts the existing release notes that cover only this release. Bad input (empty title, oversized title/body) is skipped with a warning rather than failing the release command.\",\"fields\":{\"content\":{\"args\":[],\"deprecated\":false,\"desc\":\"The release notes body as markdown.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"content\",\"reqd\":true,\"type\":\"String\"},\"title\":{\"args\":[],\"deprecated\":false,\"desc\":\"Optional title. If omitted, the UI derives one from the release range.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"title\",\"reqd\":false,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseNoteInput\"},\"ReleaseUpdateByPipelineInputBase\":{\"desc\":\"Base input for updating a release by pipeline. Contains optional version and stage name. The pipeline ID is provided separately or inferred from the access key.\",\"fields\":{\"documents\":{\"args\":[],\"deprecated\":false,\"desc\":\"Documents to attach to the updated release. Existing documents with the same title are updated.\",\"gqltype\":\"[ReleaseDocumentInput!]\",\"list\":true,\"name\":\"documents\",\"reqd\":false,\"type\":\"ReleaseDocumentInput\"},\"links\":{\"args\":[],\"deprecated\":false,\"desc\":\"External links to attach to the updated release.\",\"gqltype\":\"[ReleaseLinkInput!]\",\"list\":true,\"name\":\"links\",\"reqd\":false,\"type\":\"ReleaseLinkInput\"},\"name\":{\"args\":[],\"deprecated\":false,\"desc\":\"Optional release name to apply when updating the release.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"name\",\"reqd\":false,\"type\":\"String\"},\"releaseNotes\":{\"args\":[],\"deprecated\":false,\"desc\":\"Release notes covering the updated release.\",\"gqltype\":\"ReleaseNoteInput\",\"list\":false,\"name\":\"releaseNotes\",\"reqd\":false,\"type\":\"ReleaseNoteInput\"},\"stage\":{\"args\":[],\"deprecated\":false,\"desc\":\"The stage name to set. First tries exact match, then falls back to case-insensitive matching with dashes/underscores treated as spaces.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"stage\",\"reqd\":false,\"type\":\"String\"},\"version\":{\"args\":[],\"deprecated\":false,\"desc\":\"The version of the release to update. If not provided, the latest started or latest planned release will be updated.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"version\",\"reqd\":false,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"ReleaseUpdateByPipelineInputBase\"},\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation AccessKeyReleaseCreateReleaseUpdateByPipelineByAccessKey($input: ReleaseUpdateByPipelineInputBase!) { releaseUpdateByPipelineByAccessKey(input: $input) { release { ...AccessKeyReleaseFields } success } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }"
@@ -174,9 +179,8 @@ main: kit: entity: access_key_release: {
           }
           contract: {
             id: "POST recentReleasesByAccessKey"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"Int\",\"name\":\"limit\",\"reqd\":false,\"type\":\"Int\"}],\"deprecated\":false,\"desc\":\"Returns recent releases for the pipeline associated with the access key, ordered with in-progress releases first, followed by the most recently completed releases.\",\"gqltype\":\"[AccessKeyRelease!]!\",\"list\":true,\"name\":\"recentReleasesByAccessKey\",\"reqd\":true,\"type\":\"AccessKeyRelease\"},\"invocation\":{\"doc\":\"query AccessKeyReleaseList($limit: Int) { recentReleasesByAccessKey(limit: $limit) { ...AccessKeyReleaseFields } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }\",\"field\":\"recentReleasesByAccessKey\",\"optype\":\"query\",\"vars\":[{\"from\":\"limit\",\"gqltype\":\"Int\",\"name\":\"limit\"}]},\"protocol\":\"graphql\",\"types\":{\"Int\":{\"desc\":\"The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"Int\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "query AccessKeyReleaseList($limit: Int) { recentReleasesByAccessKey(limit: $limit) { ...AccessKeyReleaseFields } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }"
@@ -206,9 +210,8 @@ main: kit: entity: access_key_release: {
         {
           contract: {
             id: "POST latestReleaseByAccessKey"
-            json: "{\"field\":{\"args\":[],\"deprecated\":false,\"desc\":\"Returns the latest release for the pipeline associated with the access key.\",\"gqltype\":\"AccessKeyRelease\",\"list\":false,\"name\":\"latestReleaseByAccessKey\",\"reqd\":false,\"type\":\"AccessKeyRelease\"},\"invocation\":{\"doc\":\"query AccessKeyReleaseLoad { latestReleaseByAccessKey { ...AccessKeyReleaseFields } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }\",\"field\":\"latestReleaseByAccessKey\",\"optype\":\"query\",\"vars\":[]},\"protocol\":\"graphql\",\"types\":{},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "query AccessKeyReleaseLoad { latestReleaseByAccessKey { ...AccessKeyReleaseFields } } fragment AccessKeyReleaseFields on AccessKeyRelease { archivedAt commitSha completedAt createdAt id name url version }"

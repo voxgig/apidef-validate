@@ -4,72 +4,82 @@ main: kit: entity: org_membership: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "direct_membership"
-      req: false
-      short: "Whether the user has direct membership in the organization."
-      type: "`$BOOLEAN`"
+  fields: {
+    direct_membership: {
+      h: "Direct Membership"
+      n: "direct_membership"
+      r: false
+      sh: "Whether the user has direct membership in the organization."
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "enterprise_teams_providing_indirect_membership"
-      req: false
-      short: "The slugs of the enterprise teams providing the user with indirect membership in the organization."
-      type: "`$ARRAY`"
+    enterprise_teams_providing_indirect_membership: {
+      h: "Enterprise Teams Providing Indirect Membership"
+      n: "enterprise_teams_providing_indirect_membership"
+      r: false
+      sh: "The slugs of the enterprise teams providing the user with indirect membership in the organization."
+      t: "`$ARRAY`"
     }
-    {
-      name: "id"
-      req: false
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "organization"
-      req: true
-      short: "A GitHub organization."
-      type: "`$OBJECT`"
+    organization: {
+      h: "Organization"
+      n: "organization"
+      r: true
+      sh: "A GitHub organization."
+      t: "`$OBJECT`"
     }
-    {
-      format: "uri"
-      name: "organization_url"
-      req: true
-      type: "`$STRING`"
+    organization_url: {
+      fo: "uri"
+      h: "Organization Url"
+      n: "organization_url"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "permissions"
-      req: true
-      type: "`$OBJECT`"
+    permissions: {
+      h: "Permissions"
+      n: "permissions"
+      r: true
+      t: "`$OBJECT`"
     }
-    {
-      name: "role"
+    role: {
+      h: "Role"
+      n: "role"
       op: {
         update: {
           req: false
           type: "`$STRING`"
         }
       }
-      req: true
-      short: "The user's membership type in the organization."
-      type: "`$STRING`"
+      r: true
+      sh: "The user's membership type in the organization."
+      t: "`$STRING`"
     }
-    {
-      name: "state"
-      req: true
-      short: "The state of the member in the organization."
-      type: "`$STRING`"
+    state: {
+      h: "State"
+      n: "state"
+      r: true
+      sh: "The state of the member in the organization."
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "url"
-      req: true
-      type: "`$STRING`"
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "user"
-      req: true
-      short: "A GitHub user."
-      type: "`$OBJECT`"
+    user: {
+      h: "User"
+      n: "user"
+      r: true
+      sh: "A GitHub user."
+      t: "`$OBJECT`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -102,9 +112,8 @@ main: kit: entity: org_membership: {
           }
           contract: {
             id: "GET /orgs/{org}/memberships/{username}"
-            json: "{\"operationId\":\"orgs/get-membership-for-user\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The handle for the GitHub user account.\",\"in\":\"path\",\"name\":\"username\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"response-if-user-has-an-active-admin-membership-with-organization\":{\"summary\":\"Response if user has an active admin membership with organization\",\"value\":{\"organization\":{\"avatar_url\":\"https://github.com/images/error/octocat_happy.gif\",\"description\":\"A great organization\",\"events_url\":\"https://api.github.com/orgs/github/events\",\"hooks_url\":\"https://api.github.com/orgs/github/hooks\",\"id\":1,\"issues_url\":\"https://api.github.com/orgs/github/issues\",\"login\":\"github\",\"members_url\":\"https://api.github.com/orgs/github/members{/member}\",\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjE=\",\"public_members_url\":\"https://api.github.com/orgs/github/public_members{/member}\",\"repos_url\":\"https://api.github.com/orgs/github/repos\",\"url\":\"https://api.github.com/orgs/github\"},\"organization_url\":\"https://api.github.com/orgs/octocat\",\"role\":\"admin\",\"state\":\"active\",\"url\":\"https://api.github.com/orgs/octocat/memberships/defunkt\",\"user\":{\"avatar_url\":\"https://github.com/images/error/octocat_happy.gif\",\"events_url\":\"https://api.github.com/users/octocat/events{/privacy}\",\"followers_url\":\"https://api.github.com/users/octocat/followers\",\"following_url\":\"https://api.github.com/users/octocat/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/octocat/gists{/gist_id}\",\"gravatar_id\":\"\",\"html_url\":\"https://github.com/octocat\",\"id\":1,\"login\":\"octocat\",\"node_id\":\"MDQ6VXNlcjE=\",\"organizations_url\":\"https://api.github.com/users/octocat/orgs\",\"received_events_url\":\"https://api.github.com/users/octocat/received_events\",\"repos_url\":\"https://api.github.com/users/octocat/repos\",\"site_admin\":false,\"starred_url\":\"https://api.github.com/users/octocat/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/octocat/subscriptions\",\"type\":\"User\",\"url\":\"https://api.github.com/users/octocat\"}}}},\"schema\":{\"description\":\"Org Membership\",\"properties\":{\"direct_membership\":{\"description\":\"Whether the user has direct membership in the organization.\",\"example\":true,\"type\":\"boolean\"},\"enterprise_teams_providing_indirect_membership\":{\"description\":\"The slugs of the enterprise teams providing the user with indirect membership in the organization.\\nA limit of 100 enterprise team slugs is returned.\",\"example\":[\"ent:team-one\",\"ent:team-two\"],\"items\":{\"type\":\"string\"},\"maxItems\":100,\"type\":\"array\"},\"organization\":{\"description\":\"A GitHub organization.\",\"properties\":{\"avatar_url\":{\"example\":\"https://github.com/images/error/octocat_happy.gif\",\"type\":\"string\"},\"description\":{\"example\":\"A great organization\",\"nullable\":true,\"type\":\"string\"},\"events_url\":{\"example\":\"https://api.github.com/orgs/github/events\",\"format\":\"uri\",\"type\":\"string\"},\"hooks_url\":{\"example\":\"https://api.github.com/orgs/github/hooks\",\"type\":\"string\"},\"id\":{\"example\":1,\"type\":\"integer\"},\"issues_url\":{\"example\":\"https://api.github.com/orgs/github/issues\",\"type\":\"string\"},\"login\":{\"example\":\"github\",\"type\":\"string\"},\"members_url\":{\"example\":\"https://api.github.com/orgs/github/members{/member}\",\"type\":\"string\"},\"node_id\":{\"example\":\"MDEyOk9yZ2FuaXphdGlvbjE=\",\"type\":\"string\"},\"public_members_url\":{\"example\":\"https://api.github.com/orgs/github/public_members{/member}\",\"type\":\"string\"},\"repos_url\":{\"example\":\"https://api.github.com/orgs/github/repos\",\"format\":\"uri\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/orgs/github\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"login\",\"url\",\"id\",\"node_id\",\"repos_url\",\"events_url\",\"hooks_url\",\"issues_url\",\"members_url\",\"public_members_url\",\"avatar_url\",\"description\"],\"title\":\"Organization Simple\",\"type\":\"object\"},\"organization_url\":{\"example\":\"https://api.github.com/orgs/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"permissions\":{\"properties\":{\"can_create_repository\":{\"type\":\"boolean\"}},\"required\":[\"can_create_repository\"],\"type\":\"object\"},\"role\":{\"description\":\"The user's membership type in the organization.\",\"enum\":[\"admin\",\"member\",\"billing_manager\"],\"example\":\"admin\",\"type\":\"string\"},\"state\":{\"description\":\"The state of the member in the organization. The `pending` state indicates the user has not yet accepted an invitation.\",\"enum\":[\"active\",\"pending\"],\"example\":\"active\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/orgs/octocat/memberships/defunkt\",\"format\":\"uri\",\"type\":\"string\"},\"user\":{\"description\":\"A GitHub user.\",\"nullable\":true,\"properties\":{\"avatar_url\":{\"example\":\"https://github.com/images/error/octocat_happy.gif\",\"format\":\"uri\",\"type\":\"string\"},\"email\":{\"nullable\":true,\"type\":\"string\"},\"events_url\":{\"example\":\"https://api.github.com/users/octocat/events{/privacy}\",\"type\":\"string\"},\"followers_url\":{\"example\":\"https://api.github.com/users/octocat/followers\",\"format\":\"uri\",\"type\":\"string\"},\"following_url\":{\"example\":\"https://api.github.com/users/octocat/following{/other_user}\",\"type\":\"string\"},\"gists_url\":{\"example\":\"https://api.github.com/users/octocat/gists{/gist_id}\",\"type\":\"string\"},\"gravatar_id\":{\"example\":\"41d064eb2195891e12d0413f63227ea7\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"example\":1,\"format\":\"int64\",\"type\":\"integer\"},\"login\":{\"example\":\"octocat\",\"type\":\"string\"},\"name\":{\"nullable\":true,\"type\":\"string\"},\"node_id\":{\"example\":\"MDQ6VXNlcjE=\",\"type\":\"string\"},\"organizations_url\":{\"example\":\"https://api.github.com/users/octocat/orgs\",\"format\":\"uri\",\"type\":\"string\"},\"received_events_url\":{\"example\":\"https://api.github.com/users/octocat/received_events\",\"format\":\"uri\",\"type\":\"string\"},\"repos_url\":{\"example\":\"https://api.github.com/users/octocat/repos\",\"format\":\"uri\",\"type\":\"string\"},\"site_admin\":{\"type\":\"boolean\"},\"starred_at\":{\"example\":\"\\\"2020-07-09T00:17:55Z\\\"\",\"type\":\"string\"},\"starred_url\":{\"example\":\"https://api.github.com/users/octocat/starred{/owner}{/repo}\",\"type\":\"string\"},\"subscriptions_url\":{\"example\":\"https://api.github.com/users/octocat/subscriptions\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"example\":\"User\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/users/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"user_view_type\":{\"example\":\"public\",\"type\":\"string\"}},\"required\":[\"avatar_url\",\"events_url\",\"followers_url\",\"following_url\",\"gists_url\",\"gravatar_id\",\"html_url\",\"id\",\"node_id\",\"login\",\"organizations_url\",\"received_events_url\",\"repos_url\",\"site_admin\",\"starred_url\",\"subscriptions_url\",\"type\",\"url\"],\"title\":\"Simple User\",\"type\":\"object\"}},\"required\":[\"state\",\"role\",\"organization_url\",\"url\",\"organization\",\"user\"],\"title\":\"Org Membership\",\"type\":\"object\"}}},\"description\":\"Response\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/memberships/{username}"
@@ -165,9 +174,8 @@ main: kit: entity: org_membership: {
           }
           contract: {
             id: "PUT /orgs/{org}/memberships/{username}"
-            json: "{\"operationId\":\"orgs/set-membership-for-user\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The handle for the GitHub user account.\",\"in\":\"path\",\"name\":\"username\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"summary\":\"Set an organization membership role for a user\",\"value\":{\"role\":\"member\"}}},\"schema\":{\"properties\":{\"role\":{\"default\":\"member\",\"description\":\"The role to give the user in the organization. Can be one of:  \\n * `admin` - The user will become an owner of the organization.  \\n * `member` - The user will become a non-owner member of the organization.\",\"enum\":[\"admin\",\"member\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"response-if-user-already-had-membership-with-organization\":{\"summary\":\"Response if user has an active admin membership with organization\",\"value\":{\"organization\":{\"avatar_url\":\"https://github.com/images/error/octocat_happy.gif\",\"description\":\"A great organization\",\"events_url\":\"https://api.github.com/orgs/github/events\",\"hooks_url\":\"https://api.github.com/orgs/github/hooks\",\"id\":1,\"issues_url\":\"https://api.github.com/orgs/github/issues\",\"login\":\"github\",\"members_url\":\"https://api.github.com/orgs/github/members{/member}\",\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjE=\",\"public_members_url\":\"https://api.github.com/orgs/github/public_members{/member}\",\"repos_url\":\"https://api.github.com/orgs/github/repos\",\"url\":\"https://api.github.com/orgs/github\"},\"organization_url\":\"https://api.github.com/orgs/octocat\",\"role\":\"admin\",\"state\":\"active\",\"url\":\"https://api.github.com/orgs/octocat/memberships/defunkt\",\"user\":{\"avatar_url\":\"https://github.com/images/error/octocat_happy.gif\",\"events_url\":\"https://api.github.com/users/octocat/events{/privacy}\",\"followers_url\":\"https://api.github.com/users/octocat/followers\",\"following_url\":\"https://api.github.com/users/octocat/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/octocat/gists{/gist_id}\",\"gravatar_id\":\"\",\"html_url\":\"https://github.com/octocat\",\"id\":1,\"login\":\"octocat\",\"node_id\":\"MDQ6VXNlcjE=\",\"organizations_url\":\"https://api.github.com/users/octocat/orgs\",\"received_events_url\":\"https://api.github.com/users/octocat/received_events\",\"repos_url\":\"https://api.github.com/users/octocat/repos\",\"site_admin\":false,\"starred_url\":\"https://api.github.com/users/octocat/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/octocat/subscriptions\",\"type\":\"User\",\"url\":\"https://api.github.com/users/octocat\"}}}},\"schema\":{\"description\":\"Org Membership\",\"properties\":{\"direct_membership\":{\"description\":\"Whether the user has direct membership in the organization.\",\"example\":true,\"type\":\"boolean\"},\"enterprise_teams_providing_indirect_membership\":{\"description\":\"The slugs of the enterprise teams providing the user with indirect membership in the organization.\\nA limit of 100 enterprise team slugs is returned.\",\"example\":[\"ent:team-one\",\"ent:team-two\"],\"items\":{\"type\":\"string\"},\"maxItems\":100,\"type\":\"array\"},\"organization\":{\"description\":\"A GitHub organization.\",\"properties\":{\"avatar_url\":{\"example\":\"https://github.com/images/error/octocat_happy.gif\",\"type\":\"string\"},\"description\":{\"example\":\"A great organization\",\"nullable\":true,\"type\":\"string\"},\"events_url\":{\"example\":\"https://api.github.com/orgs/github/events\",\"format\":\"uri\",\"type\":\"string\"},\"hooks_url\":{\"example\":\"https://api.github.com/orgs/github/hooks\",\"type\":\"string\"},\"id\":{\"example\":1,\"type\":\"integer\"},\"issues_url\":{\"example\":\"https://api.github.com/orgs/github/issues\",\"type\":\"string\"},\"login\":{\"example\":\"github\",\"type\":\"string\"},\"members_url\":{\"example\":\"https://api.github.com/orgs/github/members{/member}\",\"type\":\"string\"},\"node_id\":{\"example\":\"MDEyOk9yZ2FuaXphdGlvbjE=\",\"type\":\"string\"},\"public_members_url\":{\"example\":\"https://api.github.com/orgs/github/public_members{/member}\",\"type\":\"string\"},\"repos_url\":{\"example\":\"https://api.github.com/orgs/github/repos\",\"format\":\"uri\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/orgs/github\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"login\",\"url\",\"id\",\"node_id\",\"repos_url\",\"events_url\",\"hooks_url\",\"issues_url\",\"members_url\",\"public_members_url\",\"avatar_url\",\"description\"],\"title\":\"Organization Simple\",\"type\":\"object\"},\"organization_url\":{\"example\":\"https://api.github.com/orgs/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"permissions\":{\"properties\":{\"can_create_repository\":{\"type\":\"boolean\"}},\"required\":[\"can_create_repository\"],\"type\":\"object\"},\"role\":{\"description\":\"The user's membership type in the organization.\",\"enum\":[\"admin\",\"member\",\"billing_manager\"],\"example\":\"admin\",\"type\":\"string\"},\"state\":{\"description\":\"The state of the member in the organization. The `pending` state indicates the user has not yet accepted an invitation.\",\"enum\":[\"active\",\"pending\"],\"example\":\"active\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/orgs/octocat/memberships/defunkt\",\"format\":\"uri\",\"type\":\"string\"},\"user\":{\"description\":\"A GitHub user.\",\"nullable\":true,\"properties\":{\"avatar_url\":{\"example\":\"https://github.com/images/error/octocat_happy.gif\",\"format\":\"uri\",\"type\":\"string\"},\"email\":{\"nullable\":true,\"type\":\"string\"},\"events_url\":{\"example\":\"https://api.github.com/users/octocat/events{/privacy}\",\"type\":\"string\"},\"followers_url\":{\"example\":\"https://api.github.com/users/octocat/followers\",\"format\":\"uri\",\"type\":\"string\"},\"following_url\":{\"example\":\"https://api.github.com/users/octocat/following{/other_user}\",\"type\":\"string\"},\"gists_url\":{\"example\":\"https://api.github.com/users/octocat/gists{/gist_id}\",\"type\":\"string\"},\"gravatar_id\":{\"example\":\"41d064eb2195891e12d0413f63227ea7\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"example\":1,\"format\":\"int64\",\"type\":\"integer\"},\"login\":{\"example\":\"octocat\",\"type\":\"string\"},\"name\":{\"nullable\":true,\"type\":\"string\"},\"node_id\":{\"example\":\"MDQ6VXNlcjE=\",\"type\":\"string\"},\"organizations_url\":{\"example\":\"https://api.github.com/users/octocat/orgs\",\"format\":\"uri\",\"type\":\"string\"},\"received_events_url\":{\"example\":\"https://api.github.com/users/octocat/received_events\",\"format\":\"uri\",\"type\":\"string\"},\"repos_url\":{\"example\":\"https://api.github.com/users/octocat/repos\",\"format\":\"uri\",\"type\":\"string\"},\"site_admin\":{\"type\":\"boolean\"},\"starred_at\":{\"example\":\"\\\"2020-07-09T00:17:55Z\\\"\",\"type\":\"string\"},\"starred_url\":{\"example\":\"https://api.github.com/users/octocat/starred{/owner}{/repo}\",\"type\":\"string\"},\"subscriptions_url\":{\"example\":\"https://api.github.com/users/octocat/subscriptions\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"example\":\"User\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/users/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"user_view_type\":{\"example\":\"public\",\"type\":\"string\"}},\"required\":[\"avatar_url\",\"events_url\",\"followers_url\",\"following_url\",\"gists_url\",\"gravatar_id\",\"html_url\",\"id\",\"node_id\",\"login\",\"organizations_url\",\"received_events_url\",\"repos_url\",\"site_admin\",\"starred_url\",\"subscriptions_url\",\"type\",\"url\"],\"title\":\"Simple User\",\"type\":\"object\"}},\"required\":[\"state\",\"role\",\"organization_url\",\"url\",\"organization\",\"user\"],\"title\":\"Org Membership\",\"type\":\"object\"}}},\"description\":\"Response\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PUT"
           orig: "/orgs/{org}/memberships/{username}"

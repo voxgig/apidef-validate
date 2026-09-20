@@ -4,31 +4,35 @@ main: kit: entity: organization_saml_auth: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "saml_auth_enabled"
-      req: true
-      type: "`$BOOLEAN`"
+  fields: {
+    saml_auth_enabled: {
+      h: "Saml Auth Enabled"
+      n: "saml_auth_enabled"
+      r: true
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "saml_auth_enforced"
-      req: true
-      type: "`$BOOLEAN`"
+    saml_auth_enforced: {
+      h: "Saml Auth Enforced"
+      n: "saml_auth_enforced"
+      r: true
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "saml_metadata_inline"
-      req: false
-      short: "If configured, SAML metadata will be used as entered instead of retrieved from a remote URL."
-      type: "`$STRING`"
+    saml_metadata_inline: {
+      h: "Saml Metadata Inline"
+      n: "saml_metadata_inline"
+      r: false
+      sh: "If configured, SAML metadata will be used as entered instead of retrieved from a remote URL."
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "saml_metadata_url"
-      req: false
-      short: "If configured, SAML metadata be retrieved from a remote URL."
-      type: "`$STRING`"
+    saml_metadata_url: {
+      fo: "uri"
+      h: "Saml Metadata Url"
+      n: "saml_metadata_url"
+      r: false
+      sh: "If configured, SAML metadata be retrieved from a remote URL."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "organization_saml_auth"
   op: {
@@ -49,9 +53,8 @@ main: kit: entity: organization_saml_auth: {
           }
           contract: {
             id: "GET /orgs/{org}/saml-authentication"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_saml-authentication_read\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"Retrieved the SAML Authentication settings.\",\"schema\":{\"properties\":{\"saml_auth_enabled\":{\"title\":\"Saml auth enabled\",\"type\":\"boolean\"},\"saml_auth_enforced\":{\"title\":\"Saml auth enforced\",\"type\":\"boolean\"},\"saml_metadata_inline\":{\"description\":\"If configured, SAML metadata will be used as entered instead of retrieved from a remote URL.\",\"maxLength\":32000,\"title\":\"Inline SAML metadata\",\"type\":\"string\"},\"saml_metadata_url\":{\"description\":\"If configured, SAML metadata be retrieved from a remote URL.\",\"format\":\"uri\",\"maxLength\":254,\"title\":\"Saml metadata url\",\"type\":\"string\"}},\"required\":[\"saml_auth_enabled\",\"saml_auth_enforced\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"402\":{\"description\":\"SAML Authentication is not available; please upgrade your account!\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Organization not found.\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/saml-authentication"
@@ -109,9 +112,8 @@ main: kit: entity: organization_saml_auth: {
           }
           contract: {
             id: "PATCH /orgs/{org}/saml-authentication"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_saml-authentication_partial_update\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"body\",\"name\":\"data\",\"required\":false,\"schema\":{\"properties\":{\"saml_auth_enabled\":{\"title\":\"Saml auth enabled\",\"type\":\"boolean\"},\"saml_auth_enforced\":{\"title\":\"Saml auth enforced\",\"type\":\"boolean\"},\"saml_metadata_inline\":{\"description\":\"If configured, SAML metadata will be used as entered instead of retrieved from a remote URL.\",\"maxLength\":32000,\"title\":\"Inline SAML metadata\",\"type\":\"string\"},\"saml_metadata_url\":{\"description\":\"If configured, SAML metadata be retrieved from a remote URL.\",\"format\":\"uri\",\"maxLength\":254,\"title\":\"Saml metadata url\",\"type\":\"string\"}},\"type\":\"object\"}}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"Updated the SAML Authentication settings.\",\"schema\":{\"properties\":{\"saml_auth_enabled\":{\"title\":\"Saml auth enabled\",\"type\":\"boolean\"},\"saml_auth_enforced\":{\"title\":\"Saml auth enforced\",\"type\":\"boolean\"},\"saml_metadata_inline\":{\"description\":\"If configured, SAML metadata will be used as entered instead of retrieved from a remote URL.\",\"maxLength\":32000,\"title\":\"Inline SAML metadata\",\"type\":\"string\"},\"saml_metadata_url\":{\"description\":\"If configured, SAML metadata be retrieved from a remote URL.\",\"format\":\"uri\",\"maxLength\":254,\"title\":\"Saml metadata url\",\"type\":\"string\"}},\"required\":[\"saml_auth_enabled\",\"saml_auth_enforced\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"402\":{\"description\":\"SAML Authentication is not available; please upgrade your account!\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Organization not found.\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/orgs/{org}/saml-authentication"

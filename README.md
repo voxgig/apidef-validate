@@ -2,7 +2,7 @@
 
 The validation corpus for [`@voxgig/apidef`](https://github.com/voxgig/apidef):
 real API definitions, the model apidef is expected to generate from each of
-them, and a harness that runs a pinned apidef release over every definition
+them, and a harness that runs a pinned apidef revision over every definition
 and diffs its output against those golden files. When apidef changes, this is
 where the change shows up as a diff a human can read.
 
@@ -24,17 +24,24 @@ under `v1/model/petstore-1.0.7-swagger-2.0/`.
 
 ## Run the TypeScript check
 
-Build the root package first, then the harness:
+Install Node.js 24 or later and Git. Build the root package first, then the harness:
 
 ```bash
-npm install && npm run build
+npm ci && npm run build
 cd v1
-npm install && npm run build
+npm ci && npm run build
 npm test
 ```
 
-The pinned apidef release is the `@voxgig/apidef` dependency in
-`v1/package.json`. The suite runs every case twice: `guide-case` stops the
+The apidef revision is pinned in `v1/apidef-source.json`. Installation checks
+out that commit under `v1/node_modules/.apidef-source`, installs its locked
+dependencies, builds the TypeScript package, and links it into the harness.
+The build and test commands also prepare this dependency, so they work when
+installation scripts are disabled. GitHub and `npm` access is needed for the
+first build; later runs reuse the prepared checkout. No sibling checkout is
+needed.
+
+The suite runs every case twice: `guide-case` stops the
 apidef pipeline after guide generation and compares the base and final
 guides, and `model-case` runs the whole pipeline and compares the entity
 models. A mismatch fails the test with a line diff.
@@ -52,14 +59,18 @@ skipped and the run says so.
 
 ## Run the Go check
 
-The Go harness runs the Go apidef module over the same definitions:
+The Go harness runs the Go apidef module over the same definitions. Install
+Go 1.25 or later, then run:
 
 ```bash
 cd v1
 make test
 ```
 
-It checks that each case builds and produces a guide and a model, and it
+The module version in `v1/go/go.mod` pins the same apidef commit as the
+TypeScript harness. Go downloads it without a local workspace. The harness
+checks that each case builds and produces a guide and a model, that fields
+are maps keyed by `n`, and that their human titles match their names. It
 logs the entity counts. It does not diff against the goldens, so the parity
 this repository checks is that both implementations accept the corpus, not
 that they emit the same bytes. `TEST_CASE` selects cases here too, and
@@ -74,8 +85,10 @@ exist yet is created from the run's output, which is how a new case pins
 itself on its first run. A golden line carrying a `##` comment marks a known
 gap: it is dropped before the comparison and counted as an open TODO.
 
-When apidef changes on purpose, move the pin in `v1/package.json`, run the
-suite, read the diff, and replace the golden with its `.gen.aontu` twin. A
+When apidef changes on purpose, move the commit pin in `v1/apidef-source.json`
+and run `go get github.com/voxgig/apidef/go@<commit>` from `v1/go` with the same
+commit. Run the suite, read the diff, and replace the golden with its
+`.gen.aontu` twin. A
 stale golden does not announce itself, so record why a refresh happened in
 the commit message.
 
@@ -85,3 +98,15 @@ This README is the doorway. The tutorial, how-to guides, reference, and
 explanation for apidef itself are in the
 [apidef documentation](https://github.com/voxgig/apidef/tree/main/docs),
 and the prose here follows [the style guide](STYLE-GUIDE.md).
+
+To reset the snapshots to the current apidef output:
+
+```bash
+cd v1
+npm run test-update
+npm test
+```
+
+The reset updates expected and generated guides and entity models. It also
+removes stale entity snapshots for the selected cases. Set `TEST_CASE` to
+limit the reset, for example `TEST_CASE=solar npm run test-update`.

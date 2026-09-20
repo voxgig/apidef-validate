@@ -4,9 +4,10 @@ main: kit: entity: label: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "color"
+  fields: {
+    color: {
+      h: "Color"
+      n: "color"
       op: {
         create: {
           req: false
@@ -17,18 +18,20 @@ main: kit: entity: label: {
           type: "`$STRING`"
         }
       }
-      req: true
-      short: "6-character hex code, without the leading #, identifying the color"
-      type: "`$STRING`"
+      r: true
+      sh: "6-character hex code, without the leading #, identifying the color"
+      t: "`$STRING`"
     }
-    {
-      name: "default"
-      req: true
-      short: "Whether this label comes by default in a new repository."
-      type: "`$BOOLEAN`"
+    default: {
+      h: "Default"
+      n: "default"
+      r: true
+      sh: "Whether this label comes by default in a new repository."
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "description"
+    description: {
+      h: "Description"
+      n: "description"
       op: {
         create: {
           req: false
@@ -39,42 +42,47 @@ main: kit: entity: label: {
           type: "`$STRING`"
         }
       }
-      req: true
-      short: "Optional description of the label, such as its purpose."
-      type: "`$STRING`"
+      r: true
+      sh: "Optional description of the label, such as its purpose."
+      t: "`$STRING`"
     }
-    {
-      format: "int64"
-      name: "id"
-      req: true
-      short: "Unique identifier for the label."
-      type: "`$INTEGER`"
+    id: {
+      fo: "int64"
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "Unique identifier for the label."
+      t: "`$INTEGER`"
     }
-    {
-      name: "name"
-      req: true
-      short: "The name of the label."
-      type: "`$STRING`"
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "The name of the label."
+      t: "`$STRING`"
     }
-    {
-      name: "new_name"
-      req: false
-      short: "The new name of the label."
-      type: "`$STRING`"
+    new_name: {
+      h: "New Name"
+      n: "new_name"
+      r: false
+      sh: "The new name of the label."
+      t: "`$STRING`"
     }
-    {
-      name: "node_id"
-      req: true
-      type: "`$STRING`"
+    node_id: {
+      h: "Node Id"
+      n: "node_id"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "url"
-      req: true
-      short: "URL for the label"
-      type: "`$STRING`"
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      sh: "URL for the label"
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -107,9 +115,8 @@ main: kit: entity: label: {
           }
           contract: {
             id: "POST /repos/{owner}/{repo}/labels"
-            json: "{\"operationId\":\"issues/create-label\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"color\":\"f29513\",\"description\":\"Something isn't working\",\"name\":\"bug\"}}},\"schema\":{\"properties\":{\"color\":{\"description\":\"The [hexadecimal color code](http://www.color-hex.com/) for the label, without the leading `#`.\",\"type\":\"string\"},\"description\":{\"description\":\"A short description of the label. Must be 100 characters or fewer.\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the label. Emoji can be added to label names, using either native emoji or colon-style markup. For example, typing `:strawberry:` will render the emoji ![:strawberry:](https://github.githubassets.com/images/icons/emoji/unicode/1f353.png \\\":strawberry:\\\"). For a full list of available emoji and codes, see \\\"[Emoji cheat sheet](https://github.com/ikatyang/emoji-cheat-sheet).\\\"\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"color\":\"f29513\",\"default\":true,\"description\":\"Something isn't working\",\"id\":208045946,\"name\":\"bug\",\"node_id\":\"MDU6TGFiZWwyMDgwNDU5NDY=\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/labels/bug\"}}},\"schema\":{\"description\":\"Color-coded labels help you categorize and filter your issues (just like labels in Gmail).\",\"properties\":{\"color\":{\"description\":\"6-character hex code, without the leading #, identifying the color\",\"example\":\"FFFFFF\",\"type\":\"string\"},\"default\":{\"description\":\"Whether this label comes by default in a new repository.\",\"example\":true,\"type\":\"boolean\"},\"description\":{\"description\":\"Optional description of the label, such as its purpose.\",\"example\":\"Something isn't working\",\"nullable\":true,\"type\":\"string\"},\"id\":{\"description\":\"Unique identifier for the label.\",\"example\":208045946,\"format\":\"int64\",\"type\":\"integer\"},\"name\":{\"description\":\"The name of the label.\",\"example\":\"bug\",\"type\":\"string\"},\"node_id\":{\"example\":\"MDU6TGFiZWwyMDgwNDU5NDY=\",\"type\":\"string\"},\"url\":{\"description\":\"URL for the label\",\"example\":\"https://api.github.com/repositories/42/labels/bug\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"node_id\",\"url\",\"name\",\"description\",\"color\",\"default\"],\"title\":\"Label\",\"type\":\"object\"}}},\"description\":\"Response\",\"headers\":{\"Location\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/labels/bug\",\"schema\":{\"type\":\"string\"}}}},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/labels"
@@ -189,9 +196,8 @@ main: kit: entity: label: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels"
-            json: "{\"operationId\":\"issues/list-labels-for-milestone\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The number that identifies the milestone.\",\"in\":\"path\",\"name\":\"milestone_number\",\"required\":true,\"schema\":{\"type\":\"integer\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"color\":\"f29513\",\"default\":true,\"description\":\"Something isn't working\",\"id\":208045946,\"name\":\"bug\",\"node_id\":\"MDU6TGFiZWwyMDgwNDU5NDY=\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/labels/bug\"},{\"color\":\"a2eeef\",\"default\":false,\"description\":\"New feature or request\",\"id\":208045947,\"name\":\"enhancement\",\"node_id\":\"MDU6TGFiZWwyMDgwNDU5NDc=\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/labels/enhancement\"}]}},\"schema\":{\"items\":{\"description\":\"Color-coded labels help you categorize and filter your issues (just like labels in Gmail).\",\"properties\":{\"color\":{\"description\":\"6-character hex code, without the leading #, identifying the color\",\"example\":\"FFFFFF\",\"type\":\"string\"},\"default\":{\"description\":\"Whether this label comes by default in a new repository.\",\"example\":true,\"type\":\"boolean\"},\"description\":{\"description\":\"Optional description of the label, such as its purpose.\",\"example\":\"Something isn't working\",\"nullable\":true,\"type\":\"string\"},\"id\":{\"description\":\"Unique identifier for the label.\",\"example\":208045946,\"format\":\"int64\",\"type\":\"integer\"},\"name\":{\"description\":\"The name of the label.\",\"example\":\"bug\",\"type\":\"string\"},\"node_id\":{\"example\":\"MDU6TGFiZWwyMDgwNDU5NDY=\",\"type\":\"string\"},\"url\":{\"description\":\"URL for the label\",\"example\":\"https://api.github.com/repositories/42/labels/bug\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"node_id\",\"url\",\"name\",\"description\",\"color\",\"default\"],\"title\":\"Label\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/milestones/{milestone_number}/labels"
@@ -268,9 +274,8 @@ main: kit: entity: label: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/labels"
-            json: "{\"operationId\":\"issues/list-labels-for-repo\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"color\":\"f29513\",\"default\":true,\"description\":\"Something isn't working\",\"id\":208045946,\"name\":\"bug\",\"node_id\":\"MDU6TGFiZWwyMDgwNDU5NDY=\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/labels/bug\"},{\"color\":\"a2eeef\",\"default\":false,\"description\":\"New feature or request\",\"id\":208045947,\"name\":\"enhancement\",\"node_id\":\"MDU6TGFiZWwyMDgwNDU5NDc=\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/labels/enhancement\"}]}},\"schema\":{\"items\":{\"description\":\"Color-coded labels help you categorize and filter your issues (just like labels in Gmail).\",\"properties\":{\"color\":{\"description\":\"6-character hex code, without the leading #, identifying the color\",\"example\":\"FFFFFF\",\"type\":\"string\"},\"default\":{\"description\":\"Whether this label comes by default in a new repository.\",\"example\":true,\"type\":\"boolean\"},\"description\":{\"description\":\"Optional description of the label, such as its purpose.\",\"example\":\"Something isn't working\",\"nullable\":true,\"type\":\"string\"},\"id\":{\"description\":\"Unique identifier for the label.\",\"example\":208045946,\"format\":\"int64\",\"type\":\"integer\"},\"name\":{\"description\":\"The name of the label.\",\"example\":\"bug\",\"type\":\"string\"},\"node_id\":{\"example\":\"MDU6TGFiZWwyMDgwNDU5NDY=\",\"type\":\"string\"},\"url\":{\"description\":\"URL for the label\",\"example\":\"https://api.github.com/repositories/42/labels/bug\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"node_id\",\"url\",\"name\",\"description\",\"color\",\"default\"],\"title\":\"Label\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/labels"
@@ -334,9 +339,8 @@ main: kit: entity: label: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/labels/{name}"
-            json: "{\"operationId\":\"issues/get-label\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"in\":\"path\",\"name\":\"name\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"color\":\"f29513\",\"default\":true,\"description\":\"Something isn't working\",\"id\":208045946,\"name\":\"bug\",\"node_id\":\"MDU6TGFiZWwyMDgwNDU5NDY=\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/labels/bug\"}}},\"schema\":{\"description\":\"Color-coded labels help you categorize and filter your issues (just like labels in Gmail).\",\"properties\":{\"color\":{\"description\":\"6-character hex code, without the leading #, identifying the color\",\"example\":\"FFFFFF\",\"type\":\"string\"},\"default\":{\"description\":\"Whether this label comes by default in a new repository.\",\"example\":true,\"type\":\"boolean\"},\"description\":{\"description\":\"Optional description of the label, such as its purpose.\",\"example\":\"Something isn't working\",\"nullable\":true,\"type\":\"string\"},\"id\":{\"description\":\"Unique identifier for the label.\",\"example\":208045946,\"format\":\"int64\",\"type\":\"integer\"},\"name\":{\"description\":\"The name of the label.\",\"example\":\"bug\",\"type\":\"string\"},\"node_id\":{\"example\":\"MDU6TGFiZWwyMDgwNDU5NDY=\",\"type\":\"string\"},\"url\":{\"description\":\"URL for the label\",\"example\":\"https://api.github.com/repositories/42/labels/bug\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"node_id\",\"url\",\"name\",\"description\",\"color\",\"default\"],\"title\":\"Label\",\"type\":\"object\"}}},\"description\":\"Response\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/labels/{name}"
@@ -407,9 +411,8 @@ main: kit: entity: label: {
           }
           contract: {
             id: "PATCH /repos/{owner}/{repo}/labels/{name}"
-            json: "{\"operationId\":\"issues/update-label\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"in\":\"path\",\"name\":\"name\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"color\":\"b01f26\",\"description\":\"Small bug fix required\",\"new_name\":\"bug :bug:\"}}},\"schema\":{\"properties\":{\"color\":{\"description\":\"The [hexadecimal color code](http://www.color-hex.com/) for the label, without the leading `#`.\",\"type\":\"string\"},\"description\":{\"description\":\"A short description of the label. Must be 100 characters or fewer.\",\"type\":\"string\"},\"new_name\":{\"description\":\"The new name of the label. Emoji can be added to label names, using either native emoji or colon-style markup. For example, typing `:strawberry:` will render the emoji ![:strawberry:](https://github.githubassets.com/images/icons/emoji/unicode/1f353.png \\\":strawberry:\\\"). For a full list of available emoji and codes, see \\\"[Emoji cheat sheet](https://github.com/ikatyang/emoji-cheat-sheet).\\\"\",\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"color\":\"b01f26\",\"default\":true,\"description\":\"Small bug fix required\",\"id\":208045946,\"name\":\"bug :bug:\",\"node_id\":\"MDU6TGFiZWwyMDgwNDU5NDY=\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/labels/bug%20:bug:\"}}},\"schema\":{\"description\":\"Color-coded labels help you categorize and filter your issues (just like labels in Gmail).\",\"properties\":{\"color\":{\"description\":\"6-character hex code, without the leading #, identifying the color\",\"example\":\"FFFFFF\",\"type\":\"string\"},\"default\":{\"description\":\"Whether this label comes by default in a new repository.\",\"example\":true,\"type\":\"boolean\"},\"description\":{\"description\":\"Optional description of the label, such as its purpose.\",\"example\":\"Something isn't working\",\"nullable\":true,\"type\":\"string\"},\"id\":{\"description\":\"Unique identifier for the label.\",\"example\":208045946,\"format\":\"int64\",\"type\":\"integer\"},\"name\":{\"description\":\"The name of the label.\",\"example\":\"bug\",\"type\":\"string\"},\"node_id\":{\"example\":\"MDU6TGFiZWwyMDgwNDU5NDY=\",\"type\":\"string\"},\"url\":{\"description\":\"URL for the label\",\"example\":\"https://api.github.com/repositories/42/labels/bug\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"node_id\",\"url\",\"name\",\"description\",\"color\",\"default\"],\"title\":\"Label\",\"type\":\"object\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/repos/{owner}/{repo}/labels/{name}"

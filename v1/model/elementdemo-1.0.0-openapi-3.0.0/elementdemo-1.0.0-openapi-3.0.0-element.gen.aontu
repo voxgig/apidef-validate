@@ -4,75 +4,86 @@ main: kit: entity: element: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "block"
-      req: true
-      short: "Orbital block, one of s, p, d, f."
-      type: "`$STRING`"
+  fields: {
+    block: {
+      h: "Block"
+      n: "block"
+      r: true
+      sh: "Orbital block, one of s, p, d, f."
+      t: "`$STRING`"
     }
-    {
-      name: "discovered"
-      req: false
-      short: "Year of discovery, absent for elements known since antiquity."
-      type: "`$INTEGER`"
+    discovered: {
+      h: "Discovered"
+      n: "discovered"
+      r: false
+      sh: "Year of discovery, absent for elements known since antiquity."
+      t: "`$INTEGER`"
     }
-    {
-      name: "group"
-      req: false
-      short: "Periodic table column, 1 to 18, absent for the f-block."
-      type: "`$INTEGER`"
+    group: {
+      h: "Group"
+      n: "group"
+      r: false
+      sh: "Periodic table column, 1 to 18, absent for the f-block."
+      t: "`$INTEGER`"
     }
-    {
-      name: "id"
-      req: true
-      short: "Element identifier, the lowercase symbol."
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "Element identifier, the lowercase symbol."
+      t: "`$STRING`"
     }
-    {
-      format: "float"
-      name: "mass"
-      req: true
-      short: "Standard atomic weight in daltons."
-      type: "`$NUMBER`"
+    mass: {
+      fo: "float"
+      h: "Mass"
+      n: "mass"
+      r: true
+      sh: "Standard atomic weight in daltons."
+      t: "`$NUMBER`"
     }
-    {
-      name: "name"
-      req: true
-      short: "Element name."
-      type: "`$STRING`"
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "Element name."
+      t: "`$STRING`"
     }
-    {
-      name: "number"
-      req: true
-      short: "Atomic number."
-      type: "`$INTEGER`"
+    number: {
+      h: "Number"
+      n: "number"
+      r: true
+      sh: "Atomic number."
+      t: "`$INTEGER`"
     }
-    {
-      name: "period"
-      req: true
-      short: "Periodic table row, 1 to 7."
-      type: "`$INTEGER`"
+    period: {
+      h: "Period"
+      n: "period"
+      r: true
+      sh: "Periodic table row, 1 to 7."
+      t: "`$INTEGER`"
     }
-    {
-      name: "phase"
-      req: false
-      short: "Phase at standard temperature and pressure."
-      type: "`$STRING`"
+    phase: {
+      h: "Phase"
+      n: "phase"
+      r: false
+      sh: "Phase at standard temperature and pressure."
+      t: "`$STRING`"
     }
-    {
-      name: "series_id"
-      req: true
-      short: "Chemical series this element belongs to."
-      type: "`$STRING`"
+    series_id: {
+      h: "Series Id"
+      n: "series_id"
+      r: true
+      sh: "Chemical series this element belongs to."
+      t: "`$STRING`"
     }
-    {
-      name: "symbol"
-      req: true
-      short: "Chemical symbol."
-      type: "`$STRING`"
+    symbol: {
+      h: "Symbol"
+      n: "symbol"
+      r: true
+      sh: "Chemical symbol."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -98,9 +109,8 @@ main: kit: entity: element: {
           }
           contract: {
             id: "POST /element/{element_id}/ionize"
-            json: "{\"parameters\":[{\"in\":\"path\",\"name\":\"element_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"charge\":{\"type\":\"integer\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"ion\":{\"type\":\"string\"},\"ok\":{\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"OK\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The request body, path or query failed validation.\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The access token is missing, malformed, unknown, spent, or was issued for another account. The fix is always the same: exchange the refresh token for a new access token at POST /auth/token.\\n\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"No record with that id — or no such route, which is what a write to a read-only entity gets.\\n\"},\"500\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The server failed to handle an otherwise valid request.\"}},\"security\":[{\"bearerAuth\":[]}],\"securitySchemes\":{\"bearerAuth\":{\"description\":\"A short-lived access token, sent as `Authorization: Bearer <token>`. Obtain one from POST /auth/token, which every client must be able to call again: the token expires after a fixed number of REQUESTS rather than after an interval, so `expires_in_requests` on the token response — not a clock — says when the next exchange is due.\\n\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/element/{element_id}/ionize"
@@ -134,9 +144,8 @@ main: kit: entity: element: {
         {
           contract: {
             id: "POST /element"
-            json: "{\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"block\":{\"description\":\"Orbital block, one of s, p, d, f.\",\"type\":\"string\"},\"discovered\":{\"description\":\"Year of discovery, absent for elements known since antiquity.\",\"type\":\"integer\"},\"group\":{\"description\":\"Periodic table column, 1 to 18, absent for the f-block.\",\"type\":\"integer\"},\"id\":{\"description\":\"Element identifier, the lowercase symbol.\",\"type\":\"string\"},\"mass\":{\"description\":\"Standard atomic weight in daltons.\",\"format\":\"float\",\"type\":\"number\"},\"name\":{\"description\":\"Element name.\",\"type\":\"string\"},\"number\":{\"description\":\"Atomic number.\",\"type\":\"integer\"},\"period\":{\"description\":\"Periodic table row, 1 to 7.\",\"type\":\"integer\"},\"phase\":{\"description\":\"Phase at standard temperature and pressure.\",\"type\":\"string\"},\"series_id\":{\"description\":\"Chemical series this element belongs to.\",\"type\":\"string\"},\"symbol\":{\"description\":\"Chemical symbol.\",\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"symbol\",\"number\",\"period\",\"block\",\"series_id\",\"mass\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"block\":{\"description\":\"Orbital block, one of s, p, d, f.\",\"type\":\"string\"},\"discovered\":{\"description\":\"Year of discovery, absent for elements known since antiquity.\",\"type\":\"integer\"},\"group\":{\"description\":\"Periodic table column, 1 to 18, absent for the f-block.\",\"type\":\"integer\"},\"id\":{\"description\":\"Element identifier, the lowercase symbol.\",\"type\":\"string\"},\"mass\":{\"description\":\"Standard atomic weight in daltons.\",\"format\":\"float\",\"type\":\"number\"},\"name\":{\"description\":\"Element name.\",\"type\":\"string\"},\"number\":{\"description\":\"Atomic number.\",\"type\":\"integer\"},\"period\":{\"description\":\"Periodic table row, 1 to 7.\",\"type\":\"integer\"},\"phase\":{\"description\":\"Phase at standard temperature and pressure.\",\"type\":\"string\"},\"series_id\":{\"description\":\"Chemical series this element belongs to.\",\"type\":\"string\"},\"symbol\":{\"description\":\"Chemical symbol.\",\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"symbol\",\"number\",\"period\",\"block\",\"series_id\",\"mass\"],\"type\":\"object\"}}},\"description\":\"Created\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The request body, path or query failed validation.\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The access token is missing, malformed, unknown, spent, or was issued for another account. The fix is always the same: exchange the refresh token for a new access token at POST /auth/token.\\n\"},\"409\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"A record with that id already exists.\"},\"500\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The server failed to handle an otherwise valid request.\"}},\"security\":[{\"bearerAuth\":[]}],\"securitySchemes\":{\"bearerAuth\":{\"description\":\"A short-lived access token, sent as `Authorization: Bearer <token>`. Obtain one from POST /auth/token, which every client must be able to call again: the token expires after a fixed number of REQUESTS rather than after an interval, so `expires_in_requests` on the token response — not a clock — says when the next exchange is due.\\n\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/element"
@@ -158,9 +167,8 @@ main: kit: entity: element: {
         {
           contract: {
             id: "GET /element"
-            json: "{\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"items\":{\"properties\":{\"block\":{\"description\":\"Orbital block, one of s, p, d, f.\",\"type\":\"string\"},\"discovered\":{\"description\":\"Year of discovery, absent for elements known since antiquity.\",\"type\":\"integer\"},\"group\":{\"description\":\"Periodic table column, 1 to 18, absent for the f-block.\",\"type\":\"integer\"},\"id\":{\"description\":\"Element identifier, the lowercase symbol.\",\"type\":\"string\"},\"mass\":{\"description\":\"Standard atomic weight in daltons.\",\"format\":\"float\",\"type\":\"number\"},\"name\":{\"description\":\"Element name.\",\"type\":\"string\"},\"number\":{\"description\":\"Atomic number.\",\"type\":\"integer\"},\"period\":{\"description\":\"Periodic table row, 1 to 7.\",\"type\":\"integer\"},\"phase\":{\"description\":\"Phase at standard temperature and pressure.\",\"type\":\"string\"},\"series_id\":{\"description\":\"Chemical series this element belongs to.\",\"type\":\"string\"},\"symbol\":{\"description\":\"Chemical symbol.\",\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"symbol\",\"number\",\"period\",\"block\",\"series_id\",\"mass\"],\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"OK\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The access token is missing, malformed, unknown, spent, or was issued for another account. The fix is always the same: exchange the refresh token for a new access token at POST /auth/token.\\n\"},\"500\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The server failed to handle an otherwise valid request.\"}},\"security\":[{\"bearerAuth\":[]}],\"securitySchemes\":{\"bearerAuth\":{\"description\":\"A short-lived access token, sent as `Authorization: Bearer <token>`. Obtain one from POST /auth/token, which every client must be able to call again: the token expires after a fixed number of REQUESTS rather than after an interval, so `expires_in_requests` on the token response — not a clock — says when the next exchange is due.\\n\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/element"
@@ -193,9 +201,8 @@ main: kit: entity: element: {
           }
           contract: {
             id: "GET /element/{element_id}"
-            json: "{\"parameters\":[{\"in\":\"path\",\"name\":\"element_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"block\":{\"description\":\"Orbital block, one of s, p, d, f.\",\"type\":\"string\"},\"discovered\":{\"description\":\"Year of discovery, absent for elements known since antiquity.\",\"type\":\"integer\"},\"group\":{\"description\":\"Periodic table column, 1 to 18, absent for the f-block.\",\"type\":\"integer\"},\"id\":{\"description\":\"Element identifier, the lowercase symbol.\",\"type\":\"string\"},\"mass\":{\"description\":\"Standard atomic weight in daltons.\",\"format\":\"float\",\"type\":\"number\"},\"name\":{\"description\":\"Element name.\",\"type\":\"string\"},\"number\":{\"description\":\"Atomic number.\",\"type\":\"integer\"},\"period\":{\"description\":\"Periodic table row, 1 to 7.\",\"type\":\"integer\"},\"phase\":{\"description\":\"Phase at standard temperature and pressure.\",\"type\":\"string\"},\"series_id\":{\"description\":\"Chemical series this element belongs to.\",\"type\":\"string\"},\"symbol\":{\"description\":\"Chemical symbol.\",\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"symbol\",\"number\",\"period\",\"block\",\"series_id\",\"mass\"],\"type\":\"object\"}}},\"description\":\"OK\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The access token is missing, malformed, unknown, spent, or was issued for another account. The fix is always the same: exchange the refresh token for a new access token at POST /auth/token.\\n\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"No record with that id — or no such route, which is what a write to a read-only entity gets.\\n\"},\"500\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The server failed to handle an otherwise valid request.\"}},\"security\":[{\"bearerAuth\":[]}],\"securitySchemes\":{\"bearerAuth\":{\"description\":\"A short-lived access token, sent as `Authorization: Bearer <token>`. Obtain one from POST /auth/token, which every client must be able to call again: the token expires after a fixed number of REQUESTS rather than after an interval, so `expires_in_requests` on the token response — not a clock — says when the next exchange is due.\\n\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/element/{element_id}"
@@ -241,9 +248,8 @@ main: kit: entity: element: {
           }
           contract: {
             id: "DELETE /element/{element_id}"
-            json: "{\"parameters\":[{\"in\":\"path\",\"name\":\"element_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"204\":{\"description\":\"No Content\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The access token is missing, malformed, unknown, spent, or was issued for another account. The fix is always the same: exchange the refresh token for a new access token at POST /auth/token.\\n\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"No record with that id — or no such route, which is what a write to a read-only entity gets.\\n\"},\"500\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The server failed to handle an otherwise valid request.\"}},\"security\":[{\"bearerAuth\":[]}],\"securitySchemes\":{\"bearerAuth\":{\"description\":\"A short-lived access token, sent as `Authorization: Bearer <token>`. Obtain one from POST /auth/token, which every client must be able to call again: the token expires after a fixed number of REQUESTS rather than after an interval, so `expires_in_requests` on the token response — not a clock — says when the next exchange is due.\\n\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "DELETE"
           orig: "/element/{element_id}"
@@ -289,9 +295,8 @@ main: kit: entity: element: {
           }
           contract: {
             id: "PUT /element/{element_id}"
-            json: "{\"parameters\":[{\"in\":\"path\",\"name\":\"element_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"block\":{\"description\":\"Orbital block, one of s, p, d, f.\",\"type\":\"string\"},\"discovered\":{\"description\":\"Year of discovery, absent for elements known since antiquity.\",\"type\":\"integer\"},\"group\":{\"description\":\"Periodic table column, 1 to 18, absent for the f-block.\",\"type\":\"integer\"},\"id\":{\"description\":\"Element identifier, the lowercase symbol.\",\"type\":\"string\"},\"mass\":{\"description\":\"Standard atomic weight in daltons.\",\"format\":\"float\",\"type\":\"number\"},\"name\":{\"description\":\"Element name.\",\"type\":\"string\"},\"number\":{\"description\":\"Atomic number.\",\"type\":\"integer\"},\"period\":{\"description\":\"Periodic table row, 1 to 7.\",\"type\":\"integer\"},\"phase\":{\"description\":\"Phase at standard temperature and pressure.\",\"type\":\"string\"},\"series_id\":{\"description\":\"Chemical series this element belongs to.\",\"type\":\"string\"},\"symbol\":{\"description\":\"Chemical symbol.\",\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"symbol\",\"number\",\"period\",\"block\",\"series_id\",\"mass\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"block\":{\"description\":\"Orbital block, one of s, p, d, f.\",\"type\":\"string\"},\"discovered\":{\"description\":\"Year of discovery, absent for elements known since antiquity.\",\"type\":\"integer\"},\"group\":{\"description\":\"Periodic table column, 1 to 18, absent for the f-block.\",\"type\":\"integer\"},\"id\":{\"description\":\"Element identifier, the lowercase symbol.\",\"type\":\"string\"},\"mass\":{\"description\":\"Standard atomic weight in daltons.\",\"format\":\"float\",\"type\":\"number\"},\"name\":{\"description\":\"Element name.\",\"type\":\"string\"},\"number\":{\"description\":\"Atomic number.\",\"type\":\"integer\"},\"period\":{\"description\":\"Periodic table row, 1 to 7.\",\"type\":\"integer\"},\"phase\":{\"description\":\"Phase at standard temperature and pressure.\",\"type\":\"string\"},\"series_id\":{\"description\":\"Chemical series this element belongs to.\",\"type\":\"string\"},\"symbol\":{\"description\":\"Chemical symbol.\",\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"symbol\",\"number\",\"period\",\"block\",\"series_id\",\"mass\"],\"type\":\"object\"}}},\"description\":\"OK\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The request body, path or query failed validation.\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The access token is missing, malformed, unknown, spent, or was issued for another account. The fix is always the same: exchange the refresh token for a new access token at POST /auth/token.\\n\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"No record with that id — or no such route, which is what a write to a read-only entity gets.\\n\"},\"500\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The server failed to handle an otherwise valid request.\"}},\"security\":[{\"bearerAuth\":[]}],\"securitySchemes\":{\"bearerAuth\":{\"description\":\"A short-lived access token, sent as `Authorization: Bearer <token>`. Obtain one from POST /auth/token, which every client must be able to call again: the token expires after a fixed number of REQUESTS rather than after an interval, so `expires_in_requests` on the token response — not a clock — says when the next exchange is due.\\n\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PUT"
           orig: "/element/{element_id}"

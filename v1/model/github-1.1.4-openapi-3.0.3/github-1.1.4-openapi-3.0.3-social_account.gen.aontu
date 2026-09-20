@@ -4,24 +4,27 @@ main: kit: entity: social_account: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "account_urls"
-      req: true
-      short: "Full URLs for the social media profiles to add."
-      type: "`$ARRAY`"
+  fields: {
+    account_urls: {
+      h: "Account Urls"
+      n: "account_urls"
+      r: true
+      sh: "Full URLs for the social media profiles to add."
+      t: "`$ARRAY`"
     }
-    {
-      name: "provider"
-      req: true
-      type: "`$STRING`"
+    provider: {
+      h: "Provider"
+      n: "provider"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "url"
-      req: true
-      type: "`$STRING`"
+    url: {
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "social_account"
   op: {
@@ -31,9 +34,8 @@ main: kit: entity: social_account: {
         {
           contract: {
             id: "POST /user/social_accounts"
-            json: "{\"operationId\":\"users/add-social-account-for-authenticated-user\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"summary\":\"Adding multiple social accounts\",\"value\":{\"account_urls\":[\"https://facebook.com/GitHub\",\"https://www.youtube.com/@GitHub\"]}}},\"schema\":{\"example\":{\"account_urls\":[\"https://www.linkedin.com/company/github/\",\"https://twitter.com/github\"]},\"properties\":{\"account_urls\":{\"description\":\"Full URLs for the social media profiles to add.\",\"example\":[],\"items\":{\"example\":\"https://twitter.com/github\",\"type\":\"string\"},\"type\":\"array\"}},\"required\":[\"account_urls\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"provider\":\"twitter\",\"url\":\"https://twitter.com/github\"}]}},\"schema\":{\"items\":{\"description\":\"Social media account\",\"properties\":{\"provider\":{\"example\":\"linkedin\",\"type\":\"string\"},\"url\":{\"example\":\"https://www.linkedin.com/company/github/\",\"type\":\"string\"}},\"required\":[\"provider\",\"url\"],\"title\":\"Social account\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\"},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/user/social_accounts"
@@ -87,9 +89,8 @@ main: kit: entity: social_account: {
           }
           contract: {
             id: "GET /users/{username}/social_accounts"
-            json: "{\"operationId\":\"users/list-social-accounts-for-user\",\"parameters\":[{\"description\":\"The handle for the GitHub user account.\",\"in\":\"path\",\"name\":\"username\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"provider\":\"twitter\",\"url\":\"https://twitter.com/github\"}]}},\"schema\":{\"items\":{\"description\":\"Social media account\",\"properties\":{\"provider\":{\"example\":\"linkedin\",\"type\":\"string\"},\"url\":{\"example\":\"https://www.linkedin.com/company/github/\",\"type\":\"string\"}},\"required\":[\"provider\",\"url\"],\"title\":\"Social account\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/users/{username}/social_accounts"
@@ -139,9 +140,8 @@ main: kit: entity: social_account: {
           }
           contract: {
             id: "GET /user/social_accounts"
-            json: "{\"operationId\":\"users/list-social-accounts-for-authenticated-user\",\"parameters\":[{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"provider\":\"twitter\",\"url\":\"https://twitter.com/github\"}]}},\"schema\":{\"items\":{\"description\":\"Social media account\",\"properties\":{\"provider\":{\"example\":\"linkedin\",\"type\":\"string\"},\"url\":{\"example\":\"https://www.linkedin.com/company/github/\",\"type\":\"string\"}},\"required\":[\"provider\",\"url\"],\"title\":\"Social account\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/user/social_accounts"

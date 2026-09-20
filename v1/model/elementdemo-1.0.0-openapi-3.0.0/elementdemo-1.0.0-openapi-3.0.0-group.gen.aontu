@@ -4,32 +4,36 @@ main: kit: entity: group: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "cas"
-      req: true
-      short: "CAS group designation."
-      type: "`$STRING`"
+  fields: {
+    cas: {
+      h: "Cas"
+      n: "cas"
+      r: true
+      sh: "CAS group designation."
+      t: "`$STRING`"
     }
-    {
-      name: "id"
-      req: true
-      short: "Group identifier, g1 to g18."
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "Group identifier, g1 to g18."
+      t: "`$STRING`"
     }
-    {
-      name: "name"
-      req: false
-      short: "Trivial name, where one exists."
-      type: "`$STRING`"
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      sh: "Trivial name, where one exists."
+      t: "`$STRING`"
     }
-    {
-      name: "number"
-      req: true
-      short: "Group number, 1 to 18."
-      type: "`$INTEGER`"
+    number: {
+      h: "Number"
+      n: "number"
+      r: true
+      sh: "Group number, 1 to 18."
+      t: "`$INTEGER`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -44,9 +48,8 @@ main: kit: entity: group: {
         {
           contract: {
             id: "GET /group"
-            json: "{\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"items\":{\"properties\":{\"cas\":{\"description\":\"CAS group designation.\",\"type\":\"string\"},\"id\":{\"description\":\"Group identifier, g1 to g18.\",\"type\":\"string\"},\"name\":{\"description\":\"Trivial name, where one exists.\",\"type\":\"string\"},\"number\":{\"description\":\"Group number, 1 to 18.\",\"type\":\"integer\"}},\"required\":[\"id\",\"number\",\"cas\"],\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"OK\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The access token is missing, malformed, unknown, spent, or was issued for another account. The fix is always the same: exchange the refresh token for a new access token at POST /auth/token.\\n\"},\"500\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The server failed to handle an otherwise valid request.\"}},\"security\":[{\"bearerAuth\":[]}],\"securitySchemes\":{\"bearerAuth\":{\"description\":\"A short-lived access token, sent as `Authorization: Bearer <token>`. Obtain one from POST /auth/token, which every client must be able to call again: the token expires after a fixed number of REQUESTS rather than after an interval, so `expires_in_requests` on the token response — not a clock — says when the next exchange is due.\\n\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/group"
@@ -79,9 +82,8 @@ main: kit: entity: group: {
           }
           contract: {
             id: "GET /group/{group_id}"
-            json: "{\"parameters\":[{\"in\":\"path\",\"name\":\"group_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"cas\":{\"description\":\"CAS group designation.\",\"type\":\"string\"},\"id\":{\"description\":\"Group identifier, g1 to g18.\",\"type\":\"string\"},\"name\":{\"description\":\"Trivial name, where one exists.\",\"type\":\"string\"},\"number\":{\"description\":\"Group number, 1 to 18.\",\"type\":\"integer\"}},\"required\":[\"id\",\"number\",\"cas\"],\"type\":\"object\"}}},\"description\":\"OK\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The access token is missing, malformed, unknown, spent, or was issued for another account. The fix is always the same: exchange the refresh token for a new access token at POST /auth/token.\\n\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"No record with that id — or no such route, which is what a write to a read-only entity gets.\\n\"},\"500\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"The single error envelope. Switch on the HTTP STATUS CODE; `error` is a stable label for humans reading logs, and `message` is free text that may change between releases.\\n\",\"properties\":{\"error\":{\"description\":\"PascalCase name of the error class.\",\"enum\":[\"ValidationError\",\"AuthError\",\"NotFoundError\",\"ConflictError\",\"InternalServerError\"],\"type\":\"string\"},\"message\":{\"description\":\"Human-readable detail. Not a stable contract.\",\"type\":\"string\"}},\"required\":[\"error\",\"message\"],\"type\":\"object\"}}},\"description\":\"The server failed to handle an otherwise valid request.\"}},\"security\":[{\"bearerAuth\":[]}],\"securitySchemes\":{\"bearerAuth\":{\"description\":\"A short-lived access token, sent as `Authorization: Bearer <token>`. Obtain one from POST /auth/token, which every client must be able to call again: the token expires after a fixed number of REQUESTS rather than after an interval, so `expires_in_requests` on the token response — not a clock — says when the next exchange is due.\\n\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/group/{group_id}"

@@ -4,25 +4,28 @@ main: kit: entity: component_group_uptime: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "component_id"
-      req: false
-      short: "Component identifier"
-      type: "`$STRING`"
+  fields: {
+    component_id: {
+      h: "Component Id"
+      n: "component_id"
+      r: false
+      sh: "Component identifier"
+      t: "`$STRING`"
     }
-    {
-      name: "id"
-      req: false
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "incidents"
-      req: false
-      short: "Related incidents"
-      type: "`$OBJECT`"
+    incidents: {
+      h: "Incidents"
+      n: "incidents"
+      r: false
+      sh: "Related incidents"
+      t: "`$OBJECT`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -71,9 +74,8 @@ main: kit: entity: component_group_uptime: {
           }
           contract: {
             id: "GET /pages/{page_id}/component-groups/{id}/uptime"
-            json: "{\"operationId\":\"getPagesPageIdComponentGroupsIdUptime\",\"parameters\":[{\"description\":\"Page identifier\",\"in\":\"path\",\"name\":\"page_id\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"Component group identifier\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The start date for uptime calculation (defaults to the date of the component in the group with the earliest start_date, or 90 days ago, whichever is more recent).\\nThe maximum supported date range is six calendar months. If the year is given, the date defaults to the first day of the year.\\nIf the year and month are given, the start date defaults to the first day of that month.\\nThe earliest supported date is January 1, 1970.\\n\",\"in\":\"query\",\"name\":\"start\",\"required\":false,\"schema\":{\"type\":\"PartialStartDate\"}},{\"description\":\"The end date for uptime calculation (defaults to today in the page's time zone). The maximum supported date range is six calendar months.\\nIf the year is given, the date defaults to the last day of the year. If the year and month are given, the date defaults to the last day of that month.\\nThe earliest supported date is January 1, 1970.\\n\",\"in\":\"query\",\"name\":\"end\",\"required\":false,\"schema\":{\"type\":\"PartialEndDate\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get uptime data for a component group that has uptime showcase enabled for at least one component.\",\"properties\":{\"id\":{\"description\":\"Component group identifier\",\"type\":\"string\"},\"major_outage\":{\"description\":\"Seconds of major outage\",\"example\":86400,\"format\":\"int32\",\"type\":\"integer\"},\"name\":{\"description\":\"Component group display name\",\"type\":\"string\"},\"partial_outage\":{\"description\":\"Seconds of partial outage\",\"example\":0,\"format\":\"int32\",\"type\":\"integer\"},\"range_end\":{\"description\":\"End date used for uptime calculation (see the warnings field in the response if this value does not match the end parameter you provided).\",\"example\":\"2020-02-15\",\"format\":\"date-time\",\"type\":\"string\"},\"range_start\":{\"description\":\"Start date used for uptime calculation (see the warnings field in the response if this value does not match the start parameter you provided).\",\"example\":\"2020-01-15\",\"format\":\"date-time\",\"type\":\"string\"},\"related_events\":{\"description\":\"Related incidents by component\",\"properties\":{\"component_id\":{\"description\":\"Component identifier\",\"type\":\"string\"},\"incidents\":{\"description\":\"Related incidents\",\"properties\":{\"id\":{\"description\":\"Incident identifier\",\"type\":\"string\"}},\"type\":\"object\"}},\"type\":\"object\"},\"uptime_percentage\":{\"description\":\"Uptime percentage for a component\",\"example\":96.67,\"format\":\"float\",\"type\":\"number\"},\"warnings\":{\"description\":\"Warning messages related to the uptime query that may occur\",\"example\":[\"End date was adjusted to today. See range_end field in response for end date used.\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Get uptime data for a component group that has uptime showcase enabled for at least one component.\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Could not authenticate\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"The requested resource could not be found.\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unprocessable entity\"}},\"security\":[{\"api_key\":[]}],\"securitySchemes\":{\"api_key\":{\"description\":\"#### Obtaining your API Key\\n\\nAuthentication is done via an API token provided in the Statuspage management interface.\\n\\n  1. Log in to your account at https://manage.statuspage.io/login.\\n  2. Click on your avatar in the bottom left of your screen to access the user menu.\\n  3. Click **API info**.\\n\\n### Passing your API key in an authorization header\\n\\nThe following example authenticates you with the Statuspage API.  Along with the Page ID\\nlisted on the API page, we can fetch your page profile.\\n\\n    curl -H \\\"Authorization: OAuth 89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\" \\\\\\n      https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json\\n\\n### Passing your API key in a query param\\n\\n    curl \\\"https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json?api_key=89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\"\\n\",\"in\":\"header\",\"name\":\"Authorization\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/pages/{page_id}/component-groups/{id}/uptime"

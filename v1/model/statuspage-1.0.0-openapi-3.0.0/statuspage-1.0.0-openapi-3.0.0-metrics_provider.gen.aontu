@@ -4,58 +4,67 @@ main: kit: entity: metrics_provider: {
 
   alias: field: {}
 
-  fields: [
-    {
-      format: "date-time"
-      name: "created_at"
-      req: false
-      type: "`$STRING`"
+  fields: {
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "disabled"
-      req: false
-      type: "`$BOOLEAN`"
+    disabled: {
+      h: "Disabled"
+      n: "disabled"
+      r: false
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "id"
-      req: false
-      short: "Identifier for Metrics Provider"
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      sh: "Identifier for Metrics Provider"
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "last_revalidated_at"
-      req: false
-      type: "`$STRING`"
+    last_revalidated_at: {
+      fo: "date-time"
+      h: "Last Revalidated At"
+      n: "last_revalidated_at"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "metric_base_uri"
-      req: false
-      type: "`$STRING`"
+    metric_base_uri: {
+      h: "Metric Base Uri"
+      n: "metric_base_uri"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "metrics_provider"
-      req: false
-      type: "`$OBJECT`"
+    metrics_provider: {
+      h: "Metrics Provider"
+      n: "metrics_provider"
+      r: false
+      t: "`$OBJECT`"
     }
-    {
-      format: "int32"
-      name: "page_id"
-      req: false
-      type: "`$INTEGER`"
+    page_id: {
+      fo: "int32"
+      h: "Page Id"
+      n: "page_id"
+      r: false
+      t: "`$INTEGER`"
     }
-    {
-      name: "type"
-      req: false
-      type: "`$STRING`"
+    type: {
+      h: "Type"
+      n: "type"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "updated_at"
-      req: false
-      type: "`$STRING`"
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -81,9 +90,8 @@ main: kit: entity: metrics_provider: {
           }
           contract: {
             id: "POST /pages/{page_id}/metrics_providers"
-            json: "{\"operationId\":\"postPagesPageIdMetricsProviders\",\"parameters\":[{\"description\":\"Page identifier\",\"in\":\"path\",\"name\":\"page_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Create a metric provider\",\"properties\":{\"metrics_provider\":{\"properties\":{\"api_key\":{\"description\":\"Required by the Datadog and NewRelic type metrics providers.\",\"type\":\"string\"},\"api_token\":{\"description\":\"Required by the Librato, Datadog and Pingdom type metrics providers.\",\"type\":\"string\"},\"application_key\":{\"description\":\"Required by the Pingdom-type metrics provider.\",\"type\":\"string\"},\"email\":{\"description\":\"Required by the Librato metrics provider.\",\"type\":\"string\"},\"metric_base_uri\":{\"description\":\"Required by the Datadog and NewRelic type metrics providers.\",\"type\":\"string\"},\"password\":{\"type\":\"string\"},\"type\":{\"description\":\"One of \\\"Pingdom\\\", \\\"NewRelic\\\", \\\"Librato\\\", \\\"Datadog\\\", or \\\"Self\\\"\",\"type\":\"string\"}},\"type\":\"object\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Delete a metric provider\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"disabled\":{\"type\":\"boolean\"},\"id\":{\"description\":\"Identifier for Metrics Provider\",\"type\":\"string\"},\"last_revalidated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"metric_base_uri\":{\"type\":\"string\"},\"page_id\":{\"format\":\"int32\",\"type\":\"integer\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Create a metric provider\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Bad request\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Could not authenticate\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"You are not authorized to access this resource.\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"The requested resource could not be found.\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unprocessable entity\"}},\"security\":[{\"api_key\":[]}],\"securitySchemes\":{\"api_key\":{\"description\":\"#### Obtaining your API Key\\n\\nAuthentication is done via an API token provided in the Statuspage management interface.\\n\\n  1. Log in to your account at https://manage.statuspage.io/login.\\n  2. Click on your avatar in the bottom left of your screen to access the user menu.\\n  3. Click **API info**.\\n\\n### Passing your API key in an authorization header\\n\\nThe following example authenticates you with the Statuspage API.  Along with the Page ID\\nlisted on the API page, we can fetch your page profile.\\n\\n    curl -H \\\"Authorization: OAuth 89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\" \\\\\\n      https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json\\n\\n### Passing your API key in a query param\\n\\n    curl \\\"https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json?api_key=89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\"\\n\",\"in\":\"header\",\"name\":\"Authorization\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/pages/{page_id}/metrics_providers"
@@ -129,9 +137,8 @@ main: kit: entity: metrics_provider: {
           }
           contract: {
             id: "GET /pages/{page_id}/metrics_providers"
-            json: "{\"operationId\":\"getPagesPageIdMetricsProviders\",\"parameters\":[{\"description\":\"Page identifier\",\"in\":\"path\",\"name\":\"page_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"items\":{\"description\":\"Delete a metric provider\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"disabled\":{\"type\":\"boolean\"},\"id\":{\"description\":\"Identifier for Metrics Provider\",\"type\":\"string\"},\"last_revalidated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"metric_base_uri\":{\"type\":\"string\"},\"page_id\":{\"format\":\"int32\",\"type\":\"integer\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Get a list of metric providers\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Could not authenticate\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"You are not authorized to access this resource.\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"The requested resource could not be found.\"}},\"security\":[{\"api_key\":[]}],\"securitySchemes\":{\"api_key\":{\"description\":\"#### Obtaining your API Key\\n\\nAuthentication is done via an API token provided in the Statuspage management interface.\\n\\n  1. Log in to your account at https://manage.statuspage.io/login.\\n  2. Click on your avatar in the bottom left of your screen to access the user menu.\\n  3. Click **API info**.\\n\\n### Passing your API key in an authorization header\\n\\nThe following example authenticates you with the Statuspage API.  Along with the Page ID\\nlisted on the API page, we can fetch your page profile.\\n\\n    curl -H \\\"Authorization: OAuth 89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\" \\\\\\n      https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json\\n\\n### Passing your API key in a query param\\n\\n    curl \\\"https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json?api_key=89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\"\\n\",\"in\":\"header\",\"name\":\"Authorization\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/pages/{page_id}/metrics_providers"
@@ -182,9 +189,8 @@ main: kit: entity: metrics_provider: {
           }
           contract: {
             id: "GET /pages/{page_id}/metrics_providers/{metrics_provider_id}"
-            json: "{\"operationId\":\"getPagesPageIdMetricsProvidersMetricsProviderId\",\"parameters\":[{\"description\":\"Page identifier\",\"in\":\"path\",\"name\":\"page_id\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"Metric Provider Identifier\",\"in\":\"path\",\"name\":\"metrics_provider_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Delete a metric provider\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"disabled\":{\"type\":\"boolean\"},\"id\":{\"description\":\"Identifier for Metrics Provider\",\"type\":\"string\"},\"last_revalidated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"metric_base_uri\":{\"type\":\"string\"},\"page_id\":{\"format\":\"int32\",\"type\":\"integer\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Get a metric provider\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Could not authenticate\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"You are not authorized to access this resource.\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"The requested resource could not be found.\"}},\"security\":[{\"api_key\":[]}],\"securitySchemes\":{\"api_key\":{\"description\":\"#### Obtaining your API Key\\n\\nAuthentication is done via an API token provided in the Statuspage management interface.\\n\\n  1. Log in to your account at https://manage.statuspage.io/login.\\n  2. Click on your avatar in the bottom left of your screen to access the user menu.\\n  3. Click **API info**.\\n\\n### Passing your API key in an authorization header\\n\\nThe following example authenticates you with the Statuspage API.  Along with the Page ID\\nlisted on the API page, we can fetch your page profile.\\n\\n    curl -H \\\"Authorization: OAuth 89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\" \\\\\\n      https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json\\n\\n### Passing your API key in a query param\\n\\n    curl \\\"https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json?api_key=89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\"\\n\",\"in\":\"header\",\"name\":\"Authorization\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/pages/{page_id}/metrics_providers/{metrics_provider_id}"
@@ -244,9 +250,8 @@ main: kit: entity: metrics_provider: {
           }
           contract: {
             id: "PATCH /pages/{page_id}/metrics_providers/{metrics_provider_id}"
-            json: "{\"operationId\":\"patchPagesPageIdMetricsProvidersMetricsProviderId\",\"parameters\":[{\"description\":\"Page identifier\",\"in\":\"path\",\"name\":\"page_id\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"Metric Provider Identifier\",\"in\":\"path\",\"name\":\"metrics_provider_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Update a metric provider\",\"properties\":{\"metrics_provider\":{\"properties\":{\"metric_base_uri\":{\"type\":\"string\"},\"type\":{\"type\":\"string\"}},\"type\":\"object\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Delete a metric provider\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"disabled\":{\"type\":\"boolean\"},\"id\":{\"description\":\"Identifier for Metrics Provider\",\"type\":\"string\"},\"last_revalidated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"metric_base_uri\":{\"type\":\"string\"},\"page_id\":{\"format\":\"int32\",\"type\":\"integer\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Update a metric provider\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Could not authenticate\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"You are not authorized to access this resource.\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"The requested resource could not be found.\"}},\"security\":[{\"api_key\":[]}],\"securitySchemes\":{\"api_key\":{\"description\":\"#### Obtaining your API Key\\n\\nAuthentication is done via an API token provided in the Statuspage management interface.\\n\\n  1. Log in to your account at https://manage.statuspage.io/login.\\n  2. Click on your avatar in the bottom left of your screen to access the user menu.\\n  3. Click **API info**.\\n\\n### Passing your API key in an authorization header\\n\\nThe following example authenticates you with the Statuspage API.  Along with the Page ID\\nlisted on the API page, we can fetch your page profile.\\n\\n    curl -H \\\"Authorization: OAuth 89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\" \\\\\\n      https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json\\n\\n### Passing your API key in a query param\\n\\n    curl \\\"https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json?api_key=89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\"\\n\",\"in\":\"header\",\"name\":\"Authorization\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/pages/{page_id}/metrics_providers/{metrics_provider_id}"
@@ -308,9 +313,8 @@ main: kit: entity: metrics_provider: {
           }
           contract: {
             id: "DELETE /pages/{page_id}/metrics_providers/{metrics_provider_id}"
-            json: "{\"operationId\":\"deletePagesPageIdMetricsProvidersMetricsProviderId\",\"parameters\":[{\"description\":\"Page identifier\",\"in\":\"path\",\"name\":\"page_id\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"Metric Provider Identifier\",\"in\":\"path\",\"name\":\"metrics_provider_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Delete a metric provider\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"disabled\":{\"type\":\"boolean\"},\"id\":{\"description\":\"Identifier for Metrics Provider\",\"type\":\"string\"},\"last_revalidated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"metric_base_uri\":{\"type\":\"string\"},\"page_id\":{\"format\":\"int32\",\"type\":\"integer\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Delete a metric provider\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Could not authenticate\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"You are not authorized to access this resource.\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"The requested resource could not be found.\"}},\"security\":[{\"api_key\":[]}],\"securitySchemes\":{\"api_key\":{\"description\":\"#### Obtaining your API Key\\n\\nAuthentication is done via an API token provided in the Statuspage management interface.\\n\\n  1. Log in to your account at https://manage.statuspage.io/login.\\n  2. Click on your avatar in the bottom left of your screen to access the user menu.\\n  3. Click **API info**.\\n\\n### Passing your API key in an authorization header\\n\\nThe following example authenticates you with the Statuspage API.  Along with the Page ID\\nlisted on the API page, we can fetch your page profile.\\n\\n    curl -H \\\"Authorization: OAuth 89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\" \\\\\\n      https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json\\n\\n### Passing your API key in a query param\\n\\n    curl \\\"https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json?api_key=89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\"\\n\",\"in\":\"header\",\"name\":\"Authorization\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "DELETE"
           orig: "/pages/{page_id}/metrics_providers/{metrics_provider_id}"
@@ -370,9 +374,8 @@ main: kit: entity: metrics_provider: {
           }
           contract: {
             id: "PUT /pages/{page_id}/metrics_providers/{metrics_provider_id}"
-            json: "{\"operationId\":\"putPagesPageIdMetricsProvidersMetricsProviderId\",\"parameters\":[{\"description\":\"Page identifier\",\"in\":\"path\",\"name\":\"page_id\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"Metric Provider Identifier\",\"in\":\"path\",\"name\":\"metrics_provider_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Update a metric provider\",\"properties\":{\"metrics_provider\":{\"properties\":{\"metric_base_uri\":{\"type\":\"string\"},\"type\":{\"type\":\"string\"}},\"type\":\"object\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Delete a metric provider\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"disabled\":{\"type\":\"boolean\"},\"id\":{\"description\":\"Identifier for Metrics Provider\",\"type\":\"string\"},\"last_revalidated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"metric_base_uri\":{\"type\":\"string\"},\"page_id\":{\"format\":\"int32\",\"type\":\"integer\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Update a metric provider\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Could not authenticate\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"You are not authorized to access this resource.\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"The requested resource could not be found.\"}},\"security\":[{\"api_key\":[]}],\"securitySchemes\":{\"api_key\":{\"description\":\"#### Obtaining your API Key\\n\\nAuthentication is done via an API token provided in the Statuspage management interface.\\n\\n  1. Log in to your account at https://manage.statuspage.io/login.\\n  2. Click on your avatar in the bottom left of your screen to access the user menu.\\n  3. Click **API info**.\\n\\n### Passing your API key in an authorization header\\n\\nThe following example authenticates you with the Statuspage API.  Along with the Page ID\\nlisted on the API page, we can fetch your page profile.\\n\\n    curl -H \\\"Authorization: OAuth 89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\" \\\\\\n      https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json\\n\\n### Passing your API key in a query param\\n\\n    curl \\\"https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json?api_key=89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\"\\n\",\"in\":\"header\",\"name\":\"Authorization\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PUT"
           orig: "/pages/{page_id}/metrics_providers/{metrics_provider_id}"

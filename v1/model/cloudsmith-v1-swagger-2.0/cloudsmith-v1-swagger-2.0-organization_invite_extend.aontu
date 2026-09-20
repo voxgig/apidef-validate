@@ -4,73 +4,83 @@ main: kit: entity: organization_invite_extend: {
 
   alias: field: {}
 
-  fields: [
-    {
-      format: "email"
-      name: "email"
-      req: false
-      short: "The email of the user to be invited."
-      type: "`$STRING`"
+  fields: {
+    email: {
+      fo: "email"
+      h: "Email"
+      n: "email"
+      r: false
+      sh: "The email of the user to be invited."
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "expires_at"
-      readOnly: true
-      req: false
-      type: "`$STRING`"
+    expires_at: {
+      fo: "date-time"
+      h: "Expires At"
+      n: "expires_at"
+      r: false
+      ro: true
+      t: "`$STRING`"
     }
-    {
-      name: "inviter"
-      readOnly: true
-      req: false
-      type: "`$STRING`"
+    inviter: {
+      h: "Inviter"
+      n: "inviter"
+      r: false
+      ro: true
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "inviter_url"
-      readOnly: true
-      req: false
-      type: "`$STRING`"
+    inviter_url: {
+      fo: "uri"
+      h: "Inviter Url"
+      n: "inviter_url"
+      r: false
+      ro: true
+      t: "`$STRING`"
     }
-    {
-      name: "org"
-      readOnly: true
-      req: false
-      type: "`$STRING`"
+    org: {
+      h: "Org"
+      n: "org"
+      r: false
+      ro: true
+      t: "`$STRING`"
     }
-    {
-      name: "role"
-      req: false
-      short: "The role to be assigned to the invited user."
-      type: "`$STRING`"
+    role: {
+      h: "Role"
+      n: "role"
+      r: false
+      sh: "The role to be assigned to the invited user."
+      t: "`$STRING`"
     }
-    {
-      format: "slug"
-      name: "slug_perm"
-      readOnly: true
-      req: false
-      short: "The slug_perm of the invite to be extended."
-      type: "`$STRING`"
+    slug_perm: {
+      fo: "slug"
+      h: "Slug Perm"
+      n: "slug_perm"
+      r: false
+      ro: true
+      sh: "The slug_perm of the invite to be extended."
+      t: "`$STRING`"
     }
-    {
-      name: "teams"
-      req: false
-      type: "`$ARRAY`"
+    teams: {
+      h: "Teams"
+      n: "teams"
+      r: false
+      t: "`$ARRAY`"
     }
-    {
-      name: "user"
-      req: false
-      short: "The slug of the user to be invited."
-      type: "`$STRING`"
+    user: {
+      h: "User"
+      n: "user"
+      r: false
+      sh: "The slug of the user to be invited."
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "user_url"
-      readOnly: true
-      req: false
-      type: "`$STRING`"
+    user_url: {
+      fo: "uri"
+      h: "User Url"
+      n: "user_url"
+      r: false
+      ro: true
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "organization_invite_extend"
   op: {
@@ -98,9 +108,8 @@ main: kit: entity: organization_invite_extend: {
           }
           contract: {
             id: "POST /orgs/{org}/invites/{slug_perm}/extend/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_invites_extend\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"slug_perm\",\"required\":true,\"type\":\"string\"}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"The invite has been extended\",\"schema\":{\"properties\":{\"email\":{\"description\":\"The email of the user to be invited.\",\"format\":\"email\",\"minLength\":1,\"title\":\"Email\",\"type\":\"string\"},\"expires_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Expires at\",\"type\":\"string\"},\"inviter\":{\"minLength\":1,\"readOnly\":true,\"title\":\"Inviter\",\"type\":\"string\"},\"inviter_url\":{\"format\":\"uri\",\"readOnly\":true,\"title\":\"Inviter url\",\"type\":\"string\"},\"org\":{\"readOnly\":true,\"title\":\"Org\",\"type\":\"string\"},\"role\":{\"default\":\"Member\",\"description\":\"The role to be assigned to the invited user.\",\"enum\":[\"Owner\",\"Manager\",\"Member\",\"Collaborator\"],\"title\":\"Role\",\"type\":\"string\"},\"slug_perm\":{\"description\":\"The slug_perm of the invite to be extended.\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug perm\",\"type\":\"string\"},\"teams\":{\"items\":{\"properties\":{\"role\":{\"default\":\"Member\",\"description\":\"The role to be assigned to the invited user in the team.\",\"enum\":[\"Manager\",\"Member\"],\"title\":\"Role\",\"type\":\"string\"},\"team\":{\"description\":\"The team identifier (slug).\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"title\":\"Team\",\"type\":\"string\"}},\"required\":[\"team\"],\"type\":\"object\"},\"type\":\"array\"},\"user\":{\"description\":\"The slug of the user to be invited.\",\"minLength\":1,\"title\":\"User\",\"type\":\"string\"},\"user_url\":{\"format\":\"uri\",\"readOnly\":true,\"title\":\"User url\",\"type\":\"string\"}},\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Invite not found.\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/orgs/{org}/invites/{slug_perm}/extend/"
@@ -158,9 +167,8 @@ main: kit: entity: organization_invite_extend: {
           }
           contract: {
             id: "POST /orgs/{org}/invites/{slug_perm}/resend/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_invites_resend\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"slug_perm\",\"required\":true,\"type\":\"string\"}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"The invite has been resent\",\"schema\":{\"properties\":{\"email\":{\"description\":\"The email of the user to be invited.\",\"format\":\"email\",\"minLength\":1,\"title\":\"Email\",\"type\":\"string\"},\"expires_at\":{\"format\":\"date-time\",\"readOnly\":true,\"title\":\"Expires at\",\"type\":\"string\"},\"inviter\":{\"minLength\":1,\"readOnly\":true,\"title\":\"Inviter\",\"type\":\"string\"},\"inviter_url\":{\"format\":\"uri\",\"readOnly\":true,\"title\":\"Inviter url\",\"type\":\"string\"},\"org\":{\"readOnly\":true,\"title\":\"Org\",\"type\":\"string\"},\"role\":{\"default\":\"Member\",\"description\":\"The role to be assigned to the invited user.\",\"enum\":[\"Owner\",\"Manager\",\"Member\",\"Collaborator\"],\"title\":\"Role\",\"type\":\"string\"},\"slug_perm\":{\"description\":\"The slug_perm of the invite to be extended.\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug perm\",\"type\":\"string\"},\"teams\":{\"items\":{\"properties\":{\"role\":{\"default\":\"Member\",\"description\":\"The role to be assigned to the invited user in the team.\",\"enum\":[\"Manager\",\"Member\"],\"title\":\"Role\",\"type\":\"string\"},\"team\":{\"description\":\"The team identifier (slug).\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"title\":\"Team\",\"type\":\"string\"}},\"required\":[\"team\"],\"type\":\"object\"},\"type\":\"array\"},\"user\":{\"description\":\"The slug of the user to be invited.\",\"minLength\":1,\"title\":\"User\",\"type\":\"string\"},\"user_url\":{\"format\":\"uri\",\"readOnly\":true,\"title\":\"User url\",\"type\":\"string\"}},\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Invite not found.\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/orgs/{org}/invites/{slug_perm}/resend/"

@@ -4,25 +4,28 @@ main: kit: entity: dynamic_mapping: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "claim_value"
-      req: true
-      short: "The OIDC token claim value that must be present in the token for it to successfully authenticate as the mapped `service_account`."
-      type: "`$STRING`"
+  fields: {
+    claim_value: {
+      h: "Claim Value"
+      n: "claim_value"
+      r: true
+      sh: "The OIDC token claim value that must be present in the token for it to successfully authenticate as the mapped `service_account`."
+      t: "`$STRING`"
     }
-    {
-      name: "id"
-      req: false
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "service_account"
-      req: true
-      short: "The service account associated with the provider setting and `claim_value` Note: This field and the dynamic mappings feature are still in early access."
-      type: "`$STRING`"
+    service_account: {
+      h: "Service Account"
+      n: "service_account"
+      r: true
+      sh: "The service account associated with the provider setting and `claim_value` Note: This field and the dynamic mappings feature are still in early access."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -71,9 +74,8 @@ main: kit: entity: dynamic_mapping: {
           }
           contract: {
             id: "GET /orgs/{org}/openid-connect/{provider_setting}/dynamic-mappings/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_openid-connect_dynamic-mappings_list\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"provider_setting\",\"required\":true,\"type\":\"string\"},{\"description\":\"A page number within the paginated result set.\",\"in\":\"query\",\"name\":\"page\",\"required\":false,\"type\":\"integer\"},{\"description\":\"Number of results to return per page.\",\"in\":\"query\",\"name\":\"page_size\",\"required\":false,\"type\":\"integer\"}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"Retrieved the list of OpenID Connect dynamic mappings for the selected provider setting\",\"schema\":{\"items\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"properties\":{\"claim_value\":{\"description\":\"The OIDC token claim value that must be present in the token for it to successfully authenticate as the mapped `service_account`.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Claim value\",\"type\":\"string\"},\"service_account\":{\"description\":\"The service account associated with the provider setting and `claim_value`\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Service account\",\"type\":\"string\"}},\"required\":[\"claim_value\",\"service_account\"],\"type\":\"object\"},\"type\":\"array\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Organization or Provider Setting not found (see detail)\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/openid-connect/{provider_setting}/dynamic-mappings/"
@@ -145,9 +147,8 @@ main: kit: entity: dynamic_mapping: {
           }
           contract: {
             id: "GET /orgs/{org}/openid-connect/{provider_setting}/dynamic-mappings/{claim_value}/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_openid-connect_dynamic-mappings_read\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"provider_setting\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"claim_value\",\"required\":true,\"type\":\"string\"}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"Retrieved the specified OpenID Connect dynamic mapping\",\"schema\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"properties\":{\"claim_value\":{\"description\":\"The OIDC token claim value that must be present in the token for it to successfully authenticate as the mapped `service_account`.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Claim value\",\"type\":\"string\"},\"service_account\":{\"description\":\"The service account associated with the provider setting and `claim_value`\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Service account\",\"type\":\"string\"}},\"required\":[\"claim_value\",\"service_account\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Organization, Provider Setting or Dynamic Mapping with claim not found (see detail)\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/openid-connect/{provider_setting}/dynamic-mappings/{claim_value}/"

@@ -4,25 +4,28 @@ main: kit: entity: api_insights_time_stat: {
 
   alias: field: {}
 
-  fields: [
-    {
-      format: "int64"
-      name: "rate_limited_request_count"
-      req: false
-      type: "`$INTEGER`"
+  fields: {
+    rate_limited_request_count: {
+      fo: "int64"
+      h: "Rate Limited Request Count"
+      n: "rate_limited_request_count"
+      r: false
+      t: "`$INTEGER`"
     }
-    {
-      name: "timestamp"
-      req: false
-      type: "`$STRING`"
+    timestamp: {
+      h: "Timestamp"
+      n: "timestamp"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      format: "int64"
-      name: "total_request_count"
-      req: false
-      type: "`$INTEGER`"
+    total_request_count: {
+      fo: "int64"
+      h: "Total Request Count"
+      n: "total_request_count"
+      r: false
+      t: "`$INTEGER`"
     }
-  ]
+  }
 
   name: "api_insights_time_stat"
   op: {
@@ -80,9 +83,8 @@ main: kit: entity: api_insights_time_stat: {
           }
           contract: {
             id: "GET /orgs/{org}/insights/api/time-stats/{actor_type}/{actor_id}"
-            json: "{\"operationId\":\"api-insights/get-time-stats-by-actor\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The type of the actor\",\"in\":\"path\",\"name\":\"actor_type\",\"required\":true,\"schema\":{\"enum\":[\"installation\",\"classic_pat\",\"fine_grained_pat\",\"oauth_app\",\"github_app_user_to_server\"],\"type\":\"string\"}},{\"description\":\"The ID of the actor\",\"in\":\"path\",\"name\":\"actor_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}},{\"description\":\"The minimum timestamp to query for stats. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.\",\"in\":\"query\",\"name\":\"min_timestamp\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The maximum timestamp to query for stats. Defaults to the time 30 days ago. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.\",\"in\":\"query\",\"name\":\"max_timestamp\",\"required\":false,\"schema\":{\"type\":\"string\"}},{\"description\":\"The increment of time used to breakdown the query results (5m, 10m, 1h, etc.)\",\"in\":\"query\",\"name\":\"timestamp_increment\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"rate_limited_request_count\":0,\"timestamp\":\"2024-09-11T15:00:00Z\",\"total_request_count\":34225},{\"rate_limited_request_count\":18,\"timestamp\":\"2024-09-11T15:05:00Z\",\"total_request_count\":10587},{\"rate_limited_request_count\":14,\"timestamp\":\"2024-09-11T15:10:00Z\",\"total_request_count\":43587},{\"rate_limited_request_count\":4,\"timestamp\":\"2024-09-11T15:15:00Z\",\"total_request_count\":19463},{\"rate_limited_request_count\":3,\"timestamp\":\"2024-09-11T15:20:00Z\",\"total_request_count\":60542},{\"rate_limited_request_count\":23,\"timestamp\":\"2024-09-11T15:25:00Z\",\"total_request_count\":55872}]}},\"schema\":{\"description\":\"API Insights usage time stats for an organization\",\"items\":{\"properties\":{\"rate_limited_request_count\":{\"format\":\"int64\",\"type\":\"integer\"},\"timestamp\":{\"type\":\"string\"},\"total_request_count\":{\"format\":\"int64\",\"type\":\"integer\"}},\"type\":\"object\"},\"title\":\"Time Stats\",\"type\":\"array\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/insights/api/time-stats/{actor_type}/{actor_id}"
@@ -161,9 +163,8 @@ main: kit: entity: api_insights_time_stat: {
           }
           contract: {
             id: "GET /orgs/{org}/insights/api/time-stats"
-            json: "{\"operationId\":\"api-insights/get-time-stats\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The minimum timestamp to query for stats. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.\",\"in\":\"query\",\"name\":\"min_timestamp\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The maximum timestamp to query for stats. Defaults to the time 30 days ago. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.\",\"in\":\"query\",\"name\":\"max_timestamp\",\"required\":false,\"schema\":{\"type\":\"string\"}},{\"description\":\"The increment of time used to breakdown the query results (5m, 10m, 1h, etc.)\",\"in\":\"query\",\"name\":\"timestamp_increment\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"rate_limited_request_count\":0,\"timestamp\":\"2024-09-11T15:00:00Z\",\"total_request_count\":34225},{\"rate_limited_request_count\":18,\"timestamp\":\"2024-09-11T15:05:00Z\",\"total_request_count\":10587},{\"rate_limited_request_count\":14,\"timestamp\":\"2024-09-11T15:10:00Z\",\"total_request_count\":43587},{\"rate_limited_request_count\":4,\"timestamp\":\"2024-09-11T15:15:00Z\",\"total_request_count\":19463},{\"rate_limited_request_count\":3,\"timestamp\":\"2024-09-11T15:20:00Z\",\"total_request_count\":60542},{\"rate_limited_request_count\":23,\"timestamp\":\"2024-09-11T15:25:00Z\",\"total_request_count\":55872}]}},\"schema\":{\"description\":\"API Insights usage time stats for an organization\",\"items\":{\"properties\":{\"rate_limited_request_count\":{\"format\":\"int64\",\"type\":\"integer\"},\"timestamp\":{\"type\":\"string\"},\"total_request_count\":{\"format\":\"int64\",\"type\":\"integer\"}},\"type\":\"object\"},\"title\":\"Time Stats\",\"type\":\"array\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/insights/api/time-stats"
@@ -251,9 +252,8 @@ main: kit: entity: api_insights_time_stat: {
           }
           contract: {
             id: "GET /orgs/{org}/insights/api/time-stats/users/{user_id}"
-            json: "{\"operationId\":\"api-insights/get-time-stats-by-user\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The ID of the user to query for stats\",\"in\":\"path\",\"name\":\"user_id\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The minimum timestamp to query for stats. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.\",\"in\":\"query\",\"name\":\"min_timestamp\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The maximum timestamp to query for stats. Defaults to the time 30 days ago. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format: `YYYY-MM-DDTHH:MM:SSZ`.\",\"in\":\"query\",\"name\":\"max_timestamp\",\"required\":false,\"schema\":{\"type\":\"string\"}},{\"description\":\"The increment of time used to breakdown the query results (5m, 10m, 1h, etc.)\",\"in\":\"query\",\"name\":\"timestamp_increment\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"rate_limited_request_count\":0,\"timestamp\":\"2024-09-11T15:00:00Z\",\"total_request_count\":34225},{\"rate_limited_request_count\":18,\"timestamp\":\"2024-09-11T15:05:00Z\",\"total_request_count\":10587},{\"rate_limited_request_count\":14,\"timestamp\":\"2024-09-11T15:10:00Z\",\"total_request_count\":43587},{\"rate_limited_request_count\":4,\"timestamp\":\"2024-09-11T15:15:00Z\",\"total_request_count\":19463},{\"rate_limited_request_count\":3,\"timestamp\":\"2024-09-11T15:20:00Z\",\"total_request_count\":60542},{\"rate_limited_request_count\":23,\"timestamp\":\"2024-09-11T15:25:00Z\",\"total_request_count\":55872}]}},\"schema\":{\"description\":\"API Insights usage time stats for an organization\",\"items\":{\"properties\":{\"rate_limited_request_count\":{\"format\":\"int64\",\"type\":\"integer\"},\"timestamp\":{\"type\":\"string\"},\"total_request_count\":{\"format\":\"int64\",\"type\":\"integer\"}},\"type\":\"object\"},\"title\":\"Time Stats\",\"type\":\"array\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/insights/api/time-stats/users/{user_id}"

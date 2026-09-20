@@ -4,32 +4,36 @@ main: kit: entity: webhook_config: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "content_type"
-      req: false
-      short: "The media type used to serialize the payloads."
-      type: "`$STRING`"
+  fields: {
+    content_type: {
+      h: "Content Type"
+      n: "content_type"
+      r: false
+      sh: "The media type used to serialize the payloads."
+      t: "`$STRING`"
     }
-    {
-      name: "insecure_ssl"
-      req: false
-      type: "`$STRING`"
+    insecure_ssl: {
+      h: "Insecure Ssl"
+      n: "insecure_ssl"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "secret"
-      req: false
-      short: "If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers)."
-      type: "`$STRING`"
+    secret: {
+      h: "Secret"
+      n: "secret"
+      r: false
+      sh: "If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers)."
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "url"
-      req: false
-      short: "The URL to which the payloads will be delivered."
-      type: "`$STRING`"
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: false
+      sh: "The URL to which the payloads will be delivered."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "webhook_config"
   op: {
@@ -64,9 +68,8 @@ main: kit: entity: webhook_config: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/hooks/{hook_id}/config"
-            json: "{\"operationId\":\"repos/get-webhook-config-for-repo\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the hook. You can find this value in the `X-GitHub-Hook-ID` header of a webhook delivery.\",\"in\":\"path\",\"name\":\"hook_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"secret\":\"********\",\"url\":\"https://example.com/webhook\"}}},\"schema\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/hooks/{hook_id}/config"
@@ -123,9 +126,8 @@ main: kit: entity: webhook_config: {
           }
           contract: {
             id: "GET /orgs/{org}/hooks/{hook_id}/config"
-            json: "{\"operationId\":\"orgs/get-webhook-config-for-org\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the hook. You can find this value in the `X-GitHub-Hook-ID` header of a webhook delivery.\",\"in\":\"path\",\"name\":\"hook_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"secret\":\"********\",\"url\":\"https://example.com/webhook\"}}},\"schema\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/hooks/{hook_id}/config"
@@ -165,9 +167,8 @@ main: kit: entity: webhook_config: {
         {
           contract: {
             id: "GET /app/hook/config"
-            json: "{\"operationId\":\"apps/get-webhook-config-for-app\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"secret\":\"********\",\"url\":\"https://example.com/webhook\"}}},\"schema\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/app/hook/config"
@@ -220,9 +221,8 @@ main: kit: entity: webhook_config: {
           }
           contract: {
             id: "PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config"
-            json: "{\"operationId\":\"repos/update-webhook-config-for-repo\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the hook. You can find this value in the `X-GitHub-Hook-ID` header of a webhook delivery.\",\"in\":\"path\",\"name\":\"hook_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"summary\":\"Example of updating content type and URL\",\"value\":{\"content_type\":\"json\",\"url\":\"https://example.com/webhook\"}}},\"schema\":{\"additionalProperties\":false,\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"secret\":\"********\",\"url\":\"https://example.com/webhook\"}}},\"schema\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/repos/{owner}/{repo}/hooks/{hook_id}/config"
@@ -284,9 +284,8 @@ main: kit: entity: webhook_config: {
           }
           contract: {
             id: "PATCH /orgs/{org}/hooks/{hook_id}/config"
-            json: "{\"operationId\":\"orgs/update-webhook-config-for-org\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the hook. You can find this value in the `X-GitHub-Hook-ID` header of a webhook delivery.\",\"in\":\"path\",\"name\":\"hook_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"summary\":\"Update an existing webhook\",\"value\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"secret\":\"********\",\"url\":\"http://example.com/webhook\"}}},\"schema\":{\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"secret\":\"********\",\"url\":\"https://example.com/webhook\"}}},\"schema\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/orgs/{org}/hooks/{hook_id}/config"
@@ -326,9 +325,8 @@ main: kit: entity: webhook_config: {
         {
           contract: {
             id: "PATCH /app/hook/config"
-            json: "{\"operationId\":\"apps/update-webhook-config-for-app\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"secret\":\"********\",\"url\":\"https://example.com/webhook\"}}},\"schema\":{\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"secret\":\"********\",\"url\":\"https://example.com/webhook\"}}},\"schema\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/app/hook/config"

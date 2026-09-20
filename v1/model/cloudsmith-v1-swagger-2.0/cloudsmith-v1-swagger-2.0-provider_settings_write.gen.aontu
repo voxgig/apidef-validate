@@ -4,67 +4,76 @@ main: kit: entity: provider_settings_write: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "claims"
-      req: true
-      short: "The set of claims that any received tokens from the provider must contain to authenticate as the configured service account."
-      type: "`$OBJECT`"
+  fields: {
+    claims: {
+      h: "Claims"
+      n: "claims"
+      r: true
+      sh: "The set of claims that any received tokens from the provider must contain to authenticate as the configured service account."
+      t: "`$OBJECT`"
     }
-    {
-      name: "dynamic_mappings"
-      req: false
-      short: "The dynamic mappings of `mapping_claim` values to service accounts."
-      type: "`$ARRAY`"
+    dynamic_mappings: {
+      h: "Dynamic Mappings"
+      n: "dynamic_mappings"
+      r: false
+      sh: "The dynamic mappings of `mapping_claim` values to service accounts."
+      t: "`$ARRAY`"
     }
-    {
-      name: "enabled"
-      req: true
-      short: "Whether the provider settings should be used for incoming OIDC requests."
-      type: "`$BOOLEAN`"
+    enabled: {
+      h: "Enabled"
+      n: "enabled"
+      r: true
+      sh: "Whether the provider settings should be used for incoming OIDC requests."
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "mapping_claim"
-      req: false
-      short: "The OIDC claim to use for mapping to service accounts in dynamic_mappings."
-      type: "`$STRING`"
+    mapping_claim: {
+      h: "Mapping Claim"
+      n: "mapping_claim"
+      r: false
+      sh: "The OIDC claim to use for mapping to service accounts in dynamic_mappings."
+      t: "`$STRING`"
     }
-    {
-      name: "name"
-      req: true
-      short: "The name of the provider settings are being configured for"
-      type: "`$STRING`"
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "The name of the provider settings are being configured for"
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "provider_url"
-      req: true
-      short: "The URL from the provider that serves as the base for the OpenID configuration."
-      type: "`$STRING`"
+    provider_url: {
+      fo: "uri"
+      h: "Provider Url"
+      n: "provider_url"
+      r: true
+      sh: "The URL from the provider that serves as the base for the OpenID configuration."
+      t: "`$STRING`"
     }
-    {
-      name: "service_accounts"
-      req: false
-      short: "The service accounts associated with these provider settings."
-      type: "`$ARRAY`"
+    service_accounts: {
+      h: "Service Accounts"
+      n: "service_accounts"
+      r: false
+      sh: "The service accounts associated with these provider settings."
+      t: "`$ARRAY`"
     }
-    {
-      format: "slug"
-      name: "slug"
-      readOnly: true
-      req: false
-      short: "The slug of the provider settings"
-      type: "`$STRING`"
+    slug: {
+      fo: "slug"
+      h: "Slug"
+      n: "slug"
+      r: false
+      ro: true
+      sh: "The slug of the provider settings"
+      t: "`$STRING`"
     }
-    {
-      format: "slug"
-      name: "slug_perm"
-      readOnly: true
-      req: false
-      short: "The unique, immutable identifier of the provider settings."
-      type: "`$STRING`"
+    slug_perm: {
+      fo: "slug"
+      h: "Slug Perm"
+      n: "slug_perm"
+      r: false
+      ro: true
+      sh: "The unique, immutable identifier of the provider settings."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "provider_settings_write"
   op: {
@@ -94,9 +103,8 @@ main: kit: entity: provider_settings_write: {
           }
           contract: {
             id: "POST /orgs/{org}/openid-connect/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_openid-connect_create\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"body\",\"name\":\"data\",\"required\":false,\"schema\":{\"properties\":{\"claims\":{\"description\":\"The set of claims that any received tokens from the provider must contain to authenticate as the configured service account.\",\"title\":\"Claims\",\"type\":\"object\"},\"dynamic_mappings\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"items\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"properties\":{\"claim_value\":{\"description\":\"The OIDC token claim value that must be present in the token for it to successfully authenticate as the mapped `service_account`.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Claim value\",\"type\":\"string\"},\"service_account\":{\"description\":\"The service account associated with the provider setting and `claim_value`\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Service account\",\"type\":\"string\"}},\"required\":[\"claim_value\",\"service_account\"],\"type\":\"object\"},\"type\":\"array\"},\"enabled\":{\"description\":\"Whether the provider settings should be used for incoming OIDC requests.\",\"title\":\"Enabled\",\"type\":\"boolean\"},\"mapping_claim\":{\"description\":\"The OIDC claim to use for mapping to service accounts in dynamic_mappings. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Mapping claim\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the provider settings are being configured for\",\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"provider_url\":{\"description\":\"The URL from the provider that serves as the base for the OpenID configuration.\\nFor example, if the OpenID configuration is available at https://token.actions.githubusercontent.com/.well-known/openid-configuration, the provider URL would be https://token.actions.githubusercontent.com/\",\"format\":\"uri\",\"minLength\":1,\"title\":\"Provider url\",\"type\":\"string\"},\"service_accounts\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"items\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true}},\"required\":[\"claims\",\"enabled\",\"name\",\"provider_url\"],\"type\":\"object\"}}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"201\":{\"description\":\"Created the OpenID Connect provider settings for the org\",\"schema\":{\"properties\":{\"claims\":{\"description\":\"The set of claims that any received tokens from the provider must contain to authenticate as the configured service account.\",\"title\":\"Claims\",\"type\":\"object\"},\"dynamic_mappings\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"items\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"properties\":{\"claim_value\":{\"description\":\"The OIDC token claim value that must be present in the token for it to successfully authenticate as the mapped `service_account`.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Claim value\",\"type\":\"string\"},\"service_account\":{\"description\":\"The service account associated with the provider setting and `claim_value`\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Service account\",\"type\":\"string\"}},\"required\":[\"claim_value\",\"service_account\"],\"type\":\"object\"},\"type\":\"array\"},\"enabled\":{\"description\":\"Whether the provider settings should be used for incoming OIDC requests.\",\"title\":\"Enabled\",\"type\":\"boolean\"},\"mapping_claim\":{\"description\":\"The OIDC claim to use for mapping to service accounts in dynamic_mappings. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Mapping claim\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the provider settings are being configured for\",\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"provider_url\":{\"description\":\"The URL from the provider that serves as the base for the OpenID configuration.\\nFor example, if the OpenID configuration is available at https://token.actions.githubusercontent.com/.well-known/openid-configuration, the provider URL would be https://token.actions.githubusercontent.com/\",\"format\":\"uri\",\"minLength\":1,\"title\":\"Provider url\",\"type\":\"string\"},\"service_accounts\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"items\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true},\"slug\":{\"description\":\"The slug of the provider settings\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug\",\"type\":\"string\"},\"slug_perm\":{\"description\":\"The unique, immutable identifier of the provider settings.\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug perm\",\"type\":\"string\"}},\"required\":[\"claims\",\"enabled\",\"name\",\"provider_url\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Organization not found\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/orgs/{org}/openid-connect/"
@@ -162,9 +170,8 @@ main: kit: entity: provider_settings_write: {
           }
           contract: {
             id: "PATCH /orgs/{org}/openid-connect/{slug_perm}/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_openid-connect_partial_update\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"slug_perm\",\"required\":true,\"type\":\"string\"},{\"in\":\"body\",\"name\":\"data\",\"required\":false,\"schema\":{\"properties\":{\"claims\":{\"description\":\"The set of claims that any received tokens from the provider must contain to authenticate as the configured service account.\",\"title\":\"Claims\",\"type\":\"object\"},\"dynamic_mappings\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"items\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"properties\":{\"claim_value\":{\"description\":\"The OIDC token claim value that must be present in the token for it to successfully authenticate as the mapped `service_account`.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Claim value\",\"type\":\"string\"},\"service_account\":{\"description\":\"The service account associated with the provider setting and `claim_value`\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Service account\",\"type\":\"string\"}},\"required\":[\"claim_value\",\"service_account\"],\"type\":\"object\"},\"type\":\"array\"},\"enabled\":{\"description\":\"Whether the provider settings should be used for incoming OIDC requests.\",\"title\":\"Enabled\",\"type\":\"boolean\"},\"mapping_claim\":{\"description\":\"The OIDC claim to use for mapping to service accounts in dynamic_mappings. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Mapping claim\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the provider settings are being configured for\",\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"provider_url\":{\"description\":\"The URL from the provider that serves as the base for the OpenID configuration.\\nFor example, if the OpenID configuration is available at https://token.actions.githubusercontent.com/.well-known/openid-configuration, the provider URL would be https://token.actions.githubusercontent.com/\",\"format\":\"uri\",\"minLength\":1,\"title\":\"Provider url\",\"type\":\"string\"},\"service_accounts\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"items\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true}},\"type\":\"object\"}}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"Updated the specified OpenID Connect provider setting for the org\",\"schema\":{\"properties\":{\"claims\":{\"description\":\"The set of claims that any received tokens from the provider must contain to authenticate as the configured service account.\",\"title\":\"Claims\",\"type\":\"object\"},\"dynamic_mappings\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"items\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"properties\":{\"claim_value\":{\"description\":\"The OIDC token claim value that must be present in the token for it to successfully authenticate as the mapped `service_account`.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Claim value\",\"type\":\"string\"},\"service_account\":{\"description\":\"The service account associated with the provider setting and `claim_value`\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Service account\",\"type\":\"string\"}},\"required\":[\"claim_value\",\"service_account\"],\"type\":\"object\"},\"type\":\"array\"},\"enabled\":{\"description\":\"Whether the provider settings should be used for incoming OIDC requests.\",\"title\":\"Enabled\",\"type\":\"boolean\"},\"mapping_claim\":{\"description\":\"The OIDC claim to use for mapping to service accounts in dynamic_mappings. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Mapping claim\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the provider settings are being configured for\",\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"provider_url\":{\"description\":\"The URL from the provider that serves as the base for the OpenID configuration.\\nFor example, if the OpenID configuration is available at https://token.actions.githubusercontent.com/.well-known/openid-configuration, the provider URL would be https://token.actions.githubusercontent.com/\",\"format\":\"uri\",\"minLength\":1,\"title\":\"Provider url\",\"type\":\"string\"},\"service_accounts\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"items\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true},\"slug\":{\"description\":\"The slug of the provider settings\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug\",\"type\":\"string\"},\"slug_perm\":{\"description\":\"The unique, immutable identifier of the provider settings.\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug perm\",\"type\":\"string\"}},\"required\":[\"claims\",\"enabled\",\"name\",\"provider_url\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Organization not found\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/orgs/{org}/openid-connect/{slug_perm}/"
@@ -234,9 +241,8 @@ main: kit: entity: provider_settings_write: {
           }
           contract: {
             id: "PUT /orgs/{org}/openid-connect/{slug_perm}/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"orgs_openid-connect_update\",\"parameters\":[{\"in\":\"path\",\"name\":\"org\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"slug_perm\",\"required\":true,\"type\":\"string\"},{\"in\":\"body\",\"name\":\"data\",\"required\":false,\"schema\":{\"properties\":{\"claims\":{\"description\":\"The set of claims that any received tokens from the provider must contain to authenticate as the configured service account.\",\"title\":\"Claims\",\"type\":\"object\"},\"dynamic_mappings\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"items\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"properties\":{\"claim_value\":{\"description\":\"The OIDC token claim value that must be present in the token for it to successfully authenticate as the mapped `service_account`.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Claim value\",\"type\":\"string\"},\"service_account\":{\"description\":\"The service account associated with the provider setting and `claim_value`\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Service account\",\"type\":\"string\"}},\"required\":[\"claim_value\",\"service_account\"],\"type\":\"object\"},\"type\":\"array\"},\"enabled\":{\"description\":\"Whether the provider settings should be used for incoming OIDC requests.\",\"title\":\"Enabled\",\"type\":\"boolean\"},\"mapping_claim\":{\"description\":\"The OIDC claim to use for mapping to service accounts in dynamic_mappings. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Mapping claim\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the provider settings are being configured for\",\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"provider_url\":{\"description\":\"The URL from the provider that serves as the base for the OpenID configuration.\\nFor example, if the OpenID configuration is available at https://token.actions.githubusercontent.com/.well-known/openid-configuration, the provider URL would be https://token.actions.githubusercontent.com/\",\"format\":\"uri\",\"minLength\":1,\"title\":\"Provider url\",\"type\":\"string\"},\"service_accounts\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"items\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true}},\"required\":[\"claims\",\"enabled\",\"name\",\"provider_url\"],\"type\":\"object\"}}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"Updated the specified OpenID Connect provider setting for the org\",\"schema\":{\"properties\":{\"claims\":{\"description\":\"The set of claims that any received tokens from the provider must contain to authenticate as the configured service account.\",\"title\":\"Claims\",\"type\":\"object\"},\"dynamic_mappings\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"items\":{\"description\":\"The dynamic mappings of `mapping_claim` values to service accounts. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"properties\":{\"claim_value\":{\"description\":\"The OIDC token claim value that must be present in the token for it to successfully authenticate as the mapped `service_account`.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Claim value\",\"type\":\"string\"},\"service_account\":{\"description\":\"The service account associated with the provider setting and `claim_value`\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Service account\",\"type\":\"string\"}},\"required\":[\"claim_value\",\"service_account\"],\"type\":\"object\"},\"type\":\"array\"},\"enabled\":{\"description\":\"Whether the provider settings should be used for incoming OIDC requests.\",\"title\":\"Enabled\",\"type\":\"boolean\"},\"mapping_claim\":{\"description\":\"The OIDC claim to use for mapping to service accounts in dynamic_mappings. Cannot be provided if `service_accounts` is also set.\\n\\nNote: This field and the dynamic mappings feature are still in early access. Breaking changes are possible as we receive feedback on this feature.\",\"minLength\":1,\"title\":\"Mapping claim\",\"type\":\"string\"},\"name\":{\"description\":\"The name of the provider settings are being configured for\",\"minLength\":1,\"title\":\"Name\",\"type\":\"string\"},\"provider_url\":{\"description\":\"The URL from the provider that serves as the base for the OpenID configuration.\\nFor example, if the OpenID configuration is available at https://token.actions.githubusercontent.com/.well-known/openid-configuration, the provider URL would be https://token.actions.githubusercontent.com/\",\"format\":\"uri\",\"minLength\":1,\"title\":\"Provider url\",\"type\":\"string\"},\"service_accounts\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"items\":{\"description\":\"The service accounts associated with these provider settings. Cannot be provided if `mapping_claim` or `dynamic_mappings` are specified.\",\"type\":\"string\"},\"type\":\"array\",\"uniqueItems\":true},\"slug\":{\"description\":\"The slug of the provider settings\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug\",\"type\":\"string\"},\"slug_perm\":{\"description\":\"The unique, immutable identifier of the provider settings.\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"readOnly\":true,\"title\":\"Slug perm\",\"type\":\"string\"}},\"required\":[\"claims\",\"enabled\",\"name\",\"provider_url\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Organization not found\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "PUT"
           orig: "/orgs/{org}/openid-connect/{slug_perm}/"
