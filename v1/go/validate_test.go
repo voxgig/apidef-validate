@@ -3,6 +3,7 @@
 package validate_test
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -213,6 +214,19 @@ func TestValidate(t *testing.T) {
 					entity, ok := value.(map[string]any)
 					if !ok {
 						t.Fatalf("%s: entity must be a map, got %T", name, value)
+					}
+					relations, _ := entity["relations"].(map[string]any)
+					ancestorData, err := json.Marshal(relations["ancestors"])
+					var chains [][]string
+					if err != nil || json.Unmarshal(ancestorData, &chains) != nil {
+						t.Fatalf("%s: invalid ancestor chains", name)
+					}
+					for _, chain := range chains {
+						for _, ancestor := range chain {
+							if _, exists := entities[ancestor]; !exists || ancestor == name {
+								t.Errorf("%s: invalid ancestor entity %s", name, ancestor)
+							}
+						}
 					}
 					operations, _ := entity["op"].(map[string]any)
 					for _, value := range operations {

@@ -152,6 +152,13 @@ describe('main', () => {
         }
       }
       for (const entity of Object.values(result.apimodel.main.kit.entity) as any[]) {
+        for (const chain of entity.relations?.ancestors ?? []) {
+          for (const ancestor of chain) {
+            assert.notEqual(ancestor, entity.name, fullname(c) + ': self ancestor')
+            assert.ok(Object.prototype.hasOwnProperty.call(result.apimodel.main.kit.entity, ancestor),
+              fullname(c) + ': missing ancestor entity ' + ancestor)
+          }
+        }
         for (const operation of Object.values(entity.op ?? {}) as any[]) {
           for (const point of operation.points ?? []) {
             assert.equal(typeof point.m, 'string')
