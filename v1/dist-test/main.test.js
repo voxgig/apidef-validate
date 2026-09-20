@@ -117,8 +117,9 @@ if (0 < caseSelector.length) {
             });
             node_assert_1.default.ok(result.ok, fullname(c) + ': build failed');
             for (const entity of Object.values(result.apimodel.main.kit.entity)) {
-                node_assert_1.default.ok(!Array.isArray(entity.fields));
-                for (const [name, field] of Object.entries(entity.fields ?? {})) {
+                node_assert_1.default.ok(entity.fields != null && typeof entity.fields === 'object' &&
+                    !Array.isArray(entity.fields), fullname(c) + ': fields must be a map');
+                for (const [name, field] of Object.entries(entity.fields)) {
                     node_assert_1.default.equal(field.n, name);
                     node_assert_1.default.equal(typeof field.h, 'string');
                     fieldCount++;

@@ -1,4 +1,4 @@
-# Test the Go port of @voxgig/apidef (latest published module) against the
+# Test the pinned Go port of @voxgig/apidef against the
 # local test cases here. Mirrors the npm scripts in package.json.
 
 .PHONY: test test-some test-guide-case test-model-case \

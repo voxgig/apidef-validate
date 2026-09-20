@@ -161,14 +161,32 @@ func TestValidate(t *testing.T) {
 					"builders":     true,
 					"generate":     true,
 				})
-				main, _ := result.ApiModel["main"].(map[string]any)
-				kit, _ := main[apidef.KIT].(map[string]any)
-				entities, _ := kit["entity"].(map[string]any)
+				main, ok := result.ApiModel["main"].(map[string]any)
+				if !ok {
+					t.Fatal("model main must be a map")
+				}
+				kit, ok := main[apidef.KIT].(map[string]any)
+				if !ok {
+					t.Fatal("model kit must be a map")
+				}
+				entities, ok := kit["entity"].(map[string]any)
+				if !ok {
+					t.Fatal("model entities must be a map")
+				}
 				for name, value := range entities {
-					entity, _ := value.(map[string]any)
-					fields, _ := entity["fields"].(map[string]any)
+					entity, ok := value.(map[string]any)
+					if !ok {
+						t.Fatalf("%s: entity must be a map, got %T", name, value)
+					}
+					fields, ok := entity["fields"].(map[string]any)
+					if !ok || fields == nil {
+						t.Fatalf("%s: fields must be a map, got %T", name, entity["fields"])
+					}
 					for fieldName, value := range fields {
-						field := value.(map[string]any)
+						field, ok := value.(map[string]any)
+						if !ok {
+							t.Fatalf("%s.%s: field must be a map, got %T", name, fieldName, value)
+						}
 						if field["n"] != fieldName || field["h"] != apidef.HumanTitle(fieldName) {
 							t.Errorf("%s: field key or title does not match n: %v", name, field)
 						}

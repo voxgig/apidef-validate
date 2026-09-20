@@ -135,8 +135,9 @@ describe('main', () => {
       })
       assert.ok(result.ok, fullname(c) + ': build failed')
       for (const entity of Object.values(result.apimodel.main.kit.entity) as any[]) {
-        assert.ok(!Array.isArray(entity.fields))
-        for (const [name, field] of Object.entries(entity.fields ?? {}) as [string, any][]) {
+        assert.ok(entity.fields != null && typeof entity.fields === 'object' &&
+          !Array.isArray(entity.fields), fullname(c) + ': fields must be a map')
+        for (const [name, field] of Object.entries(entity.fields) as [string, any][]) {
           assert.equal(field.n, name)
           assert.equal(typeof field.h, 'string')
           fieldCount++
