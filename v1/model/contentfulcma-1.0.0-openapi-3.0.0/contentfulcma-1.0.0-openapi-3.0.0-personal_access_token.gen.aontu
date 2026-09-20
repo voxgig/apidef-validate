@@ -24,26 +24,31 @@ main: kit: entity: personal_access_token: {
       name: "create"
       points: [
         {
-          args: {
-            header: [
-              {
-                example: "application/vnd.contentful.management.v1+json"
-                kind: "header"
-                name: "content_type"
-                orig: "content_type"
-                reqd: false
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /users/me/access_tokens"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/users/me/access_tokens"
-          segments: [
+          g: {
+            header: [
+              {
+                ex: "application/vnd.contentful.management.v1+json"
+                k: "header"
+                n: "content_type"
+                or: "content_type"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/users/me/access_tokens"
+          q: {
+            exist: [
+              "content_type"
+            ]
+          }
+          s: [
             {
               lit: "users"
             }
@@ -54,12 +59,7 @@ main: kit: entity: personal_access_token: {
               lit: "access_tokens"
             }
           ]
-          select: {
-            exist: [
-              "content_type"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -70,30 +70,35 @@ main: kit: entity: personal_access_token: {
       name: "load"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "token_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /users/me/access_tokens/{token_id}"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/users/me/access_tokens/{token_id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "token_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/users/me/access_tokens/{token_id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
             param: {
               token_id: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "users"
             }
@@ -107,25 +112,20 @@ main: kit: entity: personal_access_token: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          contract: {
+          co: {
             id: "GET /users/me/access_tokens"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/users/me/access_tokens"
-          segments: [
+          m: "GET"
+          o: "/users/me/access_tokens"
+          s: [
             {
               lit: "users"
             }
@@ -136,7 +136,7 @@ main: kit: entity: personal_access_token: {
               lit: "access_tokens"
             }
           ]
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -147,48 +147,56 @@ main: kit: entity: personal_access_token: {
       name: "update"
       points: [
         {
-          args: {
-            header: [
-              {
-                example: "application/vnd.contentful.management.v1+json"
-                kind: "header"
-                name: "content_type"
-                orig: "content_type"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                example: "X"
-                kind: "header"
-                name: "x_contentful_version"
-                orig: "x_contentful_version"
-                reqd: false
-                type: "`$STRING`"
-              }
-            ]
-            params: [
-              {
-                kind: "param"
-                name: "access_token_id"
-                orig: "token_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "PUT /users/me/access_tokens/{token_id}/revoked"
             source: "openapi3"
             version: 2
           }
-          method: "PUT"
-          orig: "/users/me/access_tokens/{token_id}/revoked"
-          rename: {
+          g: {
+            header: [
+              {
+                ex: "application/vnd.contentful.management.v1+json"
+                k: "header"
+                n: "content_type"
+                or: "content_type"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: "X"
+                k: "header"
+                n: "x_contentful_version"
+                or: "x_contentful_version"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "access_token_id"
+                or: "token_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/users/me/access_tokens/{token_id}/revoked"
+          q: {
+            "$action": "revoked"
+            exist: [
+              "access_token_id"
+              "content_type"
+              "x_contentful_version"
+            ]
+          }
+          r: {
             param: {
               token_id: "access_token_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "users"
             }
@@ -205,15 +213,7 @@ main: kit: entity: personal_access_token: {
               lit: "revoked"
             }
           ]
-          select: {
-            "$action": "revoked"
-            exist: [
-              "access_token_id"
-              "content_type"
-              "x_contentful_version"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

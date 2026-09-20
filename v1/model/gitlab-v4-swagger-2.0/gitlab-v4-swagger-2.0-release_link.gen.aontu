@@ -24,46 +24,53 @@ main: kit: entity: release_link: {
       name: "remove"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "link_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "project_id"
-                orig: "id"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "release_id"
-                orig: "tag_name"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}"
             source: "swagger2"
             version: 2
           }
-          method: "DELETE"
-          orig: "/api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "link_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "release_id"
+                or: "tag_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+              "release_id"
+            ]
+          }
+          r: {
             param: {
               id: "project_id"
               link_id: "id"
               tag_name: "release_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -92,14 +99,7 @@ main: kit: entity: release_link: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-              "project_id"
-              "release_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

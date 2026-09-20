@@ -10,30 +10,36 @@ main: kit: entity: dependency_proxy: {
       name: "remove"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "group_id"
-                orig: "id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /api/v4/groups/{id}/dependency_proxy/cache"
             source: "swagger2"
             version: 2
           }
-          method: "DELETE"
-          orig: "/api/v4/groups/{id}/dependency_proxy/cache"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/groups/{id}/dependency_proxy/cache"
+          q: {
+            "$action": "cache"
+            exist: [
+              "group_id"
+            ]
+          }
+          r: {
             param: {
               id: "group_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -53,13 +59,7 @@ main: kit: entity: dependency_proxy: {
               lit: "cache"
             }
           ]
-          select: {
-            "$action": "cache"
-            exist: [
-              "group_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

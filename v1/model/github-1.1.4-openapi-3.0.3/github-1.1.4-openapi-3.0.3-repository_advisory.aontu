@@ -312,44 +312,52 @@ main: kit: entity: repository_advisory: {
       name: "create"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "security_advisory_id"
-                orig: "ghsa_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "security_advisory_id"
+                or: "ghsa_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve"
+          q: {
+            "$action": "cve"
+            exist: [
+              "owner"
+              "repo"
+              "security_advisory_id"
+            ]
+          }
+          r: {
             param: {
               ghsa_id: "security_advisory_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "repos"
             }
@@ -369,46 +377,44 @@ main: kit: entity: repository_advisory: {
               lit: "cve"
             }
           ]
-          select: {
-            "$action": "cve"
-            exist: [
-              "owner"
-              "repo"
-              "security_advisory_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /repos/{owner}/{repo}/security-advisories"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/security-advisories"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/security-advisories"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -422,13 +428,7 @@ main: kit: entity: repository_advisory: {
               lit: "security-advisories"
             }
           ]
-          select: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: {
               credits: "`reqdata.credit`"
               cve_id: "`reqdata.cve_id`"
@@ -444,32 +444,38 @@ main: kit: entity: repository_advisory: {
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /repos/{owner}/{repo}/security-advisories/reports"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/security-advisories/reports"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/security-advisories/reports"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -486,13 +492,7 @@ main: kit: entity: repository_advisory: {
               lit: "reports"
             }
           ]
-          select: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: {
               cvss_vector_string: "`reqdata.cvss_vector_string`"
               cwe_ids: "`reqdata.cwe_id`"
@@ -511,79 +511,91 @@ main: kit: entity: repository_advisory: {
       name: "list"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "after"
-                orig: "after"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                kind: "query"
-                name: "before"
-                orig: "before"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                example: "desc"
-                kind: "query"
-                name: "direction"
-                orig: "direction"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: "created"
-                kind: "query"
-                name: "sort"
-                orig: "sort"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                kind: "query"
-                name: "state"
-                orig: "state"
-                reqd: false
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/security-advisories"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/security-advisories"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "after"
+                or: "after"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: "desc"
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "created"
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "state"
+                or: "state"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/security-advisories"
+          q: {
+            exist: [
+              "after"
+              "before"
+              "direction"
+              "owner"
+              "per_page"
+              "repo"
+              "sort"
+              "state"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -597,106 +609,78 @@ main: kit: entity: repository_advisory: {
               lit: "security-advisories"
             }
           ]
-          select: {
-            exist: [
-              "after"
-              "before"
-              "direction"
-              "owner"
-              "per_page"
-              "repo"
-              "sort"
-              "state"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "org_id"
-                orig: "org"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                kind: "query"
-                name: "after"
-                orig: "after"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                kind: "query"
-                name: "before"
-                orig: "before"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                example: "desc"
-                kind: "query"
-                name: "direction"
-                orig: "direction"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: "created"
-                kind: "query"
-                name: "sort"
-                orig: "sort"
-                reqd: false
-                type: "`$STRING`"
-              }
-              {
-                kind: "query"
-                name: "state"
-                orig: "state"
-                reqd: false
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /orgs/{org}/security-advisories"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/orgs/{org}/security-advisories"
-          rename: {
-            param: {
-              org: "org_id"
-            }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "after"
+                or: "after"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: "desc"
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "created"
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "state"
+                or: "state"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
           }
-          segments: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "security-advisories"
-            }
-          ]
-          select: {
+          m: "GET"
+          o: "/orgs/{org}/security-advisories"
+          q: {
             exist: [
               "after"
               "before"
@@ -707,7 +691,23 @@ main: kit: entity: repository_advisory: {
               "state"
             ]
           }
-          transform: {
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "security-advisories"
+            }
+          ]
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -718,39 +718,46 @@ main: kit: entity: repository_advisory: {
       name: "load"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "ghsa_id"
-                orig: "ghsa_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/security-advisories/{ghsa_id}"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "ghsa_id"
+                or: "ghsa_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}"
+          q: {
+            exist: [
+              "ghsa_id"
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -767,14 +774,7 @@ main: kit: entity: repository_advisory: {
               var: "ghsa_id"
             }
           ]
-          select: {
-            exist: [
-              "ghsa_id"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
@@ -785,39 +785,46 @@ main: kit: entity: repository_advisory: {
       name: "update"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "ghsa_id"
-                orig: "ghsa_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "PATCH /repos/{owner}/{repo}/security-advisories/{ghsa_id}"
             source: "openapi3"
             version: 2
           }
-          method: "PATCH"
-          orig: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "ghsa_id"
+                or: "ghsa_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}"
+          q: {
+            exist: [
+              "ghsa_id"
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -834,14 +841,7 @@ main: kit: entity: repository_advisory: {
               var: "ghsa_id"
             }
           ]
-          select: {
-            exist: [
-              "ghsa_id"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: {
               collaborating_teams: "`reqdata.collaborating_team`"
               collaborating_users: "`reqdata.collaborating_user`"

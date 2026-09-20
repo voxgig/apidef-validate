@@ -10,32 +10,39 @@ main: kit: entity: code_scanning: {
       name: "create"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /repos/{owner}/{repo}/code-scanning/sarifs"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/code-scanning/sarifs"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/code-scanning/sarifs"
+          q: {
+            "$action": "sarif"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -52,14 +59,7 @@ main: kit: entity: code_scanning: {
               lit: "sarifs"
             }
           ]
-          select: {
-            "$action": "sarif"
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: {
               checkout_uri: "`reqdata.checkout_uri`"
               commit_sha: "`reqdata.commit_sha`"
@@ -78,39 +78,46 @@ main: kit: entity: code_scanning: {
       name: "remove"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "language"
-                orig: "language"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"
             source: "openapi3"
             version: 2
           }
-          method: "DELETE"
-          orig: "/repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"
-          segments: [
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "language"
+                or: "language"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"
+          q: {
+            exist: [
+              "language"
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
             {
               lit: "repos"
             }
@@ -133,14 +140,7 @@ main: kit: entity: code_scanning: {
               var: "language"
             }
           ]
-          select: {
-            exist: [
-              "language"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

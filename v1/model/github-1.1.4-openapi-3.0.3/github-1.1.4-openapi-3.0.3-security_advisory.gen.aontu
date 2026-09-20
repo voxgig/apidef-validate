@@ -24,44 +24,52 @@ main: kit: entity: security_advisory: {
       name: "create"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "ghsa_id"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "ghsa_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"
+          q: {
+            "$action": "fork"
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
             param: {
               ghsa_id: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "repos"
             }
@@ -81,15 +89,7 @@ main: kit: entity: security_advisory: {
               lit: "forks"
             }
           ]
-          select: {
-            "$action": "fork"
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

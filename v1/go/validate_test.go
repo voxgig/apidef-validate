@@ -178,6 +178,53 @@ func TestValidate(t *testing.T) {
 					if !ok {
 						t.Fatalf("%s: entity must be a map, got %T", name, value)
 					}
+					operations, _ := entity["op"].(map[string]any)
+					for _, value := range operations {
+						operation := value.(map[string]any)
+						for _, value := range operation["points"].([]any) {
+							point := value.(map[string]any)
+							for _, key := range []string{"m", "o"} {
+								if _, ok := point[key].(string); !ok {
+									t.Errorf("%s: missing point attribute %s", name, key)
+								}
+							}
+							for _, key := range []string{"active", "kind", "method", "orig", "segments", "args", "select", "rename", "transform", "contract", "live", "graphql"} {
+								if _, exists := point[key]; exists {
+									t.Errorf("%s: legacy point attribute %s", name, key)
+								}
+							}
+							args, _ := point["g"].(map[string]any)
+							for kind, value := range args {
+								list, ok := value.([]any)
+								if !ok {
+									t.Fatalf("%s: arguments must be a list", name)
+								}
+								if kind == "params" {
+									kind = "param"
+								}
+								for _, value := range list {
+									arg := value.(map[string]any)
+									if arg["k"] != kind {
+										t.Errorf("%s: argument kind mismatch", name)
+									}
+									if _, ok := arg["n"].(string); !ok {
+										t.Errorf("%s: missing argument name", name)
+									}
+									if _, ok := arg["r"].(bool); !ok {
+										t.Errorf("%s: missing argument required flag", name)
+									}
+									if arg["t"] == nil {
+										t.Errorf("%s: missing argument type", name)
+									}
+									for _, key := range []string{"active", "kind", "name", "orig", "reqd", "type", "example"} {
+										if _, exists := arg[key]; exists {
+											t.Errorf("%s: legacy argument attribute %s", name, key)
+										}
+									}
+								}
+							}
+						}
+					}
 					fields, ok := entity["fields"].(map[string]any)
 					if !ok || fields == nil {
 						t.Fatalf("%s: fields must be a map, got %T", name, entity["fields"])

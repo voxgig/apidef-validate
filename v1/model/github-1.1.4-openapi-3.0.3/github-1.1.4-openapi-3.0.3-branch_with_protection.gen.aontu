@@ -24,44 +24,52 @@ main: kit: entity: branch_with_protection: {
       name: "create"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "branch"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "POST /repos/{owner}/{repo}/branches/{branch}/rename"
             source: "openapi3"
             version: 2
           }
-          method: "POST"
-          orig: "/repos/{owner}/{repo}/branches/{branch}/rename"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "branch"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/branches/{branch}/rename"
+          q: {
+            "$action": "rename"
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
             param: {
               branch: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "repos"
             }
@@ -81,15 +89,7 @@ main: kit: entity: branch_with_protection: {
               lit: "rename"
             }
           ]
-          select: {
-            "$action": "rename"
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

@@ -105,7 +105,7 @@ if (0 < caseSelector.length) {
     (0, node_test_1.test)('happy', async () => {
         node_assert_1.default.equal((0, __2.main)(), 'main');
     });
-    (0, node_test_1.test)('compact-field-attributes', async () => {
+    (0, node_test_1.test)('compact-model-attributes', async () => {
         const selected = cases.filter(c => ['solar', 'petstore', 'taxonomy', 'foo', 'linear', 'shopifystorefront'].includes(c.name));
         const { fs } = prepfs(selected);
         let fieldCount = 0;
@@ -117,6 +117,28 @@ if (0 < caseSelector.length) {
             });
             node_assert_1.default.ok(result.ok, fullname(c) + ': build failed');
             for (const entity of Object.values(result.apimodel.main.kit.entity)) {
+                for (const operation of Object.values(entity.op ?? {})) {
+                    for (const point of operation.points ?? []) {
+                        node_assert_1.default.equal(typeof point.m, 'string');
+                        node_assert_1.default.equal(typeof point.o, 'string');
+                        for (const key of ['active', 'kind', 'method', 'orig', 'segments', 'args',
+                            'select', 'rename', 'transform', 'contract', 'live', 'graphql']) {
+                            node_assert_1.default.ok(!(key in point), fullname(c) + ': legacy point attribute ' + key);
+                        }
+                        for (const [kind, args] of Object.entries(point.g ?? {})) {
+                            node_assert_1.default.ok(Array.isArray(args), fullname(c) + ': arguments must be a list');
+                            for (const arg of args) {
+                                node_assert_1.default.equal(arg.k, kind === 'params' ? 'param' : kind);
+                                node_assert_1.default.equal(typeof arg.n, 'string');
+                                node_assert_1.default.equal(typeof arg.r, 'boolean');
+                                node_assert_1.default.ok(arg.t != null);
+                                for (const key of ['active', 'kind', 'name', 'orig', 'reqd', 'type', 'example']) {
+                                    node_assert_1.default.ok(!(key in arg), fullname(c) + ': legacy argument attribute ' + key);
+                                }
+                            }
+                        }
+                    }
+                }
                 node_assert_1.default.ok(entity.fields != null && typeof entity.fields === 'object' &&
                     !Array.isArray(entity.fields), fullname(c) + ': fields must be a map');
                 for (const [name, field] of Object.entries(entity.fields)) {

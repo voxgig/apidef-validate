@@ -24,38 +24,44 @@ main: kit: entity: comment: {
       name: "remove"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "comment_public_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "story_id"
-                orig: "story_public_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /api/v3/stories/{story-public-id}/comments/{comment-public-id}"
             source: "openapi3"
             version: 2
           }
-          method: "DELETE"
-          orig: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "comment_public_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "story_id"
+                or: "story_public_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}"
+          q: {
+            exist: [
+              "id"
+              "story_id"
+            ]
+          }
+          r: {
             param: {
               "comment-public-id": "id"
               "story-public-id": "story_id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "api"
             }
@@ -75,13 +81,7 @@ main: kit: entity: comment: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "id"
-              "story_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

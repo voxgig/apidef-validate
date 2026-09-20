@@ -24,45 +24,52 @@ main: kit: entity: enterprise_team_membership: {
       name: "remove"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "enterprise"
-                orig: "enterprise"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "id"
-                orig: "username"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "team_id"
-                orig: "enterprise_team"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "DELETE /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"
             source: "openapi3"
             version: 2
           }
-          method: "DELETE"
-          orig: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "enterprise"
+                or: "enterprise"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "team_id"
+                or: "enterprise_team"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"
+          q: {
+            exist: [
+              "enterprise"
+              "id"
+              "team_id"
+            ]
+          }
+          r: {
             param: {
               "enterprise-team": "team_id"
               username: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "enterprises"
             }
@@ -82,14 +89,7 @@ main: kit: entity: enterprise_team_membership: {
               var: "id"
             }
           ]
-          select: {
-            exist: [
-              "enterprise"
-              "id"
-              "team_id"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }

@@ -208,70 +208,80 @@ main: kit: entity: review_comment: {
       name: "list"
       points: [
         {
-          args: {
-            params: [
-              {
-                kind: "param"
-                name: "id"
-                orig: "review_id"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "owner"
-                orig: "owner"
-                reqd: true
-                type: "`$STRING`"
-              }
-              {
-                kind: "param"
-                name: "pull_id"
-                orig: "pull_number"
-                reqd: true
-                type: "`$INTEGER`"
-              }
-              {
-                kind: "param"
-                name: "repo"
-                orig: "repo"
-                reqd: true
-                type: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                example: 1
-                kind: "query"
-                name: "page"
-                orig: "page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-              {
-                example: 30
-                kind: "query"
-                name: "per_page"
-                orig: "per_page"
-                reqd: false
-                type: "`$INTEGER`"
-              }
-            ]
-          }
-          contract: {
+          co: {
             id: "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments"
             source: "openapi3"
             version: 2
           }
-          method: "GET"
-          orig: "/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments"
-          rename: {
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "review_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "pull_id"
+                or: "pull_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "page"
+              "per_page"
+              "pull_id"
+              "repo"
+            ]
+          }
+          r: {
             param: {
               pull_number: "pull_id"
               review_id: "id"
             }
           }
-          segments: [
+          s: [
             {
               lit: "repos"
             }
@@ -297,17 +307,7 @@ main: kit: entity: review_comment: {
               lit: "comments"
             }
           ]
-          select: {
-            exist: [
-              "id"
-              "owner"
-              "page"
-              "per_page"
-              "pull_id"
-              "repo"
-            ]
-          }
-          transform: {
+          t: {
             req: "`reqdata`"
             res: "`body`"
           }
