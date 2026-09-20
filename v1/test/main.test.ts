@@ -127,6 +127,7 @@ describe('main', () => {
       ['solar', 'petstore', 'taxonomy', 'foo', 'linear', 'shopifystorefront'].includes(c.name))
     const { fs } = prepfs(selected)
     let fieldCount = 0
+    const stepFields = new Set<string>()
     for (const c of selected) {
       await prepCaseGuide(c, fs)
       const build = await makeBuild(c, fs)
@@ -134,6 +135,22 @@ describe('main', () => {
         parse: true, guide: true, transformers: true, builders: true, generate: true,
       })
       assert.ok(result.ok, fullname(c) + ': build failed')
+      for (const flow of Object.values(result.apimodel.main.kit.flow) as any[]) {
+        for (const step of flow.step ?? []) {
+          Object.keys(step).forEach(key => stepFields.add(key))
+          assert.equal(typeof step.o, 'string')
+          for (const key of ['active', 'op', 'input', 'match', 'data', 'spec', 'valid']) {
+            assert.ok(!(key in step), fullname(c) + ': legacy flow-step attribute ' + key)
+          }
+          for (const key of ['i', 'm', 'd']) {
+            if (key in step) assert.ok(step[key] && typeof step[key] === 'object' &&
+              !Array.isArray(step[key]), fullname(c) + ': invalid step ' + key)
+          }
+          for (const key of ['s', 'v']) {
+            if (key in step) assert.ok(Array.isArray(step[key]), fullname(c) + ': invalid step ' + key)
+          }
+        }
+      }
       for (const entity of Object.values(result.apimodel.main.kit.entity) as any[]) {
         for (const operation of Object.values(entity.op ?? {}) as any[]) {
           for (const point of operation.points ?? []) {
@@ -173,7 +190,12 @@ describe('main', () => {
         }
       }
     }
-    if (selected.length) assert.ok(fieldCount > 0)
+    if (selected.length) {
+      assert.ok(fieldCount > 0)
+      for (const key of ['o', 'i', 'm', 'd', 's', 'v']) {
+        assert.ok(stepFields.has(key), 'corpus must exercise flow-step attribute ' + key)
+      }
+    }
   })
 
 

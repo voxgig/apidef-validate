@@ -151,6 +151,8 @@ func TestValidate(t *testing.T) {
 	})
 
 	t.Run("model-case", func(t *testing.T) {
+		stepFields := map[string]bool{}
+		caseCount := 0
 		for _, c := range selectedCases() {
 			c := c
 			t.Run(fullName(c), func(t *testing.T) {
@@ -161,6 +163,7 @@ func TestValidate(t *testing.T) {
 					"builders":     true,
 					"generate":     true,
 				})
+				caseCount++
 				main, ok := result.ApiModel["main"].(map[string]any)
 				if !ok {
 					t.Fatal("model main must be a map")
@@ -168,6 +171,39 @@ func TestValidate(t *testing.T) {
 				kit, ok := main[apidef.KIT].(map[string]any)
 				if !ok {
 					t.Fatal("model kit must be a map")
+				}
+				flows, _ := kit["flow"].(map[string]any)
+				for name, value := range flows {
+					flow := value.(map[string]any)
+					steps, _ := flow["step"].([]any)
+					for _, value := range steps {
+						step := value.(map[string]any)
+						for key := range step {
+							stepFields[key] = true
+						}
+						if _, ok := step["o"].(string); !ok {
+							t.Errorf("%s: missing flow-step operation", name)
+						}
+						for _, key := range []string{"active", "op", "input", "match", "data", "spec", "valid"} {
+							if _, exists := step[key]; exists {
+								t.Errorf("%s: legacy flow-step attribute %s", name, key)
+							}
+						}
+						for _, key := range []string{"i", "m", "d"} {
+							if value, exists := step[key]; exists {
+								if _, ok := value.(map[string]any); !ok {
+									t.Errorf("%s: invalid step %s", name, key)
+								}
+							}
+						}
+						for _, key := range []string{"s", "v"} {
+							if value, exists := step[key]; exists {
+								if _, ok := value.([]any); !ok {
+									t.Errorf("%s: invalid step %s", name, key)
+								}
+							}
+						}
+					}
 				}
 				entities, ok := kit["entity"].(map[string]any)
 				if !ok {
@@ -257,6 +293,13 @@ func TestValidate(t *testing.T) {
 				t.Logf("%s: model OK, %d entities, steps=%v",
 					fullName(c), len(entities), result.Steps)
 			})
+		}
+		if caseCount > 0 {
+			for _, key := range []string{"o", "i", "m", "d", "s", "v"} {
+				if !stepFields[key] {
+					t.Errorf("corpus must exercise flow-step attribute %s", key)
+				}
+			}
 		}
 	})
 }
