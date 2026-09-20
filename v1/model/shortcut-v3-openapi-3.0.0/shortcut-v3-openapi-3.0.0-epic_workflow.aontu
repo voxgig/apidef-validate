@@ -4,72 +4,82 @@ main: kit: entity: epic_workflow: {
 
   alias: field: {}
 
-  fields: [
-    {
-      format: "css-color"
-      name: "color"
-      req: false
-      short: "The hex color for this Epic State."
-      type: "`$STRING`"
+  fields: {
+    color: {
+      fo: "css-color"
+      h: "Color"
+      n: "color"
+      r: false
+      sh: "The hex color for this Epic State."
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "created_at"
-      req: true
-      short: "The time/date the Epic State was created."
-      type: "`$STRING`"
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      sh: "The time/date the Epic State was created."
+      t: "`$STRING`"
     }
-    {
-      name: "description"
-      req: true
-      short: "The description of what sort of Epics belong in that Epic State."
-      type: "`$STRING`"
+    description: {
+      h: "Description"
+      n: "description"
+      r: true
+      sh: "The description of what sort of Epics belong in that Epic State."
+      t: "`$STRING`"
     }
-    {
-      name: "entity_type"
-      req: true
-      short: "A string description of this resource."
-      type: "`$STRING`"
+    entity_type: {
+      h: "Entity Type"
+      n: "entity_type"
+      r: true
+      sh: "A string description of this resource."
+      t: "`$STRING`"
     }
-    {
-      name: "global_id"
-      req: true
-      type: "`$STRING`"
+    global_id: {
+      h: "Global Id"
+      n: "global_id"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "int64"
-      name: "id"
-      req: true
-      short: "The unique ID of the Epic State."
-      type: "`$INTEGER`"
+    id: {
+      fo: "int64"
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "The unique ID of the Epic State."
+      t: "`$INTEGER`"
     }
-    {
-      name: "name"
-      req: true
-      short: "The Epic State's name."
-      type: "`$STRING`"
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "The Epic State's name."
+      t: "`$STRING`"
     }
-    {
-      format: "int64"
-      name: "position"
-      req: true
-      short: "The position that the Epic State is in, starting with 0 at the left."
-      type: "`$INTEGER`"
+    position: {
+      fo: "int64"
+      h: "Position"
+      n: "position"
+      r: true
+      sh: "The position that the Epic State is in, starting with 0 at the left."
+      t: "`$INTEGER`"
     }
-    {
-      name: "type"
-      req: true
-      short: "The type of Epic State (Unstarted, Started, or Done)"
-      type: "`$STRING`"
+    type: {
+      h: "Type"
+      n: "type"
+      r: true
+      sh: "The type of Epic State (Unstarted, Started, or Done)"
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "updated_at"
-      req: true
-      short: "When the Epic State was last updated."
-      type: "`$STRING`"
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: true
+      sh: "When the Epic State was last updated."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -84,9 +94,8 @@ main: kit: entity: epic_workflow: {
         {
           contract: {
             id: "GET /api/v3/epic-workflow"
-            json: "{\"operationId\":\"getEpicWorkflow\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"additionalProperties\":false,\"description\":\"Epic Workflow is the array of defined Epic States. Epic Workflow can be queried using the API but must be updated in the Shortcut UI. \",\"properties\":{\"created_at\":{\"description\":\"The date the Epic Workflow was created.\",\"format\":\"date-time\",\"type\":\"string\"},\"default_epic_state_id\":{\"description\":\"The unique ID of the default Epic State that new Epics are assigned by default.\",\"format\":\"int64\",\"type\":\"integer\"},\"entity_type\":{\"description\":\"A string description of this resource.\",\"type\":\"string\"},\"epic_states\":{\"description\":\"A map of the Epic States in this Epic Workflow.\",\"items\":{\"additionalProperties\":false,\"description\":\"Epic State is any of the at least 3 columns. Epic States correspond to one of 3 types: Unstarted, Started, or Done.\",\"properties\":{\"color\":{\"description\":\"The hex color for this Epic State.\",\"format\":\"css-color\",\"minLength\":1,\"pattern\":\"^#[a-fA-F0-9]{6}$\",\"type\":\"string\"},\"created_at\":{\"description\":\"The time/date the Epic State was created.\",\"format\":\"date-time\",\"type\":\"string\"},\"description\":{\"description\":\"The description of what sort of Epics belong in that Epic State.\",\"type\":\"string\"},\"entity_type\":{\"description\":\"A string description of this resource.\",\"type\":\"string\"},\"global_id\":{\"type\":\"string\"},\"id\":{\"description\":\"The unique ID of the Epic State.\",\"format\":\"int64\",\"type\":\"integer\"},\"name\":{\"description\":\"The Epic State's name.\",\"type\":\"string\"},\"position\":{\"description\":\"The position that the Epic State is in, starting with 0 at the left.\",\"format\":\"int64\",\"type\":\"integer\"},\"type\":{\"description\":\"The type of Epic State (Unstarted, Started, or Done)\",\"type\":\"string\"},\"updated_at\":{\"description\":\"When the Epic State was last updated.\",\"format\":\"date-time\",\"type\":\"string\"}},\"required\":[\"description\",\"entity_type\",\"name\",\"global_id\",\"type\",\"updated_at\",\"id\",\"position\",\"created_at\"],\"type\":\"object\"},\"type\":\"array\"},\"id\":{\"description\":\"The unique ID of the Epic Workflow.\",\"format\":\"int64\",\"type\":\"integer\"},\"updated_at\":{\"description\":\"The date the Epic Workflow was updated.\",\"format\":\"date-time\",\"type\":\"string\"}},\"required\":[\"entity_type\",\"id\",\"created_at\",\"updated_at\",\"default_epic_state_id\",\"epic_states\"],\"type\":\"object\"}}},\"description\":\"Resource\"},\"400\":{\"description\":\"Schema mismatch\"},\"404\":{\"description\":\"Resource does not exist\"},\"422\":{\"description\":\"Unprocessable\"}},\"security\":[{\"api_token\":[]}],\"securitySchemes\":{\"api_token\":{\"in\":\"header\",\"name\":\"Shortcut-Token\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/api/v3/epic-workflow"

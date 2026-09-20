@@ -85,3 +85,15 @@ This README is the doorway. The tutorial, how-to guides, reference, and
 explanation for apidef itself are in the
 [apidef documentation](https://github.com/voxgig/apidef/tree/main/docs),
 and the prose here follows [the style guide](STYLE-GUIDE.md).
+
+To reset the snapshots to the current apidef output:
+
+```bash
+cd v1
+npm run test-update
+npm test
+```
+
+The reset updates expected and generated guides and entity models. It also
+removes stale entity snapshots for the selected cases. Set `TEST_CASE` to
+limit the reset, for example `TEST_CASE=solar npm run test-update`.

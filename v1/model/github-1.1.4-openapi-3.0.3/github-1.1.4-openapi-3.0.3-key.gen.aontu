@@ -4,65 +4,73 @@ main: kit: entity: key: {
 
   alias: field: {}
 
-  fields: [
-    {
-      format: "date-time"
-      name: "created_at"
+  fields: {
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
       op: {
         list: {
           req: false
           type: "`$STRING`"
         }
       }
-      req: true
-      type: "`$STRING`"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "int64"
-      name: "id"
-      req: true
-      type: "`$INTEGER`"
+    id: {
+      fo: "int64"
+      h: "Id"
+      n: "id"
+      r: true
+      t: "`$INTEGER`"
     }
-    {
-      name: "key"
-      req: true
-      short: "The public SSH key to add to your GitHub account."
-      type: "`$STRING`"
+    key: {
+      h: "Key"
+      n: "key"
+      r: true
+      sh: "The public SSH key to add to your GitHub account."
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "last_used"
-      req: false
-      type: "`$STRING`"
+    last_used: {
+      fo: "date-time"
+      h: "Last Used"
+      n: "last_used"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "read_only"
-      req: true
-      type: "`$BOOLEAN`"
+    read_only: {
+      h: "Read Only"
+      n: "read_only"
+      r: true
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "title"
+    title: {
+      h: "Title"
+      n: "title"
       op: {
         create: {
           req: false
           type: "`$STRING`"
         }
       }
-      req: true
-      short: "A descriptive name for the new key."
-      type: "`$STRING`"
+      r: true
+      sh: "A descriptive name for the new key."
+      t: "`$STRING`"
     }
-    {
-      name: "url"
-      req: true
-      type: "`$STRING`"
+    url: {
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "verified"
-      req: true
-      type: "`$BOOLEAN`"
+    verified: {
+      h: "Verified"
+      n: "verified"
+      r: true
+      t: "`$BOOLEAN`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -77,9 +85,8 @@ main: kit: entity: key: {
         {
           contract: {
             id: "POST /user/keys"
-            json: "{\"operationId\":\"users/create-public-ssh-key-for-authenticated-user\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"key\":\"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234\",\"title\":\"ssh-rsa AAAAB3NzaC1yc2EAAA\"}}},\"schema\":{\"properties\":{\"key\":{\"description\":\"The public SSH key to add to your GitHub account.\",\"pattern\":\"^ssh-(rsa|dss|ed25519) |^ecdsa-sha2-nistp(256|384|521) \",\"type\":\"string\"},\"title\":{\"description\":\"A descriptive name for the new key.\",\"example\":\"Personal MacBook Air\",\"type\":\"string\"}},\"required\":[\"key\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"created_at\":\"2020-06-11T21:31:57Z\",\"id\":2,\"key\":\"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234\",\"read_only\":false,\"title\":\"ssh-rsa AAAAB3NzaC1yc2EAAA\",\"url\":\"https://api.github.com/user/keys/2\",\"verified\":false}}},\"schema\":{\"description\":\"Key\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"key\":{\"type\":\"string\"},\"last_used\":{\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"read_only\":{\"type\":\"boolean\"},\"title\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"},\"verified\":{\"type\":\"boolean\"}},\"required\":[\"key\",\"id\",\"url\",\"title\",\"created_at\",\"verified\",\"read_only\"],\"title\":\"Key\",\"type\":\"object\"}}},\"description\":\"Response\"},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/user/keys"
@@ -135,9 +142,8 @@ main: kit: entity: key: {
           }
           contract: {
             id: "GET /users/{username}/keys"
-            json: "{\"operationId\":\"users/list-public-keys-for-user\",\"parameters\":[{\"description\":\"The handle for the GitHub user account.\",\"in\":\"path\",\"name\":\"username\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"id\":1,\"key\":\"ssh-rsa AAA...\"}]}},\"schema\":{\"items\":{\"description\":\"Key Simple\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"type\":\"integer\"},\"key\":{\"type\":\"string\"},\"last_used\":{\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"}},\"required\":[\"key\",\"id\"],\"title\":\"Key Simple\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/users/{username}/keys"
@@ -187,9 +193,8 @@ main: kit: entity: key: {
           }
           contract: {
             id: "GET /user/keys"
-            json: "{\"operationId\":\"users/list-public-ssh-keys-for-authenticated-user\",\"parameters\":[{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"created_at\":\"2020-06-11T21:31:57Z\",\"id\":2,\"key\":\"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234\",\"read_only\":false,\"title\":\"ssh-rsa AAAAB3NzaC1yc2EAAA\",\"url\":\"https://api.github.com/user/keys/2\",\"verified\":false},{\"created_at\":\"2020-07-11T21:31:57Z\",\"id\":3,\"key\":\"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJy931234\",\"read_only\":false,\"title\":\"ssh-rsa AAAAB3NzaC1yc2EAAB\",\"url\":\"https://api.github.com/user/keys/3\",\"verified\":false}]}},\"schema\":{\"items\":{\"description\":\"Key\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"key\":{\"type\":\"string\"},\"last_used\":{\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"read_only\":{\"type\":\"boolean\"},\"title\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"},\"verified\":{\"type\":\"boolean\"}},\"required\":[\"key\",\"id\",\"url\",\"title\",\"created_at\",\"verified\",\"read_only\"],\"title\":\"Key\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/user/keys"
@@ -231,9 +236,8 @@ main: kit: entity: key: {
           }
           contract: {
             id: "GET /user/keys/{key_id}"
-            json: "{\"operationId\":\"users/get-public-ssh-key-for-authenticated-user\",\"parameters\":[{\"description\":\"The unique identifier of the key.\",\"in\":\"path\",\"name\":\"key_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"created_at\":\"2020-06-11T21:31:57Z\",\"id\":2,\"key\":\"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234\",\"read_only\":false,\"title\":\"ssh-rsa AAAAB3NzaC1yc2EAAA\",\"url\":\"https://api.github.com/user/keys/2\",\"verified\":false}}},\"schema\":{\"description\":\"Key\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"key\":{\"type\":\"string\"},\"last_used\":{\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"read_only\":{\"type\":\"boolean\"},\"title\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"},\"verified\":{\"type\":\"boolean\"}},\"required\":[\"key\",\"id\",\"url\",\"title\",\"created_at\",\"verified\",\"read_only\"],\"title\":\"Key\",\"type\":\"object\"}}},\"description\":\"Response\"},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/user/keys/{key_id}"

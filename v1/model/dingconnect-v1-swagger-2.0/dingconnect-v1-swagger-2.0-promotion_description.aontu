@@ -4,25 +4,28 @@ main: kit: entity: promotion_description: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "ErrorCodes"
-      req: true
-      type: "`$ARRAY`"
+  fields: {
+    ErrorCodes: {
+      h: "Error Codes"
+      n: "ErrorCodes"
+      r: true
+      t: "`$ARRAY`"
     }
-    {
-      name: "Items"
-      req: true
-      short: "A localized list of promotions."
-      type: "`$ARRAY`"
+    Items: {
+      h: "Items"
+      n: "Items"
+      r: true
+      sh: "A localized list of promotions."
+      t: "`$ARRAY`"
     }
-    {
-      format: "int32"
-      name: "ResultCode"
-      req: true
-      type: "`$INTEGER`"
+    ResultCode: {
+      fo: "int32"
+      h: "Result Code"
+      n: "ResultCode"
+      r: true
+      t: "`$INTEGER`"
     }
-  ]
+  }
 
   name: "promotion_description"
   op: {
@@ -52,9 +55,8 @@ main: kit: entity: promotion_description: {
           }
           contract: {
             id: "GET /api/V1/GetPromotionDescriptions"
-            json: "{\"operationId\":\"GetPromotionDescriptions\",\"parameters\":[{\"collectionFormat\":\"multi\",\"description\":\"Filter the list to promotion descriptions with the submitted language codes.\",\"in\":\"query\",\"items\":{\"type\":\"string\"},\"name\":\"languageCodes\",\"type\":\"array\"},{\"description\":\"Correlates HTTP requests between a client and server\",\"in\":\"header\",\"name\":\"X-Correlation-Id\",\"type\":\"String\"}],\"produces\":[\"application/json\",\"text/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"OK\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"ErrorCodes\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"Code\":{\"description\":\"The code that can be used to lookup the explanatory message associated with the error\",\"type\":\"string\"},\"Context\":{\"description\":\"API specific context as to the reason for the specific code\",\"type\":\"string\"}},\"required\":[\"Code\"],\"type\":\"object\"},\"type\":\"array\"},\"Items\":{\"description\":\"A localized list of promotions.\",\"items\":{\"additionalProperties\":false,\"properties\":{\"BonusValidity\":{\"description\":\"Different from ValidityPeriodIso as it has a non Iso value\",\"type\":\"string\"},\"Dates\":{\"description\":\"Dates where the promotion is available within the ValidityPeriod\",\"type\":\"string\"},\"Headline\":{\"description\":\"Short description of the promotion\",\"type\":\"string\"},\"LanguageCode\":{\"type\":\"string\"},\"LocalizationKey\":{\"type\":\"string\"},\"PromotionType\":{\"description\":\"Short description of the type of promotion\",\"type\":\"string\"},\"SendAmounts\":{\"description\":\"Amount ranges in distributor's currency where bonus are applicable\",\"items\":{\"additionalProperties\":false,\"properties\":{\"Bonuses\":{\"description\":\"List of applicable bonuses\",\"items\":{\"additionalProperties\":false,\"properties\":{\"BonusType\":{\"description\":\"What type of bonus will the promotion give\",\"type\":\"string\"},\"Quantity\":{\"description\":\"Number of items for this bonus\",\"format\":\"decimal\",\"type\":\"number\"},\"Validity\":{\"description\":\"Bonus validity in days\",\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"BonusType\",\"Quantity\",\"Validity\"],\"type\":\"object\"},\"type\":\"array\"},\"Maximum\":{\"description\":\"The maximum amount where bonus are applicable\",\"format\":\"decimal\",\"type\":\"number\"},\"Minimum\":{\"description\":\"The minumum amount where bonus are applicable\",\"format\":\"decimal\",\"type\":\"number\"}},\"required\":[\"Minimum\",\"Maximum\",\"Bonuses\"],\"type\":\"object\"},\"type\":\"array\"},\"TermsAndConditionsMarkDown\":{\"description\":\"Terms and conditions of the promotion\",\"type\":\"string\"}},\"required\":[\"Dates\",\"Headline\",\"TermsAndConditionsMarkDown\",\"BonusValidity\",\"PromotionType\",\"LocalizationKey\",\"LanguageCode\",\"SendAmounts\"],\"type\":\"object\"},\"type\":\"array\"},\"ResultCode\":{\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"ResultCode\",\"ErrorCodes\",\"Items\"],\"type\":\"object\"}},\"400\":{\"description\":\"BadRequest\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"ErrorCodes\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"Code\":{\"description\":\"The code that can be used to lookup the explanatory message associated with the error\",\"type\":\"string\"},\"Context\":{\"description\":\"API specific context as to the reason for the specific code\",\"type\":\"string\"}},\"required\":[\"Code\"],\"type\":\"object\"},\"type\":\"array\"},\"ResultCode\":{\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"ResultCode\",\"ErrorCodes\"],\"type\":\"object\"}},\"401\":{\"description\":\"Unauthorized\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"ErrorCodes\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"Code\":{\"description\":\"The code that can be used to lookup the explanatory message associated with the error\",\"type\":\"string\"},\"Context\":{\"description\":\"API specific context as to the reason for the specific code\",\"type\":\"string\"}},\"required\":[\"Code\"],\"type\":\"object\"},\"type\":\"array\"},\"ResultCode\":{\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"ResultCode\",\"ErrorCodes\"],\"type\":\"object\"}},\"500\":{\"description\":\"InternalServerError\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"ErrorCodes\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"Code\":{\"description\":\"The code that can be used to lookup the explanatory message associated with the error\",\"type\":\"string\"},\"Context\":{\"description\":\"API specific context as to the reason for the specific code\",\"type\":\"string\"}},\"required\":[\"Code\"],\"type\":\"object\"},\"type\":\"array\"},\"ResultCode\":{\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"ResultCode\",\"ErrorCodes\"],\"type\":\"object\"}},\"503\":{\"description\":\"ServiceUnavailable\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"ErrorCodes\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"Code\":{\"description\":\"The code that can be used to lookup the explanatory message associated with the error\",\"type\":\"string\"},\"Context\":{\"description\":\"API specific context as to the reason for the specific code\",\"type\":\"string\"}},\"required\":[\"Code\"],\"type\":\"object\"},\"type\":\"array\"},\"ResultCode\":{\"format\":\"int32\",\"type\":\"integer\"}},\"required\":[\"ResultCode\",\"ErrorCodes\"],\"type\":\"object\"}}},\"securitySchemes\":{\"APIKeyHeader\":{\"description\":\"Use the API key that was issued to you.\",\"in\":\"header\",\"name\":\"api_key\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/api/V1/GetPromotionDescriptions"

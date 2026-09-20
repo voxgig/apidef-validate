@@ -4,38 +4,43 @@ main: kit: entity: actions_organization_permission: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "allowed_actions"
-      req: false
-      short: "The permissions policy that controls the actions and reusable workflows that are allowed to run."
-      type: "`$STRING`"
+  fields: {
+    allowed_actions: {
+      h: "Allowed Actions"
+      n: "allowed_actions"
+      r: false
+      sh: "The permissions policy that controls the actions and reusable workflows that are allowed to run."
+      t: "`$STRING`"
     }
-    {
-      name: "enabled_repositories"
-      req: true
-      short: "The policy that controls the repositories in the organization that are allowed to run GitHub Actions."
-      type: "`$STRING`"
+    enabled_repositories: {
+      h: "Enabled Repositories"
+      n: "enabled_repositories"
+      r: true
+      sh: "The policy that controls the repositories in the organization that are allowed to run GitHub Actions."
+      t: "`$STRING`"
     }
-    {
-      name: "selected_actions_url"
-      req: false
-      short: "The API URL to use to get or set the actions and reusable workflows that are allowed to run, when `allowed_actions` is set to `selected`."
-      type: "`$STRING`"
+    selected_actions_url: {
+      h: "Selected Actions Url"
+      n: "selected_actions_url"
+      r: false
+      sh: "The API URL to use to get or set the actions and reusable workflows that are allowed to run, when `allowed_actions` is set to `selected`."
+      t: "`$STRING`"
     }
-    {
-      name: "selected_repositories_url"
-      req: false
-      short: "The API URL to use to get or set the selected repositories that are allowed to run GitHub Actions, when `enabled_repositories` is set to `selected`."
-      type: "`$STRING`"
+    selected_repositories_url: {
+      h: "Selected Repositories Url"
+      n: "selected_repositories_url"
+      r: false
+      sh: "The API URL to use to get or set the selected repositories that are allowed to run GitHub Actions, when `enabled_repositories` is set to `selected`."
+      t: "`$STRING`"
     }
-    {
-      name: "sha_pinning_required"
-      req: false
-      short: "Whether actions must be pinned to a full-length commit SHA."
-      type: "`$BOOLEAN`"
+    sha_pinning_required: {
+      h: "Sha Pinning Required"
+      n: "sha_pinning_required"
+      r: false
+      sh: "Whether actions must be pinned to a full-length commit SHA."
+      t: "`$BOOLEAN`"
     }
-  ]
+  }
 
   name: "actions_organization_permission"
   op: {
@@ -56,9 +61,8 @@ main: kit: entity: actions_organization_permission: {
           }
           contract: {
             id: "GET /orgs/{org}/actions/permissions"
-            json: "{\"operationId\":\"actions/get-github-actions-permissions-organization\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"allowed_actions\":\"selected\",\"enabled_repositories\":\"all\",\"selected_actions_url\":\"https://api.github.com/organizations/42/actions/permissions/selected-actions\",\"sha_pinning_required\":true}}},\"schema\":{\"properties\":{\"allowed_actions\":{\"description\":\"The permissions policy that controls the actions and reusable workflows that are allowed to run.\",\"enum\":[\"all\",\"local_only\",\"selected\"],\"type\":\"string\"},\"enabled_repositories\":{\"description\":\"The policy that controls the repositories in the organization that are allowed to run GitHub Actions.\",\"enum\":[\"all\",\"none\",\"selected\"],\"type\":\"string\"},\"selected_actions_url\":{\"description\":\"The API URL to use to get or set the actions and reusable workflows that are allowed to run, when `allowed_actions` is set to `selected`.\",\"type\":\"string\"},\"selected_repositories_url\":{\"description\":\"The API URL to use to get or set the selected repositories that are allowed to run GitHub Actions, when `enabled_repositories` is set to `selected`.\",\"type\":\"string\"},\"sha_pinning_required\":{\"description\":\"Whether actions must be pinned to a full-length commit SHA.\",\"type\":\"boolean\"}},\"required\":[\"enabled_repositories\"],\"type\":\"object\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/actions/permissions"

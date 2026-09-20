@@ -164,6 +164,31 @@ func TestValidate(t *testing.T) {
 				main, _ := result.ApiModel["main"].(map[string]any)
 				kit, _ := main[apidef.KIT].(map[string]any)
 				entities, _ := kit["entity"].(map[string]any)
+				for name, value := range entities {
+					entity, _ := value.(map[string]any)
+					fields, _ := entity["fields"].(map[string]any)
+					for fieldName, value := range fields {
+						field := value.(map[string]any)
+						if field["n"] != fieldName || field["h"] != apidef.HumanTitle(fieldName) {
+							t.Errorf("%s: field key or title does not match n: %v", name, field)
+						}
+						for _, key := range []string{"name", "req", "type", "active", "short", "readOnly", "writeOnly", "deprecated", "format"} {
+							if _, exists := field[key]; exists {
+								t.Errorf("%s: legacy field attribute %s", name, key)
+							}
+						}
+						if _, ok := field["n"].(string); !ok {
+							t.Errorf("%s: missing field name", name)
+						}
+						if _, ok := field["r"].(bool); !ok {
+							t.Errorf("%s: missing field required flag", name)
+						}
+						if field["t"] == nil {
+							t.Errorf("%s: missing field type", name)
+						}
+					}
+				}
+
 				t.Logf("%s: model OK, %d entities, steps=%v",
 					fullName(c), len(entities), result.Steps)
 			})

@@ -4,9 +4,10 @@ main: kit: entity: org_hook: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "active"
+  fields: {
+    active: {
+      h: "Active"
+      n: "active"
       op: {
         create: {
           req: false
@@ -17,30 +18,34 @@ main: kit: entity: org_hook: {
           type: "`$BOOLEAN`"
         }
       }
-      req: true
-      short: "Determines if notifications are sent when the webhook is triggered."
-      type: "`$BOOLEAN`"
+      r: true
+      sh: "Determines if notifications are sent when the webhook is triggered."
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "config"
-      req: true
-      short: "Key/value pairs to provide settings for this webhook."
-      type: "`$OBJECT`"
+    config: {
+      h: "Config"
+      n: "config"
+      r: true
+      sh: "Key/value pairs to provide settings for this webhook."
+      t: "`$OBJECT`"
     }
-    {
-      format: "date-time"
-      name: "created_at"
-      req: true
-      type: "`$STRING`"
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "deliveries_url"
-      req: false
-      type: "`$STRING`"
+    deliveries_url: {
+      fo: "uri"
+      h: "Deliveries Url"
+      n: "deliveries_url"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "events"
+    events: {
+      h: "Events"
+      n: "events"
       op: {
         create: {
           req: false
@@ -51,51 +56,57 @@ main: kit: entity: org_hook: {
           type: "`$ARRAY`"
         }
       }
-      req: true
-      short: "Determines what [events](https://docs.github.com/webhooks/event-payloads) the hook is triggered for."
-      type: "`$ARRAY`"
+      r: true
+      sh: "Determines what [events](https://docs.github.com/webhooks/event-payloads) the hook is triggered for."
+      t: "`$ARRAY`"
     }
-    {
-      name: "id"
-      req: true
-      type: "`$INTEGER`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      t: "`$INTEGER`"
     }
-    {
-      name: "name"
+    name: {
+      h: "Name"
+      n: "name"
       op: {
         update: {
           req: false
           type: "`$STRING`"
         }
       }
-      req: true
-      short: "Must be passed as \"web\"."
-      type: "`$STRING`"
+      r: true
+      sh: "Must be passed as \"web\"."
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "ping_url"
-      req: true
-      type: "`$STRING`"
+    ping_url: {
+      fo: "uri"
+      h: "Ping Url"
+      n: "ping_url"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "type"
-      req: true
-      type: "`$STRING`"
+    type: {
+      h: "Type"
+      n: "type"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "updated_at"
-      req: true
-      type: "`$STRING`"
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "url"
-      req: true
-      type: "`$STRING`"
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -121,9 +132,8 @@ main: kit: entity: org_hook: {
           }
           contract: {
             id: "POST /orgs/{org}/hooks"
-            json: "{\"operationId\":\"orgs/create-webhook\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"active\":true,\"config\":{\"content_type\":\"json\",\"url\":\"http://example.com/webhook\"},\"events\":[\"push\",\"pull_request\"],\"name\":\"web\"}}},\"schema\":{\"properties\":{\"active\":{\"default\":true,\"description\":\"Determines if notifications are sent when the webhook is triggered. Set to `true` to send notifications.\",\"type\":\"boolean\"},\"config\":{\"description\":\"Key/value pairs to provide settings for this webhook.\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"password\":{\"example\":\"\\\"password\\\"\",\"type\":\"string\"},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"},\"username\":{\"example\":\"\\\"kdaigle\\\"\",\"type\":\"string\"}},\"required\":[\"url\"],\"type\":\"object\"},\"events\":{\"default\":[\"push\"],\"description\":\"Determines what [events](https://docs.github.com/webhooks/event-payloads) the hook is triggered for. Set to `[\\\"*\\\"]` to receive all possible events.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"name\":{\"description\":\"Must be passed as \\\"web\\\".\",\"type\":\"string\"}},\"required\":[\"name\",\"config\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"active\":true,\"config\":{\"content_type\":\"json\",\"url\":\"http://example.com\"},\"created_at\":\"2011-09-06T17:26:27Z\",\"deliveries_url\":\"https://api.github.com/orgs/octocat/hooks/1/deliveries\",\"events\":[\"push\",\"pull_request\"],\"id\":1,\"name\":\"web\",\"ping_url\":\"https://api.github.com/orgs/octocat/hooks/1/pings\",\"type\":\"Organization\",\"updated_at\":\"2011-09-06T20:39:23Z\",\"url\":\"https://api.github.com/orgs/octocat/hooks/1\"}}},\"schema\":{\"description\":\"Org Hook\",\"properties\":{\"active\":{\"example\":true,\"type\":\"boolean\"},\"config\":{\"properties\":{\"content_type\":{\"example\":\"\\\"form\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"example\":\"\\\"0\\\"\",\"type\":\"string\"},\"secret\":{\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"example\":\"\\\"http://example.com/2\\\"\",\"type\":\"string\"}},\"type\":\"object\"},\"created_at\":{\"example\":\"2011-09-06T17:26:27Z\",\"format\":\"date-time\",\"type\":\"string\"},\"deliveries_url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1/deliveries\",\"format\":\"uri\",\"type\":\"string\"},\"events\":{\"example\":[\"push\",\"pull_request\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"id\":{\"example\":1,\"type\":\"integer\"},\"name\":{\"example\":\"web\",\"type\":\"string\"},\"ping_url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1/pings\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"example\":\"2011-09-06T20:39:23Z\",\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"type\",\"name\",\"active\",\"events\",\"config\",\"ping_url\",\"created_at\",\"updated_at\"],\"title\":\"Org Hook\",\"type\":\"object\"}}},\"description\":\"Response\",\"headers\":{\"Location\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1\",\"schema\":{\"type\":\"string\"}}}},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/orgs/{org}/hooks"
@@ -190,9 +200,8 @@ main: kit: entity: org_hook: {
           }
           contract: {
             id: "GET /orgs/{org}/hooks"
-            json: "{\"operationId\":\"orgs/list-webhooks\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"active\":true,\"config\":{\"content_type\":\"json\",\"url\":\"http://example.com\"},\"created_at\":\"2011-09-06T17:26:27Z\",\"deliveries_url\":\"https://api.github.com/orgs/octocat/hooks/1/deliveries\",\"events\":[\"push\",\"pull_request\"],\"id\":1,\"name\":\"web\",\"ping_url\":\"https://api.github.com/orgs/octocat/hooks/1/pings\",\"type\":\"Organization\",\"updated_at\":\"2011-09-06T20:39:23Z\",\"url\":\"https://api.github.com/orgs/octocat/hooks/1\"}]}},\"schema\":{\"items\":{\"description\":\"Org Hook\",\"properties\":{\"active\":{\"example\":true,\"type\":\"boolean\"},\"config\":{\"properties\":{\"content_type\":{\"example\":\"\\\"form\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"example\":\"\\\"0\\\"\",\"type\":\"string\"},\"secret\":{\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"example\":\"\\\"http://example.com/2\\\"\",\"type\":\"string\"}},\"type\":\"object\"},\"created_at\":{\"example\":\"2011-09-06T17:26:27Z\",\"format\":\"date-time\",\"type\":\"string\"},\"deliveries_url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1/deliveries\",\"format\":\"uri\",\"type\":\"string\"},\"events\":{\"example\":[\"push\",\"pull_request\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"id\":{\"example\":1,\"type\":\"integer\"},\"name\":{\"example\":\"web\",\"type\":\"string\"},\"ping_url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1/pings\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"example\":\"2011-09-06T20:39:23Z\",\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"type\",\"name\",\"active\",\"events\",\"config\",\"ping_url\",\"created_at\",\"updated_at\"],\"title\":\"Org Hook\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/hooks"
@@ -250,9 +259,8 @@ main: kit: entity: org_hook: {
           }
           contract: {
             id: "GET /orgs/{org}/hooks/{hook_id}"
-            json: "{\"operationId\":\"orgs/get-webhook\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the hook. You can find this value in the `X-GitHub-Hook-ID` header of a webhook delivery.\",\"in\":\"path\",\"name\":\"hook_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"active\":true,\"config\":{\"content_type\":\"json\",\"url\":\"http://example.com\"},\"created_at\":\"2011-09-06T17:26:27Z\",\"deliveries_url\":\"https://api.github.com/orgs/octocat/hooks/1/deliveries\",\"events\":[\"push\",\"pull_request\"],\"id\":1,\"name\":\"web\",\"ping_url\":\"https://api.github.com/orgs/octocat/hooks/1/pings\",\"type\":\"Organization\",\"updated_at\":\"2011-09-06T20:39:23Z\",\"url\":\"https://api.github.com/orgs/octocat/hooks/1\"}}},\"schema\":{\"description\":\"Org Hook\",\"properties\":{\"active\":{\"example\":true,\"type\":\"boolean\"},\"config\":{\"properties\":{\"content_type\":{\"example\":\"\\\"form\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"example\":\"\\\"0\\\"\",\"type\":\"string\"},\"secret\":{\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"example\":\"\\\"http://example.com/2\\\"\",\"type\":\"string\"}},\"type\":\"object\"},\"created_at\":{\"example\":\"2011-09-06T17:26:27Z\",\"format\":\"date-time\",\"type\":\"string\"},\"deliveries_url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1/deliveries\",\"format\":\"uri\",\"type\":\"string\"},\"events\":{\"example\":[\"push\",\"pull_request\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"id\":{\"example\":1,\"type\":\"integer\"},\"name\":{\"example\":\"web\",\"type\":\"string\"},\"ping_url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1/pings\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"example\":\"2011-09-06T20:39:23Z\",\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"type\",\"name\",\"active\",\"events\",\"config\",\"ping_url\",\"created_at\",\"updated_at\"],\"title\":\"Org Hook\",\"type\":\"object\"}}},\"description\":\"Response\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/hooks/{hook_id}"
@@ -313,9 +321,8 @@ main: kit: entity: org_hook: {
           }
           contract: {
             id: "PATCH /orgs/{org}/hooks/{hook_id}"
-            json: "{\"operationId\":\"orgs/update-webhook\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the hook. You can find this value in the `X-GitHub-Hook-ID` header of a webhook delivery.\",\"in\":\"path\",\"name\":\"hook_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"active\":true,\"events\":[\"pull_request\"]}}},\"schema\":{\"properties\":{\"active\":{\"default\":true,\"description\":\"Determines if notifications are sent when the webhook is triggered. Set to `true` to send notifications.\",\"type\":\"boolean\"},\"config\":{\"description\":\"Key/value pairs to provide settings for this webhook.\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"url\"],\"type\":\"object\"},\"events\":{\"default\":[\"push\"],\"description\":\"Determines what [events](https://docs.github.com/webhooks/event-payloads) the hook is triggered for.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"name\":{\"example\":\"\\\"web\\\"\",\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"active\":true,\"config\":{\"content_type\":\"json\",\"url\":\"http://example.com\"},\"created_at\":\"2011-09-06T17:26:27Z\",\"deliveries_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/deliveries\",\"events\":[\"pull_request\"],\"id\":1,\"name\":\"web\",\"ping_url\":\"https://api.github.com/orgs/octocat/hooks/1/pings\",\"type\":\"Organization\",\"updated_at\":\"2011-09-06T20:39:23Z\",\"url\":\"https://api.github.com/orgs/octocat/hooks/1\"}}},\"schema\":{\"description\":\"Org Hook\",\"properties\":{\"active\":{\"example\":true,\"type\":\"boolean\"},\"config\":{\"properties\":{\"content_type\":{\"example\":\"\\\"form\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"example\":\"\\\"0\\\"\",\"type\":\"string\"},\"secret\":{\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"example\":\"\\\"http://example.com/2\\\"\",\"type\":\"string\"}},\"type\":\"object\"},\"created_at\":{\"example\":\"2011-09-06T17:26:27Z\",\"format\":\"date-time\",\"type\":\"string\"},\"deliveries_url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1/deliveries\",\"format\":\"uri\",\"type\":\"string\"},\"events\":{\"example\":[\"push\",\"pull_request\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"id\":{\"example\":1,\"type\":\"integer\"},\"name\":{\"example\":\"web\",\"type\":\"string\"},\"ping_url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1/pings\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"example\":\"2011-09-06T20:39:23Z\",\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/orgs/octocat/hooks/1\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"type\",\"name\",\"active\",\"events\",\"config\",\"ping_url\",\"created_at\",\"updated_at\"],\"title\":\"Org Hook\",\"type\":\"object\"}}},\"description\":\"Response\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/orgs/{org}/hooks/{hook_id}"

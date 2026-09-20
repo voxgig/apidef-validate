@@ -4,15 +4,16 @@ main: kit: entity: repository_geo_ip_status: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "geoip_enabled"
-      readOnly: true
-      req: false
-      short: "If checked, any access to the website or downloads for this repository is allowed/denied according to the configured Geo/IP restriction rules."
-      type: "`$BOOLEAN`"
+  fields: {
+    geoip_enabled: {
+      h: "Geoip Enabled"
+      n: "geoip_enabled"
+      r: false
+      ro: true
+      sh: "If checked, any access to the website or downloads for this repository is allowed/denied according to the configured Geo/IP restriction rules."
+      t: "`$BOOLEAN`"
     }
-  ]
+  }
 
   name: "repository_geo_ip_status"
   op: {
@@ -40,9 +41,8 @@ main: kit: entity: repository_geo_ip_status: {
           }
           contract: {
             id: "GET /repos/{owner}/{identifier}/geoip/status/"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"api_repos_geoip_status\",\"parameters\":[{\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"identifier\",\"required\":true,\"type\":\"string\"}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"Retrieved the GeoIP status for this repository.\",\"schema\":{\"properties\":{\"geoip_enabled\":{\"description\":\"If checked, any access to the website or downloads for this repository is allowed/denied according to the configured Geo/IP restriction rules.\",\"readOnly\":true,\"title\":\"Geo/IP Restriction Enabled?\",\"type\":\"boolean\"}},\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"402\":{\"description\":\"Geo/IP restrictions are not available; upgrade your account!\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Owner namespace or repository not found\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{identifier}/geoip/status/"

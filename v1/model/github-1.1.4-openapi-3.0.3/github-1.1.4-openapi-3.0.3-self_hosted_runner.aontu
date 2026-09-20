@@ -4,20 +4,22 @@ main: kit: entity: self_hosted_runner: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "enabled_repositories"
-      req: true
-      short: "The policy that controls whether self-hosted runners can be used by repositories in the organization"
-      type: "`$STRING`"
+  fields: {
+    enabled_repositories: {
+      h: "Enabled Repositories"
+      n: "enabled_repositories"
+      r: true
+      sh: "The policy that controls whether self-hosted runners can be used by repositories in the organization"
+      t: "`$STRING`"
     }
-    {
-      name: "selected_repositories_url"
-      req: false
-      short: "The URL to the endpoint for managing selected repositories for self-hosted runners in the organization"
-      type: "`$STRING`"
+    selected_repositories_url: {
+      h: "Selected Repositories Url"
+      n: "selected_repositories_url"
+      r: false
+      sh: "The URL to the endpoint for managing selected repositories for self-hosted runners in the organization"
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "self_hosted_runner"
   op: {
@@ -38,9 +40,8 @@ main: kit: entity: self_hosted_runner: {
           }
           contract: {
             id: "GET /orgs/{org}/actions/permissions/self-hosted-runners"
-            json: "{\"operationId\":\"actions/get-self-hosted-runners-permissions-organization\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"response\":{\"summary\":\"Example response\",\"value\":{\"enabled_repositories\":\"selected\",\"selected_repositories_url\":\"http://api.github.localhost/organizations/1/actions/permissions/self-hosted-runners/repositories\"}}},\"schema\":{\"properties\":{\"enabled_repositories\":{\"description\":\"The policy that controls whether self-hosted runners can be used by repositories in the organization\",\"enum\":[\"all\",\"selected\",\"none\"],\"type\":\"string\"},\"selected_repositories_url\":{\"description\":\"The URL to the endpoint for managing selected repositories for self-hosted runners in the organization\",\"type\":\"string\"}},\"required\":[\"enabled_repositories\"],\"type\":\"object\"}}},\"description\":\"Response\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/actions/permissions/self-hosted-runners"

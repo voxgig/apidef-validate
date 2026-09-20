@@ -53,6 +53,7 @@ function isGraphql(c) {
 }
 const GRAPHQL_CAPABLE = (0, capability_1.graphqlCapable)();
 const TOP_FOLDER = node_path_1.default.join(__dirname, '..');
+const UPDATE_SNAPSHOTS = process.env.UPDATE_SNAPSHOTS === '1';
 let cases = [
     { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
     { name: 'petstore', version: '1.0.7', spec: 'swagger-2.0', format: 'json' },
@@ -103,6 +104,36 @@ if (0 < caseSelector.length) {
 (0, node_test_1.describe)('main', () => {
     (0, node_test_1.test)('happy', async () => {
         node_assert_1.default.equal((0, __2.main)(), 'main');
+    });
+    (0, node_test_1.test)('compact-field-attributes', async () => {
+        const selected = cases.filter(c => ['solar', 'petstore', 'taxonomy', 'foo', 'linear', 'shopifystorefront'].includes(c.name));
+        const { fs } = prepfs(selected);
+        let fieldCount = 0;
+        for (const c of selected) {
+            await prepCaseGuide(c, fs);
+            const build = await makeBuild(c, fs);
+            const result = await runBuild(c, build, {
+                parse: true, guide: true, transformers: true, builders: true, generate: true,
+            });
+            node_assert_1.default.ok(result.ok, fullname(c) + ': build failed');
+            for (const entity of Object.values(result.apimodel.main.kit.entity)) {
+                node_assert_1.default.ok(!Array.isArray(entity.fields));
+                for (const [name, field] of Object.entries(entity.fields ?? {})) {
+                    node_assert_1.default.equal(field.n, name);
+                    node_assert_1.default.equal(typeof field.h, 'string');
+                    fieldCount++;
+                    node_assert_1.default.equal(typeof field.n, 'string');
+                    node_assert_1.default.equal(typeof field.r, 'boolean');
+                    node_assert_1.default.ok(field.t != null);
+                    for (const key of ['name', 'req', 'type', 'active', 'short',
+                        'readOnly', 'writeOnly', 'deprecated', 'format']) {
+                        node_assert_1.default.ok(!(key in field), fullname(c) + ': legacy field attribute ' + key);
+                    }
+                }
+            }
+        }
+        if (selected.length)
+            node_assert_1.default.ok(fieldCount > 0);
     });
     (0, node_test_1.test)('guide-case', async () => {
         const { fs, vol } = prepfs(cases);
@@ -265,7 +296,7 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
     const generatedBaseGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.gen.aontu`);
     Fs.writeFileSync(generatedBaseGuideFile, baseGuide);
     const expectedBaseGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.aontu`);
-    if (!Fs.existsSync(expectedBaseGuideFile)) {
+    if (UPDATE_SNAPSHOTS || !Fs.existsSync(expectedBaseGuideFile)) {
         Fs.writeFileSync(expectedBaseGuideFile, baseGuide);
     }
     const expectedBaseGuide = Fs.readFileSync(expectedBaseGuideFile, 'utf8').trim();
@@ -293,7 +324,7 @@ function validateGuide(c, fails, bres, fs, vol, testmetrics) {
     const generatedFinalGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.gen.aontu`).trim();
     Fs.writeFileSync(generatedFinalGuideFile, finalGuide);
     const expectedFinalGuideFile = node_path_1.default.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.aontu`).trim();
-    if (!Fs.existsSync(expectedFinalGuideFile)) {
+    if (UPDATE_SNAPSHOTS || !Fs.existsSync(expectedFinalGuideFile)) {
         Fs.writeFileSync(expectedFinalGuideFile, finalGuide);
     }
     const expectedFinalGuide = Fs.readFileSync(expectedFinalGuideFile, 'utf8').trim();
@@ -323,13 +354,21 @@ function validateModel(c, fails, bres, fs, vol, testmetrics) {
     const cfn = fullname(c);
     const volJSON = vol.toJSON();
     Fs.mkdirSync(__dirname + '/../model/' + `${cfn}`, { recursive: true });
+    if (UPDATE_SNAPSHOTS) {
+        const folder = node_path_1.default.join(TOP_FOLDER, 'model', cfn);
+        for (const file of Fs.readdirSync(folder)) {
+            if (file.startsWith(cfn + '-') && file.endsWith('.aontu')) {
+                Fs.unlinkSync(node_path_1.default.join(folder, file));
+            }
+        }
+    }
     (0, jostraca_1.each)(bres.apimodel.main.kit.entity, (entity) => {
         const efn = `${cfn}-${entity.name}`;
         const entitySrc = readModelSource(volJSON, '/model/entity', efn);
         const generatedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.gen.aontu`;
         Fs.writeFileSync(generatedSrcFile, entitySrc);
         const expectedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.aontu`;
-        if (!Fs.existsSync(expectedSrcFile)) {
+        if (UPDATE_SNAPSHOTS || !Fs.existsSync(expectedSrcFile)) {
             Fs.writeFileSync(expectedSrcFile, entitySrc);
         }
         const expectedEntitySrc = Fs.readFileSync(expectedSrcFile, 'utf8')

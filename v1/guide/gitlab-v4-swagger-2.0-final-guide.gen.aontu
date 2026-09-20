@@ -2256,6 +2256,61 @@
         }
       }
     }
+    api_entities_custom_attribute: {
+      name: "api_entities_custom_attribute"
+      path: {
+        "/api/v4/groups/{id}/custom_attributes": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              id: "group_id"
+            }
+          }
+        }
+        "/api/v4/groups/{id}/custom_attributes/{key}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              id: "group_id"
+              key: "id"
+            }
+          }
+        }
+        "/api/v4/projects/{id}/custom_attributes": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+        }
+        "/api/v4/projects/{id}/custom_attributes/{key}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              id: "project_id"
+              key: "id"
+            }
+          }
+        }
+      }
+    }
     api_entities_deploy_key: {
       name: "api_entities_deploy_key"
       path: {
@@ -8256,6 +8311,67 @@
         }
       }
     }
+    api_entities_user_basic: {
+      name: "api_entities_user_basic"
+      path: {
+        "/api/v4/projects/{id}/issues/{issue_iid}/participants": {
+          op: {
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.custom_attributes`"
+              }
+            }
+          }
+          rename: {
+            param: {
+              id: "project_id"
+              issue_iid: "issue_id"
+            }
+          }
+        }
+        "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/participants": {
+          op: {
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.custom_attributes`"
+              }
+            }
+          }
+          rename: {
+            param: {
+              id: "project_id"
+              merge_request_iid: "merge_request_id"
+            }
+          }
+        }
+        "/api/v4/projects/{id}/starrers": {
+          op: {
+            list: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+        }
+        "/api/v4/projects/{id}/users": {
+          op: {
+            list: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              id: "project_id"
+            }
+          }
+        }
+      }
+    }
     api_entities_user_count: {
       name: "api_entities_user_count"
       path: {
@@ -9180,7 +9296,6 @@
               conan_package_reference: "package_id"
               id: "project_id"
               package_name: "conan_id"
-              package_revision: "revision_id"
               recipe_revision: "revision_id"
             }
           }
@@ -9200,7 +9315,6 @@
               conan_package_reference: "package_id"
               id: "project_id"
               package_name: "conan_id"
-              package_revision: "revision_id"
               recipe_revision: "revision_id"
             }
           }
@@ -9305,61 +9419,6 @@
           op: {
             create: {
               method: "POST"
-            }
-          }
-        }
-      }
-    }
-    custom_attribute: {
-      name: "custom_attribute"
-      path: {
-        "/api/v4/groups/{id}/custom_attributes": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              id: "group_id"
-            }
-          }
-        }
-        "/api/v4/groups/{id}/custom_attributes/{key}": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              id: "group_id"
-              key: "id"
-            }
-          }
-        }
-        "/api/v4/projects/{id}/custom_attributes": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              id: "project_id"
-            }
-          }
-        }
-        "/api/v4/projects/{id}/custom_attributes/{key}": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              id: "project_id"
-              key: "id"
             }
           }
         }
@@ -11593,43 +11652,6 @@
         }
       }
     }
-    participant: {
-      name: "participant"
-      path: {
-        "/api/v4/projects/{id}/issues/{issue_iid}/participants": {
-          op: {
-            list: {
-              method: "GET"
-              transform: {
-                res: "`body.custom_attributes`"
-              }
-            }
-          }
-          rename: {
-            param: {
-              id: "project_id"
-              issue_iid: "issue_id"
-            }
-          }
-        }
-        "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/participants": {
-          op: {
-            list: {
-              method: "GET"
-              transform: {
-                res: "`body.custom_attributes`"
-              }
-            }
-          }
-          rename: {
-            param: {
-              id: "project_id"
-              merge_request_iid: "merge_request_id"
-            }
-          }
-        }
-      }
-    }
     personal_access_token: {
       name: "personal_access_token"
       path: {
@@ -12819,23 +12841,6 @@
         }
       }
     }
-    starrer: {
-      name: "starrer"
-      path: {
-        "/api/v4/projects/{id}/starrers": {
-          op: {
-            list: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              id: "project_id"
-            }
-          }
-        }
-      }
-    }
     system_hook: {
       name: "system_hook"
       path: {
@@ -13192,23 +13197,6 @@
         }
       }
     }
-    user: {
-      name: "user"
-      path: {
-        "/api/v4/projects/{id}/users": {
-          op: {
-            list: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              id: "project_id"
-            }
-          }
-        }
-      }
-    }
     web_commit: {
       name: "web_commit"
       path: {
@@ -13260,7 +13248,7 @@
 
   metrics: {
     count: {
-      entity: 276
+      entity: 274
       method: 1106
       path: 861
     }

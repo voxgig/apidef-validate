@@ -4,20 +4,22 @@ main: kit: entity: short_blob: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "content"
-      req: true
-      short: "The new blob's content."
-      type: "`$STRING`"
+  fields: {
+    content: {
+      h: "Content"
+      n: "content"
+      r: true
+      sh: "The new blob's content."
+      t: "`$STRING`"
     }
-    {
-      name: "encoding"
-      req: false
-      short: "The encoding used for `content`."
-      type: "`$STRING`"
+    encoding: {
+      h: "Encoding"
+      n: "encoding"
+      r: false
+      sh: "The encoding used for `content`."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "short_blob"
   op: {
@@ -45,9 +47,8 @@ main: kit: entity: short_blob: {
           }
           contract: {
             id: "POST /repos/{owner}/{repo}/git/blobs"
-            json: "{\"operationId\":\"git/create-blob\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"content\":\"Content of the blob\",\"encoding\":\"utf-8\"}}},\"schema\":{\"properties\":{\"content\":{\"description\":\"The new blob's content.\",\"type\":\"string\"},\"encoding\":{\"default\":\"utf-8\",\"description\":\"The encoding used for `content`. Currently, `\\\"utf-8\\\"` and `\\\"base64\\\"` are supported.\",\"type\":\"string\"}},\"required\":[\"content\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"sha\":\"3a0f86fb8db8eea7ccbb9a95f325ddbedfb25e15\",\"url\":\"https://api.github.com/repos/octocat/example/git/blobs/3a0f86fb8db8eea7ccbb9a95f325ddbedfb25e15\"}}},\"schema\":{\"description\":\"Short Blob\",\"properties\":{\"sha\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"required\":[\"url\",\"sha\"],\"title\":\"Short Blob\",\"type\":\"object\"}}},\"description\":\"Response\",\"headers\":{\"Location\":{\"example\":\"https://api.github.com/repos/octocat/example/git/blobs/3a0f86fb8db8eea7ccbb9a95f325ddbedfb25e15\",\"schema\":{\"type\":\"string\"}}}},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"409\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Conflict\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"oneOf\":[{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"},{\"description\":\"Repository rule violation was detected\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"metadata\":{\"properties\":{\"secret_scanning\":{\"properties\":{\"bypass_placeholders\":{\"items\":{\"properties\":{\"placeholder_id\":{\"description\":\"The ID of the push protection bypass placeholder. This value is returned on any push protected routes.\",\"type\":\"string\"},\"token_type\":{\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}},\"type\":\"object\"},\"status\":{\"type\":\"string\"}},\"type\":\"object\"}]}}},\"description\":\"Validation failed\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/git/blobs"

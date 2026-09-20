@@ -53,6 +53,7 @@ const GRAPHQL_CAPABLE = graphqlCapable()
 
 
 const TOP_FOLDER = Path.join(__dirname, '..')
+const UPDATE_SNAPSHOTS = process.env.UPDATE_SNAPSHOTS === '1'
 
 
 let cases: Case[] = [
@@ -118,6 +119,38 @@ describe('main', () => {
 
   test('happy', async () => {
     assert.equal(main(), 'main')
+  })
+
+
+  test('compact-field-attributes', async () => {
+    const selected = cases.filter(c =>
+      ['solar', 'petstore', 'taxonomy', 'foo', 'linear', 'shopifystorefront'].includes(c.name))
+    const { fs } = prepfs(selected)
+    let fieldCount = 0
+    for (const c of selected) {
+      await prepCaseGuide(c, fs)
+      const build = await makeBuild(c, fs)
+      const result = await runBuild(c, build, {
+        parse: true, guide: true, transformers: true, builders: true, generate: true,
+      })
+      assert.ok(result.ok, fullname(c) + ': build failed')
+      for (const entity of Object.values(result.apimodel.main.kit.entity) as any[]) {
+        assert.ok(!Array.isArray(entity.fields))
+        for (const [name, field] of Object.entries(entity.fields ?? {}) as [string, any][]) {
+          assert.equal(field.n, name)
+          assert.equal(typeof field.h, 'string')
+          fieldCount++
+          assert.equal(typeof field.n, 'string')
+          assert.equal(typeof field.r, 'boolean')
+          assert.ok(field.t != null)
+          for (const key of ['name', 'req', 'type', 'active', 'short',
+            'readOnly', 'writeOnly', 'deprecated', 'format']) {
+            assert.ok(!(key in field), fullname(c) + ': legacy field attribute ' + key)
+          }
+        }
+      }
+    }
+    if (selected.length) assert.ok(fieldCount > 0)
   })
 
 
@@ -345,7 +378,7 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
   const expectedBaseGuideFile = Path.join(TOP_FOLDER, 'guide', `${cfn}-base-guide.aontu`)
 
-  if (!Fs.existsSync(expectedBaseGuideFile)) {
+  if (UPDATE_SNAPSHOTS || !Fs.existsSync(expectedBaseGuideFile)) {
     Fs.writeFileSync(expectedBaseGuideFile, baseGuide)
   }
 
@@ -388,7 +421,7 @@ function validateGuide(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
   const expectedFinalGuideFile =
     Path.join(TOP_FOLDER, 'guide', `${cfn}-final-guide.aontu`).trim()
 
-  if (!Fs.existsSync(expectedFinalGuideFile)) {
+  if (UPDATE_SNAPSHOTS || !Fs.existsSync(expectedFinalGuideFile)) {
     Fs.writeFileSync(expectedFinalGuideFile, finalGuide)
   }
 
@@ -440,6 +473,15 @@ function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
   const volJSON = vol.toJSON()
 
   Fs.mkdirSync(__dirname + '/../model/' + `${cfn}`, { recursive: true })
+  if (UPDATE_SNAPSHOTS) {
+    const folder = Path.join(TOP_FOLDER, 'model', cfn)
+    for (const file of Fs.readdirSync(folder)) {
+      if (file.startsWith(cfn + '-') && file.endsWith('.aontu')) {
+        Fs.unlinkSync(Path.join(folder, file))
+      }
+    }
+  }
+
 
   each(bres.apimodel.main.kit.entity, (entity: any) => {
     const efn = `${cfn}-${entity.name}`
@@ -451,7 +493,7 @@ function validateModel(c: Case, fails: any[], bres: any, fs: FST, vol: any, test
 
     const expectedSrcFile = __dirname + '/../model/' + `${cfn}/${efn}.aontu`
 
-    if (!Fs.existsSync(expectedSrcFile)) {
+    if (UPDATE_SNAPSHOTS || !Fs.existsSync(expectedSrcFile)) {
       Fs.writeFileSync(expectedSrcFile, entitySrc)
     }
 

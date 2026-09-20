@@ -4,96 +4,110 @@ main: kit: entity: organization_invitation: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "created_at"
-      req: true
-      type: "`$STRING`"
+  fields: {
+    created_at: {
+      h: "Created At"
+      n: "created_at"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "email"
+    email: {
+      h: "Email"
+      n: "email"
       op: {
         list: {
           req: true
           type: "`$STRING`"
         }
       }
-      req: false
-      short: "**Required unless you provide `invitee_id`**."
-      type: "`$STRING`"
+      r: false
+      sh: "**Required unless you provide `invitee_id`**."
+      t: "`$STRING`"
     }
-    {
-      name: "failed_at"
-      req: false
-      type: "`$STRING`"
+    failed_at: {
+      h: "Failed At"
+      n: "failed_at"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "failed_reason"
-      req: false
-      type: "`$STRING`"
+    failed_reason: {
+      h: "Failed Reason"
+      n: "failed_reason"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      format: "int64"
-      name: "id"
-      req: true
-      type: "`$INTEGER`"
+    id: {
+      fo: "int64"
+      h: "Id"
+      n: "id"
+      r: true
+      t: "`$INTEGER`"
     }
-    {
-      name: "invitation_source"
-      req: false
-      type: "`$STRING`"
+    invitation_source: {
+      h: "Invitation Source"
+      n: "invitation_source"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "invitation_teams_url"
-      req: true
-      type: "`$STRING`"
+    invitation_teams_url: {
+      h: "Invitation Teams Url"
+      n: "invitation_teams_url"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "invitee_id"
-      req: false
-      short: "**Required unless you provide `email`**."
-      type: "`$INTEGER`"
+    invitee_id: {
+      h: "Invitee Id"
+      n: "invitee_id"
+      r: false
+      sh: "**Required unless you provide `email`**."
+      t: "`$INTEGER`"
     }
-    {
-      name: "inviter"
-      req: true
-      short: "A GitHub user."
-      type: "`$OBJECT`"
+    inviter: {
+      h: "Inviter"
+      n: "inviter"
+      r: true
+      sh: "A GitHub user."
+      t: "`$OBJECT`"
     }
-    {
-      name: "login"
-      req: true
-      type: "`$STRING`"
+    login: {
+      h: "Login"
+      n: "login"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "node_id"
-      req: true
-      type: "`$STRING`"
+    node_id: {
+      h: "Node Id"
+      n: "node_id"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "role"
+    role: {
+      h: "Role"
+      n: "role"
       op: {
         list: {
           req: true
           type: "`$STRING`"
         }
       }
-      req: false
-      short: "The role for the new member."
-      type: "`$STRING`"
+      r: false
+      sh: "The role for the new member."
+      t: "`$STRING`"
     }
-    {
-      name: "team_count"
-      req: true
-      type: "`$INTEGER`"
+    team_count: {
+      h: "Team Count"
+      n: "team_count"
+      r: true
+      t: "`$INTEGER`"
     }
-    {
-      name: "team_ids"
-      req: false
-      short: "Specify IDs for the teams you want to invite new members to."
-      type: "`$ARRAY`"
+    team_ids: {
+      h: "Team Ids"
+      n: "team_ids"
+      r: false
+      sh: "Specify IDs for the teams you want to invite new members to."
+      t: "`$ARRAY`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -119,9 +133,8 @@ main: kit: entity: organization_invitation: {
           }
           contract: {
             id: "POST /orgs/{org}/invitations"
-            json: "{\"operationId\":\"orgs/create-invitation\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"email\":\"octocat@github.com\",\"role\":\"direct_member\",\"team_ids\":[12,26]}}},\"schema\":{\"properties\":{\"email\":{\"description\":\"**Required unless you provide `invitee_id`**. Email address of the person you are inviting, which can be an existing GitHub user.\",\"type\":\"string\"},\"invitee_id\":{\"description\":\"**Required unless you provide `email`**. GitHub user ID for the person you are inviting.\",\"type\":\"integer\"},\"role\":{\"default\":\"direct_member\",\"description\":\"The role for the new member. \\n * `admin` - Organization owners with full administrative rights to the organization and complete access to all repositories and teams.  \\n * `direct_member` - Non-owner organization members with ability to see other members and join teams by invitation.  \\n * `billing_manager` - Non-owner organization members with ability to manage the billing settings of your organization. \\n * `reinstate` - The previous role assigned to the invitee before they were removed from your organization. Can be one of the roles listed above. Only works if the invitee was previously part of your organization.\",\"enum\":[\"admin\",\"direct_member\",\"billing_manager\",\"reinstate\"],\"type\":\"string\"},\"team_ids\":{\"description\":\"Specify IDs for the teams you want to invite new members to.\",\"items\":{\"type\":\"integer\"},\"type\":\"array\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"created_at\":\"2016-11-30T06:46:10-08:00\",\"email\":\"octocat@github.com\",\"id\":1,\"invitation_source\":\"member\",\"invitation_teams_url\":\"https://api.github.com/organizations/2/invitations/1/teams\",\"inviter\":{\"avatar_url\":\"https://github.com/images/error/other_user_happy.gif\",\"events_url\":\"https://api.github.com/users/other_user/events{/privacy}\",\"followers_url\":\"https://api.github.com/users/other_user/followers\",\"following_url\":\"https://api.github.com/users/other_user/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/other_user/gists{/gist_id}\",\"gravatar_id\":\"\",\"html_url\":\"https://github.com/other_user\",\"id\":1,\"login\":\"other_user\",\"node_id\":\"MDQ6VXNlcjE=\",\"organizations_url\":\"https://api.github.com/users/other_user/orgs\",\"received_events_url\":\"https://api.github.com/users/other_user/received_events\",\"repos_url\":\"https://api.github.com/users/other_user/repos\",\"site_admin\":false,\"starred_url\":\"https://api.github.com/users/other_user/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/other_user/subscriptions\",\"type\":\"User\",\"url\":\"https://api.github.com/users/other_user\"},\"login\":\"monalisa\",\"node_id\":\"MDQ6VXNlcjE=\",\"role\":\"direct_member\",\"team_count\":2}}},\"schema\":{\"description\":\"Organization Invitation\",\"properties\":{\"created_at\":{\"type\":\"string\"},\"email\":{\"nullable\":true,\"type\":\"string\"},\"failed_at\":{\"nullable\":true,\"type\":\"string\"},\"failed_reason\":{\"nullable\":true,\"type\":\"string\"},\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"invitation_source\":{\"example\":\"\\\"member\\\"\",\"type\":\"string\"},\"invitation_teams_url\":{\"example\":\"\\\"https://api.github.com/organizations/16/invitations/1/teams\\\"\",\"type\":\"string\"},\"inviter\":{\"description\":\"A GitHub user.\",\"properties\":{\"avatar_url\":{\"example\":\"https://github.com/images/error/octocat_happy.gif\",\"format\":\"uri\",\"type\":\"string\"},\"email\":{\"nullable\":true,\"type\":\"string\"},\"events_url\":{\"example\":\"https://api.github.com/users/octocat/events{/privacy}\",\"type\":\"string\"},\"followers_url\":{\"example\":\"https://api.github.com/users/octocat/followers\",\"format\":\"uri\",\"type\":\"string\"},\"following_url\":{\"example\":\"https://api.github.com/users/octocat/following{/other_user}\",\"type\":\"string\"},\"gists_url\":{\"example\":\"https://api.github.com/users/octocat/gists{/gist_id}\",\"type\":\"string\"},\"gravatar_id\":{\"example\":\"41d064eb2195891e12d0413f63227ea7\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"example\":1,\"format\":\"int64\",\"type\":\"integer\"},\"login\":{\"example\":\"octocat\",\"type\":\"string\"},\"name\":{\"nullable\":true,\"type\":\"string\"},\"node_id\":{\"example\":\"MDQ6VXNlcjE=\",\"type\":\"string\"},\"organizations_url\":{\"example\":\"https://api.github.com/users/octocat/orgs\",\"format\":\"uri\",\"type\":\"string\"},\"received_events_url\":{\"example\":\"https://api.github.com/users/octocat/received_events\",\"format\":\"uri\",\"type\":\"string\"},\"repos_url\":{\"example\":\"https://api.github.com/users/octocat/repos\",\"format\":\"uri\",\"type\":\"string\"},\"site_admin\":{\"type\":\"boolean\"},\"starred_at\":{\"example\":\"\\\"2020-07-09T00:17:55Z\\\"\",\"type\":\"string\"},\"starred_url\":{\"example\":\"https://api.github.com/users/octocat/starred{/owner}{/repo}\",\"type\":\"string\"},\"subscriptions_url\":{\"example\":\"https://api.github.com/users/octocat/subscriptions\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"example\":\"User\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/users/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"user_view_type\":{\"example\":\"public\",\"type\":\"string\"}},\"required\":[\"avatar_url\",\"events_url\",\"followers_url\",\"following_url\",\"gists_url\",\"gravatar_id\",\"html_url\",\"id\",\"node_id\",\"login\",\"organizations_url\",\"received_events_url\",\"repos_url\",\"site_admin\",\"starred_url\",\"subscriptions_url\",\"type\",\"url\"],\"title\":\"Simple User\",\"type\":\"object\"},\"login\":{\"nullable\":true,\"type\":\"string\"},\"node_id\":{\"example\":\"\\\"MDIyOk9yZ2FuaXphdGlvbkludml0YXRpb24x\\\"\",\"type\":\"string\"},\"role\":{\"type\":\"string\"},\"team_count\":{\"type\":\"integer\"}},\"required\":[\"id\",\"login\",\"email\",\"role\",\"created_at\",\"inviter\",\"team_count\",\"invitation_teams_url\",\"node_id\"],\"title\":\"Organization Invitation\",\"type\":\"object\"}}},\"description\":\"Response\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/orgs/{org}/invitations"
@@ -204,9 +217,8 @@ main: kit: entity: organization_invitation: {
           }
           contract: {
             id: "GET /orgs/{org}/invitations"
-            json: "{\"operationId\":\"orgs/list-pending-invitations\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}},{\"description\":\"Filter invitations by their member role.\",\"in\":\"query\",\"name\":\"role\",\"required\":false,\"schema\":{\"default\":\"all\",\"enum\":[\"all\",\"admin\",\"direct_member\",\"billing_manager\",\"hiring_manager\"],\"type\":\"string\"}},{\"description\":\"Filter invitations by their invitation source.\",\"in\":\"query\",\"name\":\"invitation_source\",\"required\":false,\"schema\":{\"default\":\"all\",\"enum\":[\"all\",\"member\",\"scim\"],\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"created_at\":\"2016-11-30T06:46:10-08:00\",\"email\":\"octocat@github.com\",\"failed_at\":\"\",\"failed_reason\":\"\",\"id\":1,\"invitation_source\":\"member\",\"invitation_teams_url\":\"https://api.github.com/organizations/2/invitations/1/teams\",\"inviter\":{\"avatar_url\":\"https://github.com/images/error/other_user_happy.gif\",\"events_url\":\"https://api.github.com/users/other_user/events{/privacy}\",\"followers_url\":\"https://api.github.com/users/other_user/followers\",\"following_url\":\"https://api.github.com/users/other_user/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/other_user/gists{/gist_id}\",\"gravatar_id\":\"\",\"html_url\":\"https://github.com/other_user\",\"id\":1,\"login\":\"other_user\",\"node_id\":\"MDQ6VXNlcjE=\",\"organizations_url\":\"https://api.github.com/users/other_user/orgs\",\"received_events_url\":\"https://api.github.com/users/other_user/received_events\",\"repos_url\":\"https://api.github.com/users/other_user/repos\",\"site_admin\":false,\"starred_url\":\"https://api.github.com/users/other_user/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/other_user/subscriptions\",\"type\":\"User\",\"url\":\"https://api.github.com/users/other_user\"},\"login\":\"monalisa\",\"node_id\":\"MDQ6VXNlcjE=\",\"role\":\"direct_member\",\"team_count\":2}]}},\"schema\":{\"items\":{\"description\":\"Organization Invitation\",\"properties\":{\"created_at\":{\"type\":\"string\"},\"email\":{\"nullable\":true,\"type\":\"string\"},\"failed_at\":{\"nullable\":true,\"type\":\"string\"},\"failed_reason\":{\"nullable\":true,\"type\":\"string\"},\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"invitation_source\":{\"example\":\"\\\"member\\\"\",\"type\":\"string\"},\"invitation_teams_url\":{\"example\":\"\\\"https://api.github.com/organizations/16/invitations/1/teams\\\"\",\"type\":\"string\"},\"inviter\":{\"description\":\"A GitHub user.\",\"properties\":{\"avatar_url\":{\"example\":\"https://github.com/images/error/octocat_happy.gif\",\"format\":\"uri\",\"type\":\"string\"},\"email\":{\"nullable\":true,\"type\":\"string\"},\"events_url\":{\"example\":\"https://api.github.com/users/octocat/events{/privacy}\",\"type\":\"string\"},\"followers_url\":{\"example\":\"https://api.github.com/users/octocat/followers\",\"format\":\"uri\",\"type\":\"string\"},\"following_url\":{\"example\":\"https://api.github.com/users/octocat/following{/other_user}\",\"type\":\"string\"},\"gists_url\":{\"example\":\"https://api.github.com/users/octocat/gists{/gist_id}\",\"type\":\"string\"},\"gravatar_id\":{\"example\":\"41d064eb2195891e12d0413f63227ea7\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"example\":1,\"format\":\"int64\",\"type\":\"integer\"},\"login\":{\"example\":\"octocat\",\"type\":\"string\"},\"name\":{\"nullable\":true,\"type\":\"string\"},\"node_id\":{\"example\":\"MDQ6VXNlcjE=\",\"type\":\"string\"},\"organizations_url\":{\"example\":\"https://api.github.com/users/octocat/orgs\",\"format\":\"uri\",\"type\":\"string\"},\"received_events_url\":{\"example\":\"https://api.github.com/users/octocat/received_events\",\"format\":\"uri\",\"type\":\"string\"},\"repos_url\":{\"example\":\"https://api.github.com/users/octocat/repos\",\"format\":\"uri\",\"type\":\"string\"},\"site_admin\":{\"type\":\"boolean\"},\"starred_at\":{\"example\":\"\\\"2020-07-09T00:17:55Z\\\"\",\"type\":\"string\"},\"starred_url\":{\"example\":\"https://api.github.com/users/octocat/starred{/owner}{/repo}\",\"type\":\"string\"},\"subscriptions_url\":{\"example\":\"https://api.github.com/users/octocat/subscriptions\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"example\":\"User\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/users/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"user_view_type\":{\"example\":\"public\",\"type\":\"string\"}},\"required\":[\"avatar_url\",\"events_url\",\"followers_url\",\"following_url\",\"gists_url\",\"gravatar_id\",\"html_url\",\"id\",\"node_id\",\"login\",\"organizations_url\",\"received_events_url\",\"repos_url\",\"site_admin\",\"starred_url\",\"subscriptions_url\",\"type\",\"url\"],\"title\":\"Simple User\",\"type\":\"object\"},\"login\":{\"nullable\":true,\"type\":\"string\"},\"node_id\":{\"example\":\"\\\"MDIyOk9yZ2FuaXphdGlvbkludml0YXRpb24x\\\"\",\"type\":\"string\"},\"role\":{\"type\":\"string\"},\"team_count\":{\"type\":\"integer\"}},\"required\":[\"id\",\"login\",\"email\",\"role\",\"created_at\",\"inviter\",\"team_count\",\"invitation_teams_url\",\"node_id\"],\"title\":\"Organization Invitation\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/invitations"
@@ -272,9 +284,8 @@ main: kit: entity: organization_invitation: {
           }
           contract: {
             id: "GET /orgs/{org}/failed_invitations"
-            json: "{\"operationId\":\"orgs/list-failed-invitations\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"created_at\":\"2016-11-30T06:46:10-08:00\",\"email\":\"octocat@github.com\",\"failed_at\":\"\",\"failed_reason\":\"\",\"id\":1,\"invitation_source\":\"member\",\"invitation_teams_url\":\"https://api.github.com/organizations/2/invitations/1/teams\",\"inviter\":{\"avatar_url\":\"https://github.com/images/error/other_user_happy.gif\",\"events_url\":\"https://api.github.com/users/other_user/events{/privacy}\",\"followers_url\":\"https://api.github.com/users/other_user/followers\",\"following_url\":\"https://api.github.com/users/other_user/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/other_user/gists{/gist_id}\",\"gravatar_id\":\"\",\"html_url\":\"https://github.com/other_user\",\"id\":1,\"login\":\"other_user\",\"node_id\":\"MDQ6VXNlcjE=\",\"organizations_url\":\"https://api.github.com/users/other_user/orgs\",\"received_events_url\":\"https://api.github.com/users/other_user/received_events\",\"repos_url\":\"https://api.github.com/users/other_user/repos\",\"site_admin\":false,\"starred_url\":\"https://api.github.com/users/other_user/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/other_user/subscriptions\",\"type\":\"User\",\"url\":\"https://api.github.com/users/other_user\"},\"login\":\"monalisa\",\"node_id\":\"MDQ6VXNlcjE=\",\"role\":\"direct_member\",\"team_count\":2}]}},\"schema\":{\"items\":{\"description\":\"Organization Invitation\",\"properties\":{\"created_at\":{\"type\":\"string\"},\"email\":{\"nullable\":true,\"type\":\"string\"},\"failed_at\":{\"nullable\":true,\"type\":\"string\"},\"failed_reason\":{\"nullable\":true,\"type\":\"string\"},\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"invitation_source\":{\"example\":\"\\\"member\\\"\",\"type\":\"string\"},\"invitation_teams_url\":{\"example\":\"\\\"https://api.github.com/organizations/16/invitations/1/teams\\\"\",\"type\":\"string\"},\"inviter\":{\"description\":\"A GitHub user.\",\"properties\":{\"avatar_url\":{\"example\":\"https://github.com/images/error/octocat_happy.gif\",\"format\":\"uri\",\"type\":\"string\"},\"email\":{\"nullable\":true,\"type\":\"string\"},\"events_url\":{\"example\":\"https://api.github.com/users/octocat/events{/privacy}\",\"type\":\"string\"},\"followers_url\":{\"example\":\"https://api.github.com/users/octocat/followers\",\"format\":\"uri\",\"type\":\"string\"},\"following_url\":{\"example\":\"https://api.github.com/users/octocat/following{/other_user}\",\"type\":\"string\"},\"gists_url\":{\"example\":\"https://api.github.com/users/octocat/gists{/gist_id}\",\"type\":\"string\"},\"gravatar_id\":{\"example\":\"41d064eb2195891e12d0413f63227ea7\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"example\":1,\"format\":\"int64\",\"type\":\"integer\"},\"login\":{\"example\":\"octocat\",\"type\":\"string\"},\"name\":{\"nullable\":true,\"type\":\"string\"},\"node_id\":{\"example\":\"MDQ6VXNlcjE=\",\"type\":\"string\"},\"organizations_url\":{\"example\":\"https://api.github.com/users/octocat/orgs\",\"format\":\"uri\",\"type\":\"string\"},\"received_events_url\":{\"example\":\"https://api.github.com/users/octocat/received_events\",\"format\":\"uri\",\"type\":\"string\"},\"repos_url\":{\"example\":\"https://api.github.com/users/octocat/repos\",\"format\":\"uri\",\"type\":\"string\"},\"site_admin\":{\"type\":\"boolean\"},\"starred_at\":{\"example\":\"\\\"2020-07-09T00:17:55Z\\\"\",\"type\":\"string\"},\"starred_url\":{\"example\":\"https://api.github.com/users/octocat/starred{/owner}{/repo}\",\"type\":\"string\"},\"subscriptions_url\":{\"example\":\"https://api.github.com/users/octocat/subscriptions\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"example\":\"User\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/users/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"user_view_type\":{\"example\":\"public\",\"type\":\"string\"}},\"required\":[\"avatar_url\",\"events_url\",\"followers_url\",\"following_url\",\"gists_url\",\"gravatar_id\",\"html_url\",\"id\",\"node_id\",\"login\",\"organizations_url\",\"received_events_url\",\"repos_url\",\"site_admin\",\"starred_url\",\"subscriptions_url\",\"type\",\"url\"],\"title\":\"Simple User\",\"type\":\"object\"},\"login\":{\"nullable\":true,\"type\":\"string\"},\"node_id\":{\"example\":\"\\\"MDIyOk9yZ2FuaXphdGlvbkludml0YXRpb24x\\\"\",\"type\":\"string\"},\"role\":{\"type\":\"string\"},\"team_count\":{\"type\":\"integer\"}},\"required\":[\"id\",\"login\",\"email\",\"role\",\"created_at\",\"inviter\",\"team_count\",\"invitation_teams_url\",\"node_id\"],\"title\":\"Organization Invitation\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/failed_invitations"

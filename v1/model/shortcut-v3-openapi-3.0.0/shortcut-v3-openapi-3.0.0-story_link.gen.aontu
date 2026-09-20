@@ -4,80 +4,88 @@ main: kit: entity: story_link: {
 
   alias: field: {}
 
-  fields: [
-    {
-      format: "date-time"
-      name: "created_at"
-      req: true
-      short: "The time/date when the Story Link was created."
-      type: "`$STRING`"
+  fields: {
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      sh: "The time/date when the Story Link was created."
+      t: "`$STRING`"
     }
-    {
-      name: "entity_type"
-      req: true
-      short: "A string description of this resource."
-      type: "`$STRING`"
+    entity_type: {
+      h: "Entity Type"
+      n: "entity_type"
+      r: true
+      sh: "A string description of this resource."
+      t: "`$STRING`"
     }
-    {
-      format: "int64"
-      name: "id"
-      req: true
-      short: "The unique identifier of the Story Link."
-      type: "`$INTEGER`"
+    id: {
+      fo: "int64"
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "The unique identifier of the Story Link."
+      t: "`$INTEGER`"
     }
-    {
-      format: "int64"
-      name: "object_id"
+    object_id: {
+      fo: "int64"
+      h: "Object Id"
+      n: "object_id"
       op: {
         update: {
           req: false
           type: "`$INTEGER`"
         }
       }
-      req: true
-      short: "The ID of the object Story."
-      type: "`$INTEGER`"
+      r: true
+      sh: "The ID of the object Story."
+      t: "`$INTEGER`"
     }
-    {
-      format: "int64"
-      name: "subject_id"
+    subject_id: {
+      fo: "int64"
+      h: "Subject Id"
+      n: "subject_id"
       op: {
         update: {
           req: false
           type: "`$INTEGER`"
         }
       }
-      req: true
-      short: "The ID of the subject Story."
-      type: "`$INTEGER`"
+      r: true
+      sh: "The ID of the subject Story."
+      t: "`$INTEGER`"
     }
-    {
-      format: "int64"
-      name: "subject_workflow_state_id"
-      req: true
-      short: "The workflow state of the \"subject\" story."
-      type: "`$INTEGER`"
+    subject_workflow_state_id: {
+      fo: "int64"
+      h: "Subject Workflow State Id"
+      n: "subject_workflow_state_id"
+      r: true
+      sh: "The workflow state of the \"subject\" story."
+      t: "`$INTEGER`"
     }
-    {
-      format: "date-time"
-      name: "updated_at"
-      req: true
-      short: "The time/date when the Story Link was last updated."
-      type: "`$STRING`"
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: true
+      sh: "The time/date when the Story Link was last updated."
+      t: "`$STRING`"
     }
-    {
-      name: "verb"
+    verb: {
+      h: "Verb"
+      n: "verb"
       op: {
         update: {
           req: false
           type: "`$STRING`"
         }
       }
-      req: true
-      short: "How the subject Story acts on the object Story."
-      type: "`$STRING`"
+      r: true
+      sh: "How the subject Story acts on the object Story."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -92,9 +100,8 @@ main: kit: entity: story_link: {
         {
           contract: {
             id: "POST /api/v3/story-links"
-            json: "{\"operationId\":\"createStoryLink\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"additionalProperties\":false,\"properties\":{\"object_id\":{\"description\":\"The ID of the object Story.\",\"format\":\"int64\",\"type\":\"integer\"},\"subject_id\":{\"description\":\"The ID of the subject Story.\",\"format\":\"int64\",\"type\":\"integer\"},\"verb\":{\"description\":\"The type of link.\",\"enum\":[\"blocks\",\"duplicates\",\"relates to\"],\"type\":\"string\"}},\"required\":[\"verb\",\"subject_id\",\"object_id\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"schema\":{\"additionalProperties\":false,\"description\":\"Story links allow you create semantic relationships between two stories. Relationship types are relates to, blocks / blocked by, and duplicates / is duplicated by. The format is `subject -> link -> object`, or for example \\\"story 5 blocks story 6\\\".\",\"properties\":{\"created_at\":{\"description\":\"The time/date when the Story Link was created.\",\"format\":\"date-time\",\"type\":\"string\"},\"entity_type\":{\"description\":\"A string description of this resource.\",\"type\":\"string\"},\"id\":{\"description\":\"The unique identifier of the Story Link.\",\"format\":\"int64\",\"type\":\"integer\"},\"object_id\":{\"description\":\"The ID of the object Story.\",\"format\":\"int64\",\"type\":\"integer\"},\"subject_id\":{\"description\":\"The ID of the subject Story.\",\"format\":\"int64\",\"type\":\"integer\"},\"subject_workflow_state_id\":{\"description\":\"The workflow state of the \\\"subject\\\" story.\",\"format\":\"int64\",\"type\":\"integer\"},\"updated_at\":{\"description\":\"The time/date when the Story Link was last updated.\",\"format\":\"date-time\",\"type\":\"string\"},\"verb\":{\"description\":\"How the subject Story acts on the object Story. This can be \\\"blocks\\\", \\\"duplicates\\\", or \\\"relates to\\\".\",\"type\":\"string\"}},\"required\":[\"entity_type\",\"id\",\"subject_id\",\"subject_workflow_state_id\",\"verb\",\"object_id\",\"created_at\",\"updated_at\"],\"type\":\"object\"}}},\"description\":\"Resource\"},\"400\":{\"description\":\"Schema mismatch\"},\"404\":{\"description\":\"Resource does not exist\"},\"422\":{\"description\":\"Unprocessable\"}},\"security\":[{\"api_token\":[]}],\"securitySchemes\":{\"api_token\":{\"in\":\"header\",\"name\":\"Shortcut-Token\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/api/v3/story-links"
@@ -137,9 +144,8 @@ main: kit: entity: story_link: {
           }
           contract: {
             id: "GET /api/v3/story-links/{story-link-public-id}"
-            json: "{\"operationId\":\"getStoryLink\",\"parameters\":[{\"description\":\"The unique ID of the Story Link.\",\"in\":\"path\",\"name\":\"story-link-public-id\",\"required\":true,\"schema\":{\"format\":\"int64\",\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"additionalProperties\":false,\"description\":\"Story links allow you create semantic relationships between two stories. Relationship types are relates to, blocks / blocked by, and duplicates / is duplicated by. The format is `subject -> link -> object`, or for example \\\"story 5 blocks story 6\\\".\",\"properties\":{\"created_at\":{\"description\":\"The time/date when the Story Link was created.\",\"format\":\"date-time\",\"type\":\"string\"},\"entity_type\":{\"description\":\"A string description of this resource.\",\"type\":\"string\"},\"id\":{\"description\":\"The unique identifier of the Story Link.\",\"format\":\"int64\",\"type\":\"integer\"},\"object_id\":{\"description\":\"The ID of the object Story.\",\"format\":\"int64\",\"type\":\"integer\"},\"subject_id\":{\"description\":\"The ID of the subject Story.\",\"format\":\"int64\",\"type\":\"integer\"},\"subject_workflow_state_id\":{\"description\":\"The workflow state of the \\\"subject\\\" story.\",\"format\":\"int64\",\"type\":\"integer\"},\"updated_at\":{\"description\":\"The time/date when the Story Link was last updated.\",\"format\":\"date-time\",\"type\":\"string\"},\"verb\":{\"description\":\"How the subject Story acts on the object Story. This can be \\\"blocks\\\", \\\"duplicates\\\", or \\\"relates to\\\".\",\"type\":\"string\"}},\"required\":[\"entity_type\",\"id\",\"subject_id\",\"subject_workflow_state_id\",\"verb\",\"object_id\",\"created_at\",\"updated_at\"],\"type\":\"object\"}}},\"description\":\"Resource\"},\"400\":{\"description\":\"Schema mismatch\"},\"404\":{\"description\":\"Resource does not exist\"},\"422\":{\"description\":\"Unprocessable\"}},\"security\":[{\"api_token\":[]}],\"securitySchemes\":{\"api_token\":{\"in\":\"header\",\"name\":\"Shortcut-Token\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/api/v3/story-links/{story-link-public-id}"
@@ -191,9 +197,8 @@ main: kit: entity: story_link: {
           }
           contract: {
             id: "DELETE /api/v3/story-links/{story-link-public-id}"
-            json: "{\"operationId\":\"deleteStoryLink\",\"parameters\":[{\"description\":\"The unique ID of the Story Link.\",\"in\":\"path\",\"name\":\"story-link-public-id\",\"required\":true,\"schema\":{\"format\":\"int64\",\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"204\":{\"description\":\"No Content\"},\"400\":{\"description\":\"Schema mismatch\"},\"404\":{\"description\":\"Resource does not exist\"},\"422\":{\"description\":\"Unprocessable\"}},\"security\":[{\"api_token\":[]}],\"securitySchemes\":{\"api_token\":{\"in\":\"header\",\"name\":\"Shortcut-Token\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "DELETE"
           orig: "/api/v3/story-links/{story-link-public-id}"
@@ -245,9 +250,8 @@ main: kit: entity: story_link: {
           }
           contract: {
             id: "PUT /api/v3/story-links/{story-link-public-id}"
-            json: "{\"operationId\":\"updateStoryLink\",\"parameters\":[{\"description\":\"The unique ID of the Story Link.\",\"in\":\"path\",\"name\":\"story-link-public-id\",\"required\":true,\"schema\":{\"format\":\"int64\",\"type\":\"integer\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"additionalProperties\":false,\"properties\":{\"object_id\":{\"description\":\"The ID of the object Story.\",\"format\":\"int64\",\"type\":\"integer\"},\"subject_id\":{\"description\":\"The ID of the subject Story.\",\"format\":\"int64\",\"type\":\"integer\"},\"verb\":{\"description\":\"The type of link.\",\"enum\":[\"blocks\",\"duplicates\",\"relates to\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"additionalProperties\":false,\"description\":\"Story links allow you create semantic relationships between two stories. Relationship types are relates to, blocks / blocked by, and duplicates / is duplicated by. The format is `subject -> link -> object`, or for example \\\"story 5 blocks story 6\\\".\",\"properties\":{\"created_at\":{\"description\":\"The time/date when the Story Link was created.\",\"format\":\"date-time\",\"type\":\"string\"},\"entity_type\":{\"description\":\"A string description of this resource.\",\"type\":\"string\"},\"id\":{\"description\":\"The unique identifier of the Story Link.\",\"format\":\"int64\",\"type\":\"integer\"},\"object_id\":{\"description\":\"The ID of the object Story.\",\"format\":\"int64\",\"type\":\"integer\"},\"subject_id\":{\"description\":\"The ID of the subject Story.\",\"format\":\"int64\",\"type\":\"integer\"},\"subject_workflow_state_id\":{\"description\":\"The workflow state of the \\\"subject\\\" story.\",\"format\":\"int64\",\"type\":\"integer\"},\"updated_at\":{\"description\":\"The time/date when the Story Link was last updated.\",\"format\":\"date-time\",\"type\":\"string\"},\"verb\":{\"description\":\"How the subject Story acts on the object Story. This can be \\\"blocks\\\", \\\"duplicates\\\", or \\\"relates to\\\".\",\"type\":\"string\"}},\"required\":[\"entity_type\",\"id\",\"subject_id\",\"subject_workflow_state_id\",\"verb\",\"object_id\",\"created_at\",\"updated_at\"],\"type\":\"object\"}}},\"description\":\"Resource\"},\"400\":{\"description\":\"Schema mismatch\"},\"404\":{\"description\":\"Resource does not exist\"},\"422\":{\"description\":\"Unprocessable\"}},\"security\":[{\"api_token\":[]}],\"securitySchemes\":{\"api_token\":{\"in\":\"header\",\"name\":\"Shortcut-Token\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PUT"
           orig: "/api/v3/story-links/{story-link-public-id}"

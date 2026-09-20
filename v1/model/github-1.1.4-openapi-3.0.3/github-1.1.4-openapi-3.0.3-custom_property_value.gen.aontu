@@ -4,25 +4,27 @@ main: kit: entity: custom_property_value: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "property_name"
-      req: true
-      short: "The name of the property"
-      type: "`$STRING`"
+  fields: {
+    property_name: {
+      h: "Property Name"
+      n: "property_name"
+      r: true
+      sh: "The name of the property"
+      t: "`$STRING`"
     }
-    {
-      name: "value"
-      req: true
-      short: "The value assigned to the property"
-      type: "`$ANY`"
+    value: {
+      h: "Value"
+      n: "value"
+      r: true
+      sh: "The value assigned to the property"
+      t: "`$ANY`"
       union: {
         branches: 2
         count: 1
         depth: 0
       }
     }
-  ]
+  }
 
   name: "custom_property_value"
   op: {
@@ -50,9 +52,8 @@ main: kit: entity: custom_property_value: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/properties/values"
-            json: "{\"operationId\":\"repos/get-custom-properties-values\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"property_name\":\"environment\",\"value\":\"production\"},{\"property_name\":\"service\",\"value\":\"web\"},{\"property_name\":\"team\",\"value\":\"octocat\"}]}},\"schema\":{\"items\":{\"description\":\"Custom property name and associated value\",\"properties\":{\"property_name\":{\"description\":\"The name of the property\",\"type\":\"string\"},\"value\":{\"description\":\"The value assigned to the property\",\"nullable\":true,\"oneOf\":[{\"type\":\"string\"},{\"items\":{\"type\":\"string\"},\"type\":\"array\"}]}},\"required\":[\"property_name\",\"value\"],\"title\":\"Custom Property Value\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/properties/values"

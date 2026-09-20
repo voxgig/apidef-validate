@@ -4,35 +4,39 @@ main: kit: entity: repository_privilege_input: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "privilege"
-      req: true
-      short: "The level of privilege that the user or team should be granted to the specified repository."
-      type: "`$STRING`"
+  fields: {
+    privilege: {
+      h: "Privilege"
+      n: "privilege"
+      r: true
+      sh: "The level of privilege that the user or team should be granted to the specified repository."
+      t: "`$STRING`"
     }
-    {
-      format: "slug"
-      name: "service"
-      req: false
-      short: "The service identifier (slug)."
-      type: "`$STRING`"
+    service: {
+      fo: "slug"
+      h: "Service"
+      n: "service"
+      r: false
+      sh: "The service identifier (slug)."
+      t: "`$STRING`"
     }
-    {
-      format: "slug"
-      name: "team"
-      req: false
-      short: "The team identifier (slug)."
-      type: "`$STRING`"
+    team: {
+      fo: "slug"
+      h: "Team"
+      n: "team"
+      r: false
+      sh: "The team identifier (slug)."
+      t: "`$STRING`"
     }
-    {
-      format: "slug"
-      name: "user"
-      req: false
-      short: "The user identifier (slug)."
-      type: "`$STRING`"
+    user: {
+      fo: "slug"
+      h: "User"
+      n: "user"
+      r: false
+      sh: "The user identifier (slug)."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "repository_privilege_input"
   op: {
@@ -76,9 +80,8 @@ main: kit: entity: repository_privilege_input: {
           }
           contract: {
             id: "GET /repos/{owner}/{identifier}/privileges"
-            json: "{\"consumes\":[\"application/json\"],\"operationId\":\"repos_privileges_list\",\"parameters\":[{\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"type\":\"string\"},{\"in\":\"path\",\"name\":\"identifier\",\"required\":true,\"type\":\"string\"},{\"description\":\"A page number within the paginated result set.\",\"in\":\"query\",\"name\":\"page\",\"required\":false,\"type\":\"integer\"},{\"description\":\"Number of results to return per page.\",\"in\":\"query\",\"name\":\"page_size\",\"required\":false,\"type\":\"integer\"}],\"produces\":[\"application/json\"],\"protocol\":\"http\",\"responses\":{\"200\":{\"description\":\"Retrieved privileges for the specified repository\",\"schema\":{\"properties\":{\"privileges\":{\"description\":\"List of objects with explicit privileges to the repository.\",\"items\":{\"properties\":{\"privilege\":{\"description\":\"The level of privilege that the user or team should be granted to the specified repository.\",\"enum\":[\"Admin\",\"Write\",\"Read\"],\"title\":\"Privilege\",\"type\":\"string\"},\"service\":{\"description\":\"The service identifier (slug).\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"title\":\"Service\",\"type\":\"string\"},\"team\":{\"description\":\"The team identifier (slug).\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"title\":\"Team\",\"type\":\"string\"},\"user\":{\"description\":\"The user identifier (slug).\",\"format\":\"slug\",\"minLength\":1,\"pattern\":\"^[-a-zA-Z0-9_]+$\",\"title\":\"User\",\"type\":\"string\"}},\"required\":[\"privilege\"],\"type\":\"object\"},\"type\":\"array\"}},\"required\":[\"privileges\"],\"type\":\"object\"}},\"400\":{\"description\":\"Request could not be processed (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"404\":{\"description\":\"Owner namespace or repository not found\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}},\"422\":{\"description\":\"Missing or invalid parameters (see detail).\",\"schema\":{\"properties\":{\"detail\":{\"description\":\"An extended message for the response.\",\"minLength\":1,\"title\":\"Detail\",\"type\":\"string\"},\"fields\":{\"additionalProperties\":{\"items\":{\"minLength\":1,\"type\":\"string\"},\"type\":\"array\"},\"description\":\"A Dictionary of related errors where key: Field and value: Array of Errors related to that field\",\"title\":\"Fields\",\"type\":\"object\"}},\"required\":[\"detail\"],\"type\":\"object\"}}},\"security\":[{\"apikey\":[]},{\"basic\":[]}],\"securitySchemes\":{\"apikey\":{\"in\":\"header\",\"name\":\"X-Api-Key\",\"type\":\"apiKey\"},\"basic\":{\"type\":\"basic\"}},\"securitySource\":\"definition\"}"
             source: "swagger2"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{identifier}/privileges"

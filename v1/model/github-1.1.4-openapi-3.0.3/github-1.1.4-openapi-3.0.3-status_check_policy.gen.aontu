@@ -4,67 +4,74 @@ main: kit: entity: status_check_policy: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "app_id"
-      req: true
-      type: "`$INTEGER`"
+  fields: {
+    app_id: {
+      h: "App Id"
+      n: "app_id"
+      r: true
+      t: "`$INTEGER`"
     }
-    {
-      name: "checks"
+    checks: {
+      h: "Checks"
+      n: "checks"
       op: {
         update: {
           req: false
           type: "`$ARRAY`"
         }
       }
-      req: true
-      short: "The list of status checks to require in order to merge into this branch."
-      type: "`$ARRAY`"
+      r: true
+      sh: "The list of status checks to require in order to merge into this branch."
+      t: "`$ARRAY`"
     }
-    {
-      name: "context"
-      req: true
-      type: "`$STRING`"
+    context: {
+      h: "Context"
+      n: "context"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      deprecated: true
-      name: "contexts"
+    contexts: {
+      de: true
+      h: "Contexts"
+      n: "contexts"
       op: {
         update: {
           req: false
           type: "`$ARRAY`"
         }
       }
-      req: true
-      short: "**Closing down notice**: The list of status checks to require in order to merge into this branch."
-      type: "`$ARRAY`"
+      r: true
+      sh: "**Closing down notice**: The list of status checks to require in order to merge into this branch."
+      t: "`$ARRAY`"
     }
-    {
-      format: "uri"
-      name: "contexts_url"
-      req: true
-      type: "`$STRING`"
+    contexts_url: {
+      fo: "uri"
+      h: "Contexts Url"
+      n: "contexts_url"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "strict"
+    strict: {
+      h: "Strict"
+      n: "strict"
       op: {
         update: {
           req: false
           type: "`$BOOLEAN`"
         }
       }
-      req: true
-      short: "Require branches to be up to date before merging."
-      type: "`$BOOLEAN`"
+      r: true
+      sh: "Require branches to be up to date before merging."
+      t: "`$BOOLEAN`"
     }
-    {
-      format: "uri"
-      name: "url"
-      req: true
-      type: "`$STRING`"
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "status_check_policy"
   op: {
@@ -99,9 +106,8 @@ main: kit: entity: status_check_policy: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
-            json: "{\"operationId\":\"repos/get-status-checks-protection\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the branch. Cannot contain wildcard characters. To use wildcard characters in branch names, use [the GraphQL API](https://docs.github.com/graphql).\",\"in\":\"path\",\"name\":\"branch\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"contexts\":[\"continuous-integration/travis-ci\"],\"contexts_url\":\"https://api.github.com/repos/octocat/Hello-World/branches/master/protection/required_status_checks/contexts\",\"strict\":true,\"url\":\"https://api.github.com/repos/octocat/Hello-World/branches/master/protection/required_status_checks\"}}},\"schema\":{\"description\":\"Status Check Policy\",\"properties\":{\"checks\":{\"items\":{\"properties\":{\"app_id\":{\"nullable\":true,\"type\":\"integer\"},\"context\":{\"example\":\"continuous-integration/travis-ci\",\"type\":\"string\"}},\"required\":[\"context\",\"app_id\"],\"type\":\"object\"},\"type\":\"array\"},\"contexts\":{\"example\":[\"continuous-integration/travis-ci\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"contexts_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/branches/master/protection/required_status_checks/contexts\",\"format\":\"uri\",\"type\":\"string\"},\"strict\":{\"example\":true,\"type\":\"boolean\"},\"url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/branches/master/protection/required_status_checks\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"url\",\"contexts_url\",\"strict\",\"contexts\",\"checks\"],\"title\":\"Status Check Policy\",\"type\":\"object\"}}},\"description\":\"Response\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
@@ -178,9 +184,8 @@ main: kit: entity: status_check_policy: {
           }
           contract: {
             id: "PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
-            json: "{\"operationId\":\"repos/update-status-check-protection\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the branch. Cannot contain wildcard characters. To use wildcard characters in branch names, use [the GraphQL API](https://docs.github.com/graphql).\",\"in\":\"path\",\"name\":\"branch\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"contexts\":[\"continuous-integration/travis-ci\"],\"strict\":true}}},\"schema\":{\"properties\":{\"checks\":{\"description\":\"The list of status checks to require in order to merge into this branch.\",\"items\":{\"properties\":{\"app_id\":{\"description\":\"The ID of the GitHub App that must provide this check. Omit this field to automatically select the GitHub App that has recently provided this check, or any app if it was not set by a GitHub App. Pass -1 to explicitly allow any app to set the status.\",\"type\":\"integer\"},\"context\":{\"description\":\"The name of the required check\",\"type\":\"string\"}},\"required\":[\"context\"],\"type\":\"object\"},\"type\":\"array\"},\"contexts\":{\"deprecated\":true,\"description\":\"**Closing down notice**: The list of status checks to require in order to merge into this branch. If any of these checks have recently been set by a particular GitHub App, they will be required to come from that app in future for the branch to merge. Use `checks` instead of `contexts` for more fine-grained control.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"strict\":{\"description\":\"Require branches to be up to date before merging.\",\"type\":\"boolean\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"contexts\":[\"continuous-integration/travis-ci\"],\"contexts_url\":\"https://api.github.com/repos/octocat/Hello-World/branches/master/protection/required_status_checks/contexts\",\"strict\":true,\"url\":\"https://api.github.com/repos/octocat/Hello-World/branches/master/protection/required_status_checks\"}}},\"schema\":{\"description\":\"Status Check Policy\",\"properties\":{\"checks\":{\"items\":{\"properties\":{\"app_id\":{\"nullable\":true,\"type\":\"integer\"},\"context\":{\"example\":\"continuous-integration/travis-ci\",\"type\":\"string\"}},\"required\":[\"context\",\"app_id\"],\"type\":\"object\"},\"type\":\"array\"},\"contexts\":{\"example\":[\"continuous-integration/travis-ci\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"contexts_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/branches/master/protection/required_status_checks/contexts\",\"format\":\"uri\",\"type\":\"string\"},\"strict\":{\"example\":true,\"type\":\"boolean\"},\"url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/branches/master/protection/required_status_checks\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"url\",\"contexts_url\",\"strict\",\"contexts\",\"checks\"],\"title\":\"Status Check Policy\",\"type\":\"object\"}}},\"description\":\"Response\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"

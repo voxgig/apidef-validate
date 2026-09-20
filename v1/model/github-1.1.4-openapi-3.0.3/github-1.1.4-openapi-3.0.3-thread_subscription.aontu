@@ -4,59 +4,67 @@ main: kit: entity: thread_subscription: {
 
   alias: field: {}
 
-  fields: [
-    {
-      format: "date-time"
-      name: "created_at"
-      req: true
-      type: "`$STRING`"
+  fields: {
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "id"
-      req: false
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "ignored"
+    ignored: {
+      h: "Ignored"
+      n: "ignored"
       op: {
         update: {
           req: false
           type: "`$BOOLEAN`"
         }
       }
-      req: true
-      short: "Whether to block all notifications from a thread."
-      type: "`$BOOLEAN`"
+      r: true
+      sh: "Whether to block all notifications from a thread."
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "reason"
-      req: true
-      type: "`$STRING`"
+    reason: {
+      h: "Reason"
+      n: "reason"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "repository_url"
-      req: false
-      type: "`$STRING`"
+    repository_url: {
+      fo: "uri"
+      h: "Repository Url"
+      n: "repository_url"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "subscribed"
-      req: true
-      type: "`$BOOLEAN`"
+    subscribed: {
+      h: "Subscribed"
+      n: "subscribed"
+      r: true
+      t: "`$BOOLEAN`"
     }
-    {
-      format: "uri"
-      name: "thread_url"
-      req: false
-      type: "`$STRING`"
+    thread_url: {
+      fo: "uri"
+      h: "Thread Url"
+      n: "thread_url"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "url"
-      req: true
-      type: "`$STRING`"
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -82,9 +90,8 @@ main: kit: entity: thread_subscription: {
           }
           contract: {
             id: "GET /notifications/threads/{thread_id}/subscription"
-            json: "{\"operationId\":\"activity/get-thread-subscription-for-authenticated-user\",\"parameters\":[{\"description\":\"The unique identifier of the notification thread. This corresponds to the value returned in the `id` field when you retrieve notifications (for example with the [`GET /notifications` operation](https://docs.github.com/rest/activity/notifications#list-notifications-for-the-authenticated-user)).\",\"in\":\"path\",\"name\":\"thread_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"created_at\":\"2012-10-06T21:34:12Z\",\"ignored\":false,\"reason\":null,\"subscribed\":true,\"thread_url\":\"https://api.github.com/notifications/threads/1\",\"url\":\"https://api.github.com/notifications/threads/1/subscription\"}}},\"schema\":{\"description\":\"Thread Subscription\",\"properties\":{\"created_at\":{\"example\":\"2012-10-06T21:34:12Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"ignored\":{\"type\":\"boolean\"},\"reason\":{\"nullable\":true,\"type\":\"string\"},\"repository_url\":{\"example\":\"https://api.github.com/repos/1\",\"format\":\"uri\",\"type\":\"string\"},\"subscribed\":{\"example\":true,\"type\":\"boolean\"},\"thread_url\":{\"example\":\"https://api.github.com/notifications/threads/1\",\"format\":\"uri\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/notifications/threads/1/subscription\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"created_at\",\"ignored\",\"reason\",\"url\",\"subscribed\"],\"title\":\"Thread Subscription\",\"type\":\"object\"}}},\"description\":\"Response\"},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/notifications/threads/{thread_id}/subscription"
@@ -136,9 +143,8 @@ main: kit: entity: thread_subscription: {
           }
           contract: {
             id: "PUT /notifications/threads/{thread_id}/subscription"
-            json: "{\"operationId\":\"activity/set-thread-subscription\",\"parameters\":[{\"description\":\"The unique identifier of the notification thread. This corresponds to the value returned in the `id` field when you retrieve notifications (for example with the [`GET /notifications` operation](https://docs.github.com/rest/activity/notifications#list-notifications-for-the-authenticated-user)).\",\"in\":\"path\",\"name\":\"thread_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"ignored\":false}}},\"schema\":{\"properties\":{\"ignored\":{\"default\":false,\"description\":\"Whether to block all notifications from a thread.\",\"type\":\"boolean\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"created_at\":\"2012-10-06T21:34:12Z\",\"ignored\":false,\"reason\":null,\"subscribed\":true,\"thread_url\":\"https://api.github.com/notifications/threads/1\",\"url\":\"https://api.github.com/notifications/threads/1/subscription\"}}},\"schema\":{\"description\":\"Thread Subscription\",\"properties\":{\"created_at\":{\"example\":\"2012-10-06T21:34:12Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"ignored\":{\"type\":\"boolean\"},\"reason\":{\"nullable\":true,\"type\":\"string\"},\"repository_url\":{\"example\":\"https://api.github.com/repos/1\",\"format\":\"uri\",\"type\":\"string\"},\"subscribed\":{\"example\":true,\"type\":\"boolean\"},\"thread_url\":{\"example\":\"https://api.github.com/notifications/threads/1\",\"format\":\"uri\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/notifications/threads/1/subscription\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"created_at\",\"ignored\",\"reason\",\"url\",\"subscribed\"],\"title\":\"Thread Subscription\",\"type\":\"object\"}}},\"description\":\"Response\"},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PUT"
           orig: "/notifications/threads/{thread_id}/subscription"

@@ -4,9 +4,10 @@ main: kit: entity: hook: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "active"
+  fields: {
+    active: {
+      h: "Active"
+      n: "active"
       op: {
         create: {
           req: false
@@ -17,18 +18,20 @@ main: kit: entity: hook: {
           type: "`$BOOLEAN`"
         }
       }
-      req: true
-      short: "Determines whether the hook is actually triggered on pushes."
-      type: "`$BOOLEAN`"
+      r: true
+      sh: "Determines whether the hook is actually triggered on pushes."
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "add_events"
-      req: false
-      short: "Determines a list of events to be added to the list of events that the Hook triggers for."
-      type: "`$ARRAY`"
+    add_events: {
+      h: "Add Events"
+      n: "add_events"
+      r: false
+      sh: "Determines a list of events to be added to the list of events that the Hook triggers for."
+      t: "`$ARRAY`"
     }
-    {
-      name: "config"
+    config: {
+      h: "Config"
+      n: "config"
       op: {
         create: {
           req: false
@@ -39,29 +42,32 @@ main: kit: entity: hook: {
           type: "`$OBJECT`"
         }
       }
-      req: true
-      short: "Configuration object of the webhook"
-      type: "`$OBJECT`"
+      r: true
+      sh: "Configuration object of the webhook"
+      t: "`$OBJECT`"
       union: {
         branches: 2
         count: 1
         depth: 2
       }
     }
-    {
-      format: "date-time"
-      name: "created_at"
-      req: true
-      type: "`$STRING`"
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "deliveries_url"
-      req: false
-      type: "`$STRING`"
+    deliveries_url: {
+      fo: "uri"
+      h: "Deliveries Url"
+      n: "deliveries_url"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "events"
+    events: {
+      h: "Events"
+      n: "events"
       op: {
         create: {
           req: false
@@ -72,69 +78,78 @@ main: kit: entity: hook: {
           type: "`$ARRAY`"
         }
       }
-      req: true
-      short: "Determines what events the hook is triggered for."
-      type: "`$ARRAY`"
+      r: true
+      sh: "Determines what events the hook is triggered for."
+      t: "`$ARRAY`"
     }
-    {
-      name: "id"
-      req: true
-      short: "Unique identifier of the webhook."
-      type: "`$INTEGER`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "Unique identifier of the webhook."
+      t: "`$INTEGER`"
     }
-    {
-      name: "last_response"
-      req: true
-      type: "`$OBJECT`"
+    last_response: {
+      h: "Last Response"
+      n: "last_response"
+      r: true
+      t: "`$OBJECT`"
     }
-    {
-      name: "name"
+    name: {
+      h: "Name"
+      n: "name"
       op: {
         create: {
           req: false
           type: "`$STRING`"
         }
       }
-      req: true
-      short: "The name of a valid service, use 'web' for a webhook."
-      type: "`$STRING`"
+      r: true
+      sh: "The name of a valid service, use 'web' for a webhook."
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "ping_url"
-      req: true
-      type: "`$STRING`"
+    ping_url: {
+      fo: "uri"
+      h: "Ping Url"
+      n: "ping_url"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "remove_events"
-      req: false
-      short: "Determines a list of events to be removed from the list of events that the Hook triggers for."
-      type: "`$ARRAY`"
+    remove_events: {
+      h: "Remove Events"
+      n: "remove_events"
+      r: false
+      sh: "Determines a list of events to be removed from the list of events that the Hook triggers for."
+      t: "`$ARRAY`"
     }
-    {
-      format: "uri"
-      name: "test_url"
-      req: true
-      type: "`$STRING`"
+    test_url: {
+      fo: "uri"
+      h: "Test Url"
+      n: "test_url"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "type"
-      req: true
-      type: "`$STRING`"
+    type: {
+      h: "Type"
+      n: "type"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "updated_at"
-      req: true
-      type: "`$STRING`"
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "url"
-      req: true
-      type: "`$STRING`"
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -167,9 +182,8 @@ main: kit: entity: hook: {
           }
           contract: {
             id: "POST /repos/{owner}/{repo}/hooks"
-            json: "{\"operationId\":\"repos/create-webhook\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"url\":\"https://example.com/webhook\"},\"events\":[\"push\",\"pull_request\"],\"name\":\"web\"}}},\"schema\":{\"additionalProperties\":false,\"nullable\":true,\"properties\":{\"active\":{\"default\":true,\"description\":\"Determines if notifications are sent when the webhook is triggered. Set to `true` to send notifications.\",\"type\":\"boolean\"},\"config\":{\"description\":\"Key/value pairs to provide settings for this webhook.\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"type\":\"object\"},\"events\":{\"default\":[\"push\"],\"description\":\"Determines what [events](https://docs.github.com/webhooks/event-payloads) the hook is triggered for.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"name\":{\"description\":\"Use `web` to create a webhook. Default: `web`. This parameter only accepts the value `web`.\",\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"url\":\"https://example.com/webhook\"},\"created_at\":\"2019-06-03T00:57:16Z\",\"deliveries_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/deliveries\",\"events\":[\"push\",\"pull_request\"],\"id\":12345678,\"last_response\":{\"code\":null,\"message\":null,\"status\":\"unused\"},\"name\":\"web\",\"ping_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/pings\",\"test_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/test\",\"type\":\"Repository\",\"updated_at\":\"2019-06-03T00:57:16Z\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678\"}}},\"schema\":{\"description\":\"Webhooks for repositories.\",\"properties\":{\"active\":{\"description\":\"Determines whether the hook is actually triggered on pushes.\",\"example\":true,\"type\":\"boolean\"},\"config\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"},\"created_at\":{\"example\":\"2011-09-06T17:26:27Z\",\"format\":\"date-time\",\"type\":\"string\"},\"deliveries_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/deliveries\",\"format\":\"uri\",\"type\":\"string\"},\"events\":{\"description\":\"Determines what events the hook is triggered for. Default: ['push'].\",\"example\":[\"push\",\"pull_request\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"id\":{\"description\":\"Unique identifier of the webhook.\",\"example\":42,\"type\":\"integer\"},\"last_response\":{\"properties\":{\"code\":{\"nullable\":true,\"type\":\"integer\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"status\":{\"nullable\":true,\"type\":\"string\"}},\"required\":[\"code\",\"status\",\"message\"],\"title\":\"Hook Response\",\"type\":\"object\"},\"name\":{\"description\":\"The name of a valid service, use 'web' for a webhook.\",\"example\":\"web\",\"type\":\"string\"},\"ping_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/pings\",\"format\":\"uri\",\"type\":\"string\"},\"test_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/test\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"example\":\"2011-09-06T20:39:23Z\",\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"type\",\"name\",\"active\",\"events\",\"config\",\"ping_url\",\"created_at\",\"updated_at\",\"last_response\",\"test_url\"],\"title\":\"Webhook\",\"type\":\"object\"}}},\"description\":\"Response\",\"headers\":{\"Location\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678\",\"schema\":{\"type\":\"string\"}}}},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/hooks"
@@ -247,9 +261,8 @@ main: kit: entity: hook: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/hooks"
-            json: "{\"operationId\":\"repos/list-webhooks\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"url\":\"https://example.com/webhook\"},\"created_at\":\"2019-06-03T00:57:16Z\",\"deliveries_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/deliveries\",\"events\":[\"push\",\"pull_request\"],\"id\":12345678,\"last_response\":{\"code\":null,\"message\":null,\"status\":\"unused\"},\"name\":\"web\",\"ping_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/pings\",\"test_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/test\",\"type\":\"Repository\",\"updated_at\":\"2019-06-03T00:57:16Z\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678\"}]}},\"schema\":{\"items\":{\"description\":\"Webhooks for repositories.\",\"properties\":{\"active\":{\"description\":\"Determines whether the hook is actually triggered on pushes.\",\"example\":true,\"type\":\"boolean\"},\"config\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"},\"created_at\":{\"example\":\"2011-09-06T17:26:27Z\",\"format\":\"date-time\",\"type\":\"string\"},\"deliveries_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/deliveries\",\"format\":\"uri\",\"type\":\"string\"},\"events\":{\"description\":\"Determines what events the hook is triggered for. Default: ['push'].\",\"example\":[\"push\",\"pull_request\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"id\":{\"description\":\"Unique identifier of the webhook.\",\"example\":42,\"type\":\"integer\"},\"last_response\":{\"properties\":{\"code\":{\"nullable\":true,\"type\":\"integer\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"status\":{\"nullable\":true,\"type\":\"string\"}},\"required\":[\"code\",\"status\",\"message\"],\"title\":\"Hook Response\",\"type\":\"object\"},\"name\":{\"description\":\"The name of a valid service, use 'web' for a webhook.\",\"example\":\"web\",\"type\":\"string\"},\"ping_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/pings\",\"format\":\"uri\",\"type\":\"string\"},\"test_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/test\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"example\":\"2011-09-06T20:39:23Z\",\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"type\",\"name\",\"active\",\"events\",\"config\",\"ping_url\",\"created_at\",\"updated_at\",\"last_response\",\"test_url\"],\"title\":\"Webhook\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/hooks"
@@ -313,9 +326,8 @@ main: kit: entity: hook: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/hooks/{hook_id}"
-            json: "{\"operationId\":\"repos/get-webhook\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the hook. You can find this value in the `X-GitHub-Hook-ID` header of a webhook delivery.\",\"in\":\"path\",\"name\":\"hook_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"url\":\"https://example.com/webhook\"},\"created_at\":\"2019-06-03T00:57:16Z\",\"deliveries_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/deliveries\",\"events\":[\"push\",\"pull_request\"],\"id\":12345678,\"last_response\":{\"code\":null,\"message\":null,\"status\":\"unused\"},\"name\":\"web\",\"ping_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/pings\",\"test_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/test\",\"type\":\"Repository\",\"updated_at\":\"2019-06-03T00:57:16Z\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678\"}}},\"schema\":{\"description\":\"Webhooks for repositories.\",\"properties\":{\"active\":{\"description\":\"Determines whether the hook is actually triggered on pushes.\",\"example\":true,\"type\":\"boolean\"},\"config\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"},\"created_at\":{\"example\":\"2011-09-06T17:26:27Z\",\"format\":\"date-time\",\"type\":\"string\"},\"deliveries_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/deliveries\",\"format\":\"uri\",\"type\":\"string\"},\"events\":{\"description\":\"Determines what events the hook is triggered for. Default: ['push'].\",\"example\":[\"push\",\"pull_request\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"id\":{\"description\":\"Unique identifier of the webhook.\",\"example\":42,\"type\":\"integer\"},\"last_response\":{\"properties\":{\"code\":{\"nullable\":true,\"type\":\"integer\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"status\":{\"nullable\":true,\"type\":\"string\"}},\"required\":[\"code\",\"status\",\"message\"],\"title\":\"Hook Response\",\"type\":\"object\"},\"name\":{\"description\":\"The name of a valid service, use 'web' for a webhook.\",\"example\":\"web\",\"type\":\"string\"},\"ping_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/pings\",\"format\":\"uri\",\"type\":\"string\"},\"test_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/test\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"example\":\"2011-09-06T20:39:23Z\",\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"type\",\"name\",\"active\",\"events\",\"config\",\"ping_url\",\"created_at\",\"updated_at\",\"last_response\",\"test_url\"],\"title\":\"Webhook\",\"type\":\"object\"}}},\"description\":\"Response\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/hooks/{hook_id}"
@@ -386,9 +398,8 @@ main: kit: entity: hook: {
           }
           contract: {
             id: "PATCH /repos/{owner}/{repo}/hooks/{hook_id}"
-            json: "{\"operationId\":\"repos/update-webhook\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the hook. You can find this value in the `X-GitHub-Hook-ID` header of a webhook delivery.\",\"in\":\"path\",\"name\":\"hook_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"active\":true,\"add_events\":[\"pull_request\"]}}},\"schema\":{\"properties\":{\"active\":{\"default\":true,\"description\":\"Determines if notifications are sent when the webhook is triggered. Set to `true` to send notifications.\",\"type\":\"boolean\"},\"add_events\":{\"description\":\"Determines a list of events to be added to the list of events that the Hook triggers for.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"config\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"},\"events\":{\"default\":[\"push\"],\"description\":\"Determines what [events](https://docs.github.com/webhooks/event-payloads) the hook is triggered for. This replaces the entire array of events.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"remove_events\":{\"description\":\"Determines a list of events to be removed from the list of events that the Hook triggers for.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"0\",\"url\":\"https://example.com/webhook\"},\"created_at\":\"2019-06-03T00:57:16Z\",\"deliveries_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/deliveries\",\"events\":[\"push\",\"pull_request\"],\"id\":12345678,\"last_response\":{\"code\":null,\"message\":null,\"status\":\"unused\"},\"name\":\"web\",\"ping_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/pings\",\"test_url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678/test\",\"type\":\"Repository\",\"updated_at\":\"2019-06-03T00:57:16Z\",\"url\":\"https://api.github.com/repos/octocat/Hello-World/hooks/12345678\"}}},\"schema\":{\"description\":\"Webhooks for repositories.\",\"properties\":{\"active\":{\"description\":\"Determines whether the hook is actually triggered on pushes.\",\"example\":true,\"type\":\"boolean\"},\"config\":{\"description\":\"Configuration object of the webhook\",\"properties\":{\"content_type\":{\"description\":\"The media type used to serialize the payloads. Supported values include `json` and `form`. The default is `form`.\",\"example\":\"\\\"json\\\"\",\"type\":\"string\"},\"insecure_ssl\":{\"oneOf\":[{\"description\":\"Determines whether the SSL certificate of the host for `url` will be verified when delivering payloads. Supported values include `0` (verification is performed) and `1` (verification is not performed). The default is `0`. **We strongly recommend not setting this to `1` as you are subject to man-in-the-middle and other attacks.**\",\"example\":\"\\\"0\\\"\",\"type\":\"string\"},{\"type\":\"number\"}]},\"secret\":{\"description\":\"If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers).\",\"example\":\"\\\"********\\\"\",\"type\":\"string\"},\"url\":{\"description\":\"The URL to which the payloads will be delivered.\",\"example\":\"https://example.com/webhook\",\"format\":\"uri\",\"type\":\"string\"}},\"title\":\"Webhook Configuration\",\"type\":\"object\"},\"created_at\":{\"example\":\"2011-09-06T17:26:27Z\",\"format\":\"date-time\",\"type\":\"string\"},\"deliveries_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/deliveries\",\"format\":\"uri\",\"type\":\"string\"},\"events\":{\"description\":\"Determines what events the hook is triggered for. Default: ['push'].\",\"example\":[\"push\",\"pull_request\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"id\":{\"description\":\"Unique identifier of the webhook.\",\"example\":42,\"type\":\"integer\"},\"last_response\":{\"properties\":{\"code\":{\"nullable\":true,\"type\":\"integer\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"status\":{\"nullable\":true,\"type\":\"string\"}},\"required\":[\"code\",\"status\",\"message\"],\"title\":\"Hook Response\",\"type\":\"object\"},\"name\":{\"description\":\"The name of a valid service, use 'web' for a webhook.\",\"example\":\"web\",\"type\":\"string\"},\"ping_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/pings\",\"format\":\"uri\",\"type\":\"string\"},\"test_url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1/test\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"type\":\"string\"},\"updated_at\":{\"example\":\"2011-09-06T20:39:23Z\",\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/hooks/1\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"type\",\"name\",\"active\",\"events\",\"config\",\"ping_url\",\"created_at\",\"updated_at\",\"last_response\",\"test_url\"],\"title\":\"Webhook\",\"type\":\"object\"}}},\"description\":\"Response\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/repos/{owner}/{repo}/hooks/{hook_id}"

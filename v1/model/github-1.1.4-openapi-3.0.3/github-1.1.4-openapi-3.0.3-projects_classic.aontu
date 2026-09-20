@@ -4,20 +4,22 @@ main: kit: entity: projects_classic: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "permission"
-      req: false
-      short: "The permission to grant the collaborator."
-      type: "`$STRING`"
+  fields: {
+    permission: {
+      h: "Permission"
+      n: "permission"
+      r: false
+      sh: "The permission to grant the collaborator."
+      t: "`$STRING`"
     }
-    {
-      name: "position"
-      req: true
-      short: "The position of the column in a project."
-      type: "`$STRING`"
+    position: {
+      h: "Position"
+      n: "position"
+      r: true
+      sh: "The position of the column in a project."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "projects_classic"
   op: {
@@ -38,9 +40,8 @@ main: kit: entity: projects_classic: {
           }
           contract: {
             id: "POST /projects/columns/{column_id}/moves"
-            json: "{\"operationId\":\"projects-classic/move-column\",\"parameters\":[{\"description\":\"The unique identifier of the column.\",\"in\":\"path\",\"name\":\"column_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"summary\":\"Move the column to the end of the board\",\"value\":{\"position\":\"last\"}}},\"schema\":{\"properties\":{\"position\":{\"description\":\"The position of the column in a project. Can be one of: `first`, `last`, or `after:<column_id>` to place after the specified column.\",\"example\":\"last\",\"pattern\":\"^(?:first|last|after:\\\\d+)$\",\"type\":\"string\"}},\"required\":[\"position\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":null}},\"schema\":{\"additionalProperties\":false,\"properties\":{},\"type\":\"object\"}}},\"description\":\"Response\"},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error Simple\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error Simple\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/projects/columns/{column_id}/moves"
@@ -94,9 +95,8 @@ main: kit: entity: projects_classic: {
           }
           contract: {
             id: "DELETE /projects/{project_id}/collaborators/{username}"
-            json: "{\"operationId\":\"projects-classic/remove-collaborator\",\"parameters\":[{\"description\":\"The unique identifier of the project.\",\"in\":\"path\",\"name\":\"project_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}},{\"description\":\"The handle for the GitHub user account.\",\"in\":\"path\",\"name\":\"username\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"204\":{\"description\":\"Response\"},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "DELETE"
           orig: "/projects/{project_id}/collaborators/{username}"
@@ -139,9 +139,8 @@ main: kit: entity: projects_classic: {
           }
           contract: {
             id: "DELETE /projects/columns/{column_id}"
-            json: "{\"operationId\":\"projects-classic/delete-column\",\"parameters\":[{\"description\":\"The unique identifier of the column.\",\"in\":\"path\",\"name\":\"column_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"204\":{\"description\":\"Response\"},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "DELETE"
           orig: "/projects/columns/{column_id}"
@@ -192,9 +191,8 @@ main: kit: entity: projects_classic: {
           }
           contract: {
             id: "PUT /projects/{project_id}/collaborators/{username}"
-            json: "{\"operationId\":\"projects-classic/add-collaborator\",\"parameters\":[{\"description\":\"The unique identifier of the project.\",\"in\":\"path\",\"name\":\"project_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}},{\"description\":\"The handle for the GitHub user account.\",\"in\":\"path\",\"name\":\"username\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"summary\":\"Applying write permissions for the new collaborator\",\"value\":{\"permission\":\"write\"}}},\"schema\":{\"nullable\":true,\"properties\":{\"permission\":{\"default\":\"write\",\"description\":\"The permission to grant the collaborator.\",\"enum\":[\"read\",\"write\",\"admin\"],\"example\":\"write\",\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"204\":{\"description\":\"Response\"},\"304\":{\"description\":\"Not modified\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Requires authentication\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PUT"
           orig: "/projects/{project_id}/collaborators/{username}"

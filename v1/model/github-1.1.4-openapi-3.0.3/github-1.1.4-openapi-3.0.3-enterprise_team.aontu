@@ -4,21 +4,24 @@ main: kit: entity: enterprise_team: {
 
   alias: field: {}
 
-  fields: [
-    {
-      format: "date-time"
-      name: "created_at"
-      req: true
-      type: "`$STRING`"
+  fields: {
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "description"
-      req: false
-      short: "A description of the team."
-      type: "`$STRING`"
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      sh: "A description of the team."
+      t: "`$STRING`"
     }
-    {
-      name: "group_id"
+    group_id: {
+      h: "Group Id"
+      n: "group_id"
       op: {
         create: {
           req: false
@@ -29,74 +32,84 @@ main: kit: entity: enterprise_team: {
           type: "`$STRING`"
         }
       }
-      req: true
-      short: "The ID of the IdP group to assign team membership with."
-      type: "`$STRING`"
+      r: true
+      sh: "The ID of the IdP group to assign team membership with."
+      t: "`$STRING`"
     }
-    {
-      name: "group_name"
-      req: false
-      short: "Retired: this field will not be returned with GHEC enterprise teams."
-      type: "`$STRING`"
+    group_name: {
+      h: "Group Name"
+      n: "group_name"
+      r: false
+      sh: "Retired: this field will not be returned with GHEC enterprise teams."
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "html_url"
-      req: true
-      type: "`$STRING`"
+    html_url: {
+      fo: "uri"
+      h: "Html Url"
+      n: "html_url"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "int64"
-      name: "id"
-      req: true
-      type: "`$INTEGER`"
+    id: {
+      fo: "int64"
+      h: "Id"
+      n: "id"
+      r: true
+      t: "`$INTEGER`"
     }
-    {
-      name: "members_url"
-      req: true
-      type: "`$STRING`"
+    members_url: {
+      h: "Members Url"
+      n: "members_url"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "name"
+    name: {
+      h: "Name"
+      n: "name"
       op: {
         update: {
           req: false
           type: "`$STRING`"
         }
       }
-      req: true
-      short: "The name of the team."
-      type: "`$STRING`"
+      r: true
+      sh: "The name of the team."
+      t: "`$STRING`"
     }
-    {
-      name: "organization_selection_type"
-      req: false
-      type: "`$STRING`"
+    organization_selection_type: {
+      h: "Organization Selection Type"
+      n: "organization_selection_type"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "slug"
-      req: true
-      type: "`$STRING`"
+    slug: {
+      h: "Slug"
+      n: "slug"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      name: "sync_to_organizations"
-      req: false
-      short: "Retired: this field will not be returned with GHEC enterprise teams."
-      type: "`$STRING`"
+    sync_to_organizations: {
+      h: "Sync To Organizations"
+      n: "sync_to_organizations"
+      r: false
+      sh: "Retired: this field will not be returned with GHEC enterprise teams."
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "updated_at"
-      req: true
-      type: "`$STRING`"
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: true
+      t: "`$STRING`"
     }
-    {
-      format: "uri"
-      name: "url"
-      req: true
-      type: "`$STRING`"
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -122,9 +135,8 @@ main: kit: entity: enterprise_team: {
           }
           contract: {
             id: "POST /enterprises/{enterprise}/teams"
-            json: "{\"operationId\":\"enterprise-teams/create\",\"parameters\":[{\"description\":\"The slug version of the enterprise name.\",\"in\":\"path\",\"name\":\"enterprise\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"description\":\"A great team.\",\"group_id\":\"62ab9291-fae2-468e-974b-7e45096d5021\",\"name\":\"Justice League\"}}},\"schema\":{\"properties\":{\"description\":{\"description\":\"A description of the team.\",\"nullable\":true,\"type\":\"string\"},\"group_id\":{\"description\":\"The ID of the IdP group to assign team membership with. You can get this value from the [REST API endpoints for SCIM](https://docs.github.com/rest/scim#list-provisioned-scim-groups-for-an-enterprise).\",\"nullable\":true,\"type\":\"string\"},\"name\":{\"description\":\"The name of the team.\",\"type\":\"string\"},\"sync_to_organizations\":{\"default\":\"disabled\",\"description\":\"Retired: this field is no longer supported.\\nWhether the enterprise team should be reflected in each organization.\\nThis value cannot be set.\\n\",\"enum\":[\"all\",\"disabled\"],\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"created_at\":\"2019-01-26T19:01:12Z\",\"description\":\"A great team.\",\"group_id\":\"62ab9291-fae2-468e-974b-7e45096d5021\",\"html_url\":\"https://github.com/enterprises/dc/teams/justice-league\",\"id\":1,\"members_url\":\"https://api.github.com/enterprises/dc/teams/justice-league/members{/member}\",\"name\":\"Justice League\",\"slug\":\"justice-league\",\"updated_at\":\"2019-01-26T19:14:43Z\",\"url\":\"https://api.github.com/enterprises/dc/teams/justice-league\"}]}},\"schema\":{\"description\":\"Group of enterprise owners and/or members\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"group_id\":{\"example\":\"62ab9291-fae2-468e-974b-7e45096d5021\",\"nullable\":true,\"type\":\"string\"},\"group_name\":{\"description\":\"Retired: this field will not be returned with GHEC enterprise teams.\",\"example\":\"Justice League\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/enterprises/dc/teams/justice-league\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"members_url\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"organization_selection_type\":{\"example\":\"disabled | selected | all\",\"type\":\"string\"},\"slug\":{\"type\":\"string\"},\"sync_to_organizations\":{\"description\":\"Retired: this field will not be returned with GHEC enterprise teams.\",\"example\":\"disabled | all\",\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"members_url\",\"name\",\"html_url\",\"slug\",\"created_at\",\"updated_at\",\"group_id\"],\"title\":\"Enterprise Team\",\"type\":\"object\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/enterprises/{enterprise}/teams"
@@ -186,9 +198,8 @@ main: kit: entity: enterprise_team: {
           }
           contract: {
             id: "GET /enterprises/{enterprise}/teams"
-            json: "{\"operationId\":\"enterprise-teams/list\",\"parameters\":[{\"description\":\"The slug version of the enterprise name.\",\"in\":\"path\",\"name\":\"enterprise\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The number of results per page (max 100). For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"per_page\",\"schema\":{\"default\":30,\"type\":\"integer\"}},{\"description\":\"The page number of the results to fetch. For more information, see \\\"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\\\"\",\"in\":\"query\",\"name\":\"page\",\"schema\":{\"default\":1,\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"created_at\":\"2019-01-26T19:01:12Z\",\"description\":\"A great team.\",\"group_id\":\"62ab9291-fae2-468e-974b-7e45096d5021\",\"html_url\":\"https://github.com/enterprises/dc/teams/justice-league\",\"id\":1,\"members_url\":\"https://api.github.com/enterprises/dc/teams/justice-league/members{/member}\",\"name\":\"Justice League\",\"slug\":\"justice-league\",\"updated_at\":\"2019-01-26T19:14:43Z\",\"url\":\"https://api.github.com/enterprises/dc/teams/justice-league\"}]}},\"schema\":{\"items\":{\"description\":\"Group of enterprise owners and/or members\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"group_id\":{\"example\":\"62ab9291-fae2-468e-974b-7e45096d5021\",\"nullable\":true,\"type\":\"string\"},\"group_name\":{\"description\":\"Retired: this field will not be returned with GHEC enterprise teams.\",\"example\":\"Justice League\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/enterprises/dc/teams/justice-league\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"members_url\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"organization_selection_type\":{\"example\":\"disabled | selected | all\",\"type\":\"string\"},\"slug\":{\"type\":\"string\"},\"sync_to_organizations\":{\"description\":\"Retired: this field will not be returned with GHEC enterprise teams.\",\"example\":\"disabled | all\",\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"members_url\",\"name\",\"html_url\",\"slug\",\"created_at\",\"updated_at\",\"group_id\"],\"title\":\"Enterprise Team\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/enterprises/{enterprise}/teams"
@@ -241,9 +252,8 @@ main: kit: entity: enterprise_team: {
           }
           contract: {
             id: "GET /enterprises/{enterprise}/teams/{team_slug}"
-            json: "{\"operationId\":\"enterprise-teams/get\",\"parameters\":[{\"description\":\"The slug version of the enterprise name.\",\"in\":\"path\",\"name\":\"enterprise\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The slug of the team name.\",\"in\":\"path\",\"name\":\"team_slug\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"created_at\":\"2019-01-26T19:01:12Z\",\"description\":\"A great team.\",\"group_id\":\"62ab9291-fae2-468e-974b-7e45096d5021\",\"html_url\":\"https://github.com/enterprises/dc/teams/justice-league\",\"id\":1,\"members_url\":\"https://api.github.com/enterprises/dc/teams/justice-league/members{/member}\",\"name\":\"Justice League\",\"slug\":\"justice-league\",\"updated_at\":\"2019-01-26T19:14:43Z\",\"url\":\"https://api.github.com/enterprises/dc/teams/justice-league\"}]}},\"schema\":{\"description\":\"Group of enterprise owners and/or members\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"group_id\":{\"example\":\"62ab9291-fae2-468e-974b-7e45096d5021\",\"nullable\":true,\"type\":\"string\"},\"group_name\":{\"description\":\"Retired: this field will not be returned with GHEC enterprise teams.\",\"example\":\"Justice League\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/enterprises/dc/teams/justice-league\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"members_url\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"organization_selection_type\":{\"example\":\"disabled | selected | all\",\"type\":\"string\"},\"slug\":{\"type\":\"string\"},\"sync_to_organizations\":{\"description\":\"Retired: this field will not be returned with GHEC enterprise teams.\",\"example\":\"disabled | all\",\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"members_url\",\"name\",\"html_url\",\"slug\",\"created_at\",\"updated_at\",\"group_id\"],\"title\":\"Enterprise Team\",\"type\":\"object\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/enterprises/{enterprise}/teams/{team_slug}"
@@ -303,9 +313,8 @@ main: kit: entity: enterprise_team: {
           }
           contract: {
             id: "DELETE /enterprises/{enterprise}/teams/{team_slug}"
-            json: "{\"operationId\":\"enterprise-teams/delete\",\"parameters\":[{\"description\":\"The slug version of the enterprise name.\",\"in\":\"path\",\"name\":\"enterprise\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The slug of the team name.\",\"in\":\"path\",\"name\":\"team_slug\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"204\":{\"description\":\"Response\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "DELETE"
           orig: "/enterprises/{enterprise}/teams/{team_slug}"
@@ -365,9 +374,8 @@ main: kit: entity: enterprise_team: {
           }
           contract: {
             id: "PATCH /enterprises/{enterprise}/teams/{team_slug}"
-            json: "{\"operationId\":\"enterprise-teams/update\",\"parameters\":[{\"description\":\"The slug version of the enterprise name.\",\"in\":\"path\",\"name\":\"enterprise\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The slug of the team name.\",\"in\":\"path\",\"name\":\"team_slug\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"description\":\"A great team.\",\"group_id\":\"62ab9291-fae2-468e-974b-7e45096d5021\",\"name\":\"Justice League\"}}},\"schema\":{\"properties\":{\"description\":{\"description\":\"A new description for the team.\",\"nullable\":true,\"type\":\"string\"},\"group_id\":{\"description\":\"The ID of the IdP group to assign team membership with. The new IdP group will replace the existing one, or replace existing direct members if the team isn't currently linked to an IdP group.\",\"nullable\":true,\"type\":\"string\"},\"name\":{\"description\":\"A new name for the team.\",\"nullable\":true,\"type\":\"string\"},\"sync_to_organizations\":{\"default\":\"disabled\",\"description\":\"Retired: this field is no longer supported.\\nWhether the enterprise team should be reflected in each organization.\\nThis value cannot be changed.\\n\",\"enum\":[\"all\",\"disabled\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"created_at\":\"2019-01-26T19:01:12Z\",\"description\":\"A great team.\",\"group_id\":\"62ab9291-fae2-468e-974b-7e45096d5021\",\"html_url\":\"https://github.com/enterprises/dc/teams/justice-league\",\"id\":1,\"members_url\":\"https://api.github.com/enterprises/dc/teams/justice-league/members{/member}\",\"name\":\"Justice League\",\"slug\":\"justice-league\",\"updated_at\":\"2019-01-26T19:14:43Z\",\"url\":\"https://api.github.com/enterprises/dc/teams/justice-league\"}]}},\"schema\":{\"description\":\"Group of enterprise owners and/or members\",\"properties\":{\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"group_id\":{\"example\":\"62ab9291-fae2-468e-974b-7e45096d5021\",\"nullable\":true,\"type\":\"string\"},\"group_name\":{\"description\":\"Retired: this field will not be returned with GHEC enterprise teams.\",\"example\":\"Justice League\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/enterprises/dc/teams/justice-league\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"members_url\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"organization_selection_type\":{\"example\":\"disabled | selected | all\",\"type\":\"string\"},\"slug\":{\"type\":\"string\"},\"sync_to_organizations\":{\"description\":\"Retired: this field will not be returned with GHEC enterprise teams.\",\"example\":\"disabled | all\",\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"url\":{\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"url\",\"members_url\",\"name\",\"html_url\",\"slug\",\"created_at\",\"updated_at\",\"group_id\"],\"title\":\"Enterprise Team\",\"type\":\"object\"}}},\"description\":\"Response\",\"headers\":{\"Link\":{\"example\":\"<https://api.github.com/resource?page=2>; rel=\\\"next\\\", <https://api.github.com/resource?page=5>; rel=\\\"last\\\"\",\"schema\":{\"type\":\"string\"}}}},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PATCH"
           orig: "/enterprises/{enterprise}/teams/{team_slug}"

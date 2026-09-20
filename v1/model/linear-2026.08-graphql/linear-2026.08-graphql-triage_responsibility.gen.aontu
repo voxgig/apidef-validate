@@ -4,56 +4,64 @@ main: kit: entity: triage_responsibility: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "action"
-      req: true
-      short: "The action to take when an issue is added to triage."
-      type: "`$STRING`"
+  fields: {
+    action: {
+      h: "Action"
+      n: "action"
+      r: true
+      sh: "The action to take when an issue is added to triage."
+      t: "`$STRING`"
     }
-    {
-      name: "archivedAt"
-      req: false
-      short: "The time at which the entity was archived."
-      type: "`$ANY`"
+    archivedAt: {
+      h: "Archived At"
+      n: "archivedAt"
+      r: false
+      sh: "The time at which the entity was archived."
+      t: "`$ANY`"
     }
-    {
-      name: "createdAt"
-      req: true
-      short: "The time at which the entity was created."
-      type: "`$ANY`"
+    createdAt: {
+      h: "Created At"
+      n: "createdAt"
+      r: true
+      sh: "The time at which the entity was created."
+      t: "`$ANY`"
     }
-    {
-      name: "currentUser"
-      req: false
-      short: "The user currently responsible for triage."
-      type: "`$OBJECT`"
+    currentUser: {
+      h: "Current User"
+      n: "currentUser"
+      r: false
+      sh: "The user currently responsible for triage."
+      t: "`$OBJECT`"
     }
-    {
-      name: "id"
-      req: true
-      short: "The unique identifier of the entity."
-      type: "`$STRING`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "The unique identifier of the entity."
+      t: "`$STRING`"
     }
-    {
-      name: "team"
-      req: false
-      short: "The team to which the triage responsibility belongs to."
-      type: "`$OBJECT`"
+    team: {
+      h: "Team"
+      n: "team"
+      r: false
+      sh: "The team to which the triage responsibility belongs to."
+      t: "`$OBJECT`"
     }
-    {
-      name: "timeSchedule"
-      req: false
-      short: "The time schedule used for scheduling."
-      type: "`$OBJECT`"
+    timeSchedule: {
+      h: "Time Schedule"
+      n: "timeSchedule"
+      r: false
+      sh: "The time schedule used for scheduling."
+      t: "`$OBJECT`"
     }
-    {
-      name: "updatedAt"
-      req: true
-      short: "The last time at which the entity was meaningfully updated."
-      type: "`$ANY`"
+    updatedAt: {
+      h: "Updated At"
+      n: "updatedAt"
+      r: true
+      sh: "The last time at which the entity was meaningfully updated."
+      t: "`$ANY`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -68,9 +76,8 @@ main: kit: entity: triage_responsibility: {
         {
           contract: {
             id: "POST triageResponsibilityCreate"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"TriageResponsibilityCreateInput!\",\"name\":\"input\",\"reqd\":true,\"type\":\"TriageResponsibilityCreateInput\"}],\"deprecated\":false,\"desc\":\"Creates a new triage responsibility.\",\"gqltype\":\"TriageResponsibilityPayload!\",\"list\":false,\"name\":\"triageResponsibilityCreate\",\"reqd\":true,\"type\":\"TriageResponsibilityPayload\"},\"invocation\":{\"doc\":\"mutation TriageResponsibilityCreate($input: TriageResponsibilityCreateInput!) { triageResponsibilityCreate(input: $input) { triageResponsibility { ...TriageResponsibilityFields } success } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }\",\"field\":\"triageResponsibilityCreate\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"\",\"gqltype\":\"TriageResponsibilityCreateInput!\",\"name\":\"input\"}]},\"protocol\":\"graphql\",\"types\":{\"Int\":{\"desc\":\"The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"Int\"},\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"},\"TriageResponsibilityCreateInput\":{\"desc\":\"Input for creating a new triage responsibility.\",\"fields\":{\"action\":{\"args\":[],\"deprecated\":false,\"desc\":\"The action to take when an issue is added to triage.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"action\",\"reqd\":true,\"type\":\"String\"},\"id\":{\"args\":[],\"deprecated\":false,\"desc\":\"The identifier in UUID v4 format. If none is provided, the backend will generate one.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"id\",\"reqd\":false,\"type\":\"String\"},\"manualSelection\":{\"args\":[],\"deprecated\":false,\"desc\":\"The manual selection of users responsible for triage.\",\"gqltype\":\"TriageResponsibilityManualSelectionInput\",\"list\":false,\"name\":\"manualSelection\",\"reqd\":false,\"type\":\"TriageResponsibilityManualSelectionInput\"},\"teamId\":{\"args\":[],\"deprecated\":false,\"desc\":\"The identifier of the team associated with the triage responsibility.\",\"gqltype\":\"String!\",\"list\":false,\"name\":\"teamId\",\"reqd\":true,\"type\":\"String\"},\"timeScheduleId\":{\"args\":[],\"deprecated\":false,\"desc\":\"The identifier of the time schedule used for scheduling triage responsibility\",\"gqltype\":\"String\",\"list\":false,\"name\":\"timeScheduleId\",\"reqd\":false,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"TriageResponsibilityCreateInput\"},\"TriageResponsibilityManualSelectionInput\":{\"desc\":\"Manual triage responsibility using a set of users.\",\"fields\":{\"assignmentIndex\":{\"args\":[],\"deprecated\":false,\"desc\":\"[Internal] The index of the current userId used for the assign action when having more than one user.\",\"gqltype\":\"Int\",\"list\":false,\"name\":\"assignmentIndex\",\"reqd\":false,\"type\":\"Int\"},\"userIds\":{\"args\":[],\"deprecated\":false,\"desc\":\"The set of users responsible for triage.\",\"gqltype\":\"[String!]!\",\"list\":true,\"name\":\"userIds\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"TriageResponsibilityManualSelectionInput\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation TriageResponsibilityCreate($input: TriageResponsibilityCreateInput!) { triageResponsibilityCreate(input: $input) { triageResponsibility { ...TriageResponsibilityFields } success } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }"
@@ -146,9 +153,8 @@ main: kit: entity: triage_responsibility: {
           }
           contract: {
             id: "POST triageResponsibilities"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"String\",\"name\":\"after\",\"reqd\":false,\"type\":\"String\"},{\"gqltype\":\"String\",\"name\":\"before\",\"reqd\":false,\"type\":\"String\"},{\"gqltype\":\"Int\",\"name\":\"first\",\"reqd\":false,\"type\":\"Int\"},{\"gqltype\":\"Boolean\",\"name\":\"includeArchived\",\"reqd\":false,\"type\":\"Boolean\"},{\"gqltype\":\"Int\",\"name\":\"last\",\"reqd\":false,\"type\":\"Int\"},{\"gqltype\":\"PaginationOrderBy\",\"name\":\"orderBy\",\"reqd\":false,\"type\":\"PaginationOrderBy\"}],\"deprecated\":false,\"desc\":\"All triage responsibilities.\",\"gqltype\":\"TriageResponsibilityConnection!\",\"list\":false,\"name\":\"triageResponsibilities\",\"reqd\":true,\"type\":\"TriageResponsibilityConnection\"},\"invocation\":{\"doc\":\"query TriageResponsibilityList($after: String, $before: String, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { triageResponsibilities(after: $after, before: $before, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...TriageResponsibilityFields } pageInfo { endCursor hasNextPage } } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }\",\"field\":\"triageResponsibilities\",\"optype\":\"query\",\"page\":{\"cursor\":\"pageInfo.endCursor\",\"more\":\"pageInfo.hasNextPage\",\"nodes\":\"nodes\",\"style\":\"relay\"},\"vars\":[{\"from\":\"after\",\"gqltype\":\"String\",\"name\":\"after\"},{\"from\":\"before\",\"gqltype\":\"String\",\"name\":\"before\"},{\"from\":\"first\",\"gqltype\":\"Int\",\"name\":\"first\"},{\"from\":\"includeArchived\",\"gqltype\":\"Boolean\",\"name\":\"includeArchived\"},{\"from\":\"last\",\"gqltype\":\"Int\",\"name\":\"last\"},{\"from\":\"orderBy\",\"gqltype\":\"PaginationOrderBy\",\"name\":\"orderBy\"}]},\"protocol\":\"graphql\",\"types\":{\"Boolean\":{\"desc\":\"The `Boolean` scalar type represents `true` or `false`.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"Boolean\"},\"Int\":{\"desc\":\"The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"Int\"},\"PaginationOrderBy\":{\"desc\":\"By which field should the pagination order by\",\"fields\":{},\"kind\":\"ENUM\",\"name\":\"PaginationOrderBy\",\"values\":[\"createdAt\",\"updatedAt\"]},\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "query TriageResponsibilityList($after: String, $before: String, $first: Int, $includeArchived: Boolean, $last: Int, $orderBy: PaginationOrderBy) { triageResponsibilities(after: $after, before: $before, first: $first, includeArchived: $includeArchived, last: $last, orderBy: $orderBy) { nodes { ...TriageResponsibilityFields } pageInfo { endCursor hasNextPage } } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }"
@@ -220,9 +226,8 @@ main: kit: entity: triage_responsibility: {
           }
           contract: {
             id: "POST triageResponsibility"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"String!\",\"name\":\"id\",\"reqd\":true,\"type\":\"String\"}],\"deprecated\":false,\"desc\":\"A specific triage responsibility.\",\"gqltype\":\"TriageResponsibility!\",\"list\":false,\"name\":\"triageResponsibility\",\"reqd\":true,\"type\":\"TriageResponsibility\"},\"invocation\":{\"doc\":\"query TriageResponsibilityLoad($id: String!) { triageResponsibility(id: $id) { ...TriageResponsibilityFields } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }\",\"field\":\"triageResponsibility\",\"optype\":\"query\",\"vars\":[{\"from\":\"id\",\"gqltype\":\"String!\",\"name\":\"id\"}]},\"protocol\":\"graphql\",\"types\":{\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "query TriageResponsibilityLoad($id: String!) { triageResponsibility(id: $id) { ...TriageResponsibilityFields } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }"
@@ -268,9 +273,8 @@ main: kit: entity: triage_responsibility: {
           }
           contract: {
             id: "POST triageResponsibilityDelete"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"String!\",\"name\":\"id\",\"reqd\":true,\"type\":\"String\"}],\"deprecated\":false,\"desc\":\"Deletes a triage responsibility.\",\"gqltype\":\"DeletePayload!\",\"list\":false,\"name\":\"triageResponsibilityDelete\",\"reqd\":true,\"type\":\"DeletePayload\"},\"invocation\":{\"doc\":\"mutation TriageResponsibilityRemove($id: String!) { triageResponsibilityDelete(id: $id) { entityId lastSyncId success } }\",\"field\":\"triageResponsibilityDelete\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"id\",\"gqltype\":\"String!\",\"name\":\"id\"}]},\"protocol\":\"graphql\",\"types\":{\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation TriageResponsibilityRemove($id: String!) { triageResponsibilityDelete(id: $id) { entityId lastSyncId success } }"
@@ -316,9 +320,8 @@ main: kit: entity: triage_responsibility: {
           }
           contract: {
             id: "POST triageResponsibilityUpdate"
-            json: "{\"field\":{\"args\":[{\"gqltype\":\"String!\",\"name\":\"id\",\"reqd\":true,\"type\":\"String\"},{\"gqltype\":\"TriageResponsibilityUpdateInput!\",\"name\":\"input\",\"reqd\":true,\"type\":\"TriageResponsibilityUpdateInput\"}],\"deprecated\":false,\"desc\":\"Updates an existing triage responsibility.\",\"gqltype\":\"TriageResponsibilityPayload!\",\"list\":false,\"name\":\"triageResponsibilityUpdate\",\"reqd\":true,\"type\":\"TriageResponsibilityPayload\"},\"invocation\":{\"doc\":\"mutation TriageResponsibilityUpdate($id: String!, $input: TriageResponsibilityUpdateInput!) { triageResponsibilityUpdate(id: $id, input: $input) { triageResponsibility { ...TriageResponsibilityFields } success } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }\",\"field\":\"triageResponsibilityUpdate\",\"optype\":\"mutation\",\"vars\":[{\"from\":\"id\",\"gqltype\":\"String!\",\"name\":\"id\"},{\"from\":\"\",\"gqltype\":\"TriageResponsibilityUpdateInput!\",\"name\":\"input\"}]},\"protocol\":\"graphql\",\"types\":{\"Int\":{\"desc\":\"The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"Int\"},\"String\":{\"desc\":\"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.\",\"fields\":{},\"kind\":\"SCALAR\",\"name\":\"String\"},\"TriageResponsibilityManualSelectionInput\":{\"desc\":\"Manual triage responsibility using a set of users.\",\"fields\":{\"assignmentIndex\":{\"args\":[],\"deprecated\":false,\"desc\":\"[Internal] The index of the current userId used for the assign action when having more than one user.\",\"gqltype\":\"Int\",\"list\":false,\"name\":\"assignmentIndex\",\"reqd\":false,\"type\":\"Int\"},\"userIds\":{\"args\":[],\"deprecated\":false,\"desc\":\"The set of users responsible for triage.\",\"gqltype\":\"[String!]!\",\"list\":true,\"name\":\"userIds\",\"reqd\":true,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"TriageResponsibilityManualSelectionInput\"},\"TriageResponsibilityUpdateInput\":{\"desc\":\"Input for updating an existing triage responsibility.\",\"fields\":{\"action\":{\"args\":[],\"deprecated\":false,\"desc\":\"The action to take when an issue is added to triage.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"action\",\"reqd\":false,\"type\":\"String\"},\"manualSelection\":{\"args\":[],\"deprecated\":false,\"desc\":\"The manual selection of users responsible for triage.\",\"gqltype\":\"TriageResponsibilityManualSelectionInput\",\"list\":false,\"name\":\"manualSelection\",\"reqd\":false,\"type\":\"TriageResponsibilityManualSelectionInput\"},\"timeScheduleId\":{\"args\":[],\"deprecated\":false,\"desc\":\"The identifier of the time schedule used for scheduling triage responsibility.\",\"gqltype\":\"String\",\"list\":false,\"name\":\"timeScheduleId\",\"reqd\":false,\"type\":\"String\"}},\"kind\":\"INPUT_OBJECT\",\"name\":\"TriageResponsibilityUpdateInput\"}},\"typesScope\":\"inputs\"}"
             source: "graphql"
-            version: 1
+            version: 2
           }
           graphql: {
             doc: "mutation TriageResponsibilityUpdate($id: String!, $input: TriageResponsibilityUpdateInput!) { triageResponsibilityUpdate(id: $id, input: $input) { triageResponsibility { ...TriageResponsibilityFields } success } } fragment TriageResponsibilityFields on TriageResponsibility { action archivedAt createdAt currentUser { id } id team { id } timeSchedule { id } updatedAt }"

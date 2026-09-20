@@ -4,43 +4,48 @@ main: kit: entity: pending_deployment: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "current_user_can_approve"
-      req: true
-      short: "Whether the currently authenticated user can approve the deployment"
-      type: "`$BOOLEAN`"
+  fields: {
+    current_user_can_approve: {
+      h: "Current User Can Approve"
+      n: "current_user_can_approve"
+      r: true
+      sh: "Whether the currently authenticated user can approve the deployment"
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "environment"
-      req: true
-      type: "`$OBJECT`"
+    environment: {
+      h: "Environment"
+      n: "environment"
+      r: true
+      t: "`$OBJECT`"
     }
-    {
-      name: "reviewers"
-      req: true
-      short: "The people or teams that may approve jobs that reference the environment."
-      type: "`$ARRAY`"
+    reviewers: {
+      h: "Reviewers"
+      n: "reviewers"
+      r: true
+      sh: "The people or teams that may approve jobs that reference the environment."
+      t: "`$ARRAY`"
       union: {
         branches: 2
         count: 1
         depth: 3
       }
     }
-    {
-      name: "wait_timer"
-      req: true
-      short: "The set duration of the wait timer"
-      type: "`$INTEGER`"
+    wait_timer: {
+      h: "Wait Timer"
+      n: "wait_timer"
+      r: true
+      sh: "The set duration of the wait timer"
+      t: "`$INTEGER`"
     }
-    {
-      format: "date-time"
-      name: "wait_timer_started_at"
-      req: true
-      short: "The time that the wait timer began."
-      type: "`$STRING`"
+    wait_timer_started_at: {
+      fo: "date-time"
+      h: "Wait Timer Started At"
+      n: "wait_timer_started_at"
+      r: true
+      sh: "The time that the wait timer began."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "pending_deployment"
   op: {
@@ -75,9 +80,8 @@ main: kit: entity: pending_deployment: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"
-            json: "{\"operationId\":\"actions/get-pending-deployments-for-run\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the workflow run.\",\"in\":\"path\",\"name\":\"run_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"current_user_can_approve\":true,\"environment\":{\"html_url\":\"https://github.com/github/hello-world/deployments/activity_log?environments_filter=staging\",\"id\":161088068,\"name\":\"staging\",\"node_id\":\"MDExOkVudmlyb25tZW50MTYxMDg4MDY4\",\"url\":\"https://api.github.com/repos/github/hello-world/environments/staging\"},\"reviewers\":[{\"reviewer\":{\"avatar_url\":\"https://github.com/images/error/octocat_happy.gif\",\"events_url\":\"https://api.github.com/users/octocat/events{/privacy}\",\"followers_url\":\"https://api.github.com/users/octocat/followers\",\"following_url\":\"https://api.github.com/users/octocat/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/octocat/gists{/gist_id}\",\"gravatar_id\":\"\",\"html_url\":\"https://github.com/octocat\",\"id\":1,\"login\":\"octocat\",\"node_id\":\"MDQ6VXNlcjE=\",\"organizations_url\":\"https://api.github.com/users/octocat/orgs\",\"received_events_url\":\"https://api.github.com/users/octocat/received_events\",\"repos_url\":\"https://api.github.com/users/octocat/repos\",\"site_admin\":false,\"starred_url\":\"https://api.github.com/users/octocat/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/octocat/subscriptions\",\"type\":\"User\",\"url\":\"https://api.github.com/users/octocat\"},\"type\":\"User\"},{\"reviewer\":{\"description\":\"A great team.\",\"html_url\":\"https://github.com/orgs/github/teams/justice-league\",\"id\":1,\"members_url\":\"https://api.github.com/teams/1/members{/member}\",\"name\":\"Justice League\",\"node_id\":\"MDQ6VGVhbTE=\",\"notification_setting\":\"notifications_enabled\",\"parent\":null,\"permission\":\"admin\",\"privacy\":\"closed\",\"repositories_url\":\"https://api.github.com/teams/1/repos\",\"slug\":\"justice-league\",\"url\":\"https://api.github.com/teams/1\"},\"type\":\"Team\"}],\"wait_timer\":30,\"wait_timer_started_at\":\"2020-11-23T22:00:40Z\"}]}},\"schema\":{\"items\":{\"description\":\"Details of a deployment that is waiting for protection rules to pass\",\"properties\":{\"current_user_can_approve\":{\"description\":\"Whether the currently authenticated user can approve the deployment\",\"example\":true,\"type\":\"boolean\"},\"environment\":{\"properties\":{\"html_url\":{\"example\":\"https://github.com/github/hello-world/deployments/activity_log?environments_filter=staging\",\"type\":\"string\"},\"id\":{\"description\":\"The id of the environment.\",\"example\":56780428,\"format\":\"int64\",\"type\":\"integer\"},\"name\":{\"description\":\"The name of the environment.\",\"example\":\"staging\",\"type\":\"string\"},\"node_id\":{\"example\":\"MDExOkVudmlyb25tZW50NTY3ODA0Mjg=\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/repos/github/hello-world/environments/staging\",\"type\":\"string\"}},\"type\":\"object\"},\"reviewers\":{\"description\":\"The people or teams that may approve jobs that reference the environment. You can list up to six users or teams as reviewers. The reviewers must have at least read access to the repository. Only one of the required reviewers needs to approve the job for it to proceed.\",\"items\":{\"properties\":{\"reviewer\":{\"anyOf\":[{\"description\":\"A GitHub user.\",\"properties\":{\"avatar_url\":{\"example\":\"https://github.com/images/error/octocat_happy.gif\",\"format\":\"uri\",\"type\":\"string\"},\"email\":{\"nullable\":true,\"type\":\"string\"},\"events_url\":{\"example\":\"https://api.github.com/users/octocat/events{/privacy}\",\"type\":\"string\"},\"followers_url\":{\"example\":\"https://api.github.com/users/octocat/followers\",\"format\":\"uri\",\"type\":\"string\"},\"following_url\":{\"example\":\"https://api.github.com/users/octocat/following{/other_user}\",\"type\":\"string\"},\"gists_url\":{\"example\":\"https://api.github.com/users/octocat/gists{/gist_id}\",\"type\":\"string\"},\"gravatar_id\":{\"example\":\"41d064eb2195891e12d0413f63227ea7\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"example\":1,\"format\":\"int64\",\"type\":\"integer\"},\"login\":{\"example\":\"octocat\",\"type\":\"string\"},\"name\":{\"nullable\":true,\"type\":\"string\"},\"node_id\":{\"example\":\"MDQ6VXNlcjE=\",\"type\":\"string\"},\"organizations_url\":{\"example\":\"https://api.github.com/users/octocat/orgs\",\"format\":\"uri\",\"type\":\"string\"},\"received_events_url\":{\"example\":\"https://api.github.com/users/octocat/received_events\",\"format\":\"uri\",\"type\":\"string\"},\"repos_url\":{\"example\":\"https://api.github.com/users/octocat/repos\",\"format\":\"uri\",\"type\":\"string\"},\"site_admin\":{\"type\":\"boolean\"},\"starred_at\":{\"example\":\"\\\"2020-07-09T00:17:55Z\\\"\",\"type\":\"string\"},\"starred_url\":{\"example\":\"https://api.github.com/users/octocat/starred{/owner}{/repo}\",\"type\":\"string\"},\"subscriptions_url\":{\"example\":\"https://api.github.com/users/octocat/subscriptions\",\"format\":\"uri\",\"type\":\"string\"},\"type\":{\"example\":\"User\",\"type\":\"string\"},\"url\":{\"example\":\"https://api.github.com/users/octocat\",\"format\":\"uri\",\"type\":\"string\"},\"user_view_type\":{\"example\":\"public\",\"type\":\"string\"}},\"required\":[\"avatar_url\",\"events_url\",\"followers_url\",\"following_url\",\"gists_url\",\"gravatar_id\",\"html_url\",\"id\",\"node_id\",\"login\",\"organizations_url\",\"received_events_url\",\"repos_url\",\"site_admin\",\"starred_url\",\"subscriptions_url\",\"type\",\"url\"],\"title\":\"Simple User\",\"type\":\"object\"},{\"description\":\"Groups of organization members that gives permissions on specified repositories.\",\"properties\":{\"description\":{\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/orgs/rails/teams/core\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"type\":\"integer\"},\"members_url\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"node_id\":{\"type\":\"string\"},\"notification_setting\":{\"type\":\"string\"},\"parent\":{\"description\":\"Groups of organization members that gives permissions on specified repositories.\",\"nullable\":true,\"properties\":{\"description\":{\"description\":\"Description of the team\",\"example\":\"A great team.\",\"nullable\":true,\"type\":\"string\"},\"html_url\":{\"example\":\"https://github.com/orgs/rails/teams/core\",\"format\":\"uri\",\"type\":\"string\"},\"id\":{\"description\":\"Unique identifier of the team\",\"example\":1,\"type\":\"integer\"},\"ldap_dn\":{\"description\":\"Distinguished Name (DN) that team maps to within LDAP environment\",\"example\":\"uid=example,ou=users,dc=github,dc=com\",\"type\":\"string\"},\"members_url\":{\"example\":\"https://api.github.com/organizations/1/team/1/members{/member}\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the team\",\"example\":\"Justice League\",\"type\":\"string\"},\"node_id\":{\"example\":\"MDQ6VGVhbTE=\",\"type\":\"string\"},\"notification_setting\":{\"description\":\"The notification setting the team has set\",\"example\":\"notifications_enabled\",\"type\":\"string\"},\"permission\":{\"description\":\"Permission that the team will have for its repositories\",\"example\":\"admin\",\"type\":\"string\"},\"privacy\":{\"description\":\"The level of privacy this team should have\",\"example\":\"closed\",\"type\":\"string\"},\"repositories_url\":{\"example\":\"https://api.github.com/organizations/1/team/1/repos\",\"format\":\"uri\",\"type\":\"string\"},\"slug\":{\"example\":\"justice-league\",\"type\":\"string\"},\"url\":{\"description\":\"URL for the team\",\"example\":\"https://api.github.com/organizations/1/team/1\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"node_id\",\"url\",\"members_url\",\"name\",\"description\",\"permission\",\"html_url\",\"repositories_url\",\"slug\"],\"title\":\"Team Simple\",\"type\":\"object\"},\"permission\":{\"type\":\"string\"},\"permissions\":{\"properties\":{\"admin\":{\"type\":\"boolean\"},\"maintain\":{\"type\":\"boolean\"},\"pull\":{\"type\":\"boolean\"},\"push\":{\"type\":\"boolean\"},\"triage\":{\"type\":\"boolean\"}},\"required\":[\"pull\",\"triage\",\"push\",\"maintain\",\"admin\"],\"type\":\"object\"},\"privacy\":{\"type\":\"string\"},\"repositories_url\":{\"format\":\"uri\",\"type\":\"string\"},\"slug\":{\"type\":\"string\"},\"url\":{\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"id\",\"node_id\",\"url\",\"members_url\",\"name\",\"description\",\"permission\",\"html_url\",\"repositories_url\",\"slug\",\"parent\"],\"title\":\"Team\",\"type\":\"object\"}]},\"type\":{\"description\":\"The type of reviewer.\",\"enum\":[\"User\",\"Team\"],\"example\":\"User\",\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"wait_timer\":{\"description\":\"The set duration of the wait timer\",\"example\":30,\"type\":\"integer\"},\"wait_timer_started_at\":{\"description\":\"The time that the wait timer began.\",\"example\":\"2020-11-23T22:00:40Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"}},\"required\":[\"environment\",\"wait_timer\",\"wait_timer_started_at\",\"current_user_can_approve\",\"reviewers\"],\"title\":\"Pending Deployment\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"

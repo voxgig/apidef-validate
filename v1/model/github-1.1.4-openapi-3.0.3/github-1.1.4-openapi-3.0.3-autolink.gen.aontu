@@ -4,43 +4,48 @@ main: kit: entity: autolink: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "id"
-      req: true
-      type: "`$INTEGER`"
+  fields: {
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      t: "`$INTEGER`"
     }
-    {
-      name: "is_alphanumeric"
+    is_alphanumeric: {
+      h: "Is Alphanumeric"
+      n: "is_alphanumeric"
       op: {
         create: {
           req: false
           type: "`$BOOLEAN`"
         }
       }
-      req: true
-      short: "Whether this autolink reference matches alphanumeric characters."
-      type: "`$BOOLEAN`"
+      r: true
+      sh: "Whether this autolink reference matches alphanumeric characters."
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "key_prefix"
-      req: true
-      short: "The prefix of a key that is linkified."
-      type: "`$STRING`"
+    key_prefix: {
+      h: "Key Prefix"
+      n: "key_prefix"
+      r: true
+      sh: "The prefix of a key that is linkified."
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "updated_at"
-      req: false
-      type: "`$STRING`"
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "url_template"
-      req: true
-      short: "A template for the target URL that is generated if a key was found."
-      type: "`$STRING`"
+    url_template: {
+      h: "Url Template"
+      n: "url_template"
+      r: true
+      sh: "A template for the target URL that is generated if a key was found."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -73,9 +78,8 @@ main: kit: entity: autolink: {
           }
           contract: {
             id: "POST /repos/{owner}/{repo}/autolinks"
-            json: "{\"operationId\":\"repos/create-autolink\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"is_alphanumeric\":true,\"key_prefix\":\"TICKET-\",\"url_template\":\"https://example.com/TICKET?query=<num>\"}}},\"schema\":{\"properties\":{\"is_alphanumeric\":{\"default\":true,\"description\":\"Whether this autolink reference matches alphanumeric characters. If true, the `<num>` parameter of the `url_template` matches alphanumeric characters `A-Z` (case insensitive), `0-9`, and `-`. If false, this autolink reference only matches numeric characters.\",\"type\":\"boolean\"},\"key_prefix\":{\"description\":\"This prefix appended by certain characters will generate a link any time it is found in an issue, pull request, or commit.\",\"type\":\"string\"},\"url_template\":{\"description\":\"The URL must contain `<num>` for the reference number. `<num>` matches different characters depending on the value of `is_alphanumeric`.\",\"type\":\"string\"}},\"required\":[\"key_prefix\",\"url_template\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"id\":1,\"is_alphanumeric\":true,\"key_prefix\":\"TICKET-\",\"url_template\":\"https://example.com/TICKET?query=<num>\"}}},\"schema\":{\"description\":\"An autolink reference.\",\"properties\":{\"id\":{\"example\":3,\"type\":\"integer\"},\"is_alphanumeric\":{\"description\":\"Whether this autolink reference matches alphanumeric characters. If false, this autolink reference only matches numeric characters.\",\"example\":true,\"type\":\"boolean\"},\"key_prefix\":{\"description\":\"The prefix of a key that is linkified.\",\"example\":\"TICKET-\",\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"url_template\":{\"description\":\"A template for the target URL that is generated if a key was found.\",\"example\":\"https://example.com/TICKET?query=<num>\",\"type\":\"string\"}},\"required\":[\"id\",\"key_prefix\",\"url_template\",\"is_alphanumeric\"],\"title\":\"Autolink reference\",\"type\":\"object\"}}},\"description\":\"response\",\"headers\":{\"Location\":{\"example\":\"https://api.github.com/repos/octocat/Hello-World/autolinks/1\",\"schema\":{\"type\":\"string\"}}}},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "POST"
           orig: "/repos/{owner}/{repo}/autolinks"
@@ -130,9 +134,8 @@ main: kit: entity: autolink: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/autolinks"
-            json: "{\"operationId\":\"repos/list-autolinks\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":[{\"id\":1,\"is_alphanumeric\":true,\"key_prefix\":\"TICKET-\",\"url_template\":\"https://example.com/TICKET?query=<num>\"}]}},\"schema\":{\"items\":{\"description\":\"An autolink reference.\",\"properties\":{\"id\":{\"example\":3,\"type\":\"integer\"},\"is_alphanumeric\":{\"description\":\"Whether this autolink reference matches alphanumeric characters. If false, this autolink reference only matches numeric characters.\",\"example\":true,\"type\":\"boolean\"},\"key_prefix\":{\"description\":\"The prefix of a key that is linkified.\",\"example\":\"TICKET-\",\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"url_template\":{\"description\":\"A template for the target URL that is generated if a key was found.\",\"example\":\"https://example.com/TICKET?query=<num>\",\"type\":\"string\"}},\"required\":[\"id\",\"key_prefix\",\"url_template\",\"is_alphanumeric\"],\"title\":\"Autolink reference\",\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Response\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/autolinks"
@@ -194,9 +197,8 @@ main: kit: entity: autolink: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/autolinks/{autolink_id}"
-            json: "{\"operationId\":\"repos/get-autolink\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the autolink.\",\"in\":\"path\",\"name\":\"autolink_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"id\":1,\"is_alphanumeric\":true,\"key_prefix\":\"TICKET-\",\"url_template\":\"https://example.com/TICKET?query=<num>\"}}},\"schema\":{\"description\":\"An autolink reference.\",\"properties\":{\"id\":{\"example\":3,\"type\":\"integer\"},\"is_alphanumeric\":{\"description\":\"Whether this autolink reference matches alphanumeric characters. If false, this autolink reference only matches numeric characters.\",\"example\":true,\"type\":\"boolean\"},\"key_prefix\":{\"description\":\"The prefix of a key that is linkified.\",\"example\":\"TICKET-\",\"type\":\"string\"},\"updated_at\":{\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"url_template\":{\"description\":\"A template for the target URL that is generated if a key was found.\",\"example\":\"https://example.com/TICKET?query=<num>\",\"type\":\"string\"}},\"required\":[\"id\",\"key_prefix\",\"url_template\",\"is_alphanumeric\"],\"title\":\"Autolink reference\",\"type\":\"object\"}}},\"description\":\"Response\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}}},\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/autolinks/{autolink_id}"

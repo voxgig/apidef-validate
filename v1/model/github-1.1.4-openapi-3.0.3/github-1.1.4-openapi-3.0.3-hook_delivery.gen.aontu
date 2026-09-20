@@ -4,98 +4,113 @@ main: kit: entity: hook_delivery: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "action"
-      req: true
-      short: "The type of activity for the event that triggered the delivery."
-      type: "`$STRING`"
+  fields: {
+    action: {
+      h: "Action"
+      n: "action"
+      r: true
+      sh: "The type of activity for the event that triggered the delivery."
+      t: "`$STRING`"
     }
-    {
-      format: "date-time"
-      name: "delivered_at"
-      req: true
-      short: "Time when the delivery was delivered."
-      type: "`$STRING`"
+    delivered_at: {
+      fo: "date-time"
+      h: "Delivered At"
+      n: "delivered_at"
+      r: true
+      sh: "Time when the delivery was delivered."
+      t: "`$STRING`"
     }
-    {
-      name: "duration"
-      req: true
-      short: "Time spent delivering."
-      type: "`$NUMBER`"
+    duration: {
+      h: "Duration"
+      n: "duration"
+      r: true
+      sh: "Time spent delivering."
+      t: "`$NUMBER`"
     }
-    {
-      name: "event"
-      req: true
-      short: "The event that triggered the delivery."
-      type: "`$STRING`"
+    event: {
+      h: "Event"
+      n: "event"
+      r: true
+      sh: "The event that triggered the delivery."
+      t: "`$STRING`"
     }
-    {
-      name: "guid"
-      req: true
-      short: "Unique identifier for the event (shared with all deliveries for all webhooks that subscribe to this event)."
-      type: "`$STRING`"
+    guid: {
+      h: "Guid"
+      n: "guid"
+      r: true
+      sh: "Unique identifier for the event (shared with all deliveries for all webhooks that subscribe to this event)."
+      t: "`$STRING`"
     }
-    {
-      name: "id"
-      req: true
-      short: "Unique identifier of the delivery."
-      type: "`$INTEGER`"
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "Unique identifier of the delivery."
+      t: "`$INTEGER`"
     }
-    {
-      name: "installation_id"
-      req: true
-      short: "The id of the GitHub App installation associated with this event."
-      type: "`$INTEGER`"
+    installation_id: {
+      h: "Installation Id"
+      n: "installation_id"
+      r: true
+      sh: "The id of the GitHub App installation associated with this event."
+      t: "`$INTEGER`"
     }
-    {
-      name: "redelivery"
-      req: true
-      short: "Whether the delivery is a redelivery."
-      type: "`$BOOLEAN`"
+    redelivery: {
+      h: "Redelivery"
+      n: "redelivery"
+      r: true
+      sh: "Whether the delivery is a redelivery."
+      t: "`$BOOLEAN`"
     }
-    {
-      name: "repository_id"
-      req: true
-      short: "The id of the repository associated with this event."
-      type: "`$INTEGER`"
+    repository_id: {
+      h: "Repository Id"
+      n: "repository_id"
+      r: true
+      sh: "The id of the repository associated with this event."
+      t: "`$INTEGER`"
     }
-    {
-      name: "request"
-      req: true
-      type: "`$OBJECT`"
+    request: {
+      h: "Request"
+      n: "request"
+      r: true
+      t: "`$OBJECT`"
     }
-    {
-      name: "response"
-      req: true
-      type: "`$OBJECT`"
+    response: {
+      h: "Response"
+      n: "response"
+      r: true
+      t: "`$OBJECT`"
     }
-    {
-      name: "status"
-      req: true
-      short: "Description of the status of the attempted delivery"
-      type: "`$STRING`"
+    status: {
+      h: "Status"
+      n: "status"
+      r: true
+      sh: "Description of the status of the attempted delivery"
+      t: "`$STRING`"
     }
-    {
-      name: "status_code"
-      req: true
-      short: "Status code received when delivery was made."
-      type: "`$INTEGER`"
+    status_code: {
+      h: "Status Code"
+      n: "status_code"
+      r: true
+      sh: "Status code received when delivery was made."
+      t: "`$INTEGER`"
     }
-    {
-      format: "date-time"
-      name: "throttled_at"
-      req: false
-      short: "Time when the webhook delivery was throttled."
-      type: "`$STRING`"
+    throttled_at: {
+      fo: "date-time"
+      h: "Throttled At"
+      n: "throttled_at"
+      r: false
+      sh: "Time when the webhook delivery was throttled."
+      t: "`$STRING`"
     }
-    {
-      name: "url"
-      req: false
-      short: "The URL target of the delivery."
-      type: "`$STRING`"
+    url: {
+      h: "Url"
+      n: "url"
+      r: false
+      sh: "The URL target of the delivery."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -142,9 +157,8 @@ main: kit: entity: hook_delivery: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}"
-            json: "{\"operationId\":\"repos/get-webhook-delivery\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the hook. You can find this value in the `X-GitHub-Hook-ID` header of a webhook delivery.\",\"in\":\"path\",\"name\":\"hook_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}},{\"in\":\"path\",\"name\":\"delivery_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"action\":\"opened\",\"delivered_at\":\"2019-06-03T00:57:16Z\",\"duration\":0.27,\"event\":\"issues\",\"guid\":\"0b989ba4-242f-11e5-81e1-c7b6966d2516\",\"id\":12345678,\"installation_id\":123,\"redelivery\":false,\"repository_id\":456,\"request\":{\"headers\":{\"Accept\":\"*/*\",\"User-Agent\":\"GitHub-Hookshot/b8c71d8\",\"X-GitHub-Delivery\":\"0b989ba4-242f-11e5-81e1-c7b6966d2516\",\"X-GitHub-Event\":\"issues\",\"X-GitHub-Hook-ID\":\"42\",\"X-GitHub-Hook-Installation-Target-ID\":\"123\",\"X-GitHub-Hook-Installation-Target-Type\":\"repository\",\"X-Hub-Signature\":\"sha1=a84d88e7554fc1fa21bcbc4efae3c782a70d2b9d\",\"X-Hub-Signature-256\":\"sha256=6dcb09b5b57875f334f61aebed695e2e4193db5e\",\"content-type\":\"application/json\"},\"payload\":{\"action\":\"opened\",\"issue\":{\"body\":\"foo\"},\"repository\":{\"id\":123}}},\"response\":{\"headers\":{\"Content-Type\":\"text/html;charset=utf-8\"},\"payload\":\"ok\"},\"status\":\"OK\",\"status_code\":200,\"throttled_at\":\"2019-06-03T00:57:16Z\",\"url\":\"https://www.example.com\"}}},\"schema\":{\"description\":\"Delivery made by a webhook.\",\"properties\":{\"action\":{\"description\":\"The type of activity for the event that triggered the delivery.\",\"example\":\"opened\",\"nullable\":true,\"type\":\"string\"},\"delivered_at\":{\"description\":\"Time when the delivery was delivered.\",\"example\":\"2021-05-12T20:33:44Z\",\"format\":\"date-time\",\"type\":\"string\"},\"duration\":{\"description\":\"Time spent delivering.\",\"example\":0.03,\"type\":\"number\"},\"event\":{\"description\":\"The event that triggered the delivery.\",\"example\":\"issues\",\"type\":\"string\"},\"guid\":{\"description\":\"Unique identifier for the event (shared with all deliveries for all webhooks that subscribe to this event).\",\"example\":\"58474f00-b361-11eb-836d-0e4f3503ccbe\",\"type\":\"string\"},\"id\":{\"description\":\"Unique identifier of the delivery.\",\"example\":42,\"type\":\"integer\"},\"installation_id\":{\"description\":\"The id of the GitHub App installation associated with this event.\",\"example\":123,\"nullable\":true,\"type\":\"integer\"},\"redelivery\":{\"description\":\"Whether the delivery is a redelivery.\",\"example\":false,\"type\":\"boolean\"},\"repository_id\":{\"description\":\"The id of the repository associated with this event.\",\"example\":123,\"nullable\":true,\"type\":\"integer\"},\"request\":{\"properties\":{\"headers\":{\"additionalProperties\":true,\"description\":\"The request headers sent with the webhook delivery.\",\"nullable\":true,\"type\":\"object\"},\"payload\":{\"additionalProperties\":true,\"description\":\"The webhook payload.\",\"nullable\":true,\"type\":\"object\"}},\"required\":[\"headers\",\"payload\"],\"type\":\"object\"},\"response\":{\"properties\":{\"headers\":{\"additionalProperties\":true,\"description\":\"The response headers received when the delivery was made.\",\"nullable\":true,\"type\":\"object\"},\"payload\":{\"additionalProperties\":true,\"description\":\"The response payload received.\",\"nullable\":true,\"type\":\"string\"}},\"required\":[\"headers\",\"payload\"],\"type\":\"object\"},\"status\":{\"description\":\"Description of the status of the attempted delivery\",\"example\":\"failed to connect\",\"type\":\"string\"},\"status_code\":{\"description\":\"Status code received when delivery was made.\",\"example\":502,\"type\":\"integer\"},\"throttled_at\":{\"description\":\"Time when the webhook delivery was throttled.\",\"example\":\"2021-05-12T20:33:44Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"url\":{\"description\":\"The URL target of the delivery.\",\"example\":\"https://www.example.com\",\"type\":\"string\"}},\"required\":[\"id\",\"guid\",\"delivered_at\",\"redelivery\",\"duration\",\"status\",\"status_code\",\"event\",\"action\",\"installation_id\",\"repository_id\",\"request\",\"response\"],\"title\":\"Webhook delivery\",\"type\":\"object\"}}},\"description\":\"Response\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}},\"application/scim+json\":{\"schema\":{\"description\":\"Scim Error\",\"properties\":{\"detail\":{\"nullable\":true,\"type\":\"string\"},\"documentation_url\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"schemas\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"scimType\":{\"nullable\":true,\"type\":\"string\"},\"status\":{\"type\":\"integer\"}},\"title\":\"Scim Error\",\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}"
@@ -217,9 +231,8 @@ main: kit: entity: hook_delivery: {
           }
           contract: {
             id: "GET /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}"
-            json: "{\"operationId\":\"orgs/get-webhook-delivery\",\"parameters\":[{\"description\":\"The organization name. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"org\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The unique identifier of the hook. You can find this value in the `X-GitHub-Hook-ID` header of a webhook delivery.\",\"in\":\"path\",\"name\":\"hook_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}},{\"in\":\"path\",\"name\":\"delivery_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"action\":\"opened\",\"delivered_at\":\"2019-06-03T00:57:16Z\",\"duration\":0.27,\"event\":\"issues\",\"guid\":\"0b989ba4-242f-11e5-81e1-c7b6966d2516\",\"id\":12345678,\"installation_id\":123,\"redelivery\":false,\"repository_id\":456,\"request\":{\"headers\":{\"Accept\":\"*/*\",\"User-Agent\":\"GitHub-Hookshot/b8c71d8\",\"X-GitHub-Delivery\":\"0b989ba4-242f-11e5-81e1-c7b6966d2516\",\"X-GitHub-Event\":\"issues\",\"X-GitHub-Hook-ID\":\"42\",\"X-GitHub-Hook-Installation-Target-ID\":\"123\",\"X-GitHub-Hook-Installation-Target-Type\":\"repository\",\"X-Hub-Signature\":\"sha1=a84d88e7554fc1fa21bcbc4efae3c782a70d2b9d\",\"X-Hub-Signature-256\":\"sha256=6dcb09b5b57875f334f61aebed695e2e4193db5e\",\"content-type\":\"application/json\"},\"payload\":{\"action\":\"opened\",\"issue\":{\"body\":\"foo\"},\"repository\":{\"id\":123}}},\"response\":{\"headers\":{\"Content-Type\":\"text/html;charset=utf-8\"},\"payload\":\"ok\"},\"status\":\"OK\",\"status_code\":200,\"throttled_at\":\"2019-06-03T00:57:16Z\",\"url\":\"https://www.example.com\"}}},\"schema\":{\"description\":\"Delivery made by a webhook.\",\"properties\":{\"action\":{\"description\":\"The type of activity for the event that triggered the delivery.\",\"example\":\"opened\",\"nullable\":true,\"type\":\"string\"},\"delivered_at\":{\"description\":\"Time when the delivery was delivered.\",\"example\":\"2021-05-12T20:33:44Z\",\"format\":\"date-time\",\"type\":\"string\"},\"duration\":{\"description\":\"Time spent delivering.\",\"example\":0.03,\"type\":\"number\"},\"event\":{\"description\":\"The event that triggered the delivery.\",\"example\":\"issues\",\"type\":\"string\"},\"guid\":{\"description\":\"Unique identifier for the event (shared with all deliveries for all webhooks that subscribe to this event).\",\"example\":\"58474f00-b361-11eb-836d-0e4f3503ccbe\",\"type\":\"string\"},\"id\":{\"description\":\"Unique identifier of the delivery.\",\"example\":42,\"type\":\"integer\"},\"installation_id\":{\"description\":\"The id of the GitHub App installation associated with this event.\",\"example\":123,\"nullable\":true,\"type\":\"integer\"},\"redelivery\":{\"description\":\"Whether the delivery is a redelivery.\",\"example\":false,\"type\":\"boolean\"},\"repository_id\":{\"description\":\"The id of the repository associated with this event.\",\"example\":123,\"nullable\":true,\"type\":\"integer\"},\"request\":{\"properties\":{\"headers\":{\"additionalProperties\":true,\"description\":\"The request headers sent with the webhook delivery.\",\"nullable\":true,\"type\":\"object\"},\"payload\":{\"additionalProperties\":true,\"description\":\"The webhook payload.\",\"nullable\":true,\"type\":\"object\"}},\"required\":[\"headers\",\"payload\"],\"type\":\"object\"},\"response\":{\"properties\":{\"headers\":{\"additionalProperties\":true,\"description\":\"The response headers received when the delivery was made.\",\"nullable\":true,\"type\":\"object\"},\"payload\":{\"additionalProperties\":true,\"description\":\"The response payload received.\",\"nullable\":true,\"type\":\"string\"}},\"required\":[\"headers\",\"payload\"],\"type\":\"object\"},\"status\":{\"description\":\"Description of the status of the attempted delivery\",\"example\":\"failed to connect\",\"type\":\"string\"},\"status_code\":{\"description\":\"Status code received when delivery was made.\",\"example\":502,\"type\":\"integer\"},\"throttled_at\":{\"description\":\"Time when the webhook delivery was throttled.\",\"example\":\"2021-05-12T20:33:44Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"url\":{\"description\":\"The URL target of the delivery.\",\"example\":\"https://www.example.com\",\"type\":\"string\"}},\"required\":[\"id\",\"guid\",\"delivered_at\",\"redelivery\",\"duration\",\"status\",\"status_code\",\"event\",\"action\",\"installation_id\",\"repository_id\",\"request\",\"response\"],\"title\":\"Webhook delivery\",\"type\":\"object\"}}},\"description\":\"Response\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}},\"application/scim+json\":{\"schema\":{\"description\":\"Scim Error\",\"properties\":{\"detail\":{\"nullable\":true,\"type\":\"string\"},\"documentation_url\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"schemas\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"scimType\":{\"nullable\":true,\"type\":\"string\"},\"status\":{\"type\":\"integer\"}},\"title\":\"Scim Error\",\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}"
@@ -275,9 +288,8 @@ main: kit: entity: hook_delivery: {
           }
           contract: {
             id: "GET /app/hook/deliveries/{delivery_id}"
-            json: "{\"operationId\":\"apps/get-webhook-delivery\",\"parameters\":[{\"in\":\"path\",\"name\":\"delivery_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"action\":\"opened\",\"delivered_at\":\"2019-06-03T00:57:16Z\",\"duration\":0.27,\"event\":\"issues\",\"guid\":\"0b989ba4-242f-11e5-81e1-c7b6966d2516\",\"id\":12345678,\"installation_id\":123,\"redelivery\":false,\"repository_id\":456,\"request\":{\"headers\":{\"Accept\":\"*/*\",\"User-Agent\":\"GitHub-Hookshot/b8c71d8\",\"X-GitHub-Delivery\":\"0b989ba4-242f-11e5-81e1-c7b6966d2516\",\"X-GitHub-Event\":\"issues\",\"X-GitHub-Hook-ID\":\"42\",\"X-GitHub-Hook-Installation-Target-ID\":\"123\",\"X-GitHub-Hook-Installation-Target-Type\":\"repository\",\"X-Hub-Signature\":\"sha1=a84d88e7554fc1fa21bcbc4efae3c782a70d2b9d\",\"X-Hub-Signature-256\":\"sha256=6dcb09b5b57875f334f61aebed695e2e4193db5e\",\"content-type\":\"application/json\"},\"payload\":{\"action\":\"opened\",\"issue\":{\"body\":\"foo\"},\"repository\":{\"id\":123}}},\"response\":{\"headers\":{\"Content-Type\":\"text/html;charset=utf-8\"},\"payload\":\"ok\"},\"status\":\"OK\",\"status_code\":200,\"throttled_at\":\"2019-06-03T00:57:16Z\",\"url\":\"https://www.example.com\"}}},\"schema\":{\"description\":\"Delivery made by a webhook.\",\"properties\":{\"action\":{\"description\":\"The type of activity for the event that triggered the delivery.\",\"example\":\"opened\",\"nullable\":true,\"type\":\"string\"},\"delivered_at\":{\"description\":\"Time when the delivery was delivered.\",\"example\":\"2021-05-12T20:33:44Z\",\"format\":\"date-time\",\"type\":\"string\"},\"duration\":{\"description\":\"Time spent delivering.\",\"example\":0.03,\"type\":\"number\"},\"event\":{\"description\":\"The event that triggered the delivery.\",\"example\":\"issues\",\"type\":\"string\"},\"guid\":{\"description\":\"Unique identifier for the event (shared with all deliveries for all webhooks that subscribe to this event).\",\"example\":\"58474f00-b361-11eb-836d-0e4f3503ccbe\",\"type\":\"string\"},\"id\":{\"description\":\"Unique identifier of the delivery.\",\"example\":42,\"type\":\"integer\"},\"installation_id\":{\"description\":\"The id of the GitHub App installation associated with this event.\",\"example\":123,\"nullable\":true,\"type\":\"integer\"},\"redelivery\":{\"description\":\"Whether the delivery is a redelivery.\",\"example\":false,\"type\":\"boolean\"},\"repository_id\":{\"description\":\"The id of the repository associated with this event.\",\"example\":123,\"nullable\":true,\"type\":\"integer\"},\"request\":{\"properties\":{\"headers\":{\"additionalProperties\":true,\"description\":\"The request headers sent with the webhook delivery.\",\"nullable\":true,\"type\":\"object\"},\"payload\":{\"additionalProperties\":true,\"description\":\"The webhook payload.\",\"nullable\":true,\"type\":\"object\"}},\"required\":[\"headers\",\"payload\"],\"type\":\"object\"},\"response\":{\"properties\":{\"headers\":{\"additionalProperties\":true,\"description\":\"The response headers received when the delivery was made.\",\"nullable\":true,\"type\":\"object\"},\"payload\":{\"additionalProperties\":true,\"description\":\"The response payload received.\",\"nullable\":true,\"type\":\"string\"}},\"required\":[\"headers\",\"payload\"],\"type\":\"object\"},\"status\":{\"description\":\"Description of the status of the attempted delivery\",\"example\":\"failed to connect\",\"type\":\"string\"},\"status_code\":{\"description\":\"Status code received when delivery was made.\",\"example\":502,\"type\":\"integer\"},\"throttled_at\":{\"description\":\"Time when the webhook delivery was throttled.\",\"example\":\"2021-05-12T20:33:44Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"url\":{\"description\":\"The URL target of the delivery.\",\"example\":\"https://www.example.com\",\"type\":\"string\"}},\"required\":[\"id\",\"guid\",\"delivered_at\",\"redelivery\",\"duration\",\"status\",\"status_code\",\"event\",\"action\",\"installation_id\",\"repository_id\",\"request\",\"response\"],\"title\":\"Webhook delivery\",\"type\":\"object\"}}},\"description\":\"Response\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Basic Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"title\":\"Basic Error\",\"type\":\"object\"}},\"application/scim+json\":{\"schema\":{\"description\":\"Scim Error\",\"properties\":{\"detail\":{\"nullable\":true,\"type\":\"string\"},\"documentation_url\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"schemas\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"scimType\":{\"nullable\":true,\"type\":\"string\"},\"status\":{\"type\":\"integer\"}},\"title\":\"Scim Error\",\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"422\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Validation Error\",\"properties\":{\"documentation_url\":{\"type\":\"string\"},\"errors\":{\"items\":{\"properties\":{\"code\":{\"type\":\"string\"},\"field\":{\"type\":\"string\"},\"index\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"resource\":{\"type\":\"string\"},\"value\":{\"oneOf\":[{\"nullable\":true,\"type\":\"string\"},{\"nullable\":true,\"type\":\"integer\"},{\"items\":{\"type\":\"string\"},\"nullable\":true,\"type\":\"array\"}]}},\"required\":[\"code\"],\"type\":\"object\"},\"type\":\"array\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\",\"documentation_url\"],\"title\":\"Validation Error\",\"type\":\"object\"}}},\"description\":\"Validation failed, or the endpoint has been spammed.\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/app/hook/deliveries/{delivery_id}"

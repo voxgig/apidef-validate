@@ -4,50 +4,57 @@ main: kit: entity: codeowners_error: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "column"
-      req: true
-      short: "The column number where this errors occurs."
-      type: "`$INTEGER`"
+  fields: {
+    column: {
+      h: "Column"
+      n: "column"
+      r: true
+      sh: "The column number where this errors occurs."
+      t: "`$INTEGER`"
     }
-    {
-      name: "kind"
-      req: true
-      short: "The type of error."
-      type: "`$STRING`"
+    kind: {
+      h: "Kind"
+      n: "kind"
+      r: true
+      sh: "The type of error."
+      t: "`$STRING`"
     }
-    {
-      name: "line"
-      req: true
-      short: "The line number where this errors occurs."
-      type: "`$INTEGER`"
+    line: {
+      h: "Line"
+      n: "line"
+      r: true
+      sh: "The line number where this errors occurs."
+      t: "`$INTEGER`"
     }
-    {
-      name: "message"
-      req: true
-      short: "A human-readable description of the error, combining information from multiple fields, laid out for display in a monospaced typeface (for example, a command-line setting)."
-      type: "`$STRING`"
+    message: {
+      h: "Message"
+      n: "message"
+      r: true
+      sh: "A human-readable description of the error, combining information from multiple fields, laid out for display in a monospaced typeface (for example, a command-line setting)."
+      t: "`$STRING`"
     }
-    {
-      name: "path"
-      req: true
-      short: "The path of the file where the error occured."
-      type: "`$STRING`"
+    path: {
+      h: "Path"
+      n: "path"
+      r: true
+      sh: "The path of the file where the error occured."
+      t: "`$STRING`"
     }
-    {
-      name: "source"
-      req: false
-      short: "The contents of the line where the error occurs."
-      type: "`$STRING`"
+    source: {
+      h: "Source"
+      n: "source"
+      r: false
+      sh: "The contents of the line where the error occurs."
+      t: "`$STRING`"
     }
-    {
-      name: "suggestion"
-      req: false
-      short: "Suggested action to fix the error."
-      type: "`$STRING`"
+    suggestion: {
+      h: "Suggestion"
+      n: "suggestion"
+      r: false
+      sh: "Suggested action to fix the error."
+      t: "`$STRING`"
     }
-  ]
+  }
 
   name: "codeowners_error"
   op: {
@@ -84,9 +91,8 @@ main: kit: entity: codeowners_error: {
           }
           contract: {
             id: "GET /repos/{owner}/{repo}/codeowners/errors"
-            json: "{\"operationId\":\"repos/codeowners-errors\",\"parameters\":[{\"description\":\"The account owner of the repository. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"owner\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"The name of the repository without the `.git` extension. The name is not case sensitive.\",\"in\":\"path\",\"name\":\"repo\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"A branch, tag or commit name used to determine which version of the CODEOWNERS file to use. Default: the repository's default branch (e.g. `main`)\",\"in\":\"query\",\"name\":\"ref\",\"required\":false,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"default\":{\"value\":{\"errors\":[{\"column\":1,\"kind\":\"Invalid pattern\",\"line\":3,\"message\":\"Invalid pattern on line 3: Did you mean `**/*.rb`?\\n\\n  ***/*.rb @monalisa\\n  ^\",\"path\":\".github/CODEOWNERS\",\"source\":\"***/*.rb @monalisa\",\"suggestion\":\"Did you mean `**/*.rb`?\"},{\"column\":7,\"kind\":\"Invalid owner\",\"line\":7,\"source\":\"*.txt docs@\",\"suggestion\":{\"message\":\"Invalid owner on line 7:\\n\\n  *.txt docs@\\n        ^\",\"path\":\".github/CODEOWNERS\"}}]}}},\"schema\":{\"description\":\"A list of errors found in a repo's CODEOWNERS file\",\"properties\":{\"errors\":{\"items\":{\"properties\":{\"column\":{\"description\":\"The column number where this errors occurs.\",\"example\":3,\"type\":\"integer\"},\"kind\":{\"description\":\"The type of error.\",\"example\":\"Invalid owner\",\"type\":\"string\"},\"line\":{\"description\":\"The line number where this errors occurs.\",\"example\":7,\"type\":\"integer\"},\"message\":{\"description\":\"A human-readable description of the error, combining information from multiple fields, laid out for display in a monospaced typeface (for example, a command-line setting).\",\"example\":\"Invalid owner on line 7:\\n\\n  * user\\n    ^\",\"type\":\"string\"},\"path\":{\"description\":\"The path of the file where the error occured.\",\"example\":\".github/CODEOWNERS\",\"type\":\"string\"},\"source\":{\"description\":\"The contents of the line where the error occurs.\",\"example\":\"* user\",\"type\":\"string\"},\"suggestion\":{\"description\":\"Suggested action to fix the error. This will usually be `null`, but is provided for some common errors.\",\"example\":\"The pattern `/` will never match anything, did you mean `*` instead?\",\"nullable\":true,\"type\":\"string\"}},\"required\":[\"line\",\"column\",\"kind\",\"message\",\"path\"],\"type\":\"object\"},\"type\":\"array\"}},\"required\":[\"errors\"],\"title\":\"CODEOWNERS errors\",\"type\":\"object\"}}},\"description\":\"Response\"},\"404\":{\"description\":\"Resource not found\"}},\"securitySource\":\"unspecified\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/repos/{owner}/{repo}/codeowners/errors"

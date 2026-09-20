@@ -4,25 +4,28 @@ main: kit: entity: permission: {
 
   alias: field: {}
 
-  fields: [
-    {
-      name: "id"
-      req: false
-      type: "`$STRING`"
+  fields: {
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
     }
-    {
-      name: "pages"
-      req: false
-      short: "Pages accessible by the user."
-      type: "`$OBJECT`"
+    pages: {
+      h: "Pages"
+      n: "pages"
+      r: false
+      sh: "Pages accessible by the user."
+      t: "`$OBJECT`"
     }
-    {
-      name: "user_id"
-      req: false
-      short: "User identifier"
-      type: "`$STRING`"
+    user_id: {
+      h: "User Id"
+      n: "user_id"
+      r: false
+      sh: "User identifier"
+      t: "`$STRING`"
     }
-  ]
+  }
 
   id: {
     field: "id"
@@ -55,9 +58,8 @@ main: kit: entity: permission: {
           }
           contract: {
             id: "GET /organizations/{organization_id}/permissions/{user_id}"
-            json: "{\"operationId\":\"getOrganizationsOrganizationIdPermissionsUserId\",\"parameters\":[{\"description\":\"Organization Identifier\",\"in\":\"path\",\"name\":\"organization_id\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"User identifier\",\"in\":\"path\",\"name\":\"user_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"response\":{\"value\":{\"pages\":[{\"incident_manager\":true,\"maintenance_manager\":true,\"page_configuration\":false,\"page_id\":\"dlqpc4stl3t6\"},{\"incident_manager\":true,\"maintenance_manager\":true,\"page_configuration\":false,\"page_id\":\"ngdkgwfj7d15\"}],\"user_id\":\"xkjqwf07j7kg\"}}},\"schema\":{\"description\":\"Get a user's permissions\",\"properties\":{\"data\":{\"properties\":{\"pages\":{\"description\":\"Pages accessible by the user.\",\"properties\":{\"incident_manager\":{\"description\":\"User has incident manager role. This field will only be present if the organization has Role Based Access Control.\",\"type\":\"boolean\"},\"maintenance_manager\":{\"description\":\"User has maintenance manager role. This field will only be present if the organization has Role Based Access Control.\",\"type\":\"boolean\"},\"page_configuration\":{\"description\":\"User has page configuration role. This field will only be present if the organization has Role Based Access Control.\",\"type\":\"boolean\"},\"page_id\":{\"description\":\"Page identifier\",\"type\":\"string\"}},\"type\":\"object\"},\"user_id\":{\"description\":\"User identifier\",\"type\":\"string\"}},\"type\":\"object\"}},\"type\":\"object\"}}},\"description\":\"Get a user's permissions\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Could not authenticate\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"The requested resource could not be found.\"}},\"security\":[{\"api_key\":[]}],\"securitySchemes\":{\"api_key\":{\"description\":\"#### Obtaining your API Key\\n\\nAuthentication is done via an API token provided in the Statuspage management interface.\\n\\n  1. Log in to your account at https://manage.statuspage.io/login.\\n  2. Click on your avatar in the bottom left of your screen to access the user menu.\\n  3. Click **API info**.\\n\\n### Passing your API key in an authorization header\\n\\nThe following example authenticates you with the Statuspage API.  Along with the Page ID\\nlisted on the API page, we can fetch your page profile.\\n\\n    curl -H \\\"Authorization: OAuth 89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\" \\\\\\n      https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json\\n\\n### Passing your API key in a query param\\n\\n    curl \\\"https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json?api_key=89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\"\\n\",\"in\":\"header\",\"name\":\"Authorization\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "GET"
           orig: "/organizations/{organization_id}/permissions/{user_id}"
@@ -117,9 +119,8 @@ main: kit: entity: permission: {
           }
           contract: {
             id: "PUT /organizations/{organization_id}/permissions/{user_id}"
-            json: "{\"operationId\":\"putOrganizationsOrganizationIdPermissionsUserId\",\"parameters\":[{\"description\":\"Organization Identifier\",\"in\":\"path\",\"name\":\"organization_id\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"User identifier\",\"in\":\"path\",\"name\":\"user_id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Update a user's role permissions. Payload should contain a mapping of pages to a set of the desired roles,\\n                  if the page has Role Based Access Control. Otherwise, the pages should map to an empty hash.\\n                  User will lose access to any pages omitted from the payload.\",\"properties\":{\"pages\":{\"properties\":{\"page_id\":{\"properties\":{\"incident_manager\":{\"description\":\"Whether or not user should have incident manager role. This field will only be present for pages with Role Based Access Control.\",\"type\":\"boolean\"},\"maintenance_manager\":{\"description\":\"Whether or not user should have maintenance manager role. This field will only be present for pages with Role Based Access Control.\",\"type\":\"boolean\"},\"page_configuration\":{\"description\":\"Whether or not user should have page configuration role. This field will only be present for pages with Role Based Access Control.\",\"type\":\"boolean\"}},\"type\":\"object\"}},\"type\":\"object\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"response\":{\"value\":{\"pages\":[{\"incident_manager\":true,\"maintenance_manager\":true,\"page_configuration\":false,\"page_id\":\"04qbfq8lvpp3\"},{\"incident_manager\":true,\"maintenance_manager\":true,\"page_configuration\":false,\"page_id\":\"nz9bqh8d0hnl\"}],\"user_id\":\"wg5rb3fzsg2n\"}}},\"schema\":{\"description\":\"Get a user's permissions\",\"properties\":{\"data\":{\"properties\":{\"pages\":{\"description\":\"Pages accessible by the user.\",\"properties\":{\"incident_manager\":{\"description\":\"User has incident manager role. This field will only be present if the organization has Role Based Access Control.\",\"type\":\"boolean\"},\"maintenance_manager\":{\"description\":\"User has maintenance manager role. This field will only be present if the organization has Role Based Access Control.\",\"type\":\"boolean\"},\"page_configuration\":{\"description\":\"User has page configuration role. This field will only be present if the organization has Role Based Access Control.\",\"type\":\"boolean\"},\"page_id\":{\"description\":\"Page identifier\",\"type\":\"string\"}},\"type\":\"object\"},\"user_id\":{\"description\":\"User identifier\",\"type\":\"string\"}},\"type\":\"object\"}},\"type\":\"object\"}}},\"description\":\"Update a user's role permissions. Payload should contain a mapping of pages to a set of the desired roles,\\n                  if the page has Role Based Access Control. Otherwise, the pages should map to an empty hash.\\n                  User will lose access to any pages omitted from the payload.\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Bad request\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Could not authenticate\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"You are not authorized to access this resource.\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Get a list of users\",\"properties\":{\"message\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"The requested resource could not be found.\"}},\"security\":[{\"api_key\":[]}],\"securitySchemes\":{\"api_key\":{\"description\":\"#### Obtaining your API Key\\n\\nAuthentication is done via an API token provided in the Statuspage management interface.\\n\\n  1. Log in to your account at https://manage.statuspage.io/login.\\n  2. Click on your avatar in the bottom left of your screen to access the user menu.\\n  3. Click **API info**.\\n\\n### Passing your API key in an authorization header\\n\\nThe following example authenticates you with the Statuspage API.  Along with the Page ID\\nlisted on the API page, we can fetch your page profile.\\n\\n    curl -H \\\"Authorization: OAuth 89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\" \\\\\\n      https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json\\n\\n### Passing your API key in a query param\\n\\n    curl \\\"https://api.statuspage.io/v1/pages/gytm4qzbx9t6.json?api_key=89a229ce1a8dbcf9ff30430fbe35eb4c0426574bca932061892cefd2138aa4b1\\\"\\n\",\"in\":\"header\",\"name\":\"Authorization\",\"type\":\"apiKey\"}},\"securitySource\":\"definition\"}"
             source: "openapi3"
-            version: 1
+            version: 2
           }
           method: "PUT"
           orig: "/organizations/{organization_id}/permissions/{user_id}"
