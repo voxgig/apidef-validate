@@ -109,7 +109,6 @@ The banned set, by name:
 | Document | What it is |
 |---|---|
 | `v1/GOLDEN-NOTES.md` | the record of why goldens were refreshed, and what each unexplained mismatch turned out to be |
-| `v1/diff-ts-go.md` | a captured run log from a TypeScript-versus-Go comparison |
 | `AGENTS.md`, `CLAUDE.md` | instructions to contributors and agents; not present here, and guarded so they stay uncitable when they arrive |
 | any `*_PLAN.md` or `*_REVIEW.md`, and `BUILD_LOG.md` | the shapes this project has not needed yet, guarded in advance |
 

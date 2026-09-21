@@ -91,7 +91,6 @@ WORKING_DOCS = (
     (r"\b[A-Z][A-Z0-9_]*_(?:PLAN|REVIEW)\.md\b", "a plan or review file"),
     (r"\bBUILD_LOG\.md\b", "BUILD_LOG.md"),
     (r"\bGOLDEN-NOTES\.md\b", "GOLDEN-NOTES.md"),
-    (r"\bdiff-ts-go\.md\b", "diff-ts-go.md"),
 )
 
 # The pages the repository is known to carry, beyond the root pages: a
