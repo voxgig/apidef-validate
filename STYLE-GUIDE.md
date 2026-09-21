@@ -86,14 +86,16 @@ question somebody is actually asking.
 
 ### The TypeScript harness owns the goldens
 
-This repository checks two implementations of apidef, and they do not
-check the same thing. The TypeScript harness (`v1/test/main.test.ts`)
-diffs every case against the goldens; the Go harness
-(`v1/go/validate_test.go`) runs the same cases through the Go module and
-checks that each one builds. The README says which check does what, in
-those words, and never claims a byte parity the Go harness does not
-measure. When the Go harness starts diffing, the README changes in the
-same commit.
+This repository checks two implementations of apidef against one set of
+goldens, and the goldens come from one of them. The TypeScript harness
+(`v1/test/main.test.ts`) writes a golden that does not exist yet and
+refreshes them all on request; the Go harness (`v1/go/validate_test.go`)
+diffs the same cases against those files and never writes one. Where the
+Go port does not reproduce a golden, the harness says so in its skip
+list, with the reason, and the README says that the list exists. The
+README never claims a byte parity the Go harness does not measure: a
+normalization, such as dropping the `# why` annotations before the base
+guide comparison, is stated in the README in the commit that adds it.
 
 ## Documentation does not cite a working document
 

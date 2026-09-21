@@ -4,8 +4,11 @@ package validate_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
+	"sort"
 	"strings"
 	"testing"
 
@@ -19,10 +22,8 @@ type Case struct {
 	Format  string
 }
 
-// Mirrors the TS case list in test/main.test.ts, MINUS its GraphQL cases:
-// the Go apidef module has no GraphQL ingestion (no strategy dispatch, no SDL
-// parser), so a graphql case here could only fail. Add them together with the
-// Go port, not before it — and drop this note when they are in sync again.
+// The TypeScript case list minus its GraphQL cases, which the Go module
+// cannot ingest, and minus elementdemo.
 var allCases = []Case{
 	{"solar", "1.0.0", "openapi-3.0.0", "yaml"},
 	{"petstore", "1.0.7", "swagger-2.0", "json"},
@@ -42,6 +43,77 @@ var allCases = []Case{
 	{"github", "1.1.4", "openapi-3.0.3", "yaml"},
 	{"gitlab", "v4", "swagger-2.0", "yaml"},
 }
+
+// A golden the Go port is known not to reproduce: a path glob relative to
+// v1/, and why. A matching golden is still compared and reported, but a
+// mismatch does not fail the run. A glob whose matching goldens all pass is
+// stale and does fail it, so the list shrinks as the port catches up.
+type goldenSkip struct {
+	Glob   string
+	Reason string
+
+	compared   int
+	mismatched int
+}
+
+const emptyFieldsGap = "an empty fields block sits before name instead of after op"
+const ancestorGap = "ancestor relations are missing"
+
+var goldenSkips = []*goldenSkip{
+	{Glob: "guide/*-final-guide.aontu", Reason: "the Go guide keeps control, orig, " +
+		"tag, why_* and empty action and rename containers that the TypeScript " +
+		"guide, re-read from its aontu source, does not"},
+
+	{Glob: "guide/cloudsmith-*-base-guide.aontu", Reason: "Go finds 75 of the 131 entities"},
+	{Glob: "guide/codatplatform-*-base-guide.aontu", Reason: "Go finds 22 of the 30 entities"},
+	{Glob: "guide/contentfulcma-*-base-guide.aontu", Reason: "Go gives /organizations " +
+		"to organization instead of app_definition"},
+	{Glob: "guide/github-*-base-guide.aontu", Reason: "Go moves /gists to base_gist, " +
+		"/organizations to organization, and /classrooms and PATCH /user elsewhere"},
+	{Glob: "guide/gitlab-*-base-guide.aontu", Reason: "Go names custom_attribute, " +
+		"participant, starrer and user where TypeScript has " +
+		"api_entities_custom_attribute and api_entities_user_basic"},
+	{Glob: "guide/learnworlds-*-base-guide.aontu", Reason: "Go finds 29 of the 42 entities"},
+	{Glob: "guide/shortcut-*-base-guide.aontu", Reason: "Go gives the epic comment " +
+		"paths to comment instead of threaded_comment"},
+	{Glob: "guide/taxonomy-*-base-guide.aontu", Reason: "Go finds no paginated_taxa " +
+		"and gives its list operations to domain and kingdom"},
+
+	{Glob: "model/cloudsmith-*/*", Reason: "56 entities are not found; " + ancestorGap +
+		", and " + emptyFieldsGap},
+	{Glob: "model/codatplatform-*/*", Reason: "8 entities are not found; " + ancestorGap +
+		", and " + emptyFieldsGap},
+	{Glob: "model/contentfulcma-*/*", Reason: ancestorGap + ", and " + emptyFieldsGap},
+	{Glob: "model/foo-*/*-bar.aontu", Reason: emptyFieldsGap},
+	{Glob: "model/foo-*/*-qaz.aontu", Reason: emptyFieldsGap},
+	{Glob: "model/foo-*/*-yike.aontu", Reason: emptyFieldsGap},
+	{Glob: "model/github-*/*", Reason: ancestorGap + " along with union metadata " +
+		"and some fields, and " + emptyFieldsGap},
+	{Glob: "model/gitlab-*/*", Reason: "the entity set differs; " + ancestorGap +
+		", and " + emptyFieldsGap},
+	{Glob: "model/learnworlds-*/*", Reason: "13 entities are not found, and " + ancestorGap},
+	{Glob: "model/petstore-*/*-store.aontu", Reason: emptyFieldsGap},
+	{Glob: "model/shortcut-*/*", Reason: ancestorGap + " along with union metadata, " +
+		"the epic comment paths move to comment, and " + emptyFieldsGap},
+	{Glob: "model/statuspage-*/*", Reason: ancestorGap},
+	{Glob: "model/taxonomy-*/*-domain.aontu", Reason: "carries the list operation " +
+		"of the missing paginated_taxa"},
+	{Glob: "model/taxonomy-*/*-kingdom.aontu", Reason: "carries the list operation " +
+		"of the missing paginated_taxa"},
+	{Glob: "model/taxonomy-*/*-paginated_taxa.aontu", Reason: "the entity is not found"},
+}
+
+func findSkip(rel string) *goldenSkip {
+	for _, skip := range goldenSkips {
+		if ok, _ := filepath.Match(skip.Glob, filepath.ToSlash(rel)); ok {
+			return skip
+		}
+	}
+	return nil
+}
+
+const goldenExt = ".aontu"
+const generatedExt = ".aon"
 
 func fullName(c Case) string {
 	return c.Name + "-" + c.Version + "-" + c.Spec
@@ -79,7 +151,14 @@ func validateBase(t *testing.T) string {
 	return abs
 }
 
-func runCase(t *testing.T, c Case, step map[string]any) *apidef.ApiDefResult {
+type caseRun struct {
+	Case   Case
+	Base   string
+	Result *apidef.ApiDefResult
+	Out    string
+}
+
+func runCase(t *testing.T, c Case, step map[string]any) *caseRun {
 	t.Helper()
 	cn := fullName(c)
 	base := validateBase(t)
@@ -93,9 +172,14 @@ func runCase(t *testing.T, c Case, step map[string]any) *apidef.ApiDefResult {
 	// apidef-warnings.txt) does not pollute the repo.
 	tmp := t.TempDir()
 	t.Chdir(tmp)
+	out := tmp
+	if keep := os.Getenv("TEST_OUT"); keep != "" {
+		out = filepath.Join(keep, cn)
+	}
+	copyGuideOverlay(t, base, out, cn)
 
 	a := apidef.NewApiDef(apidef.ApiDefOptions{
-		Folder:    tmp,
+		Folder:    out,
 		OutPrefix: cn + "-",
 		Strategy:  "heuristic01",
 	})
@@ -120,7 +204,332 @@ func runCase(t *testing.T, c Case, step map[string]any) *apidef.ApiDefResult {
 	if !result.OK {
 		t.Fatalf("%s: generate not OK: err=%v steps=%v", cn, result.Err, result.Steps)
 	}
-	return result
+	return &caseRun{Case: c, Base: base, Result: result, Out: out}
+}
+
+// The TypeScript harness feeds apidef the case's guide overlay; the Go port
+// refuses an overlay it cannot honour, so the same file goes in here.
+func copyGuideOverlay(t *testing.T, base string, out string, cn string) {
+	t.Helper()
+	name := cn + "-guide" + goldenExt
+	src, err := os.ReadFile(filepath.Join(base, "guide", name))
+	if err != nil {
+		t.Fatalf("%s: read guide overlay: %v", cn, err)
+	}
+	guideDir := filepath.Join(out, "guide")
+	if err := os.MkdirAll(guideDir, 0755); err != nil {
+		t.Fatalf("%s: mkdir guide: %v", cn, err)
+	}
+	if err := os.WriteFile(filepath.Join(guideDir, name), src, 0644); err != nil {
+		t.Fatalf("%s: write guide overlay: %v", cn, err)
+	}
+}
+
+func readGenerated(t *testing.T, path string) string {
+	t.Helper()
+	src, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("apidef wrote no %s: %v", filepath.Base(path), err)
+	}
+	return strings.TrimSpace(string(src))
+}
+
+type goldenMetrics struct {
+	Compared int
+	Skipped  int
+	Todo     int
+}
+
+var todoLineRE = regexp.MustCompile(`[^\n#]*##[^\n]*\n`)
+var whyCommentRE = regexp.MustCompile(`(?m)\s+#[^\n]*$`)
+
+// compareGolden fails the test with a line diff when the generated text
+// differs from the golden at rel (relative to v1/), unless a goldenSkip
+// covers it. A golden line with a `##` comment marks a known gap: it is
+// dropped before the comparison and counted, as in the TypeScript harness.
+func compareGolden(t *testing.T, base string, rel string, found string, metrics *goldenMetrics, normalize func(string) string) {
+	t.Helper()
+	skip := findSkip(rel)
+	if skip != nil {
+		metrics.Skipped++
+		skip.compared++
+	} else {
+		metrics.Compared++
+	}
+
+	raw, err := os.ReadFile(filepath.Join(base, rel))
+	if err != nil {
+		if skip != nil {
+			skip.mismatched++
+			t.Logf("SKIP %s: no golden (%s)", rel, skip.Reason)
+			return
+		}
+		t.Errorf("missing golden %s (the TypeScript harness creates goldens): %v", rel, err)
+		return
+	}
+	expected := strings.TrimSpace(string(raw))
+	if normalize != nil {
+		expected = strings.TrimSpace(normalize(expected))
+	}
+	if expected == found {
+		return
+	}
+
+	todos := 0
+	clean := todoLineRE.ReplaceAllStringFunc(expected+"\n", func(string) string {
+		todos++
+		return ""
+	})
+	metrics.Todo += todos
+	if strings.TrimSpace(clean) == found {
+		t.Logf("OPEN TODOS: %s %d", rel, todos)
+		return
+	}
+
+	if skip != nil {
+		skip.mismatched++
+		t.Logf("SKIP %s: %s", rel, skip.Reason)
+		return
+	}
+	t.Errorf("MISMATCH: %s\n%s", rel, lineDiff(expected, found))
+}
+
+// The Go port writes no `# why` annotations, so the golden's trailing
+// comments are dropped before the base guide comparison.
+func dropWhyComments(guide string) string {
+	return whyCommentRE.ReplaceAllString(guide, "")
+}
+
+// compareGuides checks the base guide apidef wrote and the final guide it
+// returned against the case's goldens.
+func compareGuides(t *testing.T, run *caseRun, metrics *goldenMetrics) {
+	t.Helper()
+	base := run.Base
+	cn := fullName(run.Case)
+
+	baseGuide := readGenerated(t, filepath.Join(run.Out, "guide", cn+"-base-guide"+generatedExt))
+	compareGolden(t, base, filepath.Join("guide", cn+"-base-guide"+goldenExt),
+		baseGuide, metrics, dropWhyComments)
+
+	finalGuide := strings.TrimSpace(apidef.FormatJSONIC(run.Result.Guide))
+	compareGolden(t, base, filepath.Join("guide", cn+"-final-guide"+goldenExt),
+		finalGuide, metrics, nil)
+}
+
+// compareModels checks every entity model apidef wrote against the case's
+// goldens, and that no golden is left without a generated entity.
+func compareModels(t *testing.T, run *caseRun, entities map[string]any, metrics *goldenMetrics) {
+	t.Helper()
+	base := run.Base
+	cn := fullName(run.Case)
+	modelDir := filepath.Join("model", cn)
+
+	generated := map[string]bool{}
+	for _, name := range sortedKeys(entities) {
+		efn := cn + "-" + name
+		generated[efn+goldenExt] = true
+		entitySrc := readGenerated(t, filepath.Join(run.Out, "entity", efn+generatedExt))
+		compareGolden(t, base, filepath.Join(modelDir, efn+goldenExt), entitySrc, metrics, nil)
+	}
+
+	goldens, err := os.ReadDir(filepath.Join(base, modelDir))
+	if err != nil {
+		t.Errorf("missing model goldens %s: %v", modelDir, err)
+		return
+	}
+	for _, golden := range goldens {
+		file := golden.Name()
+		if !strings.HasPrefix(file, cn+"-") || !strings.HasSuffix(file, goldenExt) ||
+			strings.HasSuffix(file, ".gen"+goldenExt) || generated[file] {
+			continue
+		}
+		rel := filepath.Join(modelDir, file)
+		if skip := findSkip(rel); skip != nil {
+			skip.compared++
+			skip.mismatched++
+			t.Logf("SKIP %s: no generated entity (%s)", rel, skip.Reason)
+			continue
+		}
+		t.Errorf("golden %s has no generated entity", rel)
+	}
+}
+
+func checkStaleSkips(t *testing.T) {
+	t.Helper()
+	for _, skip := range goldenSkips {
+		if skip.compared > 0 && skip.mismatched == 0 {
+			t.Errorf("stale skip %q: every matching golden passes, remove it", skip.Glob)
+		}
+	}
+}
+
+func sortedKeys(m map[string]any) []string {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return keys
+}
+
+const diffContext = 3
+const diffMaxEdits = 4000
+
+// lineDiff renders expected against found as unified-style hunks. Equal
+// prefix and suffix lines are stripped first, so the Myers search only
+// sees the changed region; a region beyond diffMaxEdits is summarised.
+func lineDiff(expected string, found string) string {
+	a := strings.Split(expected, "\n")
+	b := strings.Split(found, "\n")
+
+	prefix := 0
+	for prefix < len(a) && prefix < len(b) && a[prefix] == b[prefix] {
+		prefix++
+	}
+	suffix := 0
+	for suffix < len(a)-prefix && suffix < len(b)-prefix &&
+		a[len(a)-1-suffix] == b[len(b)-1-suffix] {
+		suffix++
+	}
+	ma := a[prefix : len(a)-suffix]
+	mb := b[prefix : len(b)-suffix]
+
+	out := []string{
+		fmt.Sprintf("--- expected (%d lines)", len(a)),
+		fmt.Sprintf("+++ generated (%d lines)", len(b)),
+	}
+
+	ops, ok := myersOps(ma, mb, diffMaxEdits)
+	if !ok {
+		out = append(out, fmt.Sprintf("@@ -%d,%d +%d,%d @@ region too large to align",
+			prefix+1, len(ma), prefix+1, len(mb)))
+		for _, line := range head(ma, 20) {
+			out = append(out, "-"+line)
+		}
+		for _, line := range head(mb, 20) {
+			out = append(out, "+"+line)
+		}
+		return strings.Join(out, "\n")
+	}
+
+	var lead []string
+	for i := max(0, prefix-diffContext); i < prefix; i++ {
+		lead = append(lead, " "+a[i])
+	}
+	ops = append(lead, ops...)
+	for i := len(a) - suffix; i < min(len(a), len(a)-suffix+diffContext); i++ {
+		ops = append(ops, " "+a[i])
+	}
+	return strings.Join(append(out, foldContext(ops)...), "\n")
+}
+
+func head(lines []string, n int) []string {
+	if len(lines) > n {
+		return lines[:n]
+	}
+	return lines
+}
+
+// foldContext elides runs of equal lines longer than the context on both
+// sides of a change.
+func foldContext(ops []string) []string {
+	var out []string
+	run := 0
+	for i, op := range ops {
+		if op[0] != ' ' {
+			out = append(out, op)
+			run = 0
+			continue
+		}
+		next := len(ops) - i
+		for j := i + 1; j < len(ops); j++ {
+			if ops[j][0] != ' ' {
+				next = j - i
+				break
+			}
+		}
+		run++
+		if run <= diffContext || next <= diffContext {
+			out = append(out, op)
+		} else if run == diffContext+1 {
+			out = append(out, "...")
+		}
+	}
+	return out
+}
+
+// myersOps returns the shortest edit script between a and b as unified
+// diff lines, or false when it needs more than maxEdits edits.
+func myersOps(a []string, b []string, maxEdits int) ([]string, bool) {
+	n, m := len(a), len(b)
+	bound := n + m
+	if bound == 0 {
+		return nil, true
+	}
+	offset := bound + 1
+	v := make([]int32, 2*bound+3)
+	var trace [][]int32
+
+	found := false
+	for d := 0; d <= bound && d <= maxEdits && !found; d++ {
+		snapshot := make([]int32, 2*d+3)
+		copy(snapshot, v[offset-d-1:offset+d+2])
+		trace = append(trace, snapshot)
+		for k := -d; k <= d; k += 2 {
+			var x int32
+			if k == -d || (k != d && v[offset+k-1] < v[offset+k+1]) {
+				x = v[offset+k+1]
+			} else {
+				x = v[offset+k-1] + 1
+			}
+			y := x - int32(k)
+			for int(x) < n && int(y) < m && a[x] == b[y] {
+				x++
+				y++
+			}
+			v[offset+k] = x
+			if int(x) >= n && int(y) >= m {
+				found = true
+				break
+			}
+		}
+	}
+	if !found {
+		return nil, false
+	}
+
+	var ops []string
+	x, y := n, m
+	for d := len(trace) - 1; d >= 0; d-- {
+		at := func(k int) int { return int(trace[d][k+d+1]) }
+		k := x - y
+		var prevK int
+		if k == -d || (k != d && at(k-1) < at(k+1)) {
+			prevK = k + 1
+		} else {
+			prevK = k - 1
+		}
+		prevX := at(prevK)
+		prevY := prevX - prevK
+		for x > prevX && y > prevY {
+			ops = append(ops, " "+a[x-1])
+			x--
+			y--
+		}
+		if d > 0 {
+			if x == prevX {
+				ops = append(ops, "+"+b[y-1])
+				y--
+			} else {
+				ops = append(ops, "-"+a[x-1])
+				x--
+			}
+		}
+	}
+	for i, j := 0, len(ops)-1; i < j; i, j = i+1, j-1 {
+		ops[i], ops[j] = ops[j], ops[i]
+	}
+	return ops, true
 }
 
 func TestValidate(t *testing.T) {
@@ -132,38 +541,44 @@ func TestValidate(t *testing.T) {
 	})
 
 	t.Run("guide-case", func(t *testing.T) {
+		metrics := &goldenMetrics{}
 		for _, c := range selectedCases() {
 			c := c
 			t.Run(fullName(c), func(t *testing.T) {
-				result := runCase(t, c, map[string]any{
+				run := runCase(t, c, map[string]any{
 					"parse":        true,
 					"guide":        true,
 					"transformers": false,
 					"builders":     false,
 					"generate":     false,
 				})
-				if result.Guide == nil {
+				if run.Result.Guide == nil {
 					t.Fatal("no guide in result")
 				}
-				entities, _ := result.Guide["entity"].(map[string]any)
+				compareGuides(t, run, metrics)
+				entities, _ := run.Result.Guide["entity"].(map[string]any)
 				t.Logf("%s: guide OK, %d entities", fullName(c), len(entities))
 			})
 		}
+		t.Logf("goldens compared=%d skipped=%d todos=%d",
+			metrics.Compared, metrics.Skipped, metrics.Todo)
 	})
 
 	t.Run("model-case", func(t *testing.T) {
+		metrics := &goldenMetrics{}
 		stepFields := map[string]bool{}
 		caseCount := 0
 		for _, c := range selectedCases() {
 			c := c
 			t.Run(fullName(c), func(t *testing.T) {
-				result := runCase(t, c, map[string]any{
+				run := runCase(t, c, map[string]any{
 					"parse":        true,
 					"guide":        true,
 					"transformers": true,
 					"builders":     true,
 					"generate":     true,
 				})
+				result := run.Result
 				caseCount++
 				main, ok := result.ApiModel["main"].(map[string]any)
 				if !ok {
@@ -304,6 +719,9 @@ func TestValidate(t *testing.T) {
 					}
 				}
 
+				compareGuides(t, run, metrics)
+				compareModels(t, run, entities, metrics)
+
 				t.Logf("%s: model OK, %d entities, steps=%v",
 					fullName(c), len(entities), result.Steps)
 			})
@@ -315,5 +733,9 @@ func TestValidate(t *testing.T) {
 				}
 			}
 		}
+		t.Logf("goldens compared=%d skipped=%d todos=%d",
+			metrics.Compared, metrics.Skipped, metrics.Todo)
 	})
+
+	checkStaleSkips(t)
 }

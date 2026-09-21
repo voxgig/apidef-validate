@@ -59,8 +59,8 @@ skipped and the run says so.
 
 ## Run the Go check
 
-The Go harness runs the Go apidef module over the same definitions. Install
-Go 1.25 or later, then run:
+The Go harness runs the Go apidef module over the same definitions, minus
+the GraphQL cases and `elementdemo`. Install Go 1.25 or later, then run:
 
 ```bash
 cd v1
@@ -69,21 +69,31 @@ make test
 
 The module version in `v1/go/go.mod` pins the same apidef commit as the
 TypeScript harness. Go downloads it without a local workspace. The harness
-checks that each case builds and produces a guide and a model, that fields
-are maps keyed by `n`, and that their human titles match their names. It
-logs the entity counts. It does not diff against the goldens, so the parity
-this repository checks is that both implementations accept the corpus, not
-that they emit the same bytes. `TEST_CASE` selects cases here too, and
-`make update-apidef` moves the pin to the latest published module.
+diffs the base guide and the entity models the Go module writes, and the
+final guide it returns, against the goldens, and a mismatch fails the test
+with a line diff. It also checks that fields are maps keyed by `n` and that
+their human titles match their names. The Go module writes no `# why`
+annotations, so the trailing comments of the golden are dropped before the
+base guide comparison.
+
+The Go port does not yet reproduce every golden. The list at the top of
+`v1/go/validate_test.go` names each golden it is known to miss, with the
+reason. A listed golden is still compared and logged, but a mismatch does
+not fail the run; a listed golden that passes fails the run instead, so the
+list only shrinks. `TEST_CASE` selects cases here too, `TEST_OUT` names a
+directory that keeps the generated files, and `make update-apidef` moves
+the pin to the latest published module.
 
 ## Goldens
 
 Every TypeScript run writes a `.gen.aontu` twin beside each golden it
 compares, so the generated output is always on disk next to what was
-expected; the Go check writes nothing, since it does not compare. A golden that does not
-exist yet is created from the run's output, which is how a new case pins
-itself on its first run. A golden line carrying a `##` comment marks a known
-gap: it is dropped before the comparison and counted as an open TODO.
+expected. The Go check writes nothing into the repository: its output goes
+to a temporary directory unless `TEST_OUT` keeps it. A golden that does not
+exist yet is created by the TypeScript run from its output, which is how a
+new case pins itself on its first run; the Go check reports it as missing.
+A golden line carrying a `##` comment marks a known gap: it is dropped
+before the comparison and counted as an open TODO.
 
 When apidef changes on purpose, move the commit pin in `v1/apidef-source.json`
 and run `go get github.com/voxgig/apidef/go@<commit>` from `v1/go` with the same
