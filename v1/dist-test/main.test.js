@@ -136,6 +136,12 @@ if (0 < caseSelector.length) {
                 }
             }
             for (const entity of Object.values(result.apimodel.main.kit.entity)) {
+                for (const chain of entity.relations?.ancestors ?? []) {
+                    for (const ancestor of chain) {
+                        node_assert_1.default.notEqual(ancestor, entity.name, fullname(c) + ': self ancestor');
+                        node_assert_1.default.ok(Object.prototype.hasOwnProperty.call(result.apimodel.main.kit.entity, ancestor), fullname(c) + ': missing ancestor entity ' + ancestor);
+                    }
+                }
                 for (const operation of Object.values(entity.op ?? {})) {
                     for (const point of operation.points ?? []) {
                         node_assert_1.default.equal(typeof point.m, 'string');
