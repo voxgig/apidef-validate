@@ -54,7 +54,7 @@ function isGraphql(c) {
 const GRAPHQL_CAPABLE = (0, capability_1.graphqlCapable)();
 const TOP_FOLDER = node_path_1.default.join(__dirname, '..');
 const UPDATE_SNAPSHOTS = process.env.UPDATE_SNAPSHOTS === '1';
-let cases = [
+const allCases = [
     { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
     { name: 'petstore', version: '1.0.7', spec: 'swagger-2.0', format: 'json' },
     { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
@@ -89,6 +89,7 @@ let cases = [
         endpoint: 'https://example.myshopify.com/api/2026-04/graphql.json',
     },
 ];
+let cases = allCases;
 if (!GRAPHQL_CAPABLE) {
     const skipped = cases.filter(isGraphql).map(c => c.name);
     if (0 < skipped.length) {
@@ -104,6 +105,11 @@ if (0 < caseSelector.length) {
 (0, node_test_1.describe)('main', () => {
     (0, node_test_1.test)('happy', async () => {
         node_assert_1.default.equal((0, __2.main)(), 'main');
+    });
+    (0, node_test_1.test)('def-layout', async () => {
+        const definitions = new Set(allCases.map(c => fullname(c) + '.' + c.format));
+        const strays = Fs.readdirSync(node_path_1.default.join(TOP_FOLDER, '..', 'def')).filter(file => !definitions.has(file.replace(/\.full\.json$/, '')) && 'potentials.txt' !== file);
+        node_assert_1.default.deepEqual(strays, [], 'def/ holds only definitions and their full.json twins');
     });
     (0, node_test_1.test)('compact-model-attributes', async () => {
         const selected = cases.filter(c => ['solar', 'petstore', 'taxonomy', 'foo', 'linear', 'shopifystorefront'].includes(c.name));
