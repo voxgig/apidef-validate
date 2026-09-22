@@ -1,5 +1,7 @@
 const fs = require('fs');
-const source = fs.readFileSync('/Users/richard/Projects/voxgig/apidef-validate/def/learnworlds-2-openapi-3.1.0.yaml','utf8');
+const Path = require('node:path');
+const source = fs.readFileSync(
+  Path.resolve(__dirname, '../../def/learnworlds-2-openapi-3.1.0.yaml'), 'utf8');
 
 let substringStats = {};
 const origSubstring = String.prototype.substring;

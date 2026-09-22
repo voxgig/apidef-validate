@@ -47,8 +47,8 @@ wrap(util, 'decircular');
 
 const Path = require('node:path');
 const { ApiDef } = require('@voxgig/apidef');
-const { makefs } = require('/Users/richard/Projects/voxgig/apidef-validate');
-const TOP_FOLDER = Path.join('/Users/richard/Projects/voxgig/apidef-validate/v1');
+const { makefs } = require('../..');
+const TOP_FOLDER = Path.resolve(__dirname, '..');
 
 async function run(caseName, version, spec, format) {
   const fullname = `${caseName}-${version}-${spec}`;
