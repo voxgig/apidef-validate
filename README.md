@@ -60,7 +60,10 @@ skipped and the run says so.
 ## Run the Go check
 
 The Go harness runs the Go apidef module over the same definitions, minus
-the GraphQL cases and `elementdemo`. Install Go 1.25 or later, then run:
+the GraphQL cases and `elementdemo`: the Go port does not apply the
+auth-exchange deactivation that case exists to pin, so it reads
+`/auth/token` as an active entity and writes a fifth entity model the corpus
+has no golden for. Install Go 1.25 or later, then run:
 
 ```bash
 cd v1
