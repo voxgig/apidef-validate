@@ -85,8 +85,10 @@ entry to its number in both directions, so a golden the port has started to
 reproduce fails the run while its siblings still differ, and so does a
 golden that starts failing under a glob already listed. The number counts
 distinct paths rather than comparisons, because both phases compare the
-guides. A run narrowed by `TEST_CASE`, or to one of the two phases, compares
-part of the corpus only, so there a rise in a count is what fails.
+guides. A complete run also fails an entry whose glob matches no golden at
+all, which is what a typo in a glob looks like. A run narrowed by
+`TEST_CASE`, or to one of the two phases, compares part of the corpus only,
+so there a rise in a count is what fails.
 
 A skipped mismatch is logged with its reason, the number of differing lines,
 and the first golden line that differs, so the size and the place of a gap

@@ -406,15 +406,19 @@ func compareModels(t *testing.T, run *caseRun, entities map[string]any, metrics 
 	}
 }
 
-// checkStaleSkips holds every entry to its declared count. Only a complete
-// run can hold it exactly: a narrower one covers a subset of the goldens, so
-// a count there can fall for reasons that are not progress, and a rise is
-// the only finding left.
+// checkStaleSkips holds every entry to its declared count, and to matching
+// something. Only a complete run can do either: a narrower one covers a
+// subset of the goldens, so a count there can fall for reasons that are not
+// progress, and a rise is the only finding left.
 func checkStaleSkips(t *testing.T) {
 	t.Helper()
 	whole := "" == os.Getenv("TEST_CASE") && ranGuideCase && ranModelCase
 	for _, skip := range goldenSkips {
-		if !whole && 0 == len(skip.matched) {
+		if 0 == len(skip.matched) {
+			if whole {
+				t.Errorf("skip %q matched no golden: fix the glob or drop the entry",
+					skip.Glob)
+			}
 			continue
 		}
 		differ := len(skip.mismatched)
