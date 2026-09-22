@@ -397,6 +397,7 @@ func compareModels(t *testing.T, run *caseRun, entities map[string]any, metrics 
 		}
 		rel := filepath.Join(modelDir, file)
 		if skip := findSkip(rel); skip != nil {
+			metrics.Skipped++
 			skip.note(rel)
 			skip.noteDiffers(rel)
 			t.Logf("SKIP %s: no generated entity (%s)", rel, skip.Reason)
