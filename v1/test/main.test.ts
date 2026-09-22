@@ -53,6 +53,7 @@ const GRAPHQL_CAPABLE = graphqlCapable()
 
 
 const TOP_FOLDER = Path.join(__dirname, '..')
+const DEF_FOLDER = Path.join(TOP_FOLDER, '..', 'def')
 const UPDATE_SNAPSHOTS = process.env.UPDATE_SNAPSHOTS === '1'
 
 
@@ -338,6 +339,13 @@ function prepfs(cases: Case[]) {
   }
 
   const ufs = makefs(vol)
+
+  // apidef's debug mode writes <def>.full.json beside the definition it read.
+  // The union filesystem takes a write wherever the parent directory exists,
+  // so def/ is created in the sandbox and the diagnostic file lands there
+  // rather than in the repository.
+  ufs.vol.mkdirSync(DEF_FOLDER, { recursive: true })
+
   return ufs
 }
 
