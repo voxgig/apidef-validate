@@ -35,9 +35,9 @@ npm test
 
 The apidef version is pinned exactly in `v1/package.json`, and `npm ci`
 installs the published package from the registry. That is the point: this
-harness checks the artifact a consumer installs, so the tarball's own
-contents and its declared dependency ranges are part of what is under test.
-A harness that built apidef from source could not see a packaging fault or a
+harness checks the artifact a consumer installs, so what that package contains
+and the dependency ranges it declares are both part of what is under test. A
+harness that built apidef from source could see neither a packaging fault nor a
 peer range admitting a broken dependency, and for a time this one could not.
 `npm` access is needed; no sibling checkout and no GitHub access are.
 
@@ -120,12 +120,12 @@ A golden line carrying a `##` comment marks a known gap: it is dropped
 before the comparison and counted as an open TODO.
 
 When apidef changes on purpose, move the version pin in `v1/package.json` to
-the release that carries the change, reinstall so the lockfile follows, and run
-`go get github.com/voxgig/apidef/go@v<version>` from `v1/go`. A release that
-leaves `go/` untouched publishes no module version, and the module pin then
-stays where it is. To try an unreleased apidef, link a checkout into
-`v1/node_modules` locally and do not commit the result: the committed pin names
-a published version, always. Run the suite, read the diff, and
+the release that carries the change, reinstall so `package-lock.json` follows,
+and run `go get github.com/voxgig/apidef/go@v<version>` from `v1/go`. A release
+that leaves `go/` untouched publishes no module version, and the module pin
+then stays where it is. To test a version apidef has not published yet, link a
+checkout into `v1/node_modules` locally and do not commit the result: the
+committed pin names a published version, always. Run the suite, read the diff, and
 replace the golden with its `.gen.aontu` twin. A
 stale golden does not announce itself, so record why a refresh happened in
 the commit message.
