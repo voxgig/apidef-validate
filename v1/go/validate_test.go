@@ -258,11 +258,6 @@ type goldenMetrics struct {
 
 var todoLineRE = regexp.MustCompile(`[^\n#]*##[^\n]*\n`)
 
-// A `##` comment marks a known gap, counted rather than dropped, so the why
-// pattern stops short of a second `#`: it runs before todoLineRE, and a `##`
-// it swallowed would leave the line to mismatch instead.
-var whyCommentRE = regexp.MustCompile(`(?m)\s+#([^#\n][^\n]*)?$`)
-
 // compareGolden fails the test with a line diff when the generated text
 // differs from the golden at rel (relative to v1/), unless a goldenSkip
 // covers it. A golden line with a `##` comment marks a known gap: it is
@@ -317,7 +312,43 @@ func compareGolden(t *testing.T, base string, rel string, found string, metrics 
 // The Go port writes no `# why` annotations, so the golden's trailing
 // comments are dropped before the base guide comparison.
 func dropWhyComments(guide string) string {
-	return whyCommentRE.ReplaceAllString(guide, "")
+	lines := strings.Split(guide, "\n")
+	for i, line := range lines {
+		lines[i] = dropWhyComment(line)
+	}
+	return strings.Join(lines, "\n")
+}
+
+// dropWhyComment drops the annotation from one line, and the line is the
+// limit: a run of whitespace reaching back over a newline would take the
+// blank lines before a comment-only line with it. A `#` inside a quoted
+// value is content, a `##` marks a known gap, and a line that is only a
+// comment stays, the guide header among them.
+func dropWhyComment(line string) string {
+	quoted := false
+	for i := 0; i < len(line); i++ {
+		switch line[i] {
+		case '\\':
+			if quoted {
+				i++
+			}
+		case '"':
+			quoted = !quoted
+		case '#':
+			if quoted {
+				continue
+			}
+			if i+1 < len(line) && '#' == line[i+1] {
+				return line
+			}
+			head := strings.TrimRight(line[:i], " \t")
+			if "" == head || len(head) == i {
+				return line
+			}
+			return head
+		}
+	}
+	return line
 }
 
 // compareGuides checks the base guide apidef wrote and the final guide it
@@ -788,5 +819,24 @@ func TestWhyCommentsSpareTodos(t *testing.T) {
 	}
 	if todos := todoLineRE.FindAllString(clean, -1); 1 != len(todos) {
 		t.Errorf("TODO line is not countable after normalization: %q", todos)
+	}
+}
+
+func TestWhyCommentsSpareLinesAndQuotes(t *testing.T) {
+	guide := "guide: {\n" +
+		"\n" +
+		"  # Deactivated by the heuristic (auth-exchange).\n" +
+		"  active: *false\n" +
+		"  path: \"/api/v4/tag #1\"  # ent=tag\n" +
+		"}\n"
+	clean := dropWhyComments(guide)
+	if !strings.Contains(clean, "{\n\n  # Deactivated") {
+		t.Errorf("comment-only line took the blank line with it: %q", clean)
+	}
+	if !strings.Contains(clean, "path: \"/api/v4/tag #1\"") {
+		t.Errorf("hash inside a quoted value dropped: %q", clean)
+	}
+	if strings.Contains(clean, "ent=tag") {
+		t.Errorf("why comment kept: %q", clean)
 	}
 }
