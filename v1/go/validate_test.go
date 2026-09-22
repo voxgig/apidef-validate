@@ -45,62 +45,78 @@ var allCases = []Case{
 }
 
 // A golden the Go port is known not to reproduce: a path glob relative to
-// v1/, and why. A matching golden is still compared and reported, but a
-// mismatch does not fail the run. A glob whose matching goldens all pass is
-// stale and does fail it, so the list shrinks as the port catches up.
+// v1/, how many DISTINCT goldens under it differ, and why. A matching golden
+// is compared and reported but does not fail the run; Expect is the ratchet,
+// checked in both directions, so a golden the port has caught up on cannot
+// hide behind the siblings its glob also covers.
 type goldenSkip struct {
 	Glob   string
+	Expect int
 	Reason string
 
-	compared   int
-	mismatched int
+	matched    map[string]bool
+	mismatched map[string]bool
+}
+
+func (skip *goldenSkip) note(rel string) {
+	if nil == skip.matched {
+		skip.matched = map[string]bool{}
+	}
+	skip.matched[rel] = true
+}
+
+func (skip *goldenSkip) noteDiffers(rel string) {
+	if nil == skip.mismatched {
+		skip.mismatched = map[string]bool{}
+	}
+	skip.mismatched[rel] = true
 }
 
 const emptyFieldsGap = "an empty fields block sits before name instead of after op"
 const ancestorGap = "ancestor relations are missing"
 
 var goldenSkips = []*goldenSkip{
-	{Glob: "guide/*-final-guide.aontu", Reason: "the Go guide keeps control, orig, " +
+	{Glob: "guide/*-final-guide.aontu", Expect: 14, Reason: "the Go guide keeps control, orig, " +
 		"tag, why_* and empty action and rename containers that the TypeScript " +
 		"guide, re-read from its aontu source, does not"},
 
-	{Glob: "guide/cloudsmith-*-base-guide.aontu", Reason: "Go finds 75 of the 131 entities"},
-	{Glob: "guide/codatplatform-*-base-guide.aontu", Reason: "Go finds 22 of the 30 entities"},
-	{Glob: "guide/contentfulcma-*-base-guide.aontu", Reason: "Go gives /organizations " +
+	{Glob: "guide/cloudsmith-*-base-guide.aontu", Expect: 1, Reason: "Go finds 75 of the 131 entities"},
+	{Glob: "guide/codatplatform-*-base-guide.aontu", Expect: 1, Reason: "Go finds 22 of the 30 entities"},
+	{Glob: "guide/contentfulcma-*-base-guide.aontu", Expect: 1, Reason: "Go gives /organizations " +
 		"to organization instead of app_definition"},
-	{Glob: "guide/github-*-base-guide.aontu", Reason: "Go moves /gists to base_gist, " +
+	{Glob: "guide/github-*-base-guide.aontu", Expect: 1, Reason: "Go moves /gists to base_gist, " +
 		"/organizations to organization, and /classrooms and PATCH /user elsewhere"},
-	{Glob: "guide/gitlab-*-base-guide.aontu", Reason: "Go names custom_attribute, " +
+	{Glob: "guide/gitlab-*-base-guide.aontu", Expect: 1, Reason: "Go names custom_attribute, " +
 		"participant, starrer and user where TypeScript has " +
 		"api_entities_custom_attribute and api_entities_user_basic"},
-	{Glob: "guide/learnworlds-*-base-guide.aontu", Reason: "Go finds 29 of the 42 entities"},
-	{Glob: "guide/shortcut-*-base-guide.aontu", Reason: "Go gives the epic comment " +
+	{Glob: "guide/learnworlds-*-base-guide.aontu", Expect: 1, Reason: "Go finds 29 of the 42 entities"},
+	{Glob: "guide/shortcut-*-base-guide.aontu", Expect: 1, Reason: "Go gives the epic comment " +
 		"paths to comment instead of threaded_comment"},
-	{Glob: "guide/taxonomy-*-base-guide.aontu", Reason: "Go finds no paginated_taxa " +
+	{Glob: "guide/taxonomy-*-base-guide.aontu", Expect: 1, Reason: "Go finds no paginated_taxa " +
 		"and gives its list operations to domain and kingdom"},
 
-	{Glob: "model/cloudsmith-*/*", Reason: "56 entities are not found; " + ancestorGap +
+	{Glob: "model/cloudsmith-*/*", Expect: 119, Reason: "56 entities are not found; " + ancestorGap +
 		", and " + emptyFieldsGap},
-	{Glob: "model/codatplatform-*/*", Reason: "8 entities are not found; " + ancestorGap +
+	{Glob: "model/codatplatform-*/*", Expect: 23, Reason: "8 entities are not found; " + ancestorGap +
 		", and " + emptyFieldsGap},
-	{Glob: "model/contentfulcma-*/*", Reason: ancestorGap + ", and " + emptyFieldsGap},
-	{Glob: "model/foo-*/*-bar.aontu", Reason: emptyFieldsGap},
-	{Glob: "model/foo-*/*-qaz.aontu", Reason: emptyFieldsGap},
-	{Glob: "model/foo-*/*-yike.aontu", Reason: emptyFieldsGap},
-	{Glob: "model/github-*/*", Reason: ancestorGap + " along with union metadata " +
+	{Glob: "model/contentfulcma-*/*", Expect: 34, Reason: ancestorGap + ", and " + emptyFieldsGap},
+	{Glob: "model/foo-*/*-bar.aontu", Expect: 1, Reason: emptyFieldsGap},
+	{Glob: "model/foo-*/*-qaz.aontu", Expect: 1, Reason: emptyFieldsGap},
+	{Glob: "model/foo-*/*-yike.aontu", Expect: 1, Reason: emptyFieldsGap},
+	{Glob: "model/github-*/*", Expect: 240, Reason: ancestorGap + " along with union metadata " +
 		"and some fields, and " + emptyFieldsGap},
-	{Glob: "model/gitlab-*/*", Reason: "the entity set differs; " + ancestorGap +
+	{Glob: "model/gitlab-*/*", Expect: 232, Reason: "the entity set differs; " + ancestorGap +
 		", and " + emptyFieldsGap},
-	{Glob: "model/learnworlds-*/*", Reason: "13 entities are not found, and " + ancestorGap},
-	{Glob: "model/petstore-*/*-store.aontu", Reason: emptyFieldsGap},
-	{Glob: "model/shortcut-*/*", Reason: ancestorGap + " along with union metadata, " +
+	{Glob: "model/learnworlds-*/*", Expect: 24, Reason: "13 entities are not found, and " + ancestorGap},
+	{Glob: "model/petstore-*/*-store.aontu", Expect: 1, Reason: emptyFieldsGap},
+	{Glob: "model/shortcut-*/*", Expect: 15, Reason: ancestorGap + " along with union metadata, " +
 		"the epic comment paths move to comment, and " + emptyFieldsGap},
-	{Glob: "model/statuspage-*/*", Reason: ancestorGap},
-	{Glob: "model/taxonomy-*/*-domain.aontu", Reason: "carries the list operation " +
+	{Glob: "model/statuspage-*/*", Expect: 14, Reason: ancestorGap},
+	{Glob: "model/taxonomy-*/*-domain.aontu", Expect: 1, Reason: "carries the list operation " +
 		"of the missing paginated_taxa"},
-	{Glob: "model/taxonomy-*/*-kingdom.aontu", Reason: "carries the list operation " +
+	{Glob: "model/taxonomy-*/*-kingdom.aontu", Expect: 1, Reason: "carries the list operation " +
 		"of the missing paginated_taxa"},
-	{Glob: "model/taxonomy-*/*-paginated_taxa.aontu", Reason: "the entity is not found"},
+	{Glob: "model/taxonomy-*/*-paginated_taxa.aontu", Expect: 1, Reason: "the entity is not found"},
 }
 
 func findSkip(rel string) *goldenSkip {
@@ -252,7 +268,7 @@ func compareGolden(t *testing.T, base string, rel string, found string, metrics 
 	skip := findSkip(rel)
 	if skip != nil {
 		metrics.Skipped++
-		skip.compared++
+		skip.note(rel)
 	} else {
 		metrics.Compared++
 	}
@@ -260,7 +276,7 @@ func compareGolden(t *testing.T, base string, rel string, found string, metrics 
 	raw, err := os.ReadFile(filepath.Join(base, rel))
 	if err != nil {
 		if skip != nil {
-			skip.mismatched++
+			skip.noteDiffers(rel)
 			t.Logf("SKIP %s: no golden (%s)", rel, skip.Reason)
 			return
 		}
@@ -287,7 +303,7 @@ func compareGolden(t *testing.T, base string, rel string, found string, metrics 
 	}
 
 	if skip != nil {
-		skip.mismatched++
+		skip.noteDiffers(rel)
 		t.Logf("SKIP %s: %s", rel, skip.Reason)
 		return
 	}
@@ -345,8 +361,8 @@ func compareModels(t *testing.T, run *caseRun, entities map[string]any, metrics 
 		}
 		rel := filepath.Join(modelDir, file)
 		if skip := findSkip(rel); skip != nil {
-			skip.compared++
-			skip.mismatched++
+			skip.note(rel)
+			skip.noteDiffers(rel)
 			t.Logf("SKIP %s: no generated entity (%s)", rel, skip.Reason)
 			continue
 		}
@@ -354,11 +370,21 @@ func compareModels(t *testing.T, run *caseRun, entities map[string]any, metrics 
 	}
 }
 
+// checkStaleSkips holds every entry to its declared count. Only a complete
+// run can hold it exactly: a narrower one covers a subset of the goldens, so
+// a count there can fall for reasons that are not progress, and a rise is
+// the only finding left.
 func checkStaleSkips(t *testing.T) {
 	t.Helper()
+	whole := "" == os.Getenv("TEST_CASE") && ranGuideCase && ranModelCase
 	for _, skip := range goldenSkips {
-		if skip.compared > 0 && skip.mismatched == 0 {
-			t.Errorf("stale skip %q: every matching golden passes, remove it", skip.Glob)
+		if !whole && 0 == len(skip.matched) {
+			continue
+		}
+		differ := len(skip.mismatched)
+		if differ > skip.Expect || (whole && differ != skip.Expect) {
+			t.Errorf("skip %q expects %d differing goldens, found %d: recount the entry",
+				skip.Glob, skip.Expect, differ)
 		}
 	}
 }
@@ -532,6 +558,8 @@ func myersOps(a []string, b []string, maxEdits int) ([]string, bool) {
 	return ops, true
 }
 
+var ranGuideCase, ranModelCase bool
+
 func TestValidate(t *testing.T) {
 	t.Run("happy", func(t *testing.T) {
 		if apidef.VERSION == "" {
@@ -541,6 +569,7 @@ func TestValidate(t *testing.T) {
 	})
 
 	t.Run("guide-case", func(t *testing.T) {
+		ranGuideCase = true
 		metrics := &goldenMetrics{}
 		for _, c := range selectedCases() {
 			c := c
@@ -565,6 +594,7 @@ func TestValidate(t *testing.T) {
 	})
 
 	t.Run("model-case", func(t *testing.T) {
+		ranModelCase = true
 		metrics := &goldenMetrics{}
 		stepFields := map[string]bool{}
 		caseCount := 0

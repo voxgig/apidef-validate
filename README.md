@@ -77,12 +77,20 @@ annotations, so the trailing comments of the golden are dropped before the
 base guide comparison.
 
 The Go port does not yet reproduce every golden. The list at the top of
-`v1/go/validate_test.go` names each golden it is known to miss, with the
-reason. A listed golden is still compared and logged, but a mismatch does
-not fail the run; a listed golden that passes fails the run instead, so the
-list only shrinks. `TEST_CASE` selects cases here too, `TEST_OUT` names a
-directory that keeps the generated files, and `make update-apidef` moves
-the pin to the latest published module.
+`v1/go/validate_test.go` holds one entry per known gap: a path glob, the
+reason, and the number of distinct goldens under that glob the port is
+expected to miss. A matching golden is still compared and logged, and a
+mismatch does not fail the run; the count does. A complete run holds every
+entry to its number in both directions, so a golden the port has started to
+reproduce fails the run while its siblings still differ, and so does a
+golden that starts failing under a glob already listed. The number counts
+distinct paths rather than comparisons, because both phases compare the
+guides. A run narrowed by `TEST_CASE`, or to one of the two phases, compares
+part of the corpus only, so there a rise in a count is what fails.
+
+`TEST_CASE` selects cases here too, `TEST_OUT` names a directory that keeps
+the generated files, and `make update-apidef` moves the pin to the latest
+published module.
 
 ## Goldens
 
