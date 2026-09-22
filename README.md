@@ -33,13 +33,13 @@ npm ci && npm run build
 npm test
 ```
 
-The apidef revision is pinned in `v1/apidef-source.json`. Installation checks
-out that commit under `v1/node_modules/.apidef-source`, installs its locked
-dependencies, builds the TypeScript package, and links it into the harness.
-The build and test commands also prepare this dependency, so they work when
-installation scripts are disabled. GitHub and `npm` access is needed for the
-first build; later runs reuse the prepared checkout. No sibling checkout is
-needed.
+The apidef version is pinned exactly in `v1/package.json`, and `npm ci`
+installs the published package from the registry. That is the point: this
+harness checks the artifact a consumer installs, so what that package contains
+and the dependency ranges it declares are both part of what is under test. A
+harness that built apidef from source could see neither a packaging fault nor a
+peer range admitting a broken dependency, and for a time this one could not.
+`npm` access is needed; no sibling checkout and no GitHub access are.
 
 The suite runs every case twice: `guide-case` stops the
 apidef pipeline after guide generation and compares the base and final
@@ -71,9 +71,8 @@ make test
 ```
 
 The module version in `v1/go/go.mod` pins the Go port, which is released on
-its own cadence: it names the same apidef commit as `v1/apidef-source.json`
-when a release carried both, and an earlier one after a release that carried
-the `npm` package only. Go downloads it without a local workspace. The
+its own cadence, so it names an earlier version than `v1/package.json` after
+a release that carried the `npm` package only. Go downloads it without a local workspace. The
 harness diffs the base guide and the entity models the Go module writes, and
 the final guide it returns, against the goldens, and a mismatch fails the
 test with a line diff. It also checks that fields are maps keyed by `n` and that
@@ -120,10 +119,13 @@ new case pins itself on its first run; the Go check reports it as missing.
 A golden line carrying a `##` comment marks a known gap: it is dropped
 before the comparison and counted as an open TODO.
 
-When apidef changes on purpose, move the commit pin in `v1/apidef-source.json`
-and run `go get github.com/voxgig/apidef/go@<commit>` from `v1/go` with the same
-commit. A release that leaves `go/` untouched publishes no module version, and
-the module pin then stays where it is. Run the suite, read the diff, and
+When apidef changes on purpose, move the version pin in `v1/package.json` to
+the release that carries the change, reinstall so `package-lock.json` follows,
+and run `go get github.com/voxgig/apidef/go@v<version>` from `v1/go`. A release
+that leaves `go/` untouched publishes no module version, and the module pin
+then stays where it is. To test a version apidef has not published yet, link a
+checkout into `v1/node_modules` locally and do not commit the result: the
+committed pin names a published version, always. Run the suite, read the diff, and
 replace the golden with its `.gen.aontu` twin. A
 stale golden does not announce itself, so record why a refresh happened in
 the commit message.

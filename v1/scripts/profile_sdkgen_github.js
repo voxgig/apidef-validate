@@ -7,7 +7,13 @@
 const Path = require('node:path')
 const Fs = require('node:fs')
 
-const SDK_DIR = Path.resolve(process.env.HOME, 'Projects/voxgig-sdk/github-sdk/.sdk')
+// The SDK project to profile lives outside this repository, so there is no
+// in-tree answer: name it, rather than guessing at one checkout layout.
+const SDK_DIR = process.env.SDKGEN_SDK_DIR
+if (!SDK_DIR) {
+  console.error('Set SDKGEN_SDK_DIR to an SDK project .sdk directory')
+  process.exit(1)
+}
 
 // Write our own log so the piped tail doesn't buffer everything.
 const LOG_FILE = '/tmp/sdkgen_profile.log'
