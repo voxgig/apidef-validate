@@ -263,14 +263,14 @@ if (0 < caseSelector.length) {
     });
 });
 function readModelSource(volJSON, dir, stem) {
-    for (const ext of ['aon', 'aontu']) {
+    for (const ext of ['aontu', 'aon']) {
         const src = volJSON[`${dir}/${stem}.${ext}`];
         if (null != src) {
             return String(src).trim();
         }
     }
     throw new Error(`apidef wrote no model source for ${dir}/${stem}: ` +
-        `tried .aon and .aontu; found: ` +
+        `tried .aontu and .aon; found: ` +
         Object.keys(volJSON).filter((k) => k.startsWith(dir + '/')).join(', '));
 }
 function fullname(c) {

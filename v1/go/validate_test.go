@@ -131,8 +131,11 @@ func findSkip(rel string) *goldenSkip {
 	return nil
 }
 
+// The goldens here; what apidef writes. `.aontu` is the only extension now, so
+// the two agree -- readGenerated still accepts the pre-rename name.
 const goldenExt = ".aontu"
-const generatedExt = ".aon"
+const generatedExt = ".aontu"
+const legacyGeneratedExt = ".aon"
 
 func fullName(c Case) string {
 	return c.Name + "-" + c.Version + "-" + c.Spec
@@ -247,6 +250,10 @@ func copyGuideOverlay(t *testing.T, base string, out string, cn string) {
 func readGenerated(t *testing.T, path string) string {
 	t.Helper()
 	src, err := os.ReadFile(path)
+	if err != nil && strings.HasSuffix(path, generatedExt) {
+		legacy := strings.TrimSuffix(path, generatedExt) + legacyGeneratedExt
+		src, err = os.ReadFile(legacy)
+	}
 	if err != nil {
 		t.Fatalf("apidef wrote no %s: %v", filepath.Base(path), err)
 	}

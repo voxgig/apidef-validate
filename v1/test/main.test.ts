@@ -311,13 +311,13 @@ describe('main', () => {
 
 
 function readModelSource(volJSON: any, dir: string, stem: string): string {
-  for (const ext of ['aon', 'aontu']) {
+  for (const ext of ['aontu', 'aon']) {
     const src = volJSON[`${dir}/${stem}.${ext}`]
     if (null != src) { return String(src).trim() }
   }
   throw new Error(
     `apidef wrote no model source for ${dir}/${stem}: ` +
-    `tried .aon and .aontu; found: ` +
+    `tried .aontu and .aon; found: ` +
     Object.keys(volJSON).filter((k: string) => k.startsWith(dir + '/')).join(', ')
   )
 }
