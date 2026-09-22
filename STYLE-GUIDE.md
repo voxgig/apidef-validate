@@ -111,7 +111,7 @@ The banned set, by name:
 | Document | What it is |
 |---|---|
 | `v1/GOLDEN-NOTES.md` | the record of why goldens were refreshed, and what each unexplained mismatch turned out to be |
-| `AGENTS.md`, `CLAUDE.md` | instructions to contributors and agents; not present here, and guarded so they stay uncitable when they arrive |
+| `AGENTS.md`, `CLAUDE.md` | instructions to contributors and agents; one file under two names, since `CLAUDE.md` is a symlink to `AGENTS.md` |
 | any `*_PLAN.md` or `*_REVIEW.md`, and `BUILD_LOG.md` | the shapes this project has not needed yet, guarded in advance |
 
 The ban covers the name as much as the link. "The reasoning is in
