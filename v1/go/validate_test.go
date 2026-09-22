@@ -257,7 +257,11 @@ type goldenMetrics struct {
 }
 
 var todoLineRE = regexp.MustCompile(`[^\n#]*##[^\n]*\n`)
-var whyCommentRE = regexp.MustCompile(`(?m)\s+#[^\n]*$`)
+
+// A `##` comment marks a known gap, counted rather than dropped, so the why
+// pattern stops short of a second `#`: it runs before todoLineRE, and a `##`
+// it swallowed would leave the line to mismatch instead.
+var whyCommentRE = regexp.MustCompile(`(?m)\s+#([^#\n][^\n]*)?$`)
 
 // compareGolden fails the test with a line diff when the generated text
 // differs from the golden at rel (relative to v1/), unless a goldenSkip
@@ -768,4 +772,21 @@ func TestValidate(t *testing.T) {
 	})
 
 	checkStaleSkips(t)
+}
+
+func TestWhyCommentsSpareTodos(t *testing.T) {
+	guide := "guide: {\n" +
+		"  op: load: method: *GET  # end-param\n" +
+		"  op: list: method: *GET  ## the Go port omits this\n" +
+		"}\n"
+	clean := dropWhyComments(guide)
+	if strings.Contains(clean, "end-param") {
+		t.Errorf("why comment kept: %q", clean)
+	}
+	if !strings.Contains(clean, "## the Go port omits this") {
+		t.Errorf("TODO marker dropped as a why comment: %q", clean)
+	}
+	if todos := todoLineRE.FindAllString(clean, -1); 1 != len(todos) {
+		t.Errorf("TODO line is not countable after normalization: %q", todos)
+	}
 }
