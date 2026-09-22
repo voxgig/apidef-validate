@@ -259,6 +259,27 @@ type goldenMetrics struct {
 	Todo     int
 }
 
+// Both phases compare the guides, so the per-phase totals count a guide
+// golden twice. These are the distinct paths behind them.
+var strictPaths = map[string]bool{}
+var noGoldenPaths = map[string]bool{}
+var noOutputPaths = map[string]bool{}
+
+func goldenTotals(t *testing.T) {
+	t.Helper()
+	skipped := map[string]bool{}
+	for _, skip := range goldenSkips {
+		for rel := range skip.matched {
+			if !noGoldenPaths[rel] {
+				skipped[rel] = true
+			}
+		}
+	}
+	t.Logf("distinct goldens: %d compared strictly, %d skipped, %d of those with "+
+		"no generated entity; %d generated entities have no golden",
+		len(strictPaths), len(skipped), len(noOutputPaths), len(noGoldenPaths))
+}
+
 var todoLineRE = regexp.MustCompile(`[^\n#]*##[^\n]*\n`)
 
 // compareGolden fails the test with a line diff when the generated text
@@ -273,12 +294,14 @@ func compareGolden(t *testing.T, base string, rel string, found string, metrics 
 		skip.note(rel)
 	} else {
 		metrics.Compared++
+		strictPaths[rel] = true
 	}
 
 	raw, err := os.ReadFile(filepath.Join(base, rel))
 	if err != nil {
 		if skip != nil {
 			skip.noteDiffers(rel)
+			noGoldenPaths[rel] = true
 			t.Logf("SKIP %s: no golden (%s)", rel, skip.Reason)
 			return
 		}
@@ -403,6 +426,7 @@ func compareModels(t *testing.T, run *caseRun, entities map[string]any, metrics 
 			metrics.Skipped++
 			skip.note(rel)
 			skip.noteDiffers(rel)
+			noOutputPaths[rel] = true
 			t.Logf("SKIP %s: no generated entity (%s)", rel, skip.Reason)
 			continue
 		}
@@ -846,6 +870,7 @@ func TestValidate(t *testing.T) {
 			metrics.Compared, metrics.Skipped, metrics.Todo)
 	})
 
+	goldenTotals(t)
 	checkStaleSkips(t)
 }
 

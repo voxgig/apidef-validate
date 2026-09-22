@@ -97,6 +97,12 @@ A skipped mismatch is logged with its reason, the number of differing lines,
 and the first golden line that differs, so the size and the place of a gap
 are in the log without the generated files being kept.
 
+The run ends by printing the split: how many distinct goldens it compared
+strictly, how many the skip list covered, and how many of those the Go run
+produced no entity for. Each golden is counted once there. The two per-phase
+totals count a guide golden twice, once per phase, so they are not the
+figures to add together.
+
 `TEST_CASE` selects cases here too, `TEST_OUT` names a directory that keeps
 the generated files, and `make update-apidef` moves the pin to the latest
 published module.
