@@ -60,29 +60,54 @@ skipped and the run says so.
 ## Run the Go check
 
 The Go harness runs the Go apidef module over the same definitions, minus
-the GraphQL cases and `elementdemo`. Install Go 1.25 or later, then run:
+the GraphQL cases and `elementdemo`: the Go port does not apply the
+auth-exchange deactivation that case exists to pin, so it reads
+`/auth/token` as an active entity and writes a fifth entity model the corpus
+has no golden for. Install Go 1.25 or later, then run:
 
 ```bash
 cd v1
 make test
 ```
 
-The module version in `v1/go/go.mod` pins the same apidef commit as the
-TypeScript harness. Go downloads it without a local workspace. The harness
-diffs the base guide and the entity models the Go module writes, and the
-final guide it returns, against the goldens, and a mismatch fails the test
-with a line diff. It also checks that fields are maps keyed by `n` and that
+The module version in `v1/go/go.mod` pins the Go port, which is released on
+its own cadence: it names the same apidef commit as `v1/apidef-source.json`
+when a release carried both, and an earlier one after a release that carried
+the `npm` package only. Go downloads it without a local workspace. The
+harness diffs the base guide and the entity models the Go module writes, and
+the final guide it returns, against the goldens, and a mismatch fails the
+test with a line diff. It also checks that fields are maps keyed by `n` and that
 their human titles match their names. The Go module writes no `# why`
 annotations, so the trailing comments of the golden are dropped before the
 base guide comparison.
 
 The Go port does not yet reproduce every golden. The list at the top of
-`v1/go/validate_test.go` names each golden it is known to miss, with the
-reason. A listed golden is still compared and logged, but a mismatch does
-not fail the run; a listed golden that passes fails the run instead, so the
-list only shrinks. `TEST_CASE` selects cases here too, `TEST_OUT` names a
-directory that keeps the generated files, and `make update-apidef` moves
-the pin to the latest published module.
+`v1/go/validate_test.go` holds one entry per known gap: a path glob, the
+reason, and the number of distinct goldens under that glob the port is
+expected to miss. A matching golden is still compared and logged, and a
+mismatch does not fail the run; the count does. A complete run holds every
+entry to its number in both directions, so a golden the port has started to
+reproduce fails the run while its siblings still differ, and so does a
+golden that starts failing under a glob already listed. The number counts
+distinct paths rather than comparisons, because both phases compare the
+guides. A complete run also fails an entry whose glob matches no golden at
+all, which is what a typo in a glob looks like. A run narrowed by
+`TEST_CASE`, or to one of the two phases, compares part of the corpus only,
+so there a rise in a count is what fails.
+
+A skipped mismatch is logged with its reason, the number of differing lines,
+and the first golden line that differs, so the size and the place of a gap
+are in the log without the generated files being kept.
+
+The run ends by printing the split: how many distinct goldens it compared
+strictly, how many the skip list covered, and how many of those the Go run
+produced no entity for. Each golden is counted once there. The two per-phase
+totals count a guide golden twice, once per phase, so they are not the
+figures to add together.
+
+`TEST_CASE` selects cases here too, `TEST_OUT` names a directory that keeps
+the generated files, and `make update-apidef` moves the pin to the latest
+published module.
 
 ## Goldens
 
@@ -97,8 +122,9 @@ before the comparison and counted as an open TODO.
 
 When apidef changes on purpose, move the commit pin in `v1/apidef-source.json`
 and run `go get github.com/voxgig/apidef/go@<commit>` from `v1/go` with the same
-commit. Run the suite, read the diff, and replace the golden with its
-`.gen.aontu` twin. A
+commit. A release that leaves `go/` untouched publishes no module version, and
+the module pin then stays where it is. Run the suite, read the diff, and
+replace the golden with its `.gen.aontu` twin. A
 stale golden does not announce itself, so record why a refresh happened in
 the commit message.
 

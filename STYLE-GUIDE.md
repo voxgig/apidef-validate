@@ -382,8 +382,9 @@ The rest:
   **open TODO** — a golden line with a `##` comment, dropped before the
   comparison and counted. A TODO is not a failure; do not call it one.
 - **parity** — here, that the TypeScript and the Go apidef both accept
-  every case. The Go harness does not diff against the goldens, so never
-  write "the two emit the same bytes" unless that check exists.
+  every case and produce the same goldens. The Go harness diffs against
+  the goldens but carries a skip list, so never write "the two emit the
+  same bytes" for a case whose goldens that list covers.
 - **the pin** — the apidef version the harness runs: the dependency in
   `v1/package.json`, and `github.com/voxgig/apidef/go` in `v1/go/go.mod`.
   Say **move the pin**, not "upgrade".

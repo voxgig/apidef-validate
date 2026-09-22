@@ -23,7 +23,10 @@ type Case struct {
 }
 
 // The TypeScript case list minus its GraphQL cases, which the Go module
-// cannot ingest, and minus elementdemo.
+// cannot ingest, and minus elementdemo: the Go port does not apply the
+// auth-exchange deactivation that case exists to pin, so it reads
+// /auth/token as an active entity and writes a fifth entity model the corpus
+// has no golden for.
 var allCases = []Case{
 	{"solar", "1.0.0", "openapi-3.0.0", "yaml"},
 	{"petstore", "1.0.7", "swagger-2.0", "json"},
@@ -45,62 +48,78 @@ var allCases = []Case{
 }
 
 // A golden the Go port is known not to reproduce: a path glob relative to
-// v1/, and why. A matching golden is still compared and reported, but a
-// mismatch does not fail the run. A glob whose matching goldens all pass is
-// stale and does fail it, so the list shrinks as the port catches up.
+// v1/, how many DISTINCT goldens under it differ, and why. A matching golden
+// is compared and reported but does not fail the run; Expect is the ratchet,
+// checked in both directions, so a golden the port has caught up on cannot
+// hide behind the siblings its glob also covers.
 type goldenSkip struct {
 	Glob   string
+	Expect int
 	Reason string
 
-	compared   int
-	mismatched int
+	matched    map[string]bool
+	mismatched map[string]bool
+}
+
+func (skip *goldenSkip) note(rel string) {
+	if nil == skip.matched {
+		skip.matched = map[string]bool{}
+	}
+	skip.matched[rel] = true
+}
+
+func (skip *goldenSkip) noteDiffers(rel string) {
+	if nil == skip.mismatched {
+		skip.mismatched = map[string]bool{}
+	}
+	skip.mismatched[rel] = true
 }
 
 const emptyFieldsGap = "an empty fields block sits before name instead of after op"
 const ancestorGap = "ancestor relations are missing"
 
 var goldenSkips = []*goldenSkip{
-	{Glob: "guide/*-final-guide.aontu", Reason: "the Go guide keeps control, orig, " +
+	{Glob: "guide/*-final-guide.aontu", Expect: 14, Reason: "the Go guide keeps control, orig, " +
 		"tag, why_* and empty action and rename containers that the TypeScript " +
 		"guide, re-read from its aontu source, does not"},
 
-	{Glob: "guide/cloudsmith-*-base-guide.aontu", Reason: "Go finds 75 of the 131 entities"},
-	{Glob: "guide/codatplatform-*-base-guide.aontu", Reason: "Go finds 22 of the 30 entities"},
-	{Glob: "guide/contentfulcma-*-base-guide.aontu", Reason: "Go gives /organizations " +
+	{Glob: "guide/cloudsmith-*-base-guide.aontu", Expect: 1, Reason: "Go finds 75 of the 131 entities"},
+	{Glob: "guide/codatplatform-*-base-guide.aontu", Expect: 1, Reason: "Go finds 22 of the 30 entities"},
+	{Glob: "guide/contentfulcma-*-base-guide.aontu", Expect: 1, Reason: "Go gives /organizations " +
 		"to organization instead of app_definition"},
-	{Glob: "guide/github-*-base-guide.aontu", Reason: "Go moves /gists to base_gist, " +
+	{Glob: "guide/github-*-base-guide.aontu", Expect: 1, Reason: "Go moves /gists to base_gist, " +
 		"/organizations to organization, and /classrooms and PATCH /user elsewhere"},
-	{Glob: "guide/gitlab-*-base-guide.aontu", Reason: "Go names custom_attribute, " +
+	{Glob: "guide/gitlab-*-base-guide.aontu", Expect: 1, Reason: "Go names custom_attribute, " +
 		"participant, starrer and user where TypeScript has " +
 		"api_entities_custom_attribute and api_entities_user_basic"},
-	{Glob: "guide/learnworlds-*-base-guide.aontu", Reason: "Go finds 29 of the 42 entities"},
-	{Glob: "guide/shortcut-*-base-guide.aontu", Reason: "Go gives the epic comment " +
+	{Glob: "guide/learnworlds-*-base-guide.aontu", Expect: 1, Reason: "Go finds 29 of the 42 entities"},
+	{Glob: "guide/shortcut-*-base-guide.aontu", Expect: 1, Reason: "Go gives the epic comment " +
 		"paths to comment instead of threaded_comment"},
-	{Glob: "guide/taxonomy-*-base-guide.aontu", Reason: "Go finds no paginated_taxa " +
+	{Glob: "guide/taxonomy-*-base-guide.aontu", Expect: 1, Reason: "Go finds no paginated_taxa " +
 		"and gives its list operations to domain and kingdom"},
 
-	{Glob: "model/cloudsmith-*/*", Reason: "56 entities are not found; " + ancestorGap +
+	{Glob: "model/cloudsmith-*/*", Expect: 119, Reason: "56 entities are not found; " + ancestorGap +
 		", and " + emptyFieldsGap},
-	{Glob: "model/codatplatform-*/*", Reason: "8 entities are not found; " + ancestorGap +
+	{Glob: "model/codatplatform-*/*", Expect: 23, Reason: "8 entities are not found; " + ancestorGap +
 		", and " + emptyFieldsGap},
-	{Glob: "model/contentfulcma-*/*", Reason: ancestorGap + ", and " + emptyFieldsGap},
-	{Glob: "model/foo-*/*-bar.aontu", Reason: emptyFieldsGap},
-	{Glob: "model/foo-*/*-qaz.aontu", Reason: emptyFieldsGap},
-	{Glob: "model/foo-*/*-yike.aontu", Reason: emptyFieldsGap},
-	{Glob: "model/github-*/*", Reason: ancestorGap + " along with union metadata " +
+	{Glob: "model/contentfulcma-*/*", Expect: 34, Reason: ancestorGap + ", and " + emptyFieldsGap},
+	{Glob: "model/foo-*/*-bar.aontu", Expect: 1, Reason: emptyFieldsGap},
+	{Glob: "model/foo-*/*-qaz.aontu", Expect: 1, Reason: emptyFieldsGap},
+	{Glob: "model/foo-*/*-yike.aontu", Expect: 1, Reason: emptyFieldsGap},
+	{Glob: "model/github-*/*", Expect: 240, Reason: ancestorGap + " along with union metadata " +
 		"and some fields, and " + emptyFieldsGap},
-	{Glob: "model/gitlab-*/*", Reason: "the entity set differs; " + ancestorGap +
+	{Glob: "model/gitlab-*/*", Expect: 232, Reason: "the entity set differs; " + ancestorGap +
 		", and " + emptyFieldsGap},
-	{Glob: "model/learnworlds-*/*", Reason: "13 entities are not found, and " + ancestorGap},
-	{Glob: "model/petstore-*/*-store.aontu", Reason: emptyFieldsGap},
-	{Glob: "model/shortcut-*/*", Reason: ancestorGap + " along with union metadata, " +
+	{Glob: "model/learnworlds-*/*", Expect: 24, Reason: "13 entities are not found, and " + ancestorGap},
+	{Glob: "model/petstore-*/*-store.aontu", Expect: 1, Reason: emptyFieldsGap},
+	{Glob: "model/shortcut-*/*", Expect: 15, Reason: ancestorGap + " along with union metadata, " +
 		"the epic comment paths move to comment, and " + emptyFieldsGap},
-	{Glob: "model/statuspage-*/*", Reason: ancestorGap},
-	{Glob: "model/taxonomy-*/*-domain.aontu", Reason: "carries the list operation " +
+	{Glob: "model/statuspage-*/*", Expect: 14, Reason: ancestorGap},
+	{Glob: "model/taxonomy-*/*-domain.aontu", Expect: 1, Reason: "carries the list operation " +
 		"of the missing paginated_taxa"},
-	{Glob: "model/taxonomy-*/*-kingdom.aontu", Reason: "carries the list operation " +
+	{Glob: "model/taxonomy-*/*-kingdom.aontu", Expect: 1, Reason: "carries the list operation " +
 		"of the missing paginated_taxa"},
-	{Glob: "model/taxonomy-*/*-paginated_taxa.aontu", Reason: "the entity is not found"},
+	{Glob: "model/taxonomy-*/*-paginated_taxa.aontu", Expect: 1, Reason: "the entity is not found"},
 }
 
 func findSkip(rel string) *goldenSkip {
@@ -240,8 +259,28 @@ type goldenMetrics struct {
 	Todo     int
 }
 
+// Both phases compare the guides, so the per-phase totals count a guide
+// golden twice. These are the distinct paths behind them.
+var strictPaths = map[string]bool{}
+var noGoldenPaths = map[string]bool{}
+var noOutputPaths = map[string]bool{}
+
+func goldenTotals(t *testing.T) {
+	t.Helper()
+	skipped := map[string]bool{}
+	for _, skip := range goldenSkips {
+		for rel := range skip.matched {
+			if !noGoldenPaths[rel] {
+				skipped[rel] = true
+			}
+		}
+	}
+	t.Logf("distinct goldens: %d compared strictly, %d skipped, %d of those with "+
+		"no generated entity; %d generated entities have no golden",
+		len(strictPaths), len(skipped), len(noOutputPaths), len(noGoldenPaths))
+}
+
 var todoLineRE = regexp.MustCompile(`[^\n#]*##[^\n]*\n`)
-var whyCommentRE = regexp.MustCompile(`(?m)\s+#[^\n]*$`)
 
 // compareGolden fails the test with a line diff when the generated text
 // differs from the golden at rel (relative to v1/), unless a goldenSkip
@@ -252,15 +291,17 @@ func compareGolden(t *testing.T, base string, rel string, found string, metrics 
 	skip := findSkip(rel)
 	if skip != nil {
 		metrics.Skipped++
-		skip.compared++
+		skip.note(rel)
 	} else {
 		metrics.Compared++
+		strictPaths[rel] = true
 	}
 
 	raw, err := os.ReadFile(filepath.Join(base, rel))
 	if err != nil {
 		if skip != nil {
-			skip.mismatched++
+			skip.noteDiffers(rel)
+			noGoldenPaths[rel] = true
 			t.Logf("SKIP %s: no golden (%s)", rel, skip.Reason)
 			return
 		}
@@ -287,8 +328,9 @@ func compareGolden(t *testing.T, base string, rel string, found string, metrics 
 	}
 
 	if skip != nil {
-		skip.mismatched++
-		t.Logf("SKIP %s: %s", rel, skip.Reason)
+		skip.noteDiffers(rel)
+		t.Logf("SKIP %s: %s [%s]", rel, skip.Reason,
+			diffDigest(strings.TrimSpace(clean), found))
 		return
 	}
 	t.Errorf("MISMATCH: %s\n%s", rel, lineDiff(expected, found))
@@ -297,7 +339,43 @@ func compareGolden(t *testing.T, base string, rel string, found string, metrics 
 // The Go port writes no `# why` annotations, so the golden's trailing
 // comments are dropped before the base guide comparison.
 func dropWhyComments(guide string) string {
-	return whyCommentRE.ReplaceAllString(guide, "")
+	lines := strings.Split(guide, "\n")
+	for i, line := range lines {
+		lines[i] = dropWhyComment(line)
+	}
+	return strings.Join(lines, "\n")
+}
+
+// dropWhyComment drops the annotation from one line, and the line is the
+// limit: a run of whitespace reaching back over a newline would take the
+// blank lines before a comment-only line with it. A `#` inside a quoted
+// value is content, a `##` marks a known gap, and a line that is only a
+// comment stays, the guide header among them.
+func dropWhyComment(line string) string {
+	quoted := false
+	for i := 0; i < len(line); i++ {
+		switch line[i] {
+		case '\\':
+			if quoted {
+				i++
+			}
+		case '"':
+			quoted = !quoted
+		case '#':
+			if quoted {
+				continue
+			}
+			if i+1 < len(line) && '#' == line[i+1] {
+				return line
+			}
+			head := strings.TrimRight(line[:i], " \t")
+			if "" == head || len(head) == i {
+				return line
+			}
+			return head
+		}
+	}
+	return line
 }
 
 // compareGuides checks the base guide apidef wrote and the final guide it
@@ -345,8 +423,10 @@ func compareModels(t *testing.T, run *caseRun, entities map[string]any, metrics 
 		}
 		rel := filepath.Join(modelDir, file)
 		if skip := findSkip(rel); skip != nil {
-			skip.compared++
-			skip.mismatched++
+			metrics.Skipped++
+			skip.note(rel)
+			skip.noteDiffers(rel)
+			noOutputPaths[rel] = true
 			t.Logf("SKIP %s: no generated entity (%s)", rel, skip.Reason)
 			continue
 		}
@@ -354,11 +434,25 @@ func compareModels(t *testing.T, run *caseRun, entities map[string]any, metrics 
 	}
 }
 
+// checkStaleSkips holds every entry to its declared count, and to matching
+// something. Only a complete run can do either: a narrower one covers a
+// subset of the goldens, so a count there can fall for reasons that are not
+// progress, and a rise is the only finding left.
 func checkStaleSkips(t *testing.T) {
 	t.Helper()
+	whole := "" == os.Getenv("TEST_CASE") && ranGuideCase && ranModelCase
 	for _, skip := range goldenSkips {
-		if skip.compared > 0 && skip.mismatched == 0 {
-			t.Errorf("stale skip %q: every matching golden passes, remove it", skip.Glob)
+		if 0 == len(skip.matched) {
+			if whole {
+				t.Errorf("skip %q matched no golden: fix the glob or drop the entry",
+					skip.Glob)
+			}
+			continue
+		}
+		differ := len(skip.mismatched)
+		if differ > skip.Expect || (whole && differ != skip.Expect) {
+			t.Errorf("skip %q expects %d differing goldens, found %d: recount the entry",
+				skip.Glob, skip.Expect, differ)
 		}
 	}
 }
@@ -374,14 +468,9 @@ func sortedKeys(m map[string]any) []string {
 
 const diffContext = 3
 const diffMaxEdits = 4000
+const digestLineMax = 120
 
-// lineDiff renders expected against found as unified-style hunks. Equal
-// prefix and suffix lines are stripped first, so the Myers search only
-// sees the changed region; a region beyond diffMaxEdits is summarised.
-func lineDiff(expected string, found string) string {
-	a := strings.Split(expected, "\n")
-	b := strings.Split(found, "\n")
-
+func commonEdges(a []string, b []string) (int, int) {
 	prefix := 0
 	for prefix < len(a) && prefix < len(b) && a[prefix] == b[prefix] {
 		prefix++
@@ -391,6 +480,46 @@ func lineDiff(expected string, found string) string {
 		a[len(a)-1-suffix] == b[len(b)-1-suffix] {
 		suffix++
 	}
+	return prefix, suffix
+}
+
+// diffDigest sizes and places a difference in one line, so a skipped gap is
+// legible in the log without TEST_OUT keeping the generated files.
+func diffDigest(expected string, found string) string {
+	a := strings.Split(expected, "\n")
+	b := strings.Split(found, "\n")
+	prefix, suffix := commonEdges(a, b)
+
+	at := "golden ends"
+	if prefix < len(a) {
+		at = strings.TrimSpace(a[prefix])
+		if runes := []rune(at); digestLineMax < len(runes) {
+			at = string(runes[:digestLineMax]) + "..."
+		}
+	}
+
+	ops, ok := myersOps(a[prefix:len(a)-suffix], b[prefix:len(b)-suffix], diffMaxEdits)
+	if !ok {
+		return fmt.Sprintf("%d expected and %d generated lines differ from line %d: %s",
+			len(a)-prefix-suffix, len(b)-prefix-suffix, prefix+1, at)
+	}
+	differ := 0
+	for _, op := range ops {
+		if ' ' != op[0] {
+			differ++
+		}
+	}
+	return fmt.Sprintf("%d lines differ, first at %d: %s", differ, prefix+1, at)
+}
+
+// lineDiff renders expected against found as unified-style hunks. Equal
+// prefix and suffix lines are stripped first, so the Myers search only
+// sees the changed region; a region beyond diffMaxEdits is summarised.
+func lineDiff(expected string, found string) string {
+	a := strings.Split(expected, "\n")
+	b := strings.Split(found, "\n")
+
+	prefix, suffix := commonEdges(a, b)
 	ma := a[prefix : len(a)-suffix]
 	mb := b[prefix : len(b)-suffix]
 
@@ -532,6 +661,8 @@ func myersOps(a []string, b []string, maxEdits int) ([]string, bool) {
 	return ops, true
 }
 
+var ranGuideCase, ranModelCase bool
+
 func TestValidate(t *testing.T) {
 	t.Run("happy", func(t *testing.T) {
 		if apidef.VERSION == "" {
@@ -541,6 +672,7 @@ func TestValidate(t *testing.T) {
 	})
 
 	t.Run("guide-case", func(t *testing.T) {
+		ranGuideCase = true
 		metrics := &goldenMetrics{}
 		for _, c := range selectedCases() {
 			c := c
@@ -565,6 +697,7 @@ func TestValidate(t *testing.T) {
 	})
 
 	t.Run("model-case", func(t *testing.T) {
+		ranModelCase = true
 		metrics := &goldenMetrics{}
 		stepFields := map[string]bool{}
 		caseCount := 0
@@ -737,5 +870,42 @@ func TestValidate(t *testing.T) {
 			metrics.Compared, metrics.Skipped, metrics.Todo)
 	})
 
+	goldenTotals(t)
 	checkStaleSkips(t)
+}
+
+func TestWhyCommentsSpareTodos(t *testing.T) {
+	guide := "guide: {\n" +
+		"  op: load: method: *GET  # end-param\n" +
+		"  op: list: method: *GET  ## the Go port omits this\n" +
+		"}\n"
+	clean := dropWhyComments(guide)
+	if strings.Contains(clean, "end-param") {
+		t.Errorf("why comment kept: %q", clean)
+	}
+	if !strings.Contains(clean, "## the Go port omits this") {
+		t.Errorf("TODO marker dropped as a why comment: %q", clean)
+	}
+	if todos := todoLineRE.FindAllString(clean, -1); 1 != len(todos) {
+		t.Errorf("TODO line is not countable after normalization: %q", todos)
+	}
+}
+
+func TestWhyCommentsSpareLinesAndQuotes(t *testing.T) {
+	guide := "guide: {\n" +
+		"\n" +
+		"  # Deactivated by the heuristic (auth-exchange).\n" +
+		"  active: *false\n" +
+		"  path: \"/api/v4/tag #1\"  # ent=tag\n" +
+		"}\n"
+	clean := dropWhyComments(guide)
+	if !strings.Contains(clean, "{\n\n  # Deactivated") {
+		t.Errorf("comment-only line took the blank line with it: %q", clean)
+	}
+	if !strings.Contains(clean, "path: \"/api/v4/tag #1\"") {
+		t.Errorf("hash inside a quoted value dropped: %q", clean)
+	}
+	if strings.Contains(clean, "ent=tag") {
+		t.Errorf("why comment kept: %q", clean)
+	}
 }

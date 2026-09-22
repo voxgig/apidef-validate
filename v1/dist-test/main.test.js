@@ -53,6 +53,7 @@ function isGraphql(c) {
 }
 const GRAPHQL_CAPABLE = (0, capability_1.graphqlCapable)();
 const TOP_FOLDER = node_path_1.default.join(__dirname, '..');
+const DEF_FOLDER = node_path_1.default.join(TOP_FOLDER, '..', 'def');
 const UPDATE_SNAPSHOTS = process.env.UPDATE_SNAPSHOTS === '1';
 const allCases = [
     { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
@@ -282,6 +283,11 @@ function prepfs(cases) {
         }
     };
     const ufs = (0, __1.makefs)(vol);
+    // apidef's debug mode writes <def>.full.json beside the definition it read.
+    // The union filesystem takes a write wherever the parent directory exists,
+    // so def/ is created in the sandbox and the diagnostic file lands there
+    // rather than in the repository.
+    ufs.vol.mkdirSync(DEF_FOLDER, { recursive: true });
     return ufs;
 }
 async function prepCaseGuide(c, fs) {
