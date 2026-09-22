@@ -303,7 +303,8 @@ func compareGolden(t *testing.T, base string, rel string, found string, metrics 
 
 	if skip != nil {
 		skip.noteDiffers(rel)
-		t.Logf("SKIP %s: %s", rel, skip.Reason)
+		t.Logf("SKIP %s: %s [%s]", rel, skip.Reason,
+			diffDigest(strings.TrimSpace(clean), found))
 		return
 	}
 	t.Errorf("MISMATCH: %s\n%s", rel, lineDiff(expected, found))
@@ -435,14 +436,9 @@ func sortedKeys(m map[string]any) []string {
 
 const diffContext = 3
 const diffMaxEdits = 4000
+const digestLineMax = 120
 
-// lineDiff renders expected against found as unified-style hunks. Equal
-// prefix and suffix lines are stripped first, so the Myers search only
-// sees the changed region; a region beyond diffMaxEdits is summarised.
-func lineDiff(expected string, found string) string {
-	a := strings.Split(expected, "\n")
-	b := strings.Split(found, "\n")
-
+func commonEdges(a []string, b []string) (int, int) {
 	prefix := 0
 	for prefix < len(a) && prefix < len(b) && a[prefix] == b[prefix] {
 		prefix++
@@ -452,6 +448,46 @@ func lineDiff(expected string, found string) string {
 		a[len(a)-1-suffix] == b[len(b)-1-suffix] {
 		suffix++
 	}
+	return prefix, suffix
+}
+
+// diffDigest sizes and places a difference in one line, so a skipped gap is
+// legible in the log without TEST_OUT keeping the generated files.
+func diffDigest(expected string, found string) string {
+	a := strings.Split(expected, "\n")
+	b := strings.Split(found, "\n")
+	prefix, suffix := commonEdges(a, b)
+
+	at := "golden ends"
+	if prefix < len(a) {
+		at = strings.TrimSpace(a[prefix])
+		if runes := []rune(at); digestLineMax < len(runes) {
+			at = string(runes[:digestLineMax]) + "..."
+		}
+	}
+
+	ops, ok := myersOps(a[prefix:len(a)-suffix], b[prefix:len(b)-suffix], diffMaxEdits)
+	if !ok {
+		return fmt.Sprintf("%d expected and %d generated lines differ from line %d: %s",
+			len(a)-prefix-suffix, len(b)-prefix-suffix, prefix+1, at)
+	}
+	differ := 0
+	for _, op := range ops {
+		if ' ' != op[0] {
+			differ++
+		}
+	}
+	return fmt.Sprintf("%d lines differ, first at %d: %s", differ, prefix+1, at)
+}
+
+// lineDiff renders expected against found as unified-style hunks. Equal
+// prefix and suffix lines are stripped first, so the Myers search only
+// sees the changed region; a region beyond diffMaxEdits is summarised.
+func lineDiff(expected string, found string) string {
+	a := strings.Split(expected, "\n")
+	b := strings.Split(found, "\n")
+
+	prefix, suffix := commonEdges(a, b)
 	ma := a[prefix : len(a)-suffix]
 	mb := b[prefix : len(b)-suffix]
 

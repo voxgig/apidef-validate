@@ -88,6 +88,10 @@ distinct paths rather than comparisons, because both phases compare the
 guides. A run narrowed by `TEST_CASE`, or to one of the two phases, compares
 part of the corpus only, so there a rise in a count is what fails.
 
+A skipped mismatch is logged with its reason, the number of differing lines,
+and the first golden line that differs, so the size and the place of a gap
+are in the log without the generated files being kept.
+
 `TEST_CASE` selects cases here too, `TEST_OUT` names a directory that keeps
 the generated files, and `make update-apidef` moves the pin to the latest
 published module.
