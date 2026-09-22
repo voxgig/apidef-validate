@@ -56,7 +56,7 @@ const TOP_FOLDER = Path.join(__dirname, '..')
 const UPDATE_SNAPSHOTS = process.env.UPDATE_SNAPSHOTS === '1'
 
 
-let cases: Case[] = [
+const allCases: Case[] = [
   { name: 'solar', version: '1.0.0', spec: 'openapi-3.0.0', format: 'yaml' },
   { name: 'petstore', version: '1.0.7', spec: 'swagger-2.0', format: 'json' },
   { name: 'taxonomy', version: '1.0.0', spec: 'openapi-3.1.0', format: 'yaml' },
@@ -99,6 +99,8 @@ let cases: Case[] = [
   },
 ]
 
+let cases = allCases
+
 if (!GRAPHQL_CAPABLE) {
   const skipped = cases.filter(isGraphql).map(c => c.name)
   if (0 < skipped.length) {
@@ -119,6 +121,14 @@ describe('main', () => {
 
   test('happy', async () => {
     assert.equal(main(), 'main')
+  })
+
+
+  test('def-layout', async () => {
+    const definitions = new Set(allCases.map(c => fullname(c) + '.' + c.format))
+    const strays = Fs.readdirSync(Path.join(TOP_FOLDER, '..', 'def')).filter(file =>
+      !definitions.has(file.replace(/\.full\.json$/, '')) && 'potentials.txt' !== file)
+    assert.deepEqual(strays, [], 'def/ holds only definitions and their full.json twins')
   })
 
 
