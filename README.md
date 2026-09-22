@@ -70,11 +70,13 @@ cd v1
 make test
 ```
 
-The module version in `v1/go/go.mod` pins the same apidef commit as the
-TypeScript harness. Go downloads it without a local workspace. The harness
-diffs the base guide and the entity models the Go module writes, and the
-final guide it returns, against the goldens, and a mismatch fails the test
-with a line diff. It also checks that fields are maps keyed by `n` and that
+The module version in `v1/go/go.mod` pins the Go port, which is released on
+its own cadence: it names the same apidef commit as `v1/apidef-source.json`
+when a release carried both, and an earlier one after a release that carried
+the `npm` package only. Go downloads it without a local workspace. The
+harness diffs the base guide and the entity models the Go module writes, and
+the final guide it returns, against the goldens, and a mismatch fails the
+test with a line diff. It also checks that fields are maps keyed by `n` and that
 their human titles match their names. The Go module writes no `# why`
 annotations, so the trailing comments of the golden are dropped before the
 base guide comparison.
@@ -120,8 +122,9 @@ before the comparison and counted as an open TODO.
 
 When apidef changes on purpose, move the commit pin in `v1/apidef-source.json`
 and run `go get github.com/voxgig/apidef/go@<commit>` from `v1/go` with the same
-commit. Run the suite, read the diff, and replace the golden with its
-`.gen.aontu` twin. A
+commit. A release that leaves `go/` untouched publishes no module version, and
+the module pin then stays where it is. Run the suite, read the diff, and
+replace the golden with its `.gen.aontu` twin. A
 stale golden does not announce itself, so record why a refresh happened in
 the commit message.
 
