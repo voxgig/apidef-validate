@@ -1,17 +1,24 @@
-# Guide
+# Generated from the API definition and overwritten on every build: do not
+# edit this file. Put customizations in the guide entry file, which includes
+# this one and overrides its defaults:
+#   taxonomy-1.0.0-openapi-3.1.0-guide.aontu
 
 guide: {
-  metrics: count: entity: 5
+  metrics: count: entity: 4
   metrics: count: path: 7
   metrics: count: method: 9
 
   entity: domain: {
-    path: "/{year}/domain/{did}/revoke": {  # ent=domain;orig=Domain;tag=domain;cmp/resolve=domain;path=t/p/t/;verb-on-parent=domain
+    path: "/{year}/domain": {  # ent=domain;orig=Taxon;envelope=paginated_taxa;cmp/resolve=taxon;path=p/t/;path-over-cmp
+      op: list: method: *GET  # array-prop:items
+      op: list: transform: res: *("`body.items`")|top
+    }
+    path: "/{year}/domain/{did}/revoke": {  # ent=domain;orig=Taxon;tag=domain;cmp/resolve=domain;path=t/p/t/;verb-on-parent=domain
       action: "revoke": {}  # ent;domain;verb-on-parent;revoke;POST
       rename: param: "did": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
     }
-    path: "/{year}/domain/{id}": {  # ent=domain;orig=Domain;cmp/resolve=taxon;path=t/p/;path-over-cmp
+    path: "/{year}/domain/{id}": {  # ent=domain;orig=Taxon;cmp/resolve=taxon;path=t/p/;path-over-cmp
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -25,23 +32,13 @@ guide: {
     path: "/{year}/domain/{id}/kingdom": {  # ent=kingdom;orig=Taxon;cmp/resolve=taxon;path=t/p/t/;path-over-cmp;has-cmp=Taxon
       rename: param: "id": *"domain_id"  # parent:domain
       op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: paginated_observation: {
-    path: "/{year}/observation": {  # ent=paginated_observation;orig=PaginatedObservations;cmp/resolve=paginated_observation;path=p/t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array-prop:items
       op: list: transform: res: *("`body.items`")|top
     }
   }
 
-  entity: paginated_taxa: {
-    path: "/{year}/domain": {  # ent=paginated_taxa;orig=PaginatedTaxa;cmp/resolve=paginated_taxa;path=p/t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array-prop:items
-      op: list: transform: res: *("`body.items`")|top
-    }
-    path: "/{year}/domain/{id}/kingdom": {  # ent=paginated_taxa;orig=PaginatedTaxa;cmp/resolve=paginated_taxa;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=PaginatedTaxa
-      rename: param: "id": *"domain_id"  # parent:domain
+  entity: observation: {
+    path: "/{year}/observation": {  # ent=observation;orig=Observation;envelope=paginated_observation;cmp/resolve=observation;path=p/t/;path-primary
       op: list: method: *GET  # array-prop:items
       op: list: transform: res: *("`body.items`")|top
     }
