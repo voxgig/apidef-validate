@@ -23,15 +23,14 @@ type Case struct {
 }
 
 // The TypeScript case list minus its GraphQL cases, which the Go module
-// cannot ingest, and minus elementdemo: the Go port does not apply the
-// auth-exchange deactivation that case exists to pin, so it reads
-// /auth/token as an active entity and writes a fifth entity model the corpus
-// has no golden for.
+// cannot ingest.
 var allCases = []Case{
 	{"solar", "1.0.0", "openapi-3.0.0", "yaml"},
 	{"petstore", "1.0.7", "swagger-2.0", "json"},
 	{"taxonomy", "1.0.0", "openapi-3.1.0", "yaml"},
 	{"foo", "1.0.0", "openapi-3.1.0", "yaml"},
+
+	{"elementdemo", "1.0.0", "openapi-3.0.0", "yaml"},
 
 	{"learnworlds", "2", "openapi-3.1.0", "yaml"},
 	{"statuspage", "1.0.0", "openapi-3.0.0", "json"},
