@@ -4,7 +4,7 @@
 #   github-1.1.4-openapi-3.0.3-guide.aontu
 
 guide: {
-  metrics: count: entity: 267
+  metrics: count: entity: 268
   metrics: count: path: 722
   metrics: count: method: 1089
 
@@ -426,7 +426,7 @@ guide: {
       op: create: method: *POST  # not-load
     }
     path: "/orgs/{org}/actions/hosted-runners/{hosted_runner_id}": {  # ent=actions_hosted_runner;orig=actions-hosted-runner;cmp/resolve=actions_hosted_runner;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "hosted_runner_id": *"id"  # end-id;GET;parent=true/hosted_runner;cmp=false
+      rename: param: "hosted_runner_id": *"id"  # end-id;GET;parent=true/hosted_runner
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -470,24 +470,24 @@ guide: {
 
   entity: actions_secret: {
     path: "/repos/{owner}/{repo}/actions/secrets/{secret_name}": {  # ent=actions_secret;orig=actions-secret;cmp/resolve=actions_secret;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret;cmp=false
+      rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret
       op: load: method: *GET  # end-param
     }
     path: "/repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}": {  # ent=actions_secret;orig=actions-secret;cmp/resolve=actions_secret;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "environment_name": *"environment_id"  # not-primary
-      rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret;cmp=false
+      rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret
       op: load: method: *GET  # end-param
     }
   }
 
   entity: actions_variable: {
     path: "/repos/{owner}/{repo}/actions/variables/{name}": {  # ent=actions_variable;orig=actions-variable;cmp/resolve=actions_variable;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "name": *"id"  # end-id;GET;parent=true/variable;cmp=false
+      rename: param: "name": *"id"  # end-id;GET;parent=true/variable
       op: load: method: *GET  # end-param
     }
     path: "/repos/{owner}/{repo}/environments/{environment_name}/variables/{name}": {  # ent=actions_variable;orig=actions-variable;cmp/resolve=actions_variable;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "environment_name": *"environment_id"  # not-primary
-      rename: param: "name": *"id"  # end-id;GET;parent=true/variable;cmp=false
+      rename: param: "name": *"id"  # end-id;GET;parent=true/variable
       op: load: method: *GET  # end-param
     }
   }
@@ -579,7 +579,7 @@ guide: {
   entity: api_insights_user_stat: {
     path: "/orgs/{org}/insights/api/user-stats/{user_id}": {  # ent=api_insights_user_stat;orig=api-insights-user-stats;cmp/resolve=api_insights_user_stat;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "user_id": *"id"  # end-id;GET;parent=true/user_stat;cmp=false
+      rename: param: "user_id": *"id"  # end-id;GET;parent=true/user_stat
       op: load: method: *GET  # end-param
     }
   }
@@ -631,7 +631,7 @@ guide: {
 
   entity: artifact: {
     path: "/repos/{owner}/{repo}/actions/artifacts/{artifact_id}": {  # ent=artifact;cmp/resolve=artifact;path=t/p/;path-primary
-      rename: param: "artifact_id": *"id"  # end-id;GET;parent=true/artifact;cmp=false
+      rename: param: "artifact_id": *"id"  # end-id;GET;parent=true/artifact
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.workflow_run`")|top
     }
@@ -640,6 +640,13 @@ guide: {
   entity: assignee: {
     path: "/repos/{owner}/{repo}/assignees": {  # ent=assignee;orig=simple-user;cmp/resolve=simple_user;path=p/t/;path-over-cmp
       op: list: method: *GET  # array
+    }
+  }
+
+  entity: attestation: {
+    path: "/users/{username}/attestations/{subject_digest}": {  # ent=attestation;orig=empty-object;cmp/resolve=empty_object;path=t/p/;cmp-shared;path-over-cmp
+      rename: param: "subject_digest": *"id"  # end-id;GET;parent=true/attestation
+      op: load: method: *GET  # end-param
     }
   }
 
@@ -678,7 +685,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/autolinks/{autolink_id}": {  # ent=autolink;cmp/resolve=autolink;path=t/p/;path-primary
-      rename: param: "autolink_id": *"id"  # end-id;GET;parent=true/autolink;cmp=false
+      rename: param: "autolink_id": *"id"  # end-id;GET;parent=true/autolink
       op: load: method: *GET  # end-param
     }
   }
@@ -714,7 +721,7 @@ guide: {
 
   entity: blob: {
     path: "/repos/{owner}/{repo}/git/blobs/{file_sha}": {  # ent=blob;cmp/resolve=blob;path=t/p/;path-primary
-      rename: param: "file_sha": *"id"  # end-id;GET;parent=true/blob;cmp=false
+      rename: param: "file_sha": *"id"  # end-id;GET;parent=true/blob
       op: load: method: *GET  # end-param
     }
   }
@@ -731,7 +738,7 @@ guide: {
 
   entity: branch: {
     path: "/repos/{owner}/{repo}/branches/{branch}": {  # ent=branch;orig=branch-with-protection;cmp/resolve=branch_with_protection;path=t/p/;path-primary;resplit-from-cmp=branch
-      rename: param: "branch": *"id"  # end-id;GET;parent=true/branch;cmp=false
+      rename: param: "branch": *"id"  # end-id;GET;parent=true/branch
       op: load: method: *GET  # end-param
     }
   }
@@ -779,7 +786,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/campaigns/{campaign_number}": {  # ent=campaign;orig=campaign-summary;tag=campaign;cmp/resolve=campaign;path=t/p/;path-primary
-      rename: param: "campaign_number": *"id"  # end-id;GET;parent=true/campaign;cmp=false
+      rename: param: "campaign_number": *"id"  # end-id;GET;parent=true/campaign
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -826,7 +833,7 @@ guide: {
       op: create: method: *POST  # not-load
     }
     path: "/repos/{owner}/{repo}/check-runs/{check_run_id}": {  # ent=check_run;orig=check-run;cmp/resolve=check_run;path=t/p/;path-primary
-      rename: param: "check_run_id": *"id"  # end-id;GET;parent=true/check_run;cmp=false
+      rename: param: "check_run_id": *"id"  # end-id;GET;parent=true/check_run
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -837,7 +844,7 @@ guide: {
       op: create: method: *POST  # not-load
     }
     path: "/repos/{owner}/{repo}/check-suites/{check_suite_id}": {  # ent=check_suite;orig=check-suite;cmp/resolve=check_suite;path=t/p/;path-primary
-      rename: param: "check_suite_id": *"id"  # end-id;GET;parent=true/check_suite;cmp=false
+      rename: param: "check_suite_id": *"id"  # end-id;GET;parent=true/check_suite
       op: load: method: *GET  # end-param
     }
   }
@@ -853,7 +860,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/classrooms/{classroom_id}": {  # ent=classroom;cmp/resolve=classroom;path=t/p/;path-primary
-      rename: param: "classroom_id": *"id"  # end-id;GET;parent=true/classroom;cmp=false
+      rename: param: "classroom_id": *"id"  # end-id;GET;parent=true/classroom
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.organization`")|top
     }
@@ -867,7 +874,7 @@ guide: {
 
   entity: classroom_assignment: {
     path: "/assignments/{assignment_id}": {  # ent=classroom_assignment;orig=classroom-assignment;cmp/resolve=classroom_assignment;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "assignment_id": *"id"  # end-id;GET;parent=true/assignment;cmp=false
+      rename: param: "assignment_id": *"id"  # end-id;GET;parent=true/assignment
       op: load: method: *GET  # end-param
     }
   }
@@ -887,12 +894,6 @@ guide: {
 
   entity: code_frequency: {
     path: "/repos/{owner}/{repo}/stats/code_frequency": {  # ent=code_frequency;orig=code-frequency-stat;cmp/resolve=code_frequency_stat;path=t/;path-primary
-      op: list: method: *GET  # array
-    }
-  }
-
-  entity: code_frequency_stat: {
-    path: "/repos/{owner}/{repo}/stats/punch_card": {  # ent=code_frequency_stat;orig=code-frequency-stat;cmp/resolve=code_frequency_stat;path=t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array
     }
   }
@@ -925,7 +926,7 @@ guide: {
 
   entity: code_scanning_alert: {
     path: "/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}": {  # ent=code_scanning_alert;orig=code-scanning-alert;cmp/resolve=code_scanning_alert;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "alert_number": *"id"  # end-id;GET;parent=true/alert;cmp=false
+      rename: param: "alert_number": *"id"  # end-id;GET;parent=true/alert
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -1076,7 +1077,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}": {  # ent=code_security_configuration;orig=code-security-configuration;cmp/resolve=code_security_configuration;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "configuration_id": *"id"  # end-id;GET;parent=true/configuration;cmp=false
+      rename: param: "configuration_id": *"id"  # end-id;GET;parent=true/configuration
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: patch: transform: req: "advanced_security": *("`reqdata.advanced_security`")|top
@@ -1136,7 +1137,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/code-security/configurations/{configuration_id}": {  # ent=code_security_configuration;orig=code-security-configuration;cmp/resolve=code_security_configuration;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "configuration_id": *"id"  # end-id;GET;parent=true/configuration;cmp=false
+      rename: param: "configuration_id": *"id"  # end-id;GET;parent=true/configuration
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -1254,7 +1255,7 @@ guide: {
       op: list: transform: res: *("`body.codespaces`")|top
     }
     path: "/orgs/{org}/members/{username}/codespaces/{codespace_name}": {  # ent=codespace;orig=codespaces;tag=codespace;cmp/resolve=codespace;path=t/p/;path-primary
-      rename: param: "codespace_name": *"id"  # end-id;DELETE;parent=true/codespace;cmp=false
+      rename: param: "codespace_name": *"id"  # end-id;DELETE;parent=true/codespace
       rename: param: "org": *"org_id"  # parent:org
       rename: param: "username": *"member_id"  # not-primary
       op: remove: method: *DELETE  # not-load
@@ -1333,7 +1334,7 @@ guide: {
       op: update: method: *PUT  # not-load
     }
     path: "/user/codespaces/{codespace_name}": {  # ent=codespace;orig=codespaces;tag=codespace;cmp/resolve=codespace;path=t/p/;path-primary
-      rename: param: "codespace_name": *"id"  # end-id;GET;parent=true/codespace;cmp=false
+      rename: param: "codespace_name": *"id"  # end-id;GET;parent=true/codespace
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
@@ -1395,11 +1396,11 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/commits/{ref}": {  # ent=commit;cmp/resolve=commit;path=t/p/;path-primary
-      rename: param: "ref": *"id"  # end-id;GET;parent=true/commit;cmp=false
+      rename: param: "ref": *"id"  # end-id;GET;parent=true/commit
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.commit`")|top
     }
-    path: "/repos/{owner}/{repo}/merges": {  # ent=commit;cmp/resolve=commit;path=p/t/;cmp-primary;cmp-infreq
+    path: "/repos/{owner}/{repo}/merges": {  # ent=commit;cmp/resolve=commit;path=p/t/;cmp-shared;cmp-path;cmp-inpath
       op: create: method: *POST  # not-load
       op: create: transform: res: *("`body.commit`")|top
     }
@@ -1419,7 +1420,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/comments/{comment_id}": {  # ent=commit_comment;orig=commit-comment;cmp/resolve=commit_comment;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "comment_id": *"id"  # end-id;GET;parent=true/comment;cmp=false
+      rename: param: "comment_id": *"id"  # end-id;GET;parent=true/comment
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -1584,7 +1585,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/dependabot/alerts/{alert_number}": {  # ent=dependabot_alert;orig=dependabot-alert;cmp/resolve=dependabot_alert;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "alert_number": *"id"  # end-id;GET;parent=true/alert;cmp=false
+      rename: param: "alert_number": *"id"  # end-id;GET;parent=true/alert
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: patch: transform: req: "dismissed_comment": *("`reqdata.dismissed_comment`")|top
@@ -1622,7 +1623,7 @@ guide: {
 
   entity: dependabot_secret: {
     path: "/repos/{owner}/{repo}/dependabot/secrets/{secret_name}": {  # ent=dependabot_secret;orig=dependabot-secret;cmp/resolve=dependabot_secret;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret;cmp=false
+      rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret
       op: load: method: *GET  # end-param
     }
   }
@@ -1661,7 +1662,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/keys/{key_id}": {  # ent=deploy_key;orig=deploy-key;cmp/resolve=deploy_key;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "key_id": *"id"  # end-id;GET;parent=true/key;cmp=false
+      rename: param: "key_id": *"id"  # end-id;GET;parent=true/key
       op: load: method: *GET  # end-param
     }
   }
@@ -1675,7 +1676,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/deployments/{deployment_id}": {  # ent=deployment;cmp/resolve=deployment;path=t/p/;path-primary
-      rename: param: "deployment_id": *"id"  # end-id;GET;parent=true/deployment;cmp=false
+      rename: param: "deployment_id": *"id"  # end-id;GET;parent=true/deployment
       op: load: method: *GET  # end-param
     }
   }
@@ -1685,7 +1686,7 @@ guide: {
       op: create: method: *POST  # not-load
     }
     path: "/repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}": {  # ent=deployment_branch_policy;orig=deployment-branch-policy;cmp/resolve=deployment_branch_policy;path=t/p/;path-primary
-      rename: param: "branch_policy_id": *"id"  # end-id;GET;parent=true/deployment_branch_policy;cmp=false
+      rename: param: "branch_policy_id": *"id"  # end-id;GET;parent=true/deployment_branch_policy
       rename: param: "environment_name": *"environment_id"  # not-primary
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
@@ -1699,7 +1700,7 @@ guide: {
     }
     path: "/repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}": {  # ent=deployment_protection_rule;orig=deployment-protection-rule;cmp/resolve=deployment_protection_rule;path=t/p/;path-primary
       rename: param: "environment_name": *"environment_id"  # not-primary
-      rename: param: "protection_rule_id": *"id"  # end-id;GET;parent=true/deployment_protection_rule;cmp=false
+      rename: param: "protection_rule_id": *"id"  # end-id;GET;parent=true/deployment_protection_rule
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.app`")|top
     }
@@ -1712,7 +1713,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/deployments/{deployment_id}/statuses/{status_id}": {  # ent=deployment_status;orig=deployment-status;cmp/resolve=deployment_status;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "status_id": *"id"  # end-id;GET;parent=true/status;cmp=false
+      rename: param: "status_id": *"id"  # end-id;GET;parent=true/status
       op: load: method: *GET  # end-param
     }
   }
@@ -1732,7 +1733,7 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/user/public_emails": {  # ent=email;cmp/resolve=email;path=t/;cmp-primary;cmp-infreq
+    path: "/user/public_emails": {  # ent=email;cmp/resolve=email;path=t/;cmp-shared;cmp-path;cmp-inpath
       op: list: method: *GET  # array
     }
   }
@@ -1752,10 +1753,6 @@ guide: {
       rename: param: "org": *"org_id"  # parent:org
       op: update: method: *PUT  # not-load
     }
-    path: "/orgs/{org}/actions/variables": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/;cmp-primary;cmp-infreq
-      rename: param: "org": *"org_id"  # parent:org
-      op: create: method: *POST  # not-load
-    }
     path: "/orgs/{org}/dependabot/secrets/{secret_name}": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
       op: update: method: *PUT  # not-load
@@ -1772,14 +1769,8 @@ guide: {
     path: "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=empty-object
       op: create: method: *POST  # not-load
     }
-    path: "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=empty-object
-      op: create: method: *POST  # not-load
-    }
     path: "/repos/{owner}/{repo}/actions/secrets/{secret_name}": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/;cmp-primary;cmp-infreq
       op: update: method: *PUT  # not-load
-    }
-    path: "/repos/{owner}/{repo}/actions/variables": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
     }
     path: "/repos/{owner}/{repo}/check-runs/{check_run_id}/rerequest": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=empty-object
       op: create: method: *POST  # not-load
@@ -1803,11 +1794,13 @@ guide: {
       rename: param: "environment_name": *"environment_id"  # not-primary
       op: update: method: *PUT  # not-load
     }
-    path: "/repos/{owner}/{repo}/environments/{environment_name}/variables": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=empty-object
+  }
+
+  entity: enforce_admin: {
+    path: "/repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins": {  # ent=enforce_admin;orig=protected-branch-admin-enforced;cmp/resolve=protected_branch_admin_enforced;path=t/;cmp-shared;path-over-cmp
+      rename: param: "branch": *"branch_id"  # parent:branch
       op: create: method: *POST  # not-load
-    }
-    path: "/users/{username}/attestations/{subject_digest}": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # end-param
+      op: load: method: *GET  # not-list
     }
   }
 
@@ -1817,7 +1810,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/enterprises/{enterprise}/teams/{team_slug}": {  # ent=enterprise_team;orig=enterprise-team;tag=enterprise_team;cmp/resolve=enterprise_team;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "team_slug": *"id"  # end-id;GET;parent=true/team;cmp=false
+      rename: param: "team_slug": *"id"  # end-id;GET;parent=true/team
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
@@ -1827,14 +1820,14 @@ guide: {
   entity: enterprise_team_membership: {
     path: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}": {  # ent=enterprise_team_membership;orig=enterprise-team-memberships;tag=enterprise_team_membership;cmp/resolve=enterprise_team_membership;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "enterprise-team": *"team_id"  # not-primary
-      rename: param: "username": *"id"  # end-id;DELETE;parent=true/membership;cmp=false
+      rename: param: "username": *"id"  # end-id;DELETE;parent=true/membership
       op: remove: method: *DELETE  # not-load
     }
   }
 
   entity: environment: {
     path: "/repos/{owner}/{repo}/environments/{environment_name}": {  # ent=environment;cmp/resolve=environment;path=t/p/;path-primary
-      rename: param: "environment_name": *"id"  # end-id;GET;parent=true/environment;cmp=false
+      rename: param: "environment_name": *"id"  # end-id;GET;parent=true/environment
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
       op: update: transform: req: "deployment_branch_policy": *("`reqdata.deployment_branch_policy`")|top
@@ -1936,7 +1929,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/gists/{gist_id}": {  # ent=gist;orig=gist-simple;tag=gist;cmp/resolve=gist;path=t/p/;path-primary
-      rename: param: "gist_id": *"id"  # end-id;GET;parent=true/gist;cmp=false
+      rename: param: "gist_id": *"id"  # end-id;GET;parent=true/gist
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
@@ -1965,7 +1958,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/gists/{gist_id}/comments/{comment_id}": {  # ent=gist_comment;orig=gist-comment;cmp/resolve=gist_comment;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "comment_id": *"id"  # end-id;GET;parent=true/comment;cmp=false
+      rename: param: "comment_id": *"id"  # end-id;GET;parent=true/comment
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.user`")|top
       op: patch: method: *PATCH  # not-load
@@ -1999,7 +1992,7 @@ guide: {
       op: create: method: *POST  # not-load
     }
     path: "/repos/{owner}/{repo}/git/commits/{commit_sha}": {  # ent=git_commit;orig=git-commit;cmp/resolve=git_commit;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "commit_sha": *"id"  # end-id;GET;parent=true/commit;cmp=false
+      rename: param: "commit_sha": *"id"  # end-id;GET;parent=true/commit
       op: load: method: *GET  # end-param
     }
   }
@@ -2009,7 +2002,7 @@ guide: {
       op: load: method: *GET  # end-param
     }
     path: "/repos/{owner}/{repo}/git/ref/{ref}": {  # ent=git_ref;orig=git-ref;cmp/resolve=git_ref;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "ref": *"id"  # end-id;GET;parent=true/ref;cmp=false
+      rename: param: "ref": *"id"  # end-id;GET;parent=true/ref
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.object`")|top
     }
@@ -2018,7 +2011,7 @@ guide: {
       op: create: transform: res: *("`body.object`")|top
     }
     path: "/repos/{owner}/{repo}/git/refs/{ref}": {  # ent=git_ref;orig=git-ref;cmp/resolve=git_ref;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "ref": *"id"  # end-id;PATCH;parent=true/ref;cmp=false
+      rename: param: "ref": *"id"  # end-id;PATCH;parent=true/ref
       op: patch: method: *PATCH  # not-load
       op: patch: transform: res: *("`body.object`")|top
     }
@@ -2029,7 +2022,7 @@ guide: {
       op: create: method: *POST  # not-load
     }
     path: "/repos/{owner}/{repo}/git/tags/{tag_sha}": {  # ent=git_tag;orig=git-tag;cmp/resolve=git_tag;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "tag_sha": *"id"  # end-id;GET;parent=true/tag;cmp=false
+      rename: param: "tag_sha": *"id"  # end-id;GET;parent=true/tag
       op: load: method: *GET  # end-param
     }
   }
@@ -2039,7 +2032,7 @@ guide: {
       op: create: method: *POST  # not-load
     }
     path: "/repos/{owner}/{repo}/git/trees/{tree_sha}": {  # ent=git_tree;orig=git-tree;cmp/resolve=git_tree;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "tree_sha": *"id"  # end-id;GET;parent=true/tree;cmp=false
+      rename: param: "tree_sha": *"id"  # end-id;GET;parent=true/tree
       op: load: method: *GET  # end-param
     }
   }
@@ -2053,7 +2046,7 @@ guide: {
 
   entity: gitignore_template: {
     path: "/gitignore/templates/{name}": {  # ent=gitignore_template;orig=gitignore-template;cmp/resolve=gitignore_template;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "name": *"id"  # end-id;GET;parent=true/template;cmp=false
+      rename: param: "name": *"id"  # end-id;GET;parent=true/template
       op: load: method: *GET  # end-param
     }
   }
@@ -2063,7 +2056,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/advisories/{ghsa_id}": {  # ent=global_advisory;orig=global-advisory;cmp/resolve=global_advisory;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "ghsa_id": *"id"  # end-id;GET;parent=true/advisory;cmp=false
+      rename: param: "ghsa_id": *"id"  # end-id;GET;parent=true/advisory
       op: load: method: *GET  # end-param
     }
   }
@@ -2074,7 +2067,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/user/gpg_keys/{gpg_key_id}": {  # ent=gpg_key;orig=gpg-key;cmp/resolve=gpg_key;path=t/p/;path-primary
-      rename: param: "gpg_key_id": *"id"  # end-id;GET;parent=true/gpg_key;cmp=false
+      rename: param: "gpg_key_id": *"id"  # end-id;GET;parent=true/gpg_key
       op: load: method: *GET  # end-param
     }
     path: "/users/{username}/gpg_keys": {  # ent=gpg_key;orig=gpg-key;cmp/resolve=gpg_key;path=t/p/t/;path-primary;has-cmp=gpg-key
@@ -2092,7 +2085,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/hooks/{hook_id}": {  # ent=hook;cmp/resolve=hook;path=t/p/;path-primary
-      rename: param: "hook_id": *"id"  # end-id;GET;parent=true/hook;cmp=false
+      rename: param: "hook_id": *"id"  # end-id;GET;parent=true/hook
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -2100,16 +2093,16 @@ guide: {
 
   entity: hook_delivery: {
     path: "/app/hook/deliveries/{delivery_id}": {  # ent=hook_delivery;orig=hook-delivery;cmp/resolve=hook_delivery;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "delivery_id": *"id"  # end-id;GET;parent=true/delivery;cmp=false
+      rename: param: "delivery_id": *"id"  # end-id;GET;parent=true/delivery
       op: load: method: *GET  # end-param
     }
     path: "/orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}": {  # ent=hook_delivery;orig=hook-delivery;cmp/resolve=hook_delivery;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "delivery_id": *"id"  # end-id;GET;parent=true/delivery;cmp=false
+      rename: param: "delivery_id": *"id"  # end-id;GET;parent=true/delivery
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # end-param
     }
     path: "/repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}": {  # ent=hook_delivery;orig=hook-delivery;cmp/resolve=hook_delivery;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "delivery_id": *"id"  # end-id;GET;parent=true/delivery;cmp=false
+      rename: param: "delivery_id": *"id"  # end-id;GET;parent=true/delivery
       op: load: method: *GET  # end-param
     }
   }
@@ -2168,7 +2161,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/app/installations/{installation_id}": {  # ent=installation;cmp/resolve=installation;path=t/p/;path-primary
-      rename: param: "installation_id": *"id"  # end-id;GET;parent=true/installation;cmp=false
+      rename: param: "installation_id": *"id"  # end-id;GET;parent=true/installation
       op: load: method: *GET  # end-param
     }
     path: "/app/installations/{installation_id}/suspended": {  # ent=installation;tag=app;cmp/resolve=app;path=t/p/t/;verb-on-parent=installation
@@ -2281,7 +2274,7 @@ guide: {
       op: load: transform: res: *("`body.issue`")|top
     }
     path: "/repos/{owner}/{repo}/issues/{issue_number}": {  # ent=issue;cmp/resolve=issue;path=t/p/;path-primary
-      rename: param: "issue_number": *"id"  # end-id;GET;parent=true/issue;cmp=false
+      rename: param: "issue_number": *"id"  # end-id;GET;parent=true/issue
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -2383,7 +2376,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/issue-types/{issue_type_id}": {  # ent=issue_type;orig=issue-type;cmp/resolve=issue_type;path=t/p/;path-primary
-      rename: param: "issue_type_id": *"id"  # end-id;PUT;parent=true/issue_type;cmp=false
+      rename: param: "issue_type_id": *"id"  # end-id;PUT;parent=true/issue_type
       rename: param: "org": *"org_id"  # parent:org
       op: update: method: *PUT  # not-load
     }
@@ -2391,7 +2384,7 @@ guide: {
 
   entity: job: {
     path: "/repos/{owner}/{repo}/actions/jobs/{job_id}": {  # ent=job;cmp/resolve=job;path=t/p/;path-primary
-      rename: param: "job_id": *"id"  # end-id;GET;parent=true/job;cmp=false
+      rename: param: "job_id": *"id"  # end-id;GET;parent=true/job
       op: load: method: *GET  # end-param
     }
   }
@@ -2403,7 +2396,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/user/keys/{key_id}": {  # ent=key;cmp/resolve=key;path=t/p/;path-primary
-      rename: param: "key_id": *"id"  # end-id;GET;parent=true/key;cmp=false
+      rename: param: "key_id": *"id"  # end-id;GET;parent=true/key
       op: load: method: *GET  # end-param
     }
     path: "/users/{username}/keys": {  # ent=key;cmp/resolve=key_simple;path=t/p/t/;path-primary;has-cmp=key-simple;resplit-from-cmp=key
@@ -2417,7 +2410,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/labels/{name}": {  # ent=label;cmp/resolve=label;path=t/p/;path-primary
-      rename: param: "name": *"id"  # end-id;GET;parent=true/label;cmp=false
+      rename: param: "name": *"id"  # end-id;GET;parent=true/label
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -2437,7 +2430,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/licenses/{license}": {  # ent=license;orig=license-simple;cmp/resolve=license;path=t/p/;path-primary
-      rename: param: "license": *"id"  # end-id;GET;parent=true/license;cmp=false
+      rename: param: "license": *"id"  # end-id;GET;parent=true/license
       op: load: method: *GET  # end-param
     }
     path: "/repos/{owner}/{repo}/license": {  # ent=license;orig=license-simple;cmp/resolve=license_content;path=p/t/;path-primary;resplit-from-cmp=license
@@ -2496,7 +2489,7 @@ guide: {
     }
     path: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}": {  # ent=membership;orig=simple-user;cmp/resolve=simple_user;path=t/p/;path-over-cmp
       rename: param: "enterprise-team": *"team_id"  # not-primary
-      rename: param: "username": *"id"  # end-id;GET;parent=true/membership;cmp=false
+      rename: param: "username": *"id"  # end-id;GET;parent=true/membership
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
@@ -2533,7 +2526,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/migrations/{migration_id}": {  # ent=migration;cmp/resolve=migration;path=t/p/;path-primary
-      rename: param: "migration_id": *"id"  # end-id;GET;parent=true/migration;cmp=false
+      rename: param: "migration_id": *"id"  # end-id;GET;parent=true/migration
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # end-param
     }
@@ -2563,7 +2556,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/user/migrations/{migration_id}": {  # ent=migration;cmp/resolve=migration;path=t/p/;path-primary
-      rename: param: "migration_id": *"id"  # end-id;GET;parent=true/migration;cmp=false
+      rename: param: "migration_id": *"id"  # end-id;GET;parent=true/migration
       op: load: method: *GET  # end-param
     }
     path: "/user/migrations/{migration_id}/archive": {  # ent=migration;tag=migration;cmp/resolve=migration;path=t/p/t/;verb-on-parent=migration
@@ -2590,7 +2583,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/milestones/{milestone_number}": {  # ent=milestone;cmp/resolve=milestone;path=t/p/;path-primary
-      rename: param: "milestone_number": *"id"  # end-id;GET;parent=true/milestone;cmp=false
+      rename: param: "milestone_number": *"id"  # end-id;GET;parent=true/milestone
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.creator`")|top
       op: patch: method: *PATCH  # not-load
@@ -2636,7 +2629,7 @@ guide: {
       op: create: method: *POST  # not-load
     }
     path: "/orgs/{org}/settings/network-configurations/{network_configuration_id}": {  # ent=network_configuration;orig=network-configuration;cmp/resolve=network_configuration;path=t/p/;path-primary
-      rename: param: "network_configuration_id": *"id"  # end-id;GET;parent=true/network_configuration;cmp=false
+      rename: param: "network_configuration_id": *"id"  # end-id;GET;parent=true/network_configuration
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -2645,7 +2638,7 @@ guide: {
 
   entity: network_setting: {
     path: "/orgs/{org}/settings/network-settings/{network_settings_id}": {  # ent=network_setting;orig=network-settings;cmp/resolve=network_setting;path=t/p/;path-primary
-      rename: param: "network_settings_id": *"id"  # end-id;GET;parent=true/network_setting;cmp=false
+      rename: param: "network_settings_id": *"id"  # end-id;GET;parent=true/network_setting
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # end-param
     }
@@ -2668,7 +2661,7 @@ guide: {
 
   entity: org: {
     path: "/orgs/{org}": {  # ent=org;orig=organization-full;tag=org;cmp/resolve=org;path=t/p/;path-primary
-      rename: param: "org": *"id"  # end-id;GET;parent=true/org;cmp=false
+      rename: param: "org": *"id"  # end-id;GET;parent=true/org
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.plan`")|top
       op: patch: method: *PATCH  # not-load
@@ -2817,7 +2810,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/user/memberships/orgs/{org}": {  # ent=org;orig=organization-full;cmp/resolve=org_membership;path=t/p/;path-primary;resplit-from-cmp=org
-      rename: param: "org": *"id"  # end-id;GET;parent=true/org;cmp=false
+      rename: param: "org": *"id"  # end-id;GET;parent=true/org
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -2836,7 +2829,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/hooks/{hook_id}": {  # ent=org_hook;orig=org-hook;cmp/resolve=org_hook;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "hook_id": *"id"  # end-id;GET;parent=true/hook;cmp=false
+      rename: param: "hook_id": *"id"  # end-id;GET;parent=true/hook
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -2846,7 +2839,7 @@ guide: {
   entity: org_membership: {
     path: "/orgs/{org}/memberships/{username}": {  # ent=org_membership;orig=org-membership;cmp/resolve=org_membership;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "username": *"id"  # end-id;GET;parent=true/membership;cmp=false
+      rename: param: "username": *"id"  # end-id;GET;parent=true/membership
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
@@ -2874,20 +2867,17 @@ guide: {
     }
   }
 
-  entity: organization: {
-  }
-
   entity: organization_actions_secret: {
     path: "/orgs/{org}/actions/secrets/{secret_name}": {  # ent=organization_actions_secret;orig=organization-actions-secret;cmp/resolve=organization_actions_secret;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret;cmp=false
+      rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret
       op: load: method: *GET  # end-param
     }
   }
 
   entity: organization_actions_variable: {
     path: "/orgs/{org}/actions/variables/{name}": {  # ent=organization_actions_variable;orig=organization-actions-variable;cmp/resolve=organization_actions_variable;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "name": *"id"  # end-id;GET;parent=true/variable;cmp=false
+      rename: param: "name": *"id"  # end-id;GET;parent=true/variable
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # end-param
     }
@@ -2896,7 +2886,7 @@ guide: {
   entity: organization_dependabot_secret: {
     path: "/orgs/{org}/dependabot/secrets/{secret_name}": {  # ent=organization_dependabot_secret;orig=organization-dependabot-secret;cmp/resolve=organization_dependabot_secret;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret;cmp=false
+      rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret
       op: load: method: *GET  # end-param
     }
   }
@@ -2928,7 +2918,7 @@ guide: {
   entity: organization_role: {
     path: "/orgs/{org}/organization-roles/{role_id}": {  # ent=organization_role;orig=organization-role;cmp/resolve=organization_role;path=t/p/;path-primary
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "role_id": *"id"  # end-id;GET;parent=true/organization_role;cmp=false
+      rename: param: "role_id": *"id"  # end-id;GET;parent=true/organization_role
       op: load: method: *GET  # end-param
     }
   }
@@ -3071,7 +3061,7 @@ guide: {
       op: load: method: *GET  # not-list
     }
     path: "/repos/{owner}/{repo}/pages/builds/{build_id}": {  # ent=page_build;orig=page-build;cmp/resolve=page_build;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "build_id": *"id"  # end-id;GET;parent=true/build;cmp=false
+      rename: param: "build_id": *"id"  # end-id;GET;parent=true/build
       op: load: method: *GET  # end-param
     }
   }
@@ -3123,7 +3113,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/import/authors/{author_id}": {  # ent=porter_author;orig=porter-author;cmp/resolve=porter_author;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "author_id": *"id"  # end-id;PATCH;parent=true/author;cmp=false
+      rename: param: "author_id": *"id"  # end-id;PATCH;parent=true/author
       op: patch: method: *PATCH  # not-load
       op: patch: transform: req: "email": *("`reqdata.email`")|top
       op: patch: transform: req: "name": *("`reqdata.name`")|top
@@ -3149,13 +3139,10 @@ guide: {
     }
     path: "/orgs/{org}/private-registries/{secret_name}": {  # ent=private_registry;orig=private-registries;tag=private_registry;cmp/resolve=private_registry;path=t/p/;path-primary
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "secret_name": *"id"  # end-id;PATCH;parent=true/private_registry;cmp=false
+      rename: param: "secret_name": *"id"  # end-id;PATCH;parent=true/private_registry
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
     }
-  }
-
-  entity: private_user: {
   }
 
   entity: project: {
@@ -3171,7 +3158,7 @@ guide: {
       op: remove: method: *DELETE  # not-load
     }
     path: "/projects/{project_id}": {  # ent=project;tag=projects_classic;cmp/resolve=projects_classic;path=t/p/;path-primary
-      rename: param: "project_id": *"id"  # end-id;GET;parent=true/project;cmp=false
+      rename: param: "project_id": *"id"  # end-id;GET;parent=true/project
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.creator`")|top
       op: patch: method: *PATCH  # not-load
@@ -3205,7 +3192,7 @@ guide: {
 
   entity: project_column: {
     path: "/projects/columns/{column_id}": {  # ent=project_column;orig=project-column;cmp/resolve=project_column;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "column_id": *"id"  # end-id;GET;parent=true/column;cmp=false
+      rename: param: "column_id": *"id"  # end-id;GET;parent=true/column
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -3236,14 +3223,14 @@ guide: {
     }
     path: "/orgs/{org}/projectsV2/{project_number}": {  # ent=projects_v2;orig=projects-v2;cmp/resolve=projects_v2;path=t/p/;path-primary
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "project_number": *"id"  # end-id;GET;parent=true/projects_v2;cmp=false
+      rename: param: "project_number": *"id"  # end-id;GET;parent=true/projects_v2
       op: load: method: *GET  # end-param
     }
     path: "/users/{username}/projectsV2": {  # ent=projects_v2;orig=projects-v2;cmp/resolve=projects_v2;path=t/p/t/;path-primary;has-cmp=projects-v2
       op: list: method: *GET  # array
     }
     path: "/users/{username}/projectsV2/{project_number}": {  # ent=projects_v2;orig=projects-v2;cmp/resolve=projects_v2;path=t/p/;path-primary
-      rename: param: "project_number": *"id"  # end-id;GET;parent=true/projects_v2;cmp=false
+      rename: param: "project_number": *"id"  # end-id;GET;parent=true/projects_v2
       op: load: method: *GET  # end-param
     }
   }
@@ -3254,7 +3241,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/projectsV2/{project_number}/fields/{field_id}": {  # ent=projects_v2_field;orig=projects-v2-field;cmp/resolve=projects_v2_field;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "field_id": *"id"  # end-id;GET;parent=true/field;cmp=false
+      rename: param: "field_id": *"id"  # end-id;GET;parent=true/field
       rename: param: "org": *"org_id"  # parent:org
       rename: param: "project_number": *"projects_v2_id"  # not-primary
       op: load: method: *GET  # end-param
@@ -3263,7 +3250,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/users/{username}/projectsV2/{project_number}/fields/{field_id}": {  # ent=projects_v2_field;orig=projects-v2-field;cmp/resolve=projects_v2_field;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "field_id": *"id"  # end-id;GET;parent=true/field;cmp=false
+      rename: param: "field_id": *"id"  # end-id;GET;parent=true/field
       rename: param: "project_number": *"projects_v2_id"  # not-primary
       op: load: method: *GET  # end-param
     }
@@ -3307,19 +3294,6 @@ guide: {
     }
   }
 
-  entity: protected_branch_admin_enforced: {
-    path: "/repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins": {  # ent=protected_branch_admin_enforced;orig=protected-branch-admin-enforced;cmp/resolve=protected_branch_admin_enforced;path=t/;cmp-primary;cmp-infreq
-      rename: param: "branch": *"branch_id"  # parent:branch
-      op: create: method: *POST  # not-load
-      op: load: method: *GET  # not-list
-    }
-    path: "/repos/{owner}/{repo}/branches/{branch}/protection/required_signatures": {  # ent=protected_branch_admin_enforced;orig=protected-branch-admin-enforced;cmp/resolve=protected_branch_admin_enforced;path=t/;cmp-primary;cmp-infreq
-      rename: param: "branch": *"branch_id"  # parent:branch
-      op: create: method: *POST  # not-load
-      op: load: method: *GET  # not-list
-    }
-  }
-
   entity: protected_branch_pull_request_review: {
     path: "/repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews": {  # ent=protected_branch_pull_request_review;orig=protected-branch-pull-request-review;cmp/resolve=protected_branch_pull_request_review;path=t/;cmp-primary;cmp-infreq
       rename: param: "branch": *"branch_id"  # parent:branch
@@ -3347,7 +3321,7 @@ guide: {
       op: remove: method: *DELETE  # not-load
     }
     path: "/repos/{owner}/{repo}/pulls/{pull_number}": {  # ent=pull;orig=pull-request-simple;cmp/resolve=pull;path=t/p/;path-primary
-      rename: param: "pull_number": *"id"  # end-id;GET;parent=true/pull;cmp=false
+      rename: param: "pull_number": *"id"  # end-id;GET;parent=true/pull
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -3374,7 +3348,7 @@ guide: {
     }
     path: "/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}": {  # ent=pull_request_review;orig=pull-request-review-request;cmp/resolve=pull_request_review;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "pull_number": *"pull_id"  # not-primary
-      rename: param: "review_id": *"id"  # end-id;GET;parent=true/review;cmp=false
+      rename: param: "review_id": *"id"  # end-id;GET;parent=true/review
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
@@ -3394,7 +3368,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/pulls/comments/{comment_id}": {  # ent=pull_request_review_comment;orig=pull-request-review-comment;cmp/resolve=pull_request_review_comment;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "comment_id": *"id"  # end-id;GET;parent=true/comment;cmp=false
+      rename: param: "comment_id": *"id"  # end-id;GET;parent=true/comment
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -3412,6 +3386,12 @@ guide: {
     path: "/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers": {  # ent=pull_request_simple;orig=pull-request-simple;cmp/resolve=pull_request_simple;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=pull-request-simple
       op: create: method: *POST  # not-load
       op: remove: method: *DELETE  # not-load
+    }
+  }
+
+  entity: punch_card: {
+    path: "/repos/{owner}/{repo}/stats/punch_card": {  # ent=punch_card;orig=code-frequency-stat;cmp/resolve=code_frequency_stat;path=t/;cmp-shared;path-over-cmp
+      op: list: method: *GET  # array
     }
   }
 
@@ -3434,7 +3414,7 @@ guide: {
       rename: param: "comment_number": *"comment_id"  # not-primary
       rename: param: "discussion_number": *"discussion_id"  # not-primary
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction;cmp=false
+      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction
       rename: param: "team_slug": *"team_id"  # not-primary
       op: remove: method: *DELETE  # not-load
     }
@@ -3448,7 +3428,7 @@ guide: {
     path: "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
       rename: param: "discussion_number": *"discussion_id"  # not-primary
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction;cmp=false
+      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction
       rename: param: "team_slug": *"team_id"  # not-primary
       op: remove: method: *DELETE  # not-load
     }
@@ -3458,7 +3438,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
-      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction;cmp=false
+      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction
       op: remove: method: *DELETE  # not-load
     }
     path: "/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
@@ -3467,7 +3447,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
-      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction;cmp=false
+      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction
       op: remove: method: *DELETE  # not-load
     }
     path: "/repos/{owner}/{repo}/issues/{issue_number}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
@@ -3477,7 +3457,7 @@ guide: {
     }
     path: "/repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
       rename: param: "issue_number": *"issue_id"  # not-primary
-      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction;cmp=false
+      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction
       op: remove: method: *DELETE  # not-load
     }
     path: "/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
@@ -3486,7 +3466,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
-      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction;cmp=false
+      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction
       op: remove: method: *DELETE  # not-load
     }
     path: "/repos/{owner}/{repo}/releases/{release_id}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
@@ -3495,7 +3475,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/releases/{release_id}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
-      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction;cmp=false
+      rename: param: "reaction_id": *"id"  # end-id;DELETE;parent=true/reaction
       op: remove: method: *DELETE  # not-load
     }
     path: "/teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
@@ -3530,7 +3510,7 @@ guide: {
       op: load: method: *GET  # end-param
     }
     path: "/repos/{owner}/{repo}/releases/{release_id}": {  # ent=release;cmp/resolve=release;path=t/p/;path-primary
-      rename: param: "release_id": *"id"  # end-id;GET;parent=true/release;cmp=false
+      rename: param: "release_id": *"id"  # end-id;GET;parent=true/release
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -3538,7 +3518,7 @@ guide: {
 
   entity: release_asset: {
     path: "/repos/{owner}/{repo}/releases/assets/{asset_id}": {  # ent=release_asset;orig=release-asset;cmp/resolve=release_asset;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "asset_id": *"id"  # end-id;GET;parent=true/asset;cmp=false
+      rename: param: "asset_id": *"id"  # end-id;GET;parent=true/asset
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.uploader`")|top
       op: patch: method: *PATCH  # not-load
@@ -3809,7 +3789,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/invitations/{invitation_id}": {  # ent=repository_invitation;orig=repository-invitation;cmp/resolve=repository_invitation;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "invitation_id": *"id"  # end-id;PATCH;parent=true/invitation;cmp=false
+      rename: param: "invitation_id": *"id"  # end-id;PATCH;parent=true/invitation
       op: patch: method: *PATCH  # not-load
     }
     path: "/user/repository_invitations": {  # ent=repository_invitation;orig=repository-invitation;cmp/resolve=repository_invitation;path=t/;path-primary
@@ -3831,7 +3811,7 @@ guide: {
     }
     path: "/orgs/{org}/rulesets/{ruleset_id}": {  # ent=repository_ruleset;orig=repository-ruleset;cmp/resolve=repository_ruleset;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "ruleset_id": *"id"  # end-id;GET;parent=true/ruleset;cmp=false
+      rename: param: "ruleset_id": *"id"  # end-id;GET;parent=true/ruleset
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
@@ -3840,7 +3820,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/rulesets/{ruleset_id}": {  # ent=repository_ruleset;orig=repository-ruleset;cmp/resolve=repository_ruleset;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "ruleset_id": *"id"  # end-id;GET;parent=true/ruleset;cmp=false
+      rename: param: "ruleset_id": *"id"  # end-id;GET;parent=true/ruleset
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
@@ -3850,6 +3830,20 @@ guide: {
     path: "/repos/{owner}/{repo}/subscription": {  # ent=repository_subscription;orig=repository-subscription;cmp/resolve=repository_subscription;path=p/t/;cmp-primary;cmp-infreq
       op: load: method: *GET  # not-list
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: required_signature: {
+    path: "/repos/{owner}/{repo}/branches/{branch}/protection/required_signatures": {  # ent=required_signature;orig=protected-branch-admin-enforced;cmp/resolve=protected_branch_admin_enforced;path=t/;cmp-shared;path-over-cmp
+      rename: param: "branch": *"branch_id"  # parent:branch
+      op: create: method: *POST  # not-load
+      op: load: method: *GET  # not-list
+    }
+  }
+
+  entity: rerun_failed_job: {
+    path: "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs": {  # ent=rerun_failed_job;orig=empty-object;cmp/resolve=empty_object;path=t/p/t/;cmp-shared;path-over-cmp;has-cmp=empty-object
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -3868,14 +3862,14 @@ guide: {
     }
     path: "/orgs/{org}/rulesets/rule-suites/{rule_suite_id}": {  # ent=rule_suite;orig=rule-suites;cmp/resolve=rule_suite;path=t/p/;path-primary
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "rule_suite_id": *"id"  # end-id;GET;parent=true/rule_suite;cmp=false
+      rename: param: "rule_suite_id": *"id"  # end-id;GET;parent=true/rule_suite
       op: load: method: *GET  # end-param
     }
     path: "/repos/{owner}/{repo}/rulesets/rule-suites": {  # ent=rule_suite;orig=rule-suites;cmp/resolve=rule_suite;path=t/;path-primary
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/rulesets/rule-suites/{rule_suite_id}": {  # ent=rule_suite;orig=rule-suites;cmp/resolve=rule_suite;path=t/p/;path-primary
-      rename: param: "rule_suite_id": *"id"  # end-id;GET;parent=true/rule_suite;cmp=false
+      rename: param: "rule_suite_id": *"id"  # end-id;GET;parent=true/rule_suite
       op: load: method: *GET  # end-param
     }
   }
@@ -3907,11 +3901,11 @@ guide: {
   entity: runner: {
     path: "/orgs/{org}/actions/runners/{runner_id}": {  # ent=runner;cmp/resolve=runner;path=t/p/;path-primary
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "runner_id": *"id"  # end-id;GET;parent=true/runner;cmp=false
+      rename: param: "runner_id": *"id"  # end-id;GET;parent=true/runner
       op: load: method: *GET  # end-param
     }
     path: "/repos/{owner}/{repo}/actions/runners/{runner_id}": {  # ent=runner;cmp/resolve=runner;path=t/p/;path-primary
-      rename: param: "runner_id": *"id"  # end-id;GET;parent=true/runner;cmp=false
+      rename: param: "runner_id": *"id"  # end-id;GET;parent=true/runner
       op: load: method: *GET  # end-param
     }
   }
@@ -3933,7 +3927,7 @@ guide: {
     }
     path: "/orgs/{org}/actions/runner-groups/{runner_group_id}": {  # ent=runner_group;orig=runner-groups-org;cmp/resolve=runner_groups_org;path=t/p/;path-primary
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "runner_group_id": *"id"  # end-id;GET;parent=true/runner_group;cmp=false
+      rename: param: "runner_group_id": *"id"  # end-id;GET;parent=true/runner_group
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -3990,7 +3984,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}": {  # ent=secret_scanning_alert;orig=secret-scanning-alert;cmp/resolve=secret_scanning_alert;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "alert_number": *"id"  # end-id;GET;parent=true/alert;cmp=false
+      rename: param: "alert_number": *"id"  # end-id;GET;parent=true/alert
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
@@ -4060,9 +4054,6 @@ guide: {
     }
   }
 
-  entity: simple_classroom: {
-  }
-
   entity: simple_classroom_assignment: {
     path: "/classrooms/{classroom_id}/assignments": {  # ent=simple_classroom_assignment;orig=simple-classroom-assignment;cmp/resolve=simple_classroom_assignment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=simple-classroom-assignment
       op: list: method: *GET  # array
@@ -4085,7 +4076,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/user/ssh_signing_keys/{ssh_signing_key_id}": {  # ent=ssh_signing_key;orig=ssh-signing-key;cmp/resolve=ssh_signing_key;path=t/p/;path-primary
-      rename: param: "ssh_signing_key_id": *"id"  # end-id;GET;parent=true/ssh_signing_key;cmp=false
+      rename: param: "ssh_signing_key_id": *"id"  # end-id;GET;parent=true/ssh_signing_key
       op: load: method: *GET  # end-param
     }
     path: "/users/{username}/ssh_signing_keys": {  # ent=ssh_signing_key;orig=ssh-signing-key;cmp/resolve=ssh_signing_key;path=t/p/t/;path-primary;has-cmp=ssh-signing-key
@@ -4098,7 +4089,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/statuses/{sha}": {  # ent=status;cmp/resolve=status;path=t/p/;path-primary
-      rename: param: "sha": *"id"  # end-id;POST;parent=true/status;cmp=false
+      rename: param: "sha": *"id"  # end-id;POST;parent=true/status
       op: create: method: *POST  # not-load
       op: create: transform: res: *("`body.creator`")|top
     }
@@ -4148,7 +4139,7 @@ guide: {
     }
     path: "/orgs/{org}/teams/{team_slug}": {  # ent=team;tag=team;cmp/resolve=team;path=t/p/;path-primary
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "team_slug": *"id"  # end-id;GET;parent=true/team;cmp=false
+      rename: param: "team_slug": *"id"  # end-id;GET;parent=true/team
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
@@ -4234,7 +4225,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/teams/{team_id}": {  # ent=team;tag=team;cmp/resolve=team;path=t/p/;path-primary
-      rename: param: "team_id": *"id"  # end-id;GET;parent=true/team;cmp=false
+      rename: param: "team_id": *"id"  # end-id;GET;parent=true/team
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
@@ -4327,7 +4318,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/notifications/threads/{thread_id}": {  # ent=thread;cmp/resolve=thread;path=t/p/;path-primary
-      rename: param: "thread_id": *"id"  # end-id;GET;parent=true/thread;cmp=false
+      rename: param: "thread_id": *"id"  # end-id;GET;parent=true/thread
       op: load: method: *GET  # end-param
     }
     path: "/notifications/threads/{thread_id}/subscription": {  # ent=thread;tag=activity;cmp/resolve=activity;path=t/p/t/;verb-on-parent=thread
@@ -4402,14 +4393,14 @@ guide: {
       op: remove: method: *DELETE  # not-load
     }
     path: "/user/{account_id}": {  # ent=user;orig=user-role-assignment;tag=user;cmp/resolve=user;path=t/p/;path-primary
-      rename: param: "account_id": *"id"  # end-id;GET;parent=true/user;cmp=false
+      rename: param: "account_id": *"id"  # end-id;GET;parent=true/user
       op: load: method: *GET  # end-param
     }
     path: "/users": {  # ent=user;orig=user-role-assignment;cmp/resolve=simple_user;path=t/;path-over-cmp
       op: list: method: *GET  # array
     }
     path: "/users/{username}": {  # ent=user;orig=user-role-assignment;tag=user;cmp/resolve=user;path=t/p/;path-primary
-      rename: param: "username": *"id"  # end-id;GET;parent=true/user;cmp=false
+      rename: param: "username": *"id"  # end-id;GET;parent=true/user
       op: load: method: *GET  # end-param
     }
     path: "/users/{username}/attestations/bulk-list": {  # ent=user;orig=user-role-assignment;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
@@ -4437,6 +4428,19 @@ guide: {
     }
     path: "/user/marketplace_purchases/stubbed": {  # ent=user_marketplace_purchase;orig=user-marketplace-purchase;cmp/resolve=user_marketplace_purchase;path=t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array
+    }
+  }
+
+  entity: variable: {
+    path: "/orgs/{org}/actions/variables": {  # ent=variable;orig=empty-object;cmp/resolve=empty_object;path=t/;cmp-shared;path-over-cmp
+      rename: param: "org": *"org_id"  # parent:org
+      op: create: method: *POST  # not-load
+    }
+    path: "/repos/{owner}/{repo}/actions/variables": {  # ent=variable;orig=empty-object;cmp/resolve=empty_object;path=t/;cmp-shared;path-over-cmp
+      op: create: method: *POST  # not-load
+    }
+    path: "/repos/{owner}/{repo}/environments/{environment_name}/variables": {  # ent=variable;orig=empty-object;cmp/resolve=empty_object;path=t/p/t/;cmp-shared;path-over-cmp;has-cmp=empty-object
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -4475,7 +4479,7 @@ guide: {
 
   entity: workflow: {
     path: "/repos/{owner}/{repo}/actions/workflows/{workflow_id}": {  # ent=workflow;cmp/resolve=workflow;path=t/p/;path-primary
-      rename: param: "workflow_id": *"id"  # end-id;GET;parent=true/workflow;cmp=false
+      rename: param: "workflow_id": *"id"  # end-id;GET;parent=true/workflow
       op: load: method: *GET  # end-param
     }
     path: "/repos/{owner}/{repo}/actions/workflows/{workflow_id}/disable": {  # ent=workflow;tag=action;cmp/resolve=action;path=t/p/t/;verb-on-parent=workflow
@@ -4492,7 +4496,7 @@ guide: {
 
   entity: workflow_run: {
     path: "/repos/{owner}/{repo}/actions/runs/{run_id}": {  # ent=workflow_run;orig=workflow-run;cmp/resolve=workflow_run;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "run_id": *"id"  # end-id;GET;parent=true/run;cmp=false
+      rename: param: "run_id": *"id"  # end-id;GET;parent=true/run
       op: load: method: *GET  # end-param
     }
     path: "/repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}": {  # ent=workflow_run;orig=workflow-run;cmp/resolve=workflow_run;path=t/p/;cmp-primary;cmp-infreq

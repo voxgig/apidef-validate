@@ -1668,6 +1668,23 @@
         }
       }
     }
+    attestation: {
+      name: "attestation"
+      path: {
+        "/users/{username}/attestations/{subject_digest}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              subject_digest: "id"
+            }
+          }
+        }
+      }
+    }
     authentication_token: {
       name: "authentication_token"
       path: {
@@ -2229,18 +2246,6 @@
       name: "code_frequency"
       path: {
         "/repos/{owner}/{repo}/stats/code_frequency": {
-          op: {
-            list: {
-              method: "GET"
-            }
-          }
-        }
-      }
-    }
-    code_frequency_stat: {
-      name: "code_frequency_stat"
-      path: {
-        "/repos/{owner}/{repo}/stats/punch_card": {
           op: {
             list: {
               method: "GET"
@@ -4239,18 +4244,6 @@
             }
           }
         }
-        "/orgs/{org}/actions/variables": {
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-          rename: {
-            param: {
-              org: "org_id"
-            }
-          }
-        }
         "/orgs/{org}/dependabot/secrets/{secret_name}": {
           op: {
             update: {
@@ -4291,24 +4284,10 @@
             }
           }
         }
-        "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs": {
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-        }
         "/repos/{owner}/{repo}/actions/secrets/{secret_name}": {
           op: {
             update: {
               method: "PUT"
-            }
-          }
-        }
-        "/repos/{owner}/{repo}/actions/variables": {
-          op: {
-            create: {
-              method: "POST"
             }
           }
         }
@@ -4362,17 +4341,23 @@
             }
           }
         }
-        "/repos/{owner}/{repo}/environments/{environment_name}/variables": {
+      }
+    }
+    enforce_admin: {
+      name: "enforce_admin"
+      path: {
+        "/repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins": {
           op: {
             create: {
               method: "POST"
             }
-          }
-        }
-        "/users/{username}/attestations/{subject_digest}": {
-          op: {
             load: {
               method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              branch: "branch_id"
             }
           }
         }
@@ -7128,11 +7113,6 @@
         }
       }
     }
-    organization: {
-      name: "organization"
-      path: {
-      }
-    }
     organization_actions_secret: {
       name: "organization_actions_secret"
       path: {
@@ -7828,11 +7808,6 @@
         }
       }
     }
-    private_user: {
-      name: "private_user"
-      path: {
-      }
-    }
     project: {
       name: "project"
       path: {
@@ -8210,41 +8185,6 @@
         }
       }
     }
-    protected_branch_admin_enforced: {
-      name: "protected_branch_admin_enforced"
-      path: {
-        "/repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              branch: "branch_id"
-            }
-          }
-        }
-        "/repos/{owner}/{repo}/branches/{branch}/protection/required_signatures": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              branch: "branch_id"
-            }
-          }
-        }
-      }
-    }
     protected_branch_pull_request_review: {
       name: "protected_branch_pull_request_review"
       path: {
@@ -8485,6 +8425,18 @@
             }
             remove: {
               method: "DELETE"
+            }
+          }
+        }
+      }
+    }
+    punch_card: {
+      name: "punch_card"
+      path: {
+        "/repos/{owner}/{repo}/stats/punch_card": {
+          op: {
+            list: {
+              method: "GET"
             }
           }
         }
@@ -9575,6 +9527,38 @@
         }
       }
     }
+    required_signature: {
+      name: "required_signature"
+      path: {
+        "/repos/{owner}/{repo}/branches/{branch}/protection/required_signatures": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              branch: "branch_id"
+            }
+          }
+        }
+      }
+    }
+    rerun_failed_job: {
+      name: "rerun_failed_job"
+      path: {
+        "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+        }
+      }
+    }
     review_comment: {
       name: "review_comment"
       path: {
@@ -10085,11 +10069,6 @@
             }
           }
         }
-      }
-    }
-    simple_classroom: {
-      name: "simple_classroom"
-      path: {
       }
     }
     simple_classroom_assignment: {
@@ -11094,6 +11073,37 @@
         }
       }
     }
+    variable: {
+      name: "variable"
+      path: {
+        "/orgs/{org}/actions/variables": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              org: "org_id"
+            }
+          }
+        }
+        "/repos/{owner}/{repo}/actions/variables": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+        }
+        "/repos/{owner}/{repo}/environments/{environment_name}/variables": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+        }
+      }
+    }
     view: {
       name: "view"
       path: {
@@ -11322,7 +11332,7 @@
 
   metrics: {
     count: {
-      entity: 267
+      entity: 268
       method: 1089
       path: 722
     }
