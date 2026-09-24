@@ -79,7 +79,7 @@ const emptyFieldsGap = "an empty fields block sits before name instead of after 
 const ancestorGap = "ancestor relations are missing"
 
 var goldenSkips = []*goldenSkip{
-	{Glob: "guide/*-final-guide.aontu", Expect: 14, Reason: "the Go guide keeps control, orig, " +
+	{Glob: "guide/*-final-guide.aontu", Expect: 6, Reason: "the Go guide keeps control, orig, " +
 		"tag, why_* and empty action and rename containers that the TypeScript " +
 		"guide, re-read from its aontu source, does not"},
 
@@ -89,14 +89,9 @@ var goldenSkips = []*goldenSkip{
 		"to organization instead of app_definition"},
 	{Glob: "guide/github-*-base-guide.aontu", Expect: 1, Reason: "Go moves /gists to base_gist, " +
 		"/organizations to organization, and /classrooms and PATCH /user elsewhere"},
-	{Glob: "guide/gitlab-*-base-guide.aontu", Expect: 1, Reason: "Go names custom_attribute, " +
-		"participant, starrer and user where TypeScript has " +
-		"api_entities_custom_attribute and api_entities_user_basic"},
+	{Glob: "guide/gitlab-*-base-guide.aontu", Expect: 1, Reason: "Go keeps the quotes on the 30 " +
+		"paths the spec writes as explicit keys (`? \"...\"`), which TypeScript strips"},
 	{Glob: "guide/learnworlds-*-base-guide.aontu", Expect: 1, Reason: "Go finds 29 of the 42 entities"},
-	{Glob: "guide/shortcut-*-base-guide.aontu", Expect: 1, Reason: "Go gives the epic comment " +
-		"paths to comment instead of threaded_comment"},
-	{Glob: "guide/taxonomy-*-base-guide.aontu", Expect: 1, Reason: "Go finds no paginated_taxa " +
-		"and gives its list operations to domain and kingdom"},
 
 	{Glob: "model/cloudsmith-*/*", Expect: 119, Reason: "56 entities are not found; " + ancestorGap +
 		", and " + emptyFieldsGap},
@@ -108,18 +103,14 @@ var goldenSkips = []*goldenSkip{
 	{Glob: "model/foo-*/*-yike.aontu", Expect: 1, Reason: emptyFieldsGap},
 	{Glob: "model/github-*/*", Expect: 240, Reason: ancestorGap + " along with union metadata " +
 		"and some fields, and " + emptyFieldsGap},
-	{Glob: "model/gitlab-*/*", Expect: 232, Reason: "the entity set differs; " + ancestorGap +
+	{Glob: "model/gitlab-*/*", Expect: 231, Reason: "9 entities keep the quotes on explicit-key " +
+		"paths; " + ancestorGap +
 		", and " + emptyFieldsGap},
 	{Glob: "model/learnworlds-*/*", Expect: 24, Reason: "13 entities are not found, and " + ancestorGap},
 	{Glob: "model/petstore-*/*-store.aontu", Expect: 1, Reason: emptyFieldsGap},
 	{Glob: "model/shortcut-*/*", Expect: 15, Reason: ancestorGap + " along with union metadata, " +
-		"the epic comment paths move to comment, and " + emptyFieldsGap},
+		"and " + emptyFieldsGap},
 	{Glob: "model/statuspage-*/*", Expect: 14, Reason: ancestorGap},
-	{Glob: "model/taxonomy-*/*-domain.aontu", Expect: 1, Reason: "carries the list operation " +
-		"of the missing paginated_taxa"},
-	{Glob: "model/taxonomy-*/*-kingdom.aontu", Expect: 1, Reason: "carries the list operation " +
-		"of the missing paginated_taxa"},
-	{Glob: "model/taxonomy-*/*-paginated_taxa.aontu", Expect: 1, Reason: "the entity is not found"},
 }
 
 func findSkip(rel string) *goldenSkip {
