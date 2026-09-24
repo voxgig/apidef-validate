@@ -23,15 +23,14 @@ type Case struct {
 }
 
 // The TypeScript case list minus its GraphQL cases, which the Go module
-// cannot ingest, and minus elementdemo: the Go port does not apply the
-// auth-exchange deactivation that case exists to pin, so it reads
-// /auth/token as an active entity and writes a fifth entity model the corpus
-// has no golden for.
+// cannot ingest.
 var allCases = []Case{
 	{"solar", "1.0.0", "openapi-3.0.0", "yaml"},
 	{"petstore", "1.0.7", "swagger-2.0", "json"},
 	{"taxonomy", "1.0.0", "openapi-3.1.0", "yaml"},
 	{"foo", "1.0.0", "openapi-3.1.0", "yaml"},
+
+	{"elementdemo", "1.0.0", "openapi-3.0.0", "yaml"},
 
 	{"learnworlds", "2", "openapi-3.1.0", "yaml"},
 	{"statuspage", "1.0.0", "openapi-3.0.0", "json"},
@@ -76,39 +75,21 @@ func (skip *goldenSkip) noteDiffers(rel string) {
 }
 
 const emptyFieldsGap = "an empty fields block sits before name instead of after op"
-const ancestorGap = "ancestor relations are missing"
+const ancestorGap = "ancestor relations are missing, partial or out of order"
 
 var goldenSkips = []*goldenSkip{
-	{Glob: "guide/*-final-guide.aontu", Expect: 6, Reason: "the Go guide keeps control, orig, " +
-		"tag, why_* and empty action and rename containers that the TypeScript " +
-		"guide, re-read from its aontu source, does not"},
-
-	{Glob: "guide/cloudsmith-*-base-guide.aontu", Expect: 1, Reason: "Go finds 75 of the 131 entities"},
-	{Glob: "guide/codatplatform-*-base-guide.aontu", Expect: 1, Reason: "Go finds 22 of the 30 entities"},
-	{Glob: "guide/contentfulcma-*-base-guide.aontu", Expect: 1, Reason: "Go gives /organizations " +
-		"to organization instead of app_definition"},
-	{Glob: "guide/github-*-base-guide.aontu", Expect: 1, Reason: "Go moves /gists to base_gist, " +
-		"/organizations to organization, and /classrooms and PATCH /user elsewhere"},
-	{Glob: "guide/gitlab-*-base-guide.aontu", Expect: 1, Reason: "Go keeps the quotes on the 30 " +
-		"paths the spec writes as explicit keys (`? \"...\"`), which TypeScript strips"},
-	{Glob: "guide/learnworlds-*-base-guide.aontu", Expect: 1, Reason: "Go finds 29 of the 42 entities"},
-
-	{Glob: "model/cloudsmith-*/*", Expect: 119, Reason: "56 entities are not found; " + ancestorGap +
-		", and " + emptyFieldsGap},
-	{Glob: "model/codatplatform-*/*", Expect: 23, Reason: "8 entities are not found; " + ancestorGap +
-		", and " + emptyFieldsGap},
-	{Glob: "model/contentfulcma-*/*", Expect: 34, Reason: ancestorGap + ", and " + emptyFieldsGap},
+	{Glob: "model/cloudsmith-*/*", Expect: 58, Reason: ancestorGap + ", and " + emptyFieldsGap},
+	{Glob: "model/codatplatform-*/*", Expect: 12, Reason: ancestorGap + ", and " + emptyFieldsGap},
+	{Glob: "model/contentfulcma-*/*", Expect: 31, Reason: ancestorGap + ", and " + emptyFieldsGap},
 	{Glob: "model/foo-*/*-bar.aontu", Expect: 1, Reason: emptyFieldsGap},
 	{Glob: "model/foo-*/*-qaz.aontu", Expect: 1, Reason: emptyFieldsGap},
 	{Glob: "model/foo-*/*-yike.aontu", Expect: 1, Reason: emptyFieldsGap},
-	{Glob: "model/github-*/*", Expect: 240, Reason: ancestorGap + " along with union metadata " +
-		"and some fields, and " + emptyFieldsGap},
-	{Glob: "model/gitlab-*/*", Expect: 231, Reason: "9 entities keep the quotes on explicit-key " +
-		"paths; " + ancestorGap +
-		", and " + emptyFieldsGap},
-	{Glob: "model/learnworlds-*/*", Expect: 24, Reason: "13 entities are not found, and " + ancestorGap},
+	{Glob: "model/github-*/*", Expect: 239, Reason: ancestorGap + "; union metadata, some " +
+		"fields and a request mapping are missing; and " + emptyFieldsGap},
+	{Glob: "model/gitlab-*/*", Expect: 231, Reason: ancestorGap + ", and " + emptyFieldsGap},
+	{Glob: "model/learnworlds-*/*", Expect: 9, Reason: ancestorGap},
 	{Glob: "model/petstore-*/*-store.aontu", Expect: 1, Reason: emptyFieldsGap},
-	{Glob: "model/shortcut-*/*", Expect: 15, Reason: ancestorGap + " along with union metadata, " +
+	{Glob: "model/shortcut-*/*", Expect: 14, Reason: ancestorGap + "; union metadata is missing; " +
 		"and " + emptyFieldsGap},
 	{Glob: "model/statuspage-*/*", Expect: 14, Reason: ancestorGap},
 }

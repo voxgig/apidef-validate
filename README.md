@@ -14,7 +14,7 @@ where the change shows up as a diff a human can read.
 | `v1/guide/` | the golden guides, one base guide and one final guide per definition, plus the `*-guide.aontu` source each case starts from |
 | `v1/model/<case>/` | the golden entity models, one file per entity |
 | `v1/test/main.test.ts` | the case list and the TypeScript harness |
-| `v1/go/validate_test.go` | the Go harness, with the same case list minus the GraphQL cases and `elementdemo` |
+| `v1/go/validate_test.go` | the Go harness, with the same case list minus the GraphQL cases |
 | `src/main.ts` | the sandbox both TypeScript suites share: a union filesystem that keeps generated output in memory, and the line differ |
 
 A case is named after its definition file, so `petstore-1.0.7-swagger-2.0`
@@ -60,10 +60,8 @@ skipped and the run says so.
 ## Run the Go check
 
 The Go harness runs the Go apidef module over the same definitions, minus
-the GraphQL cases and `elementdemo`: the Go port does not apply the
-auth-exchange deactivation that case exists to pin, so it reads
-`/auth/token` as an active entity and writes a fifth entity model the corpus
-has no golden for. Install Go 1.25 or later, then run:
+the GraphQL cases, which the Go port does not ingest. Install Go 1.25 or
+later, then run:
 
 ```bash
 cd v1

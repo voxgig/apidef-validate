@@ -5,12 +5,6 @@ main: kit: entity: empty_object: {
   alias: field: {}
 
   fields: {
-    attestations: {
-      h: "Attestations"
-      n: "attestations"
-      r: false
-      t: "`$ARRAY`"
-    }
     enable_debug_logging: {
       h: "Enable Debug Logging"
       n: "enable_debug_logging"
@@ -64,13 +58,6 @@ main: kit: entity: empty_object: {
       sh: "CodeQL languages to be analyzed."
       t: "`$ARRAY`"
     }
-    name: {
-      h: "Name"
-      n: "name"
-      r: true
-      sh: "The name of the variable."
-      t: "`$STRING`"
-    }
     query_suite: {
       h: "Query Suite"
       n: "query_suite"
@@ -96,7 +83,7 @@ main: kit: entity: empty_object: {
       h: "Selected Repository Ids"
       n: "selected_repository_ids"
       r: false
-      sh: "An array of repository ids that can access the organization variable."
+      sh: "An array of repository ids that can access the organization secret."
       t: "`$ARRAY`"
     }
     state: {
@@ -120,18 +107,11 @@ main: kit: entity: empty_object: {
       sh: "Whether to use the default template or not."
       t: "`$BOOLEAN`"
     }
-    value: {
-      h: "Value"
-      n: "value"
-      r: true
-      sh: "The value of the variable."
-      t: "`$STRING`"
-    }
     visibility: {
       h: "Visibility"
       n: "visibility"
       r: true
-      sh: "The type of repositories in the organization that can access the variable."
+      sh: "Which type of organization repositories have access to the organization secret."
       t: "`$STRING`"
     }
   }
@@ -264,71 +244,6 @@ main: kit: entity: empty_object: {
             }
             {
               lit: "rerequest"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /repos/{owner}/{repo}/environments/{environment_name}/variables"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "environment_name"
-                or: "environment_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/repos/{owner}/{repo}/environments/{environment_name}/variables"
-          q: {
-            exist: [
-              "environment_name"
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "environments"
-            }
-            {
-              var: "environment_name"
-            }
-            {
-              lit: "variables"
             }
           ]
           t: {
@@ -533,267 +448,6 @@ main: kit: entity: empty_object: {
             }
             {
               lit: "rerun"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "run_id"
-                or: "run_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-              "run_id"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runs"
-            }
-            {
-              var: "run_id"
-            }
-            {
-              lit: "rerun-failed-jobs"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /repos/{owner}/{repo}/actions/variables"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/repos/{owner}/{repo}/actions/variables"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "variables"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /orgs/{org}/actions/variables"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/orgs/{org}/actions/variables"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "variables"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    load: {
-      name: "load"
-      points: [
-        {
-          co: {
-            id: "GET /users/{username}/attestations/{subject_digest}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "subject_digest"
-                or: "subject_digest"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "after"
-                or: "after"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                k: "query"
-                n: "before"
-                or: "before"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                k: "query"
-                n: "predicate_type"
-                or: "predicate_type"
-                r: false
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/users/{username}/attestations/{subject_digest}"
-          q: {
-            exist: [
-              "after"
-              "before"
-              "per_page"
-              "predicate_type"
-              "subject_digest"
-              "username"
-            ]
-          }
-          s: [
-            {
-              lit: "users"
-            }
-            {
-              var: "username"
-            }
-            {
-              lit: "attestations"
-            }
-            {
-              var: "subject_digest"
             }
           ]
           t: {
@@ -1329,8 +983,6 @@ main: kit: entity: empty_object: {
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.check_run")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.check_suite")]
     [path("$.main.kit.entity.repo")]
-    [path("$.main.kit.entity.repo") path("$.main.kit.entity.environment")]
-    [path("$.main.kit.entity.user")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.environment")]
   ]
 

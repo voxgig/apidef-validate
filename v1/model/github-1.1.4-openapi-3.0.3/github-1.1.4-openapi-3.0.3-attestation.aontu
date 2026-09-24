@@ -1,0 +1,132 @@
+# Entity: attestation
+
+main: kit: entity: attestation: {
+
+  alias: field: {}
+
+  fields: {
+    attestations: {
+      h: "Attestations"
+      n: "attestations"
+      r: false
+      t: "`$ARRAY`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "attestation"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /users/{username}/attestations/{subject_digest}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "subject_digest"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "after"
+                or: "after"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "predicate_type"
+                or: "predicate_type"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/users/{username}/attestations/{subject_digest}"
+          q: {
+            exist: [
+              "after"
+              "before"
+              "id"
+              "per_page"
+              "predicate_type"
+              "username"
+            ]
+          }
+          r: {
+            param: {
+              subject_digest: "id"
+            }
+          }
+          s: [
+            {
+              lit: "users"
+            }
+            {
+              var: "username"
+            }
+            {
+              lit: "attestations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.user")]
+  ]
+
+}

@@ -1,0 +1,221 @@
+# Entity: variable
+
+main: kit: entity: variable: {
+
+  alias: field: {}
+
+  fields: {
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "The name of the variable."
+      t: "`$STRING`"
+    }
+    selected_repository_ids: {
+      h: "Selected Repository Ids"
+      n: "selected_repository_ids"
+      r: false
+      sh: "An array of repository ids that can access the organization variable."
+      t: "`$ARRAY`"
+    }
+    value: {
+      h: "Value"
+      n: "value"
+      r: true
+      sh: "The value of the variable."
+      t: "`$STRING`"
+    }
+    visibility: {
+      h: "Visibility"
+      n: "visibility"
+      r: true
+      sh: "The type of repositories in the organization that can access the variable."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "variable"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /repos/{owner}/{repo}/environments/{environment_name}/variables"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "environment_name"
+                or: "environment_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/environments/{environment_name}/variables"
+          q: {
+            exist: [
+              "environment_name"
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "environments"
+            }
+            {
+              var: "environment_name"
+            }
+            {
+              lit: "variables"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /repos/{owner}/{repo}/actions/variables"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/actions/variables"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "variables"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /orgs/{org}/actions/variables"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/actions/variables"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "variables"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.org")]
+    [path("$.main.kit.entity.repo")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.environment")]
+  ]
+
+}
