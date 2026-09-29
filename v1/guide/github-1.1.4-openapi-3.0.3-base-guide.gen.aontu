@@ -1396,11 +1396,9 @@ guide: {
     path: "/repos/{owner}/{repo}/commits/{ref}": {  # ent=commit;cmp/resolve=commit;path=t/p/;path-primary
       rename: param: "ref": *"id"  # end-id;GET;parent=true/commit
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.commit`")|top
     }
     path: "/repos/{owner}/{repo}/merges": {  # ent=commit;cmp/resolve=commit;path=p/t/;cmp-shared;cmp-path;cmp-inpath
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.commit`")|top
     }
     path: "/repos/{owner}/{repo}/pulls/{pull_number}/commits": {  # ent=commit;cmp/resolve=commit;path=t/p/t/;path-primary;has-cmp=commit
       op: list: method: *GET  # array
@@ -2382,7 +2380,6 @@ guide: {
   entity: key: {
     path: "/user/keys": {  # ent=key;cmp/resolve=key;path=t/;path-primary
       op: create: method: *POST  # not-load
-      op: create: transform: req: "key": *("`reqdata`")|top
       op: list: method: *GET  # array
     }
     path: "/user/keys/{key_id}": {  # ent=key;cmp/resolve=key;path=t/p/;path-primary
@@ -2451,14 +2448,12 @@ guide: {
   entity: marketplace_purchase: {
     path: "/marketplace_listing/accounts/{account_id}": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.marketplace_purchase`")|top
     }
     path: "/marketplace_listing/plans/{plan_id}/accounts": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=marketplace-purchase
       op: list: method: *GET  # array
     }
     path: "/marketplace_listing/stubbed/accounts/{account_id}": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.marketplace_purchase`")|top
     }
     path: "/marketplace_listing/stubbed/plans/{plan_id}/accounts": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=marketplace-purchase
       op: list: method: *GET  # array

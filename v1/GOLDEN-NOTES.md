@@ -108,6 +108,32 @@ The TypeScript suite passes 5/5 on the refreshed goldens. In the Go harness
 every guide matches, and the gitlab model skip drops from 231 differing
 goldens to 230, because one more gitlab entity now matches its golden.
 
+## 2026-09-29 — apidef 8.19.0 and go/v0.15.0
+
+The pins move from 8.18.0 to 8.19.0 and from go/v0.14.0 to go/v0.15.0. On
+8.19.0, 64 goldens differ, 244 hunks, in three classes, each from
+voxgig/apidef#102. The three account for every hunk.
+
+1. **A page's own metadata** is not a second candidate beside the page's
+   records. 5 codatplatform lists read `body.results` and 29 learnworlds
+   lists read `body.data`, where they had read the whole page, and the
+   entities built from those operations lose the page's fields: Codat's
+   company no longer carries `links`, `pageNumber`, `pageSize` and
+   `totalResults`.
+2. **A property named after the entity** unwraps a response only when the
+   response is not the entity's own component, and wraps a request only when
+   it is structured and the whole body. Five transforms leave the github
+   guide: the commit load and the merge create read the commit rather than
+   its inner git data, two marketplace account loads read the account rather
+   than its `marketplace_purchase`, and the SSH key create sends its body
+   rather than nesting it under `key`.
+3. **A path placeholder no parameter declares** becomes a required string
+   argument. The taxonomy kingdom load gains `id`, for the `{kingdom_id}`
+   that its dangling parameter reference had left without one.
+
+The TypeScript suite passes 5/5 on the refreshed goldens. The Go harness on
+go/v0.15.0 matches every guide, and its model skips are unchanged.
+
 ## Keeping goldens honest
 
 The lesson from both: a stale golden does not announce itself. It sits there
