@@ -5,25 +5,73 @@ main: kit: entity: component_group_uptime: {
   alias: field: {}
 
   fields: {
-    component_id: {
-      h: "Component Id"
-      n: "component_id"
-      r: false
-      sh: "Component identifier"
-      t: "`$STRING`"
-    }
     id: {
       h: "Id"
       n: "id"
       r: false
+      sh: "Component group identifier"
       t: "`$STRING`"
     }
-    incidents: {
-      h: "Incidents"
-      n: "incidents"
+    major_outage: {
+      fo: "int32"
+      h: "Major Outage"
+      n: "major_outage"
       r: false
-      sh: "Related incidents"
+      sh: "Seconds of major outage"
+      t: "`$INTEGER`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      sh: "Component group display name"
+      t: "`$STRING`"
+    }
+    partial_outage: {
+      fo: "int32"
+      h: "Partial Outage"
+      n: "partial_outage"
+      r: false
+      sh: "Seconds of partial outage"
+      t: "`$INTEGER`"
+    }
+    range_end: {
+      fo: "date-time"
+      h: "Range End"
+      n: "range_end"
+      r: false
+      sh: "End date used for uptime calculation (see the warnings field in the response if this value does not match the end parameter you provided)."
+      t: "`$STRING`"
+    }
+    range_start: {
+      fo: "date-time"
+      h: "Range Start"
+      n: "range_start"
+      r: false
+      sh: "Start date used for uptime calculation (see the warnings field in the response if this value does not match the start parameter you provided)."
+      t: "`$STRING`"
+    }
+    related_events: {
+      h: "Related Events"
+      n: "related_events"
+      r: false
+      sh: "Related incidents by component"
       t: "`$OBJECT`"
+    }
+    uptime_percentage: {
+      fo: "float"
+      h: "Uptime Percentage"
+      n: "uptime_percentage"
+      r: false
+      sh: "Uptime percentage for a component"
+      t: "`$NUMBER`"
+    }
+    warnings: {
+      h: "Warnings"
+      n: "warnings"
+      r: false
+      sh: "Warning messages related to the uptime query that may occur"
+      t: "`$STRING`"
     }
   }
 
@@ -106,7 +154,7 @@ main: kit: entity: component_group_uptime: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.related_events`"
+            res: "`body`"
           }
         }
       ]

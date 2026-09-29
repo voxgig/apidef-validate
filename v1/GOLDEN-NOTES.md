@@ -81,6 +81,33 @@ passes 3/3 and does so repeatably, which is the state a golden suite has to
 be in to be worth anything: a suite that always fails teaches its readers to
 ignore it, and that is how 10 stale goldens became 469.
 
+## 2026-09-29 — apidef 8.18.0 and go/v0.14.0
+
+The pins move from 8.17.0 to 8.18.0 and from go/v0.13.0 to go/v0.14.0. On
+8.18.0, 425 goldens differed, in four classes. Pinning 8.17.2 separated the
+first class from the rest.
+
+1. **The goldens predate 8.17.1 and 8.17.2.** On 8.17.2 alone, 15 goldens in
+   github and gitlab differ, 168 hunks, most of them added `rename: param`
+   lines for GitHub's `{enterprise}` routes, such as `enterprise` to
+   `enterprise_id`. That is the maintainer's release drift, not this change.
+2. **`or` holds a parameter's own name** (voxgig/apidef#100): 1,907 hunks,
+   each an `or:` value. petstore's `pet_id` becomes `petId`, and the GraphQL
+   arguments in linear, github-graphql and shopifystorefront keep their
+   spelling. apidef had written the snakified, depluralized form, which
+   `docs/reference/model.md` never promised, and a generated SDK sent it on
+   the wire.
+3. **A record's one nested object is read whole** (the same PR): 150
+   `transform: res: body.<nested>` lines leave the github, gitlab, shortcut,
+   statuspage and cloudsmith guides, and the entities built from those
+   operations lose the nested object's fields. A GitHub milestone load had
+   returned its creator.
+4. **A count beside a page's records** (the same PR) changes nothing here.
+
+The TypeScript suite passes 5/5 on the refreshed goldens. In the Go harness
+every guide matches, and the gitlab model skip drops from 231 differing
+goldens to 230, because one more gitlab entity now matches its golden.
+
 ## Keeping goldens honest
 
 The lesson from both: a stale golden does not announce itself. It sits there

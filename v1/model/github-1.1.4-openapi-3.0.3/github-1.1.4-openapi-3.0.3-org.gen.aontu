@@ -20,6 +20,13 @@ main: kit: entity: org: {
       sh: "**Endpoint closing down notice.** Please use [code security configurations](https://docs.github.com/rest/code-security/configurations) instead."
       t: "`$BOOLEAN`"
     }
+    archived_at: {
+      fo: "date-time"
+      h: "Archived At"
+      n: "archived_at"
+      r: true
+      t: "`$STRING`"
+    }
     artifact_url: {
       fo: "uri"
       h: "Artifact Url"
@@ -55,6 +62,7 @@ main: kit: entity: org: {
       t: "`$STRING`"
     }
     billing_email: {
+      fo: "email"
       h: "Billing Email"
       n: "billing_email"
       r: false
@@ -62,10 +70,18 @@ main: kit: entity: org: {
       t: "`$STRING`"
     }
     blog: {
+      fo: "uri"
       h: "Blog"
       n: "blog"
       r: false
       t: "`$STRING`"
+    }
+    collaborators: {
+      h: "Collaborators"
+      n: "collaborators"
+      r: false
+      sh: "The number of collaborators on private repositories."
+      t: "`$INTEGER`"
     }
     company: {
       h: "Company"
@@ -75,9 +91,23 @@ main: kit: entity: org: {
       t: "`$STRING`"
     }
     created_at: {
+      fo: "date-time"
       h: "Created At"
       n: "created_at"
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      t: "`$STRING`"
+    }
+    default_repository_branch: {
+      h: "Default Repository Branch"
+      n: "default_repository_branch"
       r: false
+      sh: "The default branch for repositories created in this organization."
       t: "`$STRING`"
     }
     default_repository_permission: {
@@ -122,12 +152,12 @@ main: kit: entity: org: {
       h: "Description"
       n: "description"
       op: {
-        list: {
-          req: true
+        patch: {
+          req: false
           type: "`$STRING`"
         }
       }
-      r: false
+      r: true
       sh: "The description of the company."
       t: "`$STRING`"
     }
@@ -151,7 +181,20 @@ main: kit: entity: org: {
       sh: "Whether the user has direct membership in the organization."
       t: "`$BOOLEAN`"
     }
+    disk_usage: {
+      h: "Disk Usage"
+      n: "disk_usage"
+      r: false
+      t: "`$INTEGER`"
+    }
+    display_commenter_full_name_setting_enabled: {
+      h: "Display Commenter Full Name Setting Enabled"
+      n: "display_commenter_full_name_setting_enabled"
+      r: false
+      t: "`$BOOLEAN`"
+    }
     email: {
+      fo: "email"
       h: "Email"
       n: "email"
       r: false
@@ -172,29 +215,54 @@ main: kit: entity: org: {
       r: true
       t: "`$STRING`"
     }
-    filled_seats: {
-      h: "Filled Seats"
-      n: "filled_seats"
-      r: false
+    followers: {
+      h: "Followers"
+      n: "followers"
+      r: true
+      t: "`$INTEGER`"
+    }
+    following: {
+      h: "Following"
+      n: "following"
+      r: true
       t: "`$INTEGER`"
     }
     has_organization_projects: {
       h: "Has Organization Projects"
       n: "has_organization_projects"
-      r: false
+      op: {
+        patch: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      r: true
       sh: "Whether an organization can use organization projects."
       t: "`$BOOLEAN`"
     }
     has_repository_projects: {
       h: "Has Repository Projects"
       n: "has_repository_projects"
-      r: false
+      op: {
+        patch: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      r: true
       sh: "Whether repositories that belong to the organization can use repository projects."
       t: "`$BOOLEAN`"
     }
     hooks_url: {
       h: "Hooks Url"
       n: "hooks_url"
+      r: true
+      t: "`$STRING`"
+    }
+    html_url: {
+      fo: "uri"
+      h: "Html Url"
+      n: "html_url"
       r: true
       t: "`$STRING`"
     }
@@ -209,6 +277,12 @@ main: kit: entity: org: {
       }
       r: true
       t: "`$INTEGER`"
+    }
+    is_verified: {
+      h: "Is Verified"
+      n: "is_verified"
+      r: false
+      t: "`$BOOLEAN`"
     }
     issues_url: {
       h: "Issues Url"
@@ -235,6 +309,12 @@ main: kit: entity: org: {
       r: false
       sh: "Specifies which types of repositories non-admin organization members can create."
       t: "`$STRING`"
+    }
+    members_can_change_repo_visibility: {
+      h: "Members Can Change Repo Visibility"
+      n: "members_can_change_repo_visibility"
+      r: false
+      t: "`$BOOLEAN`"
     }
     members_can_create_internal_repositories: {
       h: "Members Can Create Internal Repositories"
@@ -285,11 +365,41 @@ main: kit: entity: org: {
       sh: "Whether of non-admin organization members can create repositories."
       t: "`$BOOLEAN`"
     }
+    members_can_create_teams: {
+      h: "Members Can Create Teams"
+      n: "members_can_create_teams"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    members_can_delete_issues: {
+      h: "Members Can Delete Issues"
+      n: "members_can_delete_issues"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    members_can_delete_repositories: {
+      h: "Members Can Delete Repositories"
+      n: "members_can_delete_repositories"
+      r: false
+      t: "`$BOOLEAN`"
+    }
     members_can_fork_private_repositories: {
       h: "Members Can Fork Private Repositories"
       n: "members_can_fork_private_repositories"
       r: false
       sh: "Whether organization members can fork private organization repositories."
+      t: "`$BOOLEAN`"
+    }
+    members_can_invite_outside_collaborators: {
+      h: "Members Can Invite Outside Collaborators"
+      n: "members_can_invite_outside_collaborators"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    members_can_view_dependency_insights: {
+      h: "Members Can View Dependency Insights"
+      n: "members_can_view_dependency_insights"
+      r: false
       t: "`$BOOLEAN`"
     }
     members_url: {
@@ -302,16 +412,12 @@ main: kit: entity: org: {
       h: "Name"
       n: "name"
       op: {
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
-        patch: {
-          req: false
+        create: {
+          req: true
           type: "`$STRING`"
         }
       }
-      r: true
+      r: false
       sh: "The name of the artifact."
       t: "`$STRING`"
     }
@@ -335,6 +441,12 @@ main: kit: entity: org: {
       r: true
       t: "`$STRING`"
     }
+    owned_private_repos: {
+      h: "Owned Private Repos"
+      n: "owned_private_repos"
+      r: false
+      t: "`$INTEGER`"
+    }
     page_info: {
       h: "Page Info"
       n: "page_info"
@@ -356,6 +468,12 @@ main: kit: entity: org: {
       r: true
       t: "`$OBJECT`"
     }
+    plan: {
+      h: "Plan"
+      n: "plan"
+      r: true
+      t: "`$OBJECT`"
+    }
     predicate_type: {
       h: "Predicate Type"
       n: "predicate_type"
@@ -363,10 +481,10 @@ main: kit: entity: org: {
       sh: "Optional filter for fetching attestations with a given predicate type."
       t: "`$STRING`"
     }
-    private_repos: {
-      h: "Private Repos"
-      n: "private_repos"
-      r: true
+    private_gists: {
+      h: "Private Gists"
+      n: "private_gists"
+      r: false
       t: "`$INTEGER`"
     }
     properties: {
@@ -381,11 +499,23 @@ main: kit: entity: org: {
         depth: 3
       }
     }
+    public_gists: {
+      h: "Public Gists"
+      n: "public_gists"
+      r: true
+      t: "`$INTEGER`"
+    }
     public_members_url: {
       h: "Public Members Url"
       n: "public_members_url"
       r: true
       t: "`$STRING`"
+    }
+    public_repos: {
+      h: "Public Repos"
+      n: "public_repos"
+      r: true
+      t: "`$INTEGER`"
     }
     query_suite: {
       h: "Query Suite"
@@ -393,6 +523,12 @@ main: kit: entity: org: {
       r: false
       sh: "CodeQL query suite to be used."
       t: "`$STRING`"
+    }
+    readers_can_create_discussions: {
+      h: "Readers Can Create Discussions"
+      n: "readers_can_create_discussions"
+      r: false
+      t: "`$BOOLEAN`"
     }
     reason: {
       h: "Reason"
@@ -443,12 +579,6 @@ main: kit: entity: org: {
       sh: "The user's membership type in the organization."
       t: "`$STRING`"
     }
-    seats: {
-      h: "Seats"
-      n: "seats"
-      r: false
-      t: "`$INTEGER`"
-    }
     secret_scanning_enabled_for_new_repositories: {
       de: true
       h: "Secret Scanning Enabled For New Repositories"
@@ -461,7 +591,7 @@ main: kit: entity: org: {
       h: "Secret Scanning Push Protection Custom Link"
       n: "secret_scanning_push_protection_custom_link"
       r: false
-      sh: "If `secret_scanning_push_protection_custom_link_enabled` is true, the URL that will be displayed to contributors who are blocked from pushing a secret."
+      sh: "An optional URL string to display to contributors who are blocked from pushing a secret."
       t: "`$STRING`"
     }
     secret_scanning_push_protection_custom_link_enabled: {
@@ -478,12 +608,6 @@ main: kit: entity: org: {
       r: false
       sh: "**Endpoint closing down notice.** Please use [code security configurations](https://docs.github.com/rest/code-security/configurations) instead."
       t: "`$BOOLEAN`"
-    }
-    space: {
-      h: "Space"
-      n: "space"
-      r: true
-      t: "`$INTEGER`"
     }
     state: {
       h: "State"
@@ -518,6 +642,12 @@ main: kit: entity: org: {
       r: false
       t: "`$INTEGER`"
     }
+    total_private_repos: {
+      h: "Total Private Repos"
+      n: "total_private_repos"
+      r: false
+      t: "`$INTEGER`"
+    }
     twitter_username: {
       h: "Twitter Username"
       n: "twitter_username"
@@ -525,10 +655,29 @@ main: kit: entity: org: {
       sh: "The Twitter username of the company."
       t: "`$STRING`"
     }
+    two_factor_requirement_enabled: {
+      h: "Two Factor Requirement Enabled"
+      n: "two_factor_requirement_enabled"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    type: {
+      h: "Type"
+      n: "type"
+      r: true
+      t: "`$STRING`"
+    }
     updated_at: {
+      fo: "date-time"
       h: "Updated At"
       n: "updated_at"
-      r: false
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
       t: "`$STRING`"
     }
     url: {
@@ -1782,7 +1931,7 @@ main: kit: entity: org: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.plan`"
+            res: "`body`"
           }
         }
         {
@@ -1877,7 +2026,7 @@ main: kit: entity: org: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.plan`"
+            res: "`body`"
           }
         }
         {
