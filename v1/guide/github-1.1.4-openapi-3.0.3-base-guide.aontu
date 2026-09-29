@@ -4,7 +4,7 @@
 #   github-1.1.4-openapi-3.0.3-guide.aontu
 
 guide: {
-  metrics: count: entity: 265
+  metrics: count: entity: 267
   metrics: count: path: 722
   metrics: count: method: 1089
 
@@ -596,9 +596,6 @@ guide: {
     }
     path: "/app/hook/deliveries/{delivery_id}/attempts": {  # ent=app;orig=apps;tag=app;cmp/resolve=app;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=apps
       op: create: method: *POST  # not-load
-    }
-    path: "/app/installations": {  # ent=app;orig=apps;cmp/resolve=installation;path=t/;path-primary
-      op: list: method: *GET  # array
     }
     path: "/app/installations/{installation_id}": {  # ent=app;orig=apps;tag=app;cmp/resolve=app;path=t/p/;cmp-primary;cmp-infreq
       op: remove: method: *DELETE  # not-load
@@ -1533,9 +1530,6 @@ guide: {
   }
 
   entity: dependabot: {
-    path: "/organizations": {  # ent=dependabot;cmp/resolve=organization_simple;path=t/;path-primary;resplit-from-cmp=organization
-      op: list: method: *GET  # array
-    }
     path: "/organizations/{org}/dependabot/repository-access": {  # ent=dependabot;tag=dependabot;cmp/resolve=dependabot;path=t/;cmp-primary;cmp-infreq
       action: "repository_access": {}  # ent;dependabot;no-param;repository-access;PATCH
       op: patch: method: *PATCH  # not-load
@@ -2142,6 +2136,9 @@ guide: {
   }
 
   entity: installation: {
+    path: "/app/installations": {  # ent=installation;cmp/resolve=installation;path=t/;path-primary
+      op: list: method: *GET  # array
+    }
     path: "/app/installations/{installation_id}": {  # ent=installation;cmp/resolve=installation;path=t/p/;path-primary
       rename: param: "installation_id": *"id"  # end-id;GET;parent=true/installation
       op: load: method: *GET  # end-param
@@ -2430,21 +2427,24 @@ guide: {
     }
   }
 
+  entity: marketplace_listing_plan: {
+    path: "/marketplace_listing/plans": {  # ent=marketplace_listing_plan;orig=marketplace-listing-plan;cmp/resolve=marketplace_listing_plan;path=t/;cmp-primary;cmp-infreq
+      op: list: method: *GET  # array
+    }
+    path: "/marketplace_listing/stubbed/plans": {  # ent=marketplace_listing_plan;orig=marketplace-listing-plan;cmp/resolve=marketplace_listing_plan;path=t/;cmp-primary;cmp-infreq
+      op: list: method: *GET  # array
+    }
+  }
+
   entity: marketplace_purchase: {
     path: "/marketplace_listing/accounts/{account_id}": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
-    }
-    path: "/marketplace_listing/plans": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_listing_plan;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array
     }
     path: "/marketplace_listing/plans/{plan_id}/accounts": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=marketplace-purchase
       op: list: method: *GET  # array
     }
     path: "/marketplace_listing/stubbed/accounts/{account_id}": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
-    }
-    path: "/marketplace_listing/stubbed/plans": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_listing_plan;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array
     }
     path: "/marketplace_listing/stubbed/plans/{plan_id}/accounts": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=marketplace-purchase
       op: list: method: *GET  # array
@@ -2836,6 +2836,12 @@ guide: {
   entity: org_repo_custom_property_value: {
     path: "/orgs/{org}/properties/values": {  # ent=org_repo_custom_property_value;orig=org-repo-custom-property-values;cmp/resolve=org_repo_custom_property_value;path=t/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
+      op: list: method: *GET  # array
+    }
+  }
+
+  entity: organization: {
+    path: "/organizations": {  # ent=organization;orig=organization-simple;cmp/resolve=organization_simple;path=t/;path-primary;resplit-from-cmp=organization
       op: list: method: *GET  # array
     }
   }

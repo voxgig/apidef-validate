@@ -163,6 +163,45 @@ on go/v0.16.0 every guide matches, and one more cloudsmith and one more
 github entity now match their goldens, so those skips drop from 58 to 57 and
 from 239 to 238.
 
+## 2026-09-29 — apidef 8.21.0 and go/v0.17.0
+
+The pins move from 8.20.0 to 8.21.0 and from go/v0.16.0 to go/v0.17.0. On
+8.21.0, 56 goldens change, in github (22 files), contentful (22),
+learnworlds (10) and cloudsmith (2). They come from voxgig/apidef#107 and
+voxgig/apidef#109.
+
+1. **A list joins a route beneath its item only on the record** (#109, which
+   fixes voxgig/apidef#106). github's marketplace listing plans and stubbed
+   plans return to `marketplace_listing_plan` from `marketplace_purchase`,
+   whose accounts route lists purchases. github's and contentful's
+   `/organizations` return to `organization` from `dependabot` and
+   `app_definition`, the owners of routes beneath an organization. Where a
+   tag names an item's delete and the record names its read, the list now
+   joins the read: github's installations join `installation` rather than
+   `app`, and learnworlds' spaces join `community_space` rather than
+   `community`. github rises from 265 to 267 entities and contentful from 36
+   to 37.
+2. **A page reads its one list of records past what else it holds** (#107,
+   which fixes voxgig/apidef#105). learnworlds' coupon usage list reads
+   `body.payments`.
+3. **An answer only a 202 gives is read** (#107). cloudsmith's file create
+   gains the upload ticket its 202 returns, and github's activity gains the
+   `message` its mark-as-read returns.
+
+The TypeScript suite passes 5/5 on the refreshed goldens. In the Go harness
+on go/v0.17.0 every guide matches. cloudsmith's `file` now matches its golden,
+since its fields block is no longer empty, so that skip drops from 57 to 56.
+contentful's `organization`, `app_definition` and `app_upload`, and github's
+`billing_usage_report` and `dependabot_repository_access_detail`, now
+differ under the known gaps: the entities beneath `/organizations` gain
+`organization` as an ancestor, which the port does not emit, and the new
+`organization` has an empty fields block. Those skips rise from 31 to 34
+and from 238 to 240.
+
+Two of the findings on the 8.20.0 refresh stay open as voxgig/apidef#110:
+github's repository invitations still join `repo`, and gitlab's runner
+registration still joins the runner detail entity.
+
 ## Keeping goldens honest
 
 The lesson from both: a stale golden does not announce itself. It sits there
