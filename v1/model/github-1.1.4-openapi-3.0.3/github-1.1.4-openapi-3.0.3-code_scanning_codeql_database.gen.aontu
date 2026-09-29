@@ -5,13 +5,6 @@ main: kit: entity: code_scanning_codeql_database: {
   alias: field: {}
 
   fields: {
-    avatar_url: {
-      fo: "uri"
-      h: "Avatar Url"
-      n: "avatar_url"
-      r: true
-      t: "`$STRING`"
-    }
     commit_oid: {
       h: "Commit Oid"
       n: "commit_oid"
@@ -34,52 +27,7 @@ main: kit: entity: code_scanning_codeql_database: {
       sh: "The date and time at which the CodeQL database was created, in ISO 8601 format':' YYYY-MM-DDTHH:MM:SSZ."
       t: "`$STRING`"
     }
-    email: {
-      h: "Email"
-      n: "email"
-      r: false
-      t: "`$STRING`"
-    }
-    events_url: {
-      h: "Events Url"
-      n: "events_url"
-      r: true
-      t: "`$STRING`"
-    }
-    followers_url: {
-      fo: "uri"
-      h: "Followers Url"
-      n: "followers_url"
-      r: true
-      t: "`$STRING`"
-    }
-    following_url: {
-      h: "Following Url"
-      n: "following_url"
-      r: true
-      t: "`$STRING`"
-    }
-    gists_url: {
-      h: "Gists Url"
-      n: "gists_url"
-      r: true
-      t: "`$STRING`"
-    }
-    gravatar_id: {
-      h: "Gravatar Id"
-      n: "gravatar_id"
-      r: true
-      t: "`$STRING`"
-    }
-    html_url: {
-      fo: "uri"
-      h: "Html Url"
-      n: "html_url"
-      r: true
-      t: "`$STRING`"
-    }
     id: {
-      fo: "int64"
       h: "Id"
       n: "id"
       r: true
@@ -93,57 +41,12 @@ main: kit: entity: code_scanning_codeql_database: {
       sh: "The language of the CodeQL database."
       t: "`$STRING`"
     }
-    login: {
-      h: "Login"
-      n: "login"
-      r: true
-      t: "`$STRING`"
-    }
     name: {
       h: "Name"
       n: "name"
-      op: {
-        list: {
-          req: true
-          type: "`$STRING`"
-        }
-      }
-      r: false
+      r: true
       sh: "The name of the CodeQL database."
       t: "`$STRING`"
-    }
-    node_id: {
-      h: "Node Id"
-      n: "node_id"
-      r: true
-      t: "`$STRING`"
-    }
-    organizations_url: {
-      fo: "uri"
-      h: "Organizations Url"
-      n: "organizations_url"
-      r: true
-      t: "`$STRING`"
-    }
-    received_events_url: {
-      fo: "uri"
-      h: "Received Events Url"
-      n: "received_events_url"
-      r: true
-      t: "`$STRING`"
-    }
-    repos_url: {
-      fo: "uri"
-      h: "Repos Url"
-      n: "repos_url"
-      r: true
-      t: "`$STRING`"
-    }
-    site_admin: {
-      h: "Site Admin"
-      n: "site_admin"
-      r: true
-      t: "`$BOOLEAN`"
     }
     size: {
       h: "Size"
@@ -151,31 +54,6 @@ main: kit: entity: code_scanning_codeql_database: {
       r: true
       sh: "The size of the CodeQL database file in bytes."
       t: "`$INTEGER`"
-    }
-    starred_at: {
-      h: "Starred At"
-      n: "starred_at"
-      r: false
-      t: "`$STRING`"
-    }
-    starred_url: {
-      h: "Starred Url"
-      n: "starred_url"
-      r: true
-      t: "`$STRING`"
-    }
-    subscriptions_url: {
-      fo: "uri"
-      h: "Subscriptions Url"
-      n: "subscriptions_url"
-      r: true
-      t: "`$STRING`"
-    }
-    type: {
-      h: "Type"
-      n: "type"
-      r: true
-      t: "`$STRING`"
     }
     updated_at: {
       fo: "date-time"
@@ -198,12 +76,6 @@ main: kit: entity: code_scanning_codeql_database: {
       n: "url"
       r: true
       sh: "The URL at which to download the CodeQL database."
-      t: "`$STRING`"
-    }
-    user_view_type: {
-      h: "User View Type"
-      n: "user_view_type"
-      r: false
       t: "`$STRING`"
     }
   }
@@ -290,7 +162,7 @@ main: kit: entity: code_scanning_codeql_database: {
             params: [
               {
                 k: "param"
-                n: "language"
+                n: "id"
                 or: "language"
                 r: true
                 t: "`$STRING`"
@@ -315,10 +187,15 @@ main: kit: entity: code_scanning_codeql_database: {
           o: "/repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"
           q: {
             exist: [
-              "language"
+              "id"
               "owner"
               "repo"
             ]
+          }
+          r: {
+            param: {
+              language: "id"
+            }
           }
           s: [
             {
@@ -340,12 +217,12 @@ main: kit: entity: code_scanning_codeql_database: {
               lit: "databases"
             }
             {
-              var: "language"
+              var: "id"
             }
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.uploader`"
+            res: "`body`"
           }
         }
       ]
@@ -354,7 +231,6 @@ main: kit: entity: code_scanning_codeql_database: {
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.repo")]
   ]
 

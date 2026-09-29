@@ -141,7 +141,6 @@ guide: {
     path: "/orgs/{org}/actions/runners/generate-jitconfig": {  # ent=action;orig=actions;tag=action;cmp/resolve=action;path=t/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.runner`")|top
     }
     path: "/orgs/{org}/actions/runners/{runner_id}": {  # ent=action;orig=actions;tag=action;cmp/resolve=action;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
@@ -207,7 +206,6 @@ guide: {
     path: "/orgs/{org}/settings/billing/actions": {  # ent=action;orig=actions;cmp/resolve=actions_billing_usage;path=t/;path-primary
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.minutes_used_breakdown`")|top
     }
     path: "/repos/{owner}/{repo}/actions/artifacts": {  # ent=action;orig=actions;tag=action;cmp/resolve=action;path=t/;cmp-primary;cmp-infreq
       action: "artifact": {}  # ent;action;no-param;artifacts;GET
@@ -265,7 +263,6 @@ guide: {
     }
     path: "/repos/{owner}/{repo}/actions/runners/generate-jitconfig": {  # ent=action;orig=actions;tag=action;cmp/resolve=action;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.runner`")|top
     }
     path: "/repos/{owner}/{repo}/actions/runners/{runner_id}": {  # ent=action;orig=actions;tag=action;cmp/resolve=action;path=t/p/;cmp-primary;cmp-infreq
       op: remove: method: *DELETE  # not-load
@@ -355,7 +352,6 @@ guide: {
     }
     path: "/users/{username}/settings/billing/actions": {  # ent=action;orig=actions;cmp/resolve=actions_billing_usage;path=t/;path-primary
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.minutes_used_breakdown`")|top
     }
   }
 
@@ -530,6 +526,7 @@ guide: {
 
   entity: add: {
     path: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/add": {  # ent=add;orig=simple-user;cmp/resolve=simple_user;path=t/;path-over-cmp
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       rename: param: "enterprise-team": *"team_id"  # not-primary
       op: create: method: *POST  # not-load
     }
@@ -633,7 +630,6 @@ guide: {
     path: "/repos/{owner}/{repo}/actions/artifacts/{artifact_id}": {  # ent=artifact;cmp/resolve=artifact;path=t/p/;path-primary
       rename: param: "artifact_id": *"id"  # end-id;GET;parent=true/artifact
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.workflow_run`")|top
     }
   }
 
@@ -862,7 +858,6 @@ guide: {
     path: "/classrooms/{classroom_id}": {  # ent=classroom;cmp/resolve=classroom;path=t/p/;path-primary
       rename: param: "classroom_id": *"id"  # end-id;GET;parent=true/classroom
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.organization`")|top
     }
   }
 
@@ -950,7 +945,6 @@ guide: {
     }
     path: "/repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}": {  # ent=code_scanning_analysi;orig=code-scanning-analysis;cmp/resolve=code_scanning_analysi;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.tool`")|top
     }
   }
 
@@ -979,8 +973,8 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/code-scanning/codeql/databases/{language}": {  # ent=code_scanning_codeql_database;orig=code-scanning-codeql-database;cmp/resolve=code_scanning_codeql_database;path=t/p/;cmp-primary;cmp-infreq
+      rename: param: "language": *"id"  # end-id;GET;parent=true/database
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.uploader`")|top
     }
   }
 
@@ -1021,17 +1015,17 @@ guide: {
   entity: code_scanning_variant_analysis_repo_task: {
     path: "/repos/{owner}/{repo}/code-scanning/codeql/variant-analyses/{codeql_variant_analysis_id}/repos/{repo_owner}/{repo_name}": {  # ent=code_scanning_variant_analysis_repo_task;orig=code-scanning-variant-analysis-repo-task;cmp/resolve=code_scanning_variant_analysis_repo_task;path=t/p/p;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.repository`")|top
     }
   }
 
   entity: code_security: {
     path: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}": {  # ent=code_security;orig=code-security;tag=code_security;cmp/resolve=code_security;path=t/p/;cmp-primary;cmp-infreq
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       op: remove: method: *DELETE  # not-load
     }
     path: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}/defaults": {  # ent=code_security;orig=code-security;tag=code_security;cmp/resolve=code_security;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=code-security
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       op: update: method: *PUT  # not-load
-      op: update: transform: res: *("`body.configuration`")|top
     }
     path: "/orgs/{org}/code-security/configurations/detach": {  # ent=code_security;orig=code-security;tag=code_security;cmp/resolve=code_security;path=t/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
@@ -1045,12 +1039,12 @@ guide: {
     path: "/orgs/{org}/code-security/configurations/{configuration_id}/defaults": {  # ent=code_security;orig=code-security;tag=code_security;cmp/resolve=code_security;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=code-security
       rename: param: "org": *"org_id"  # parent:org
       op: update: method: *PUT  # not-load
-      op: update: transform: res: *("`body.configuration`")|top
     }
   }
 
   entity: code_security_configuration: {
     path: "/enterprises/{enterprise}/code-security/configurations": {  # ent=code_security_configuration;orig=code-security-configuration;cmp/resolve=code_security_configuration;path=t/;cmp-primary;cmp-infreq
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       op: create: method: *POST  # not-load
       op: create: transform: req: "advanced_security": *("`reqdata.advanced_security`")|top
       op: create: transform: req: "code_scanning_default_setup": *("`reqdata.code_scanning_default_setup`")|top
@@ -1078,6 +1072,7 @@ guide: {
     }
     path: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}": {  # ent=code_security_configuration;orig=code-security-configuration;cmp/resolve=code_security_configuration;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "configuration_id": *"id"  # end-id;GET;parent=true/configuration
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: patch: transform: req: "advanced_security": *("`reqdata.advanced_security`")|top
@@ -1104,6 +1099,7 @@ guide: {
     }
     path: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}/attach": {  # ent=code_security_configuration;orig=code-security-configuration;tag=code_security;cmp/resolve=code_security;path=t/p/t/;verb-on-parent=code_security_configuration
       action: "attach": {}  # ent;code_security_configuration;verb-on-parent;attach;POST
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       op: create: method: *POST  # not-load
       op: create: transform: req: "scope": *("`reqdata.scope`")|top
     }
@@ -1180,6 +1176,7 @@ guide: {
 
   entity: code_security_configuration_repository: {
     path: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}/repositories": {  # ent=code_security_configuration_repository;orig=code-security-configuration-repositories;cmp/resolve=code_security_configuration_repository;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=code-security-configuration-repositories
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/code-security/configurations/{configuration_id}/repositories": {  # ent=code_security_configuration_repository;orig=code-security-configuration-repositories;cmp/resolve=code_security_configuration_repository;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=code-security-configuration-repositories
@@ -1190,6 +1187,7 @@ guide: {
 
   entity: code_security_default_configuration: {
     path: "/enterprises/{enterprise}/code-security/configurations/defaults": {  # ent=code_security_default_configuration;orig=code-security-default-configurations;cmp/resolve=code_security_default_configuration;path=t/;cmp-primary;cmp-infreq
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/code-security/configurations/defaults": {  # ent=code_security_default_configuration;orig=code-security-default-configurations;cmp/resolve=code_security_default_configuration;path=t/;cmp-primary;cmp-infreq
@@ -1398,11 +1396,9 @@ guide: {
     path: "/repos/{owner}/{repo}/commits/{ref}": {  # ent=commit;cmp/resolve=commit;path=t/p/;path-primary
       rename: param: "ref": *"id"  # end-id;GET;parent=true/commit
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.commit`")|top
     }
     path: "/repos/{owner}/{repo}/merges": {  # ent=commit;cmp/resolve=commit;path=p/t/;cmp-shared;cmp-path;cmp-inpath
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.commit`")|top
     }
     path: "/repos/{owner}/{repo}/pulls/{pull_number}/commits": {  # ent=commit;cmp/resolve=commit;path=t/p/t/;path-primary;has-cmp=commit
       op: list: method: *GET  # array
@@ -1439,18 +1435,15 @@ guide: {
   entity: community_profile: {
     path: "/repos/{owner}/{repo}/community/profile": {  # ent=community_profile;orig=community-profile;cmp/resolve=community_profile;path=t/;cmp-primary;cmp-infreq
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.files`")|top
     }
   }
 
   entity: content_file: {
     path: "/repos/{owner}/{repo}/readme": {  # ent=content_file;orig=content-file;cmp/resolve=content_file;path=p/t/;cmp-primary;cmp-infreq
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body._links`")|top
     }
     path: "/repos/{owner}/{repo}/readme/{dir}": {  # ent=content_file;orig=content-file;cmp/resolve=content_file;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body._links`")|top
     }
   }
 
@@ -1495,7 +1488,6 @@ guide: {
     path: "/orgs/{org}/copilot/billing": {  # ent=copilot_organization_detail;orig=copilot-organization-details;cmp/resolve=copilot_organization_detail;path=t/;cmp-primary;cmp-infreq
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.seat_breakdown`")|top
     }
   }
 
@@ -1596,6 +1588,7 @@ guide: {
 
   entity: dependabot_alert_with_repository: {
     path: "/enterprises/{enterprise}/dependabot/alerts": {  # ent=dependabot_alert_with_repository;orig=dependabot-alert-with-repository;cmp/resolve=dependabot_alert_with_repository;path=t/;cmp-primary;cmp-infreq
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/dependabot/alerts": {  # ent=dependabot_alert_with_repository;orig=dependabot-alert-with-repository;cmp/resolve=dependabot_alert_with_repository;path=t/;cmp-primary;cmp-infreq
@@ -1696,13 +1689,11 @@ guide: {
   entity: deployment_protection_rule: {
     path: "/repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules": {  # ent=deployment_protection_rule;orig=deployment-protection-rule;cmp/resolve=deployment_protection_rule;path=t/p/t/;path-primary;has-cmp=deployment-protection-rule
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.app`")|top
     }
     path: "/repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}": {  # ent=deployment_protection_rule;orig=deployment-protection-rule;cmp/resolve=deployment_protection_rule;path=t/p/;path-primary
       rename: param: "environment_name": *"environment_id"  # not-primary
       rename: param: "protection_rule_id": *"id"  # end-id;GET;parent=true/deployment_protection_rule
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.app`")|top
     }
   }
 
@@ -1806,10 +1797,12 @@ guide: {
 
   entity: enterprise_team: {
     path: "/enterprises/{enterprise}/teams": {  # ent=enterprise_team;orig=enterprise-team;cmp/resolve=enterprise_team;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=enterprise-team
+      rename: param: "enterprise": *"id"  # action-parent:enterprise_team
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
     path: "/enterprises/{enterprise}/teams/{team_slug}": {  # ent=enterprise_team;orig=enterprise-team;tag=enterprise_team;cmp/resolve=enterprise_team;path=t/p/;cmp-primary;cmp-infreq
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       rename: param: "team_slug": *"id"  # end-id;GET;parent=true/team
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -1819,6 +1812,7 @@ guide: {
 
   entity: enterprise_team_membership: {
     path: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}": {  # ent=enterprise_team_membership;orig=enterprise-team-memberships;tag=enterprise_team_membership;cmp/resolve=enterprise_team_membership;path=t/p/;cmp-primary;cmp-infreq
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       rename: param: "enterprise-team": *"team_id"  # not-primary
       rename: param: "username": *"id"  # end-id;DELETE;parent=true/membership
       op: remove: method: *DELETE  # not-load
@@ -1954,15 +1948,12 @@ guide: {
     path: "/gists/{gist_id}/comments": {  # ent=gist_comment;orig=gist-comment;cmp/resolve=gist_comment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=gist-comment
       rename: param: "gist_id": *"id"  # action-parent:gist_comment
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.user`")|top
       op: list: method: *GET  # array
     }
     path: "/gists/{gist_id}/comments/{comment_id}": {  # ent=gist_comment;orig=gist-comment;cmp/resolve=gist_comment;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "comment_id": *"id"  # end-id;GET;parent=true/comment
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.user`")|top
       op: patch: method: *PATCH  # not-load
-      op: patch: transform: res: *("`body.user`")|top
     }
   }
 
@@ -2004,16 +1995,13 @@ guide: {
     path: "/repos/{owner}/{repo}/git/ref/{ref}": {  # ent=git_ref;orig=git-ref;cmp/resolve=git_ref;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "ref": *"id"  # end-id;GET;parent=true/ref
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.object`")|top
     }
     path: "/repos/{owner}/{repo}/git/refs": {  # ent=git_ref;orig=git-ref;cmp/resolve=git_ref;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.object`")|top
     }
     path: "/repos/{owner}/{repo}/git/refs/{ref}": {  # ent=git_ref;orig=git-ref;cmp/resolve=git_ref;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "ref": *"id"  # end-id;PATCH;parent=true/ref
       op: patch: method: *PATCH  # not-load
-      op: patch: transform: res: *("`body.object`")|top
     }
   }
 
@@ -2392,7 +2380,6 @@ guide: {
   entity: key: {
     path: "/user/keys": {  # ent=key;cmp/resolve=key;path=t/;path-primary
       op: create: method: *POST  # not-load
-      op: create: transform: req: "key": *("`reqdata`")|top
       op: list: method: *GET  # array
     }
     path: "/user/keys/{key_id}": {  # ent=key;cmp/resolve=key;path=t/p/;path-primary
@@ -2461,14 +2448,12 @@ guide: {
   entity: marketplace_purchase: {
     path: "/marketplace_listing/accounts/{account_id}": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.marketplace_purchase`")|top
     }
     path: "/marketplace_listing/plans/{plan_id}/accounts": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=marketplace-purchase
       op: list: method: *GET  # array
     }
     path: "/marketplace_listing/stubbed/accounts/{account_id}": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.marketplace_purchase`")|top
     }
     path: "/marketplace_listing/stubbed/plans/{plan_id}/accounts": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=marketplace-purchase
       op: list: method: *GET  # array
@@ -2484,10 +2469,12 @@ guide: {
 
   entity: membership: {
     path: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships": {  # ent=membership;orig=simple-user;cmp/resolve=simple_user;path=t/p/t/;path-over-cmp;has-cmp=simple-user
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       rename: param: "enterprise-team": *"enterprise_team"  # snake-case
       op: list: method: *GET  # array
     }
     path: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}": {  # ent=membership;orig=simple-user;cmp/resolve=simple_user;path=t/p/;path-over-cmp
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       rename: param: "enterprise-team": *"team_id"  # not-primary
       rename: param: "username": *"id"  # end-id;GET;parent=true/membership
       op: load: method: *GET  # end-param
@@ -2579,15 +2566,12 @@ guide: {
   entity: milestone: {
     path: "/repos/{owner}/{repo}/milestones": {  # ent=milestone;cmp/resolve=milestone;path=p/t/;path-primary
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.creator`")|top
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/milestones/{milestone_number}": {  # ent=milestone;cmp/resolve=milestone;path=t/p/;path-primary
       rename: param: "milestone_number": *"id"  # end-id;GET;parent=true/milestone
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.creator`")|top
       op: patch: method: *PATCH  # not-load
-      op: patch: transform: res: *("`body.creator`")|top
     }
   }
 
@@ -2663,9 +2647,7 @@ guide: {
     path: "/orgs/{org}": {  # ent=org;orig=organization-full;tag=org;cmp/resolve=org;path=t/p/;path-primary
       rename: param: "org": *"id"  # end-id;GET;parent=true/org
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.plan`")|top
       op: patch: method: *PATCH  # not-load
-      op: patch: transform: res: *("`body.plan`")|top
       op: remove: method: *DELETE  # not-load
     }
     path: "/orgs/{org}/artifacts/metadata/storage-record": {  # ent=org;orig=organization-full;tag=org;cmp/resolve=org;path=t/;cmp-primary;cmp-infreq
@@ -2899,7 +2881,6 @@ guide: {
     path: "/orgs/{org}/invitations": {  # ent=organization_invitation;orig=organization-invitation;cmp/resolve=organization_invitation;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=organization-invitation
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.inviter`")|top
       op: list: method: *GET  # array
     }
   }
@@ -2925,6 +2906,7 @@ guide: {
 
   entity: organization_secret_scanning_alert: {
     path: "/enterprises/{enterprise}/secret-scanning/alerts": {  # ent=organization_secret_scanning_alert;orig=organization-secret-scanning-alert;cmp/resolve=organization_secret_scanning_alert;path=t/;cmp-primary;cmp-infreq
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/secret-scanning/alerts": {  # ent=organization_secret_scanning_alert;orig=organization-secret-scanning-alert;cmp/resolve=organization_secret_scanning_alert;path=t/;cmp-primary;cmp-infreq
@@ -2967,7 +2949,6 @@ guide: {
       rename: param: "org": *"org_id"  # parent:org
       rename: param: "package_type": *"package_id"  # not-primary
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.metadata`")|top
       op: remove: method: *DELETE  # not-load
     }
     path: "/orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore": {  # ent=package;tag=package;cmp/resolve=package;path=t/p/t/;verb-on-parent=package
@@ -3002,7 +2983,6 @@ guide: {
     path: "/user/packages/{package_type}/{package_name}/versions/{package_version_id}": {  # ent=package;tag=package;cmp/resolve=package;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "package_type": *"package_id"  # not-primary
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.metadata`")|top
       op: remove: method: *DELETE  # not-load
     }
     path: "/user/packages/{package_type}/{package_name}/versions/{package_version_id}/restore": {  # ent=package;tag=package;cmp/resolve=package;path=t/p/t/;verb-on-parent=package
@@ -3032,7 +3012,6 @@ guide: {
     path: "/users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}": {  # ent=package;tag=package;cmp/resolve=package;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "package_type": *"package_id"  # not-primary
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.metadata`")|top
       op: remove: method: *DELETE  # not-load
     }
     path: "/users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore": {  # ent=package;tag=package;cmp/resolve=package;path=t/p/t/;verb-on-parent=package
@@ -3075,7 +3054,6 @@ guide: {
   entity: page_deployment: {
     path: "/repos/{owner}/{repo}/pages/deployments": {  # ent=page_deployment;orig=page-deployment;cmp/resolve=page_deployment;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.id`")|top
     }
   }
 
@@ -3149,7 +3127,6 @@ guide: {
     path: "/orgs/{org}/projects": {  # ent=project;cmp/resolve=project;path=t/p/t/;path-primary;has-cmp=project
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.creator`")|top
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/projectsV2/{project_number}/items/{item_id}": {  # ent=project;tag=project;cmp/resolve=project;path=t/p/;cmp-primary;cmp-infreq
@@ -3160,19 +3137,15 @@ guide: {
     path: "/projects/{project_id}": {  # ent=project;tag=projects_classic;cmp/resolve=projects_classic;path=t/p/;path-primary
       rename: param: "project_id": *"id"  # end-id;GET;parent=true/project
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.creator`")|top
       op: patch: method: *PATCH  # not-load
-      op: patch: transform: res: *("`body.creator`")|top
       op: remove: method: *DELETE  # not-load
     }
     path: "/repos/{owner}/{repo}/projects": {  # ent=project;cmp/resolve=project;path=p/t/;path-primary
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.creator`")|top
       op: list: method: *GET  # array
     }
     path: "/user/projects": {  # ent=project;cmp/resolve=project;path=t/;path-primary
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.creator`")|top
     }
     path: "/users/{username}/projects": {  # ent=project;cmp/resolve=project;path=t/p/t/;path-primary;has-cmp=project
       op: list: method: *GET  # array
@@ -3186,7 +3159,6 @@ guide: {
   entity: project_collaborator_permission: {
     path: "/projects/{project_id}/collaborators/{username}/permission": {  # ent=project_collaborator_permission;orig=project-collaborator-permission;cmp/resolve=project_collaborator_permission;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=project-collaborator-permission
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.user`")|top
     }
   }
 
@@ -3407,7 +3379,6 @@ guide: {
       rename: param: "org": *"org_id"  # parent:org
       rename: param: "team_slug": *"team_id"  # not-primary
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.user`")|top
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
@@ -3422,7 +3393,6 @@ guide: {
       rename: param: "org": *"org_id"  # parent:org
       rename: param: "team_slug": *"team_id"  # not-primary
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.user`")|top
       op: list: method: *GET  # array
     }
     path: "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
@@ -3434,7 +3404,6 @@ guide: {
     }
     path: "/repos/{owner}/{repo}/comments/{comment_id}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.user`")|top
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
@@ -3443,7 +3412,6 @@ guide: {
     }
     path: "/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.user`")|top
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
@@ -3452,7 +3420,6 @@ guide: {
     }
     path: "/repos/{owner}/{repo}/issues/{issue_number}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.user`")|top
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
@@ -3462,7 +3429,6 @@ guide: {
     }
     path: "/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.user`")|top
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
@@ -3471,7 +3437,6 @@ guide: {
     }
     path: "/repos/{owner}/{repo}/releases/{release_id}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.user`")|top
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/{repo}/releases/{release_id}/reactions/{reaction_id}": {  # ent=reaction;tag=reaction;cmp/resolve=reaction;path=t/p/;path-primary
@@ -3481,12 +3446,10 @@ guide: {
     path: "/teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
       rename: param: "discussion_number": *"discussion_id"  # not-primary
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.user`")|top
       op: list: method: *GET  # array
     }
     path: "/teams/{team_id}/discussions/{discussion_number}/reactions": {  # ent=reaction;cmp/resolve=reaction;path=t/p/t/;path-primary;has-cmp=reaction
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.user`")|top
       op: list: method: *GET  # array
     }
   }
@@ -3520,14 +3483,11 @@ guide: {
     path: "/repos/{owner}/{repo}/releases/assets/{asset_id}": {  # ent=release_asset;orig=release-asset;cmp/resolve=release_asset;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "asset_id": *"id"  # end-id;GET;parent=true/asset
       op: load: method: *GET  # end-param
-      op: load: transform: res: *("`body.uploader`")|top
       op: patch: method: *PATCH  # not-load
-      op: patch: transform: res: *("`body.uploader`")|top
     }
     path: "/repos/{owner}/{repo}/releases/{release_id}/assets": {  # ent=release_asset;orig=release-asset;cmp/resolve=release_asset;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=release-asset
       rename: param: "release_id": *"id"  # action-parent:release_asset
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.uploader`")|top
       op: list: method: *GET  # array
     }
   }
@@ -3540,6 +3500,7 @@ guide: {
 
   entity: remove: {
     path: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove": {  # ent=remove;orig=simple-user;cmp/resolve=simple_user;path=t/;path-over-cmp
+      rename: param: "enterprise": *"enterprise_id"  # parent:enterprise
       rename: param: "enterprise-team": *"team_id"  # not-primary
       op: create: method: *POST  # not-load
     }
@@ -3777,7 +3738,6 @@ guide: {
   entity: repository_collaborator_permission: {
     path: "/repos/{owner}/{repo}/collaborators/{username}/permission": {  # ent=repository_collaborator_permission;orig=repository-collaborator-permission;cmp/resolve=repository_collaborator_permission;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=repository-collaborator-permission
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.user`")|top
     }
   }
 
@@ -4091,7 +4051,6 @@ guide: {
     path: "/repos/{owner}/{repo}/statuses/{sha}": {  # ent=status;cmp/resolve=status;path=t/p/;path-primary
       rename: param: "sha": *"id"  # end-id;POST;parent=true/status
       op: create: method: *POST  # not-load
-      op: create: transform: res: *("`body.creator`")|top
     }
   }
 
@@ -4363,7 +4322,6 @@ guide: {
     path: "/user": {  # ent=user;orig=user-role-assignment;tag=user;cmp/resolve=user;path=t/;path-primary
       op: load: method: *GET  # not-list
       op: patch: method: *PATCH  # not-load
-      op: patch: transform: res: *("`body.plan`")|top
     }
     path: "/user/blocks/{username}": {  # ent=user;orig=user-role-assignment;tag=user;cmp/resolve=user;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
@@ -4454,22 +4412,16 @@ guide: {
   entity: webhook_config: {
     path: "/app/hook/config": {  # ent=webhook_config;orig=webhook-config;cmp/resolve=webhook_config;path=t/;cmp-primary;cmp-infreq
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.insecure_ssl`")|top
       op: patch: method: *PATCH  # not-load
-      op: patch: transform: res: *("`body.insecure_ssl`")|top
     }
     path: "/orgs/{org}/hooks/{hook_id}/config": {  # ent=webhook_config;orig=webhook-config;cmp/resolve=webhook_config;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=webhook-config
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.insecure_ssl`")|top
       op: patch: method: *PATCH  # not-load
-      op: patch: transform: res: *("`body.insecure_ssl`")|top
     }
     path: "/repos/{owner}/{repo}/hooks/{hook_id}/config": {  # ent=webhook_config;orig=webhook-config;cmp/resolve=webhook_config;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=webhook-config
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.insecure_ssl`")|top
       op: patch: method: *PATCH  # not-load
-      op: patch: transform: res: *("`body.insecure_ssl`")|top
       op: patch: transform: req: "content_type": *("`reqdata.content_type`")|top
       op: patch: transform: req: "insecure_ssl": *("`reqdata.insecure_ssl`")|top
       op: patch: transform: req: "secret": *("`reqdata.secret`")|top
@@ -4519,7 +4471,6 @@ guide: {
   entity: workflow_run_usage: {
     path: "/repos/{owner}/{repo}/actions/runs/{run_id}/timing": {  # ent=workflow_run_usage;orig=workflow-run-usage;cmp/resolve=workflow_run_usage;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=workflow-run-usage
       op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.billable`")|top
     }
   }
 

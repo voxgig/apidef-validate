@@ -86,7 +86,7 @@ var goldenSkips = []*goldenSkip{
 	{Glob: "model/foo-*/*-yike.aontu", Expect: 1, Reason: emptyFieldsGap},
 	{Glob: "model/github-*/*", Expect: 239, Reason: ancestorGap + "; union metadata, some " +
 		"fields and a request mapping are missing; and " + emptyFieldsGap},
-	{Glob: "model/gitlab-*/*", Expect: 231, Reason: ancestorGap + ", and " + emptyFieldsGap},
+	{Glob: "model/gitlab-*/*", Expect: 230, Reason: ancestorGap + ", and " + emptyFieldsGap},
 	{Glob: "model/learnworlds-*/*", Expect: 9, Reason: ancestorGap},
 	{Glob: "model/petstore-*/*-store.aontu", Expect: 1, Reason: emptyFieldsGap},
 	{Glob: "model/shortcut-*/*", Expect: 14, Reason: ancestorGap + "; union metadata is missing; " +

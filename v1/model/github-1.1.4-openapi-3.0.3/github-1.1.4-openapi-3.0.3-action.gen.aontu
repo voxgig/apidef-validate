@@ -5,27 +5,6 @@ main: kit: entity: action: {
   alias: field: {}
 
   fields: {
-    MACOS: {
-      h: "Macos"
-      n: "MACOS"
-      r: false
-      sh: "Total minutes used on macOS runner machines."
-      t: "`$INTEGER`"
-    }
-    UBUNTU: {
-      h: "Ubuntu"
-      n: "UBUNTU"
-      r: false
-      sh: "Total minutes used on Ubuntu runner machines."
-      t: "`$INTEGER`"
-    }
-    WINDOWS: {
-      h: "Windows"
-      n: "WINDOWS"
-      r: false
-      sh: "Total minutes used on Windows runner machines."
-      t: "`$INTEGER`"
-    }
     access_level: {
       h: "Access Level"
       n: "access_level"
@@ -676,6 +655,13 @@ main: kit: entity: action: {
       sh: "Provides details of a hosted runner image"
       t: "`$OBJECT`"
     }
+    included_minutes: {
+      h: "Included Minutes"
+      n: "included_minutes"
+      r: true
+      sh: "The amount of free GitHub Actions minutes available."
+      t: "`$INTEGER`"
+    }
     inputs: {
       h: "Inputs"
       n: "inputs"
@@ -788,13 +774,6 @@ main: kit: entity: action: {
       sh: "Provides details of a particular machine spec."
       t: "`$OBJECT`"
     }
-    macos_12_core: {
-      h: "Macos 12 Core"
-      n: "macos_12_core"
-      r: false
-      sh: "Total minutes used on macOS 12 core runner machines."
-      t: "`$INTEGER`"
-    }
     master_branch: {
       h: "Master Branch"
       n: "master_branch"
@@ -841,6 +820,12 @@ main: kit: entity: action: {
       n: "milestones_url"
       r: true
       t: "`$STRING`"
+    }
+    minutes_used_breakdown: {
+      h: "Minutes Used Breakdown"
+      n: "minutes_used_breakdown"
+      r: true
+      t: "`$OBJECT`"
     }
     mirror_url: {
       fo: "uri"
@@ -1362,17 +1347,24 @@ main: kit: entity: action: {
       r: false
       t: "`$ARRAY`"
     }
-    total: {
-      h: "Total"
-      n: "total"
-      r: false
-      sh: "Total minutes used on all runner machines."
-      t: "`$INTEGER`"
-    }
     total_count: {
       h: "Total Count"
       n: "total_count"
       r: true
+      t: "`$INTEGER`"
+    }
+    total_minutes_used: {
+      h: "Total Minutes Used"
+      n: "total_minutes_used"
+      r: true
+      sh: "The sum of the free and paid GitHub Actions minutes used."
+      t: "`$INTEGER`"
+    }
+    total_paid_minutes_used: {
+      h: "Total Paid Minutes Used"
+      n: "total_paid_minutes_used"
+      r: true
+      sh: "The total paid GitHub Actions minutes used."
       t: "`$INTEGER`"
     }
     trees_url: {
@@ -1394,41 +1386,6 @@ main: kit: entity: action: {
       r: false
       sh: "The type of label."
       t: "`$STRING`"
-    }
-    ubuntu_16_core: {
-      h: "Ubuntu 16 Core"
-      n: "ubuntu_16_core"
-      r: false
-      sh: "Total minutes used on Ubuntu 16 core runner machines."
-      t: "`$INTEGER`"
-    }
-    ubuntu_32_core: {
-      h: "Ubuntu 32 Core"
-      n: "ubuntu_32_core"
-      r: false
-      sh: "Total minutes used on Ubuntu 32 core runner machines."
-      t: "`$INTEGER`"
-    }
-    ubuntu_4_core: {
-      h: "Ubuntu 4 Core"
-      n: "ubuntu_4_core"
-      r: false
-      sh: "Total minutes used on Ubuntu 4 core runner machines."
-      t: "`$INTEGER`"
-    }
-    ubuntu_64_core: {
-      h: "Ubuntu 64 Core"
-      n: "ubuntu_64_core"
-      r: false
-      sh: "Total minutes used on Ubuntu 64 core runner machines."
-      t: "`$INTEGER`"
-    }
-    ubuntu_8_core: {
-      h: "Ubuntu 8 Core"
-      n: "ubuntu_8_core"
-      r: false
-      sh: "Total minutes used on Ubuntu 8 core runner machines."
-      t: "`$INTEGER`"
     }
     updated_at: {
       fo: "date-time"
@@ -1517,41 +1474,6 @@ main: kit: entity: action: {
       r: false
       sh: "Whether to require contributors to sign off on web-based commits"
       t: "`$BOOLEAN`"
-    }
-    windows_16_core: {
-      h: "Windows 16 Core"
-      n: "windows_16_core"
-      r: false
-      sh: "Total minutes used on Windows 16 core runner machines."
-      t: "`$INTEGER`"
-    }
-    windows_32_core: {
-      h: "Windows 32 Core"
-      n: "windows_32_core"
-      r: false
-      sh: "Total minutes used on Windows 32 core runner machines."
-      t: "`$INTEGER`"
-    }
-    windows_4_core: {
-      h: "Windows 4 Core"
-      n: "windows_4_core"
-      r: false
-      sh: "Total minutes used on Windows 4 core runner machines."
-      t: "`$INTEGER`"
-    }
-    windows_64_core: {
-      h: "Windows 64 Core"
-      n: "windows_64_core"
-      r: false
-      sh: "Total minutes used on Windows 64 core runner machines."
-      t: "`$INTEGER`"
-    }
-    windows_8_core: {
-      h: "Windows 8 Core"
-      n: "windows_8_core"
-      r: false
-      sh: "Total minutes used on Windows 8 core runner machines."
-      t: "`$INTEGER`"
     }
     work_folder: {
       h: "Work Folder"
@@ -1851,7 +1773,7 @@ main: kit: entity: action: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.runner`"
+            res: "`body`"
           }
         }
         {
@@ -1902,7 +1824,7 @@ main: kit: entity: action: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.runner`"
+            res: "`body`"
           }
         }
       ]
@@ -1980,7 +1902,7 @@ main: kit: entity: action: {
                 ex: false
                 k: "query"
                 n: "exclude_pull_request"
-                or: "exclude_pull_request"
+                or: "exclude_pull_requests"
                 r: false
                 t: "`$BOOLEAN`"
               }
@@ -2126,7 +2048,7 @@ main: kit: entity: action: {
                 ex: false
                 k: "query"
                 n: "exclude_pull_request"
-                or: "exclude_pull_request"
+                or: "exclude_pull_requests"
                 r: false
                 t: "`$BOOLEAN`"
               }
@@ -4883,7 +4805,7 @@ main: kit: entity: action: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.minutes_used_breakdown`"
+            res: "`body`"
           }
         }
         {
@@ -4929,7 +4851,7 @@ main: kit: entity: action: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.minutes_used_breakdown`"
+            res: "`body`"
           }
         }
       ]
