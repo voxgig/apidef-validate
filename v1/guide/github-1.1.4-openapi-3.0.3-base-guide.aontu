@@ -4,7 +4,7 @@
 #   github-1.1.4-openapi-3.0.3-guide.aontu
 
 guide: {
-  metrics: count: entity: 268
+  metrics: count: entity: 265
   metrics: count: path: 722
   metrics: count: method: 1089
 
@@ -514,6 +514,9 @@ guide: {
     path: "/repos/{owner}/{repo}/subscription": {  # ent=activity;tag=activity;cmp/resolve=activity;path=p/t/;cmp-primary;cmp-infreq
       op: remove: method: *DELETE  # not-load
     }
+    path: "/user/starred": {  # ent=activity;cmp/resolve=repository;path=t/;cmp-primary;cmp-infreq
+      op: list: method: *GET  # array
+    }
     path: "/user/starred/{owner}/{repo}": {  # ent=activity;tag=activity;cmp/resolve=activity;path=t/p/p;cmp-primary;cmp-infreq
       op: load: method: *GET  # no-schema
       op: remove: method: *DELETE  # not-load
@@ -593,6 +596,9 @@ guide: {
     }
     path: "/app/hook/deliveries/{delivery_id}/attempts": {  # ent=app;orig=apps;tag=app;cmp/resolve=app;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=apps
       op: create: method: *POST  # not-load
+    }
+    path: "/app/installations": {  # ent=app;orig=apps;cmp/resolve=installation;path=t/;path-primary
+      op: list: method: *GET  # array
     }
     path: "/app/installations/{installation_id}": {  # ent=app;orig=apps;tag=app;cmp/resolve=app;path=t/p/;cmp-primary;cmp-infreq
       op: remove: method: *DELETE  # not-load
@@ -725,9 +731,6 @@ guide: {
   entity: block: {
     path: "/orgs/{org}/blocks": {  # ent=block;orig=simple-user;cmp/resolve=simple_user;path=t/p/t/;path-over-cmp;has-cmp=simple-user
       rename: param: "org": *"org_id"  # parent:org
-      op: list: method: *GET  # array
-    }
-    path: "/user/blocks": {  # ent=block;orig=simple-user;cmp/resolve=simple_user;path=t/;path-over-cmp
       op: list: method: *GET  # array
     }
   }
@@ -1892,9 +1895,6 @@ guide: {
   }
 
   entity: following: {
-    path: "/user/following": {  # ent=following;orig=simple-user;cmp/resolve=simple_user;path=t/;path-over-cmp
-      op: list: method: *GET  # array
-    }
     path: "/users/{username}/following": {  # ent=following;orig=simple-user;cmp/resolve=simple_user;path=t/p/t/;path-over-cmp;has-cmp=simple-user
       op: list: method: *GET  # array
     }
@@ -2025,14 +2025,11 @@ guide: {
     }
   }
 
-  entity: gitignore: {
-    path: "/gitignore/templates": {  # ent=gitignore;tag=gitignore;cmp/resolve=gitignore;path=t/;cmp-primary;cmp-infreq
+  entity: gitignore_template: {
+    path: "/gitignore/templates": {  # ent=gitignore_template;orig=gitignore-template;tag=gitignore;cmp/resolve=gitignore;path=t/;cmp-primary;cmp-infreq
       action: "template": {}  # ent;gitignore;no-param;templates;GET
       op: list: method: *GET  # array
     }
-  }
-
-  entity: gitignore_template: {
     path: "/gitignore/templates/{name}": {  # ent=gitignore_template;orig=gitignore-template;cmp/resolve=gitignore_template;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "name": *"id"  # end-id;GET;parent=true/template
       op: load: method: *GET  # end-param
@@ -2080,6 +2077,9 @@ guide: {
   }
 
   entity: hook_delivery: {
+    path: "/app/hook/deliveries": {  # ent=hook_delivery;orig=hook-delivery;cmp/resolve=hook_delivery_item;path=t/;cmp-primary;cmp-infreq
+      op: list: method: *GET  # array
+    }
     path: "/app/hook/deliveries/{delivery_id}": {  # ent=hook_delivery;orig=hook-delivery;cmp/resolve=hook_delivery;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "delivery_id": *"id"  # end-id;GET;parent=true/delivery
       op: load: method: *GET  # end-param
@@ -2096,9 +2096,6 @@ guide: {
   }
 
   entity: hook_delivery_item: {
-    path: "/app/hook/deliveries": {  # ent=hook_delivery_item;orig=hook-delivery-item;cmp/resolve=hook_delivery_item;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array
-    }
     path: "/orgs/{org}/hooks/{hook_id}/deliveries": {  # ent=hook_delivery_item;orig=hook-delivery-item;cmp/resolve=hook_delivery_item;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=hook-delivery-item
       action: "deliveries": {}  # ent;hook_delivery_item;action-not-parent;hook_id;GET
       rename: param: "hook_id": *"id"  # action-parent:hook_delivery_item
@@ -2145,9 +2142,6 @@ guide: {
   }
 
   entity: installation: {
-    path: "/app/installations": {  # ent=installation;cmp/resolve=installation;path=t/;path-primary
-      op: list: method: *GET  # array
-    }
     path: "/app/installations/{installation_id}": {  # ent=installation;cmp/resolve=installation;path=t/p/;path-primary
       rename: param: "installation_id": *"id"  # end-id;GET;parent=true/installation
       op: load: method: *GET  # end-param
@@ -2436,24 +2430,21 @@ guide: {
     }
   }
 
-  entity: marketplace_listing_plan: {
-    path: "/marketplace_listing/plans": {  # ent=marketplace_listing_plan;orig=marketplace-listing-plan;cmp/resolve=marketplace_listing_plan;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array
-    }
-    path: "/marketplace_listing/stubbed/plans": {  # ent=marketplace_listing_plan;orig=marketplace-listing-plan;cmp/resolve=marketplace_listing_plan;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array
-    }
-  }
-
   entity: marketplace_purchase: {
     path: "/marketplace_listing/accounts/{account_id}": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
+    }
+    path: "/marketplace_listing/plans": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_listing_plan;path=t/;cmp-primary;cmp-infreq
+      op: list: method: *GET  # array
     }
     path: "/marketplace_listing/plans/{plan_id}/accounts": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=marketplace-purchase
       op: list: method: *GET  # array
     }
     path: "/marketplace_listing/stubbed/accounts/{account_id}": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
+    }
+    path: "/marketplace_listing/stubbed/plans": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_listing_plan;path=t/;cmp-primary;cmp-infreq
+      op: list: method: *GET  # array
     }
     path: "/marketplace_listing/stubbed/plans/{plan_id}/accounts": {  # ent=marketplace_purchase;orig=marketplace-purchase;cmp/resolve=marketplace_purchase;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=marketplace-purchase
       op: list: method: *GET  # array
@@ -3673,15 +3664,12 @@ guide: {
     path: "/user/repos": {  # ent=repo;orig=repos;cmp/resolve=repository;path=t/;path-primary
       op: list: method: *GET  # array
     }
+    path: "/user/repository_invitations": {  # ent=repo;orig=repos;cmp/resolve=repository_invitation;path=t/;path-primary
+      op: list: method: *GET  # array
+    }
     path: "/user/repository_invitations/{invitation_id}": {  # ent=repo;orig=repos;tag=repo;cmp/resolve=repo;path=t/p/;cmp-primary;cmp-infreq
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
-    }
-  }
-
-  entity: repository: {
-    path: "/user/starred": {  # ent=repository;cmp/resolve=repository;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array
     }
   }
 
@@ -3751,9 +3739,6 @@ guide: {
     path: "/repos/{owner}/{repo}/invitations/{invitation_id}": {  # ent=repository_invitation;orig=repository-invitation;cmp/resolve=repository_invitation;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "invitation_id": *"id"  # end-id;PATCH;parent=true/invitation
       op: patch: method: *PATCH  # not-load
-    }
-    path: "/user/repository_invitations": {  # ent=repository_invitation;orig=repository-invitation;cmp/resolve=repository_invitation;path=t/;path-primary
-      op: list: method: *GET  # array
     }
   }
 
@@ -4323,6 +4308,9 @@ guide: {
       op: load: method: *GET  # not-list
       op: patch: method: *PATCH  # not-load
     }
+    path: "/user/blocks": {  # ent=user;orig=user-role-assignment;cmp/resolve=simple_user;path=t/;path-over-cmp
+      op: list: method: *GET  # array
+    }
     path: "/user/blocks/{username}": {  # ent=user;orig=user-role-assignment;tag=user;cmp/resolve=user;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
@@ -4331,6 +4319,9 @@ guide: {
     path: "/user/emails": {  # ent=user;orig=user-role-assignment;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
       action: "email": {}  # ent;user;no-param;emails;DELETE
       op: remove: method: *DELETE  # not-load
+    }
+    path: "/user/following": {  # ent=user;orig=user-role-assignment;cmp/resolve=simple_user;path=t/;path-over-cmp
+      op: list: method: *GET  # array
     }
     path: "/user/following/{username}": {  # ent=user;orig=user-role-assignment;tag=user;cmp/resolve=user;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param

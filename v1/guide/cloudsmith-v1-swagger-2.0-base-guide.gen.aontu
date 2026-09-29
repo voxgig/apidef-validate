@@ -4,7 +4,7 @@
 #   cloudsmith-v1-swagger-2.0-guide.aontu
 
 guide: {
-  metrics: count: entity: 75
+  metrics: count: entity: 74
   metrics: count: path: 201
   metrics: count: method: 325
 
@@ -1082,14 +1082,6 @@ guide: {
     }
   }
 
-  entity: user: {
-    path: "/user/tokens/": {  # ent=user;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
-      action: "token": {}  # ent;user;no-param;tokens;GET
-      op: list: method: *GET  # array-prop:results
-      op: list: transform: res: *("`body.results`")|top
-    }
-  }
-
   entity: user_auth_token: {
     path: "/user/token/": {  # ent=user_auth_token;orig=UserAuthToken;cmp/resolve=user_auth_token;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
@@ -1098,7 +1090,10 @@ guide: {
 
   entity: user_authentication_token: {
     path: "/user/tokens/": {  # ent=user_authentication_token;orig=UserAuthenticationToken;cmp/resolve=user_authentication_token;path=t/;cmp-primary;cmp-infreq
+      action: "token": {}  # ent;user;no-param;tokens;GET
       op: create: method: *POST  # not-load
+      op: list: method: *GET  # array-prop:results
+      op: list: transform: res: *("`body.results`")|top
     }
     path: "/user/tokens/{slug_perm}/refresh/": {  # ent=user_authentication_token;orig=UserAuthenticationToken;cmp/resolve=user_authentication_token;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=UserAuthenticationToken
       op: update: method: *PUT  # not-load

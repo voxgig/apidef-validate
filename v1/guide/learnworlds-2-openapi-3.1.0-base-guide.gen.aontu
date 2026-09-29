@@ -96,13 +96,9 @@ guide: {
       op: list: method: *GET  # array-prop:data
       op: list: transform: res: *("`body.data`")|top
     }
-    path: "/v2/community/posts": {  # ent=community;orig=Community;tag=community;cmp/resolve=community;path=t/;cmp-primary;cmp-infreq
-      action: "post": {}  # ent;community;no-param;posts;GET
-      op: list: method: *GET  # array-prop:data
-      op: list: transform: res: *("`body.data`")|top
-    }
     path: "/v2/community/spaces": {  # ent=community;orig=Community;tag=community;cmp/resolve=community;path=t/;cmp-primary;cmp-infreq
       action: "space": {}  # ent;community;no-param;spaces;GET
+      op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:data
       op: list: transform: res: *("`body.data`")|top
     }
@@ -123,15 +119,17 @@ guide: {
   }
 
   entity: community_post: {
+    path: "/v2/community/posts": {  # ent=community_post;orig=CommunityPost;tag=community;cmp/resolve=community;path=t/;cmp-primary;cmp-infreq
+      action: "post": {}  # ent;community;no-param;posts;GET
+      op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
+    }
     path: "/v2/community/posts/{id}": {  # ent=community_post;orig=CommunityPost;cmp/resolve=community_post;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
     }
   }
 
   entity: community_space: {
-    path: "/v2/community/spaces": {  # ent=community_space;orig=CommunitySpace;cmp/resolve=community_space;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
     path: "/v2/community/spaces/{id}": {  # ent=community_space;orig=CommunitySpace;cmp/resolve=community_space;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
@@ -219,10 +217,6 @@ guide: {
   }
 
   entity: multiple_seat: {
-    path: "/v2/seats": {  # ent=multiple_seat;orig=Multiple seats;tag=multiple_seat;cmp/resolve=multiple_seat;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array-prop:data
-      op: list: transform: res: *("`body.data`")|top
-    }
     path: "/v2/seats/{id}/users/{uid}": {  # ent=multiple_seat;orig=Multiple seats;tag=multiple_seat;cmp/resolve=multiple_seat;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"seat_id"  # parent:seat
       op: create: method: *POST  # not-load
@@ -272,6 +266,8 @@ guide: {
   entity: seat: {
     path: "/v2/seats": {  # ent=seat;orig=SeatResponse;cmp/resolve=seat;path=t/;path-primary
       op: create: method: *POST  # not-load
+      op: list: method: *GET  # array-prop:data
+      op: list: transform: res: *("`body.data`")|top
     }
     path: "/v2/seats/{id}": {  # ent=seat;orig=SeatResponse;cmp/resolve=seat;path=t/p/;path-primary
       op: load: method: *GET  # end-param

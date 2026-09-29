@@ -5,9 +5,39 @@ main: kit: entity: application: {
   alias: field: {}
 
   fields: {
+    application_id: {
+      h: "Application Id"
+      n: "application_id"
+      r: false
+      t: "`$STRING`"
+    }
+    application_name: {
+      h: "Application Name"
+      n: "application_name"
+      r: false
+      t: "`$STRING`"
+    }
+    callback_url: {
+      h: "Callback Url"
+      n: "callback_url"
+      r: false
+      t: "`$STRING`"
+    }
+    confidential: {
+      h: "Confidential"
+      n: "confidential"
+      r: false
+      t: "`$BOOLEAN`"
+    }
     id: {
       h: "Id"
       n: "id"
+      r: false
+      t: "`$STRING`"
+    }
+    secret: {
+      h: "Secret"
+      n: "secret"
       r: false
       t: "`$STRING`"
     }
@@ -20,6 +50,80 @@ main: kit: entity: application: {
 
   name: "application"
   op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /api/v4/applications"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "post_api_v4_application"
+                or: "postApiV4Applications"
+                r: true
+                t: "`$OBJECT`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/applications"
+          q: {
+            exist: [
+              "post_api_v4_application"
+            ]
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "applications"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/applications"
+            source: "swagger2"
+            version: 2
+          }
+          m: "GET"
+          o: "/api/v4/applications"
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "applications"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     remove: {
       name: "remove"
       points: [

@@ -234,6 +234,13 @@ main: kit: entity: repo: {
       r: true
       t: "`$STRING`"
     }
+    expired: {
+      h: "Expired"
+      n: "expired"
+      r: false
+      sh: "Whether or not the invitation has expired"
+      t: "`$BOOLEAN`"
+    }
     fork: {
       h: "Fork"
       n: "fork"
@@ -396,6 +403,20 @@ main: kit: entity: repo: {
       r: true
       sh: "The URL for the endpoint to get details about the app."
       t: "`$STRING`"
+    }
+    invitee: {
+      h: "Invitee"
+      n: "invitee"
+      r: true
+      sh: "A GitHub user."
+      t: "`$OBJECT`"
+    }
+    inviter: {
+      h: "Inviter"
+      n: "inviter"
+      r: true
+      sh: "A GitHub user."
+      t: "`$OBJECT`"
     }
     is_template: {
       h: "Is Template"
@@ -561,6 +582,7 @@ main: kit: entity: repo: {
       h: "Permissions"
       n: "permissions"
       r: true
+      sh: "The permission associated with the invitation."
       t: "`$OBJECT`"
     }
     private: {
@@ -600,6 +622,13 @@ main: kit: entity: repo: {
       n: "releases_url"
       r: true
       t: "`$STRING`"
+    }
+    repository: {
+      h: "Repository"
+      n: "repository"
+      r: true
+      sh: "Minimal Repository"
+      t: "`$OBJECT`"
     }
     sha: {
       h: "Sha"
@@ -750,6 +779,7 @@ main: kit: entity: repo: {
         }
       }
       r: false
+      sh: "URL for the repository invitation"
       t: "`$STRING`"
     }
     use_squash_pr_title_as_default: {
@@ -1801,6 +1831,53 @@ main: kit: entity: repo: {
           t: {
             req: "`reqdata`"
             res: "`body.custom_deployment_protection_rules`"
+          }
+        }
+        {
+          co: {
+            id: "GET /user/repository_invitations"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/user/repository_invitations"
+          q: {
+            exist: [
+              "page"
+              "per_page"
+            ]
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "repository_invitations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
           }
         }
       ]
