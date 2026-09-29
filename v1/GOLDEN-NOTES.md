@@ -134,6 +134,35 @@ voxgig/apidef#102. The three account for every hunk.
 The TypeScript suite passes 5/5 on the refreshed goldens. The Go harness on
 go/v0.15.0 matches every guide, and its model skips are unchanged.
 
+## 2026-09-29 — apidef 8.20.0 and go/v0.16.0
+
+The pins move from 8.19.0 to 8.20.0 and from go/v0.15.0 to go/v0.16.0. On
+8.20.0, 96 goldens differ, 308 hunks, in github (40 files), gitlab (34),
+learnworlds (14) and cloudsmith (8). All come from one change in
+voxgig/apidef#104: a list now joins the entity that owns its item route
+wherever the collection sits, with a version prefix or a trailing slash, where
+before it joined only when the collection was a single segment. The four
+transforms that change move with their routes.
+
+1. **A list joins the owner of its item route.** github's app hook
+   deliveries, app installations, gitignore templates, blocks, follows and
+   repository invitations; gitlab's applications, keys, npm dist-tags,
+   runners and snippets; learnworlds' community posts and spaces; and
+   cloudsmith's user tokens each move onto the entity of their `/{id}` route.
+   Entities named after a list wrapper or a path fall away: github from 268
+   to 265, gitlab from 276 to 274, cloudsmith from 75 to 74.
+2. **A list also joins the owner of a deeper route when its item route is
+   missing.** github's marketplace listing plans, and the stubbed plans, join
+   `marketplace_purchase`, the owner of `/marketplace_listing/plans/{plan_id}/accounts`,
+   which lists purchases rather than plans. That is voxgig/apidef#106. The
+   starred repositories join `activity` through `/user/starred/{owner}/{repo}`,
+   whose two parameters name one repository, which is right.
+
+The TypeScript suite passes 5/5 on the refreshed goldens. In the Go harness
+on go/v0.16.0 every guide matches, and one more cloudsmith and one more
+github entity now match their goldens, so those skips drop from 58 to 57 and
+from 239 to 238.
+
 ## Keeping goldens honest
 
 The lesson from both: a stale golden does not announce itself. It sits there

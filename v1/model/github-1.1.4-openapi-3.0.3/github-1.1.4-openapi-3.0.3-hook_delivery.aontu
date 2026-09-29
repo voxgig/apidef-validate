@@ -42,6 +42,7 @@ main: kit: entity: hook_delivery: {
       t: "`$STRING`"
     }
     id: {
+      fo: "int64"
       h: "Id"
       n: "id"
       r: true
@@ -49,6 +50,7 @@ main: kit: entity: hook_delivery: {
       t: "`$INTEGER`"
     }
     installation_id: {
+      fo: "int64"
       h: "Installation Id"
       n: "installation_id"
       r: true
@@ -63,6 +65,7 @@ main: kit: entity: hook_delivery: {
       t: "`$BOOLEAN`"
     }
     repository_id: {
+      fo: "int64"
       h: "Repository Id"
       n: "repository_id"
       r: true
@@ -119,6 +122,60 @@ main: kit: entity: hook_delivery: {
 
   name: "hook_delivery"
   op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /app/hook/deliveries"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "cursor"
+                or: "cursor"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/app/hook/deliveries"
+          q: {
+            exist: [
+              "cursor"
+              "per_page"
+            ]
+          }
+          s: [
+            {
+              lit: "app"
+            }
+            {
+              lit: "hook"
+            }
+            {
+              lit: "deliveries"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [

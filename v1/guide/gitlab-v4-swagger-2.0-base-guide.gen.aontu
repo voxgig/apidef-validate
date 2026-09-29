@@ -4,7 +4,7 @@
 #   gitlab-v4-swagger-2.0-guide.aontu
 
 guide: {
-  metrics: count: entity: 276
+  metrics: count: entity: 274
   metrics: count: path: 861
   metrics: count: method: 1106
 
@@ -66,12 +66,6 @@ guide: {
     }
   }
 
-  entity: api_entities_application: {
-    path: "/api/v4/applications": {  # ent=api_entities_application;orig=API_Entities_Application;cmp/resolve=api_entities_application;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array
-    }
-  }
-
   entity: api_entities_application_statistic: {
     path: "/api/v4/application/statistics": {  # ent=api_entities_application_statistic;orig=API_Entities_ApplicationStatistics;cmp/resolve=api_entities_application_statistic;path=t/;cmp-primary;cmp-infreq
       op: load: method: *GET  # not-list
@@ -79,9 +73,6 @@ guide: {
   }
 
   entity: api_entities_application_with_secret: {
-    path: "/api/v4/applications": {  # ent=api_entities_application_with_secret;orig=API_Entities_ApplicationWithSecret;cmp/resolve=api_entities_application_with_secret;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
     path: "/api/v4/applications/{id}/renew-secret": {  # ent=api_entities_application_with_secret;orig=API_Entities_ApplicationWithSecret;cmp/resolve=api_entities_application_with_secret;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_ApplicationWithSecret
       rename: param: "id": *"application_id"  # parent:application
       op: create: method: *POST  # not-load
@@ -233,9 +224,6 @@ guide: {
   }
 
   entity: api_entities_basic_project_detail: {
-    path: "/api/v4/projects": {  # ent=api_entities_basic_project_detail;orig=API_Entities_BasicProjectDetails;cmp/resolve=api_entities_basic_project_detail;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array
-    }
     path: "/api/v4/projects/{id}/job_token_scope/allowlist": {  # ent=api_entities_basic_project_detail;orig=API_Entities_BasicProjectDetails;cmp/resolve=api_entities_basic_project_detail;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
       op: create: method: *POST  # not-load
@@ -556,15 +544,17 @@ guide: {
       op: create: method: *POST  # not-load
       op: load: method: *GET  # not-list
     }
-    path: "/api/v4/runners": {  # ent=api_entities_ci_runner;orig=API_Entities_Ci_Runner;cmp/resolve=api_entities_ci_runner;path=t/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # not-list
-    }
     path: "/api/v4/runners/all": {  # ent=api_entities_ci_runner;orig=API_Entities_Ci_Runner;cmp/resolve=api_entities_ci_runner;path=t/;cmp-primary;cmp-infreq
       op: load: method: *GET  # not-list
     }
   }
 
   entity: api_entities_ci_runner_detail: {
+    path: "/api/v4/runners": {  # ent=api_entities_ci_runner_detail;orig=API_Entities_Ci_RunnerDetails;cmp/resolve=api_entities_ci_runner;path=t/;cmp-primary;cmp-infreq
+      op: create: method: *POST  # not-load
+      op: load: method: *GET  # not-list
+      op: remove: method: *DELETE  # not-load
+    }
     path: "/api/v4/runners/{id}": {  # ent=api_entities_ci_runner_detail;orig=API_Entities_Ci_RunnerDetails;cmp/resolve=api_entities_ci_runner_detail;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
@@ -579,9 +569,6 @@ guide: {
   }
 
   entity: api_entities_ci_runner_registration_detail: {
-    path: "/api/v4/runners": {  # ent=api_entities_ci_runner_registration_detail;orig=API_Entities_Ci_RunnerRegistrationDetails;cmp/resolve=api_entities_ci_runner_registration_detail;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
     path: "/api/v4/user/runners": {  # ent=api_entities_ci_runner_registration_detail;orig=API_Entities_Ci_RunnerRegistrationDetails;cmp/resolve=api_entities_ci_runner_registration_detail;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
     }
@@ -2242,10 +2229,6 @@ guide: {
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.dist_tags`")|top
     }
-    path: "/api/v4/packages/npm/-/package/*package_name/dist-tags": {  # ent=api_entities_npm_package_tag;orig=API_Entities_NpmPackageTag;cmp/resolve=api_entities_npm_package_tag;path=t/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # not-list
-      op: load: transform: res: *("`body.dist_tags`")|top
-    }
     path: "/api/v4/projects/{id}/packages/npm/-/package/*package_name/dist-tags": {  # ent=api_entities_npm_package_tag;orig=API_Entities_NpmPackageTag;cmp/resolve=api_entities_npm_package_tag;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
       op: load: method: *GET  # not-list
@@ -2562,6 +2545,7 @@ guide: {
   entity: api_entities_personal_snippet: {
     path: "/api/v4/snippets": {  # ent=api_entities_personal_snippet;orig=API_Entities_PersonalSnippet;cmp/resolve=api_entities_personal_snippet;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
     }
     path: "/api/v4/snippets/public": {  # ent=api_entities_personal_snippet;orig=API_Entities_PersonalSnippet;cmp/resolve=api_entities_personal_snippet;path=t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array
@@ -2590,6 +2574,7 @@ guide: {
     }
     path: "/api/v4/projects": {  # ent=api_entities_project;orig=API_Entities_Project;cmp/resolve=api_entities_project;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
     }
     path: "/api/v4/projects/user/{user_id}": {  # ent=api_entities_project;orig=API_Entities_Project;cmp/resolve=api_entities_project;path=t/p/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
@@ -2950,15 +2935,15 @@ guide: {
   }
 
   entity: api_entities_snippet: {
-    path: "/api/v4/snippets": {  # ent=api_entities_snippet;orig=API_Entities_Snippet;cmp/resolve=api_entities_snippet;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array
-    }
     path: "/api/v4/snippets/all": {  # ent=api_entities_snippet;orig=API_Entities_Snippet;cmp/resolve=api_entities_snippet;path=t/;cmp-primary;cmp-infreq
       op: list: method: *GET  # array
     }
   }
 
   entity: api_entities_ssh_key_with_user: {
+    path: "/api/v4/keys": {  # ent=api_entities_ssh_key_with_user;orig=API_Entities_SSHKeyWithUser;cmp/resolve=api_entities_user_with_admin;path=t/;cmp-primary;cmp-infreq
+      op: list: method: *GET  # array-prop:custom_attributes
+    }
     path: "/api/v4/keys/{id}": {  # ent=api_entities_ssh_key_with_user;orig=API_Entities_SSHKeyWithUser;cmp/resolve=api_entities_ssh_key_with_user;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
     }
@@ -3081,12 +3066,6 @@ guide: {
     }
   }
 
-  entity: api_entities_user_with_admin: {
-    path: "/api/v4/keys": {  # ent=api_entities_user_with_admin;orig=API_Entities_UserWithAdmin;cmp/resolve=api_entities_user_with_admin;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array-prop:custom_attributes
-    }
-  }
-
   entity: api_entities_wiki_attachment: {
     path: "/api/v4/groups/{id}/wikis/attachments": {  # ent=api_entities_wiki_attachment;orig=API_Entities_WikiAttachment;cmp/resolve=api_entities_wiki_attachment;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"group_id"  # parent:group
@@ -3131,6 +3110,10 @@ guide: {
   }
 
   entity: application: {
+    path: "/api/v4/applications": {  # ent=application;orig=applications;cmp/resolve=api_entities_application;path=t/;cmp-primary;cmp-infreq
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
     path: "/api/v4/applications/{id}": {  # ent=application;orig=applications;tag=application;cmp/resolve=application;path=t/p/;path-primary
       op: remove: method: *DELETE  # not-load
     }
@@ -4224,6 +4207,10 @@ guide: {
     path: "/api/v4/packages/npm/-/npm/v1/security/audits/quick": {  # ent=npm_package;orig=npm_packages;tag=npm_package;cmp/resolve=npm_package;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
     }
+    path: "/api/v4/packages/npm/-/package/*package_name/dist-tags": {  # ent=npm_package;orig=npm_packages;cmp/resolve=api_entities_npm_package_tag;path=t/;cmp-primary;cmp-infreq
+      op: load: method: *GET  # not-list
+      op: load: transform: res: *("`body.dist_tags`")|top
+    }
     path: "/api/v4/packages/npm/-/package/*package_name/dist-tags/{tag}": {  # ent=npm_package;orig=npm_packages;tag=npm_package;cmp/resolve=npm_package;path=t/p/;cmp-primary;cmp-infreq
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
@@ -4784,9 +4771,6 @@ guide: {
     path: "/api/v4/projects/{id}/runners/{runner_id}": {  # ent=runner;orig=runners;tag=runner;cmp/resolve=runner;path=t/p/;path-primary
       rename: param: "id": *"project_id"  # parent:project
       rename: param: "runner_id": *"id"  # end-id;DELETE;parent=true/runner
-      op: remove: method: *DELETE  # not-load
-    }
-    path: "/api/v4/runners": {  # ent=runner;orig=runners;tag=runner;cmp/resolve=runner;path=t/;path-primary
       op: remove: method: *DELETE  # not-load
     }
     path: "/api/v4/runners/managers": {  # ent=runner;orig=runners;tag=runner;cmp/resolve=runner;path=t/;cmp-primary;cmp-infreq

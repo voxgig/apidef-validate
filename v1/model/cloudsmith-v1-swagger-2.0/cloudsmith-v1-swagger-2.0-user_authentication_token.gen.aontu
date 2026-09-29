@@ -45,6 +45,9 @@ main: kit: entity: user_authentication_token: {
           }
           m: "POST"
           o: "/user/tokens/"
+          q: {
+            "$action": "token"
+          }
           s: [
             {
               lit: "user"
@@ -56,6 +59,57 @@ main: kit: entity: user_authentication_token: {
           t: {
             req: "`reqdata`"
             res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /user/tokens/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "page_size"
+                or: "page_size"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/user/tokens/"
+          q: {
+            "$action": "token"
+            exist: [
+              "page"
+              "page_size"
+            ]
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "tokens"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.results`"
           }
         }
       ]

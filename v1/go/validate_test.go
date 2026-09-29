@@ -78,13 +78,13 @@ const emptyFieldsGap = "an empty fields block sits before name instead of after 
 const ancestorGap = "ancestor relations are missing, partial or out of order"
 
 var goldenSkips = []*goldenSkip{
-	{Glob: "model/cloudsmith-*/*", Expect: 58, Reason: ancestorGap + ", and " + emptyFieldsGap},
+	{Glob: "model/cloudsmith-*/*", Expect: 57, Reason: ancestorGap + ", and " + emptyFieldsGap},
 	{Glob: "model/codatplatform-*/*", Expect: 12, Reason: ancestorGap + ", and " + emptyFieldsGap},
 	{Glob: "model/contentfulcma-*/*", Expect: 31, Reason: ancestorGap + ", and " + emptyFieldsGap},
 	{Glob: "model/foo-*/*-bar.aontu", Expect: 1, Reason: emptyFieldsGap},
 	{Glob: "model/foo-*/*-qaz.aontu", Expect: 1, Reason: emptyFieldsGap},
 	{Glob: "model/foo-*/*-yike.aontu", Expect: 1, Reason: emptyFieldsGap},
-	{Glob: "model/github-*/*", Expect: 239, Reason: ancestorGap + "; union metadata, some " +
+	{Glob: "model/github-*/*", Expect: 238, Reason: ancestorGap + "; union metadata, some " +
 		"fields and a request mapping are missing; and " + emptyFieldsGap},
 	{Glob: "model/gitlab-*/*", Expect: 230, Reason: ancestorGap + ", and " + emptyFieldsGap},
 	{Glob: "model/learnworlds-*/*", Expect: 9, Reason: ancestorGap},
