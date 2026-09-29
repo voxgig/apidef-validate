@@ -202,6 +202,15 @@ Two of the findings on the 8.20.0 refresh stay open as voxgig/apidef#110:
 github's repository invitations still join `repo`, and gitlab's runner
 registration still joins the runner detail entity.
 
+## 2026-09-29 — apidef 8.22.0 and go/v0.18.0
+
+The pins move from 8.21.0 to 8.22.0 and from go/v0.17.0 to go/v0.18.0, and
+no golden changes. voxgig/apidef#114, which fixes voxgig/apidef#112, reads a
+response composed with allOf by the entity's name through its parts. Neon's
+writes answer that way, with the record beside its operations, and no
+definition in this corpus does. The TypeScript suite passes 5/5 unchanged,
+and the Go harness on go/v0.18.0 passes with every skip count as before.
+
 ## Keeping goldens honest
 
 The lesson from both: a stale golden does not announce itself. It sits there
