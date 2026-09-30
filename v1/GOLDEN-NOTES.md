@@ -211,6 +211,18 @@ writes answer that way, with the record beside its operations, and no
 definition in this corpus does. The TypeScript suite passes 5/5 unchanged,
 and the Go harness on go/v0.18.0 passes with every skip count as before.
 
+## 2026-09-30 — apidef 8.22.1 and go/v0.18.1
+
+The pins move from 8.22.0 to 8.22.1 and from go/v0.18.0 to go/v0.18.1, and
+no golden changes. voxgig/apidef#117, which fixes voxgig/apidef#115, moves
+both ports to @tabnas/yaml 0.5.15. Until then the Go harness parsed with
+v0.5.12 and this lockfile resolved 0.5.13. Neither parser fix reaches this
+corpus: no definition here holds a number followed by `#` (tabnas/yaml#95),
+and every definition here parsed before 0.5.15, so none holds a number
+followed by a bracket (tabnas/yaml#99). The TypeScript suite passes 5/5
+unchanged, and the Go harness on go/v0.18.1 passes with every skip count as
+before.
+
 ## Keeping goldens honest
 
 The lesson from both: a stale golden does not announce itself. It sits there
