@@ -604,7 +604,7 @@ main: kit: entity: action: {
       h: "Head Sha"
       n: "head_sha"
       r: true
-      sh: "The SHA of the head commit that points to the version of the workflow being run."
+      sh: "The SHA of the commit that is being run."
       t: "`$STRING`"
     }
     homepage: {
@@ -645,7 +645,7 @@ main: kit: entity: action: {
         }
       }
       r: true
-      sh: "The ID of the workflow run."
+      sh: "The id of the job."
       t: "`$INTEGER`"
     }
     image_details: {
@@ -1056,7 +1056,7 @@ main: kit: entity: action: {
       h: "Run Attempt"
       n: "run_attempt"
       r: false
-      sh: "Attempt number of the run, 1 for first attempt and higher if the workflow was re-run."
+      sh: "Attempt number of the associated workflow run, 1 for first attempt and higher if the workflow was re-run."
       t: "`$INTEGER`"
     }
     run_id: {
@@ -1561,6 +1561,10 @@ main: kit: entity: action: {
               "runner_id"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -1694,6 +1698,10 @@ main: kit: entity: action: {
               org: "org_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -1751,6 +1759,10 @@ main: kit: entity: action: {
               "repo"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -1805,6 +1817,10 @@ main: kit: entity: action: {
               org: "org_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -1832,6 +1848,551 @@ main: kit: entity: action: {
     list: {
       name: "list"
       points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "attempt_number"
+                or: "attempt_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "run_id"
+                or: "run_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs"
+          q: {
+            exist: [
+              "attempt_number"
+              "owner"
+              "repo"
+              "run_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runs"
+            }
+            {
+              var: "run_id"
+            }
+            {
+              lit: "attempts"
+            }
+            {
+              var: "attempt_number"
+            }
+            {
+              lit: "jobs"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.jobs`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/environments/{environment_name}/secrets"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "environment_name"
+                or: "environment_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/environments/{environment_name}/secrets"
+          q: {
+            exist: [
+              "environment_name"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "environments"
+            }
+            {
+              var: "environment_name"
+            }
+            {
+              lit: "secrets"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.secrets`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/environments/{environment_name}/variables"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "environment_name"
+                or: "environment_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 10
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/environments/{environment_name}/variables"
+          q: {
+            exist: [
+              "environment_name"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "environments"
+            }
+            {
+              var: "environment_name"
+            }
+            {
+              lit: "variables"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.variables`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "run_id"
+                or: "run_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "name"
+                or: "name"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/runs/{run_id}/artifacts"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "run_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runs"
+            }
+            {
+              var: "run_id"
+            }
+            {
+              lit: "artifacts"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.artifacts`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "run_id"
+                or: "run_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: "latest"
+                k: "query"
+                n: "filter"
+                or: "filter"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/runs/{run_id}/jobs"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "run_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runs"
+            }
+            {
+              var: "run_id"
+            }
+            {
+              lit: "jobs"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.jobs`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "runner_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.labels`"
+          }
+        }
         {
           co: {
             id: "GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"
@@ -1942,20 +2503,14 @@ main: kit: entity: action: {
           o: "/repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"
           q: {
             exist: [
-              "actor"
-              "branch"
-              "check_suite_id"
-              "created"
-              "event"
-              "exclude_pull_request"
-              "head_sha"
               "owner"
-              "page"
-              "per_page"
               "repo"
-              "status"
               "workflow_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1983,6 +2538,730 @@ main: kit: entity: action: {
           t: {
             req: "`reqdata`"
             res: "`body.workflow_runs`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/variables/{name}/repositories"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "name"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/variables/{name}/repositories"
+          q: {
+            exist: [
+              "name"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "variables"
+            }
+            {
+              var: "name"
+            }
+            {
+              lit: "repositories"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.repositories`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/hosted-runners"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_group_id"
+                or: "runner_group_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}/hosted-runners"
+          q: {
+            exist: [
+              "org_id"
+              "runner_group_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runner-groups"
+            }
+            {
+              var: "runner_group_id"
+            }
+            {
+              lit: "hosted-runners"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.runners`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_group_id"
+                or: "runner_group_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}/repositories"
+          q: {
+            exist: [
+              "org_id"
+              "runner_group_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runner-groups"
+            }
+            {
+              var: "runner_group_id"
+            }
+            {
+              lit: "repositories"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.repositories`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/runners"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_group_id"
+                or: "runner_group_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}/runners"
+          q: {
+            exist: [
+              "org_id"
+              "runner_group_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runner-groups"
+            }
+            {
+              var: "runner_group_id"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.runners`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/runners/{runner_id}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/runners/{runner_id}/labels"
+          q: {
+            exist: [
+              "org_id"
+              "runner_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.labels`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/secrets/{secret_name}/repositories"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "secret_name"
+                or: "secret_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/secrets/{secret_name}/repositories"
+          q: {
+            exist: [
+              "org_id"
+              "secret_name"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "secrets"
+            }
+            {
+              var: "secret_name"
+            }
+            {
+              lit: "repositories"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.repositories`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/artifacts"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "name"
+                or: "name"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/artifacts"
+          q: {
+            "$action": "artifact"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "artifacts"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.artifacts`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/organization-secrets"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/organization-secrets"
+          q: {
+            "$action": "organization_secret"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "organization-secrets"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.secrets`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/organization-variables"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 10
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/organization-variables"
+          q: {
+            "$action": "organization_variable"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "organization-variables"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.variables`"
           }
         }
         {
@@ -2089,19 +3368,13 @@ main: kit: entity: action: {
           q: {
             "$action": "run"
             exist: [
-              "actor"
-              "branch"
-              "check_suite_id"
-              "created"
-              "event"
-              "exclude_pull_request"
-              "head_sha"
               "owner"
-              "page"
-              "per_page"
               "repo"
-              "status"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2123,554 +3396,6 @@ main: kit: entity: action: {
           t: {
             req: "`reqdata`"
             res: "`body.workflow_runs`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "attempt_number"
-                or: "attempt_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "run_id"
-                or: "run_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs"
-          q: {
-            exist: [
-              "attempt_number"
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-              "run_id"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runs"
-            }
-            {
-              var: "run_id"
-            }
-            {
-              lit: "attempts"
-            }
-            {
-              var: "attempt_number"
-            }
-            {
-              lit: "jobs"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.jobs`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "run_id"
-                or: "run_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                ex: "latest"
-                k: "query"
-                n: "filter"
-                or: "filter"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/actions/runs/{run_id}/jobs"
-          q: {
-            exist: [
-              "filter"
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-              "run_id"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runs"
-            }
-            {
-              var: "run_id"
-            }
-            {
-              lit: "jobs"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.jobs`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "run_id"
-                or: "run_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "name"
-                or: "name"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/actions/runs/{run_id}/artifacts"
-          q: {
-            exist: [
-              "name"
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-              "run_id"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runs"
-            }
-            {
-              var: "run_id"
-            }
-            {
-              lit: "artifacts"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.artifacts`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/environments/{environment_name}/secrets"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "environment_name"
-                or: "environment_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/environments/{environment_name}/secrets"
-          q: {
-            exist: [
-              "environment_name"
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "environments"
-            }
-            {
-              var: "environment_name"
-            }
-            {
-              lit: "secrets"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.secrets`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/environments/{environment_name}/variables"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "environment_name"
-                or: "environment_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 10
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/environments/{environment_name}/variables"
-          q: {
-            exist: [
-              "environment_name"
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "environments"
-            }
-            {
-              var: "environment_name"
-            }
-            {
-              lit: "variables"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.variables`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/actions/artifacts"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "name"
-                or: "name"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/actions/artifacts"
-          q: {
-            "$action": "artifact"
-            exist: [
-              "name"
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "artifacts"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.artifacts`"
           }
         }
         {
@@ -2727,12 +3452,13 @@ main: kit: entity: action: {
           q: {
             "$action": "runner"
             exist: [
-              "name"
               "owner"
-              "page"
-              "per_page"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2754,720 +3480,6 @@ main: kit: entity: action: {
           t: {
             req: "`reqdata`"
             res: "`body.runners`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/runners"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "name"
-                or: "name"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/runners"
-          q: {
-            "$action": "runner"
-            exist: [
-              "name"
-              "org_id"
-              "page"
-              "per_page"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runners"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.runners`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/variables/{name}/repositories"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "name"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/variables/{name}/repositories"
-          q: {
-            exist: [
-              "name"
-              "org_id"
-              "page"
-              "per_page"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "variables"
-            }
-            {
-              var: "name"
-            }
-            {
-              lit: "repositories"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.repositories`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/hosted-runners"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "runner_group_id"
-                or: "runner_group_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}/hosted-runners"
-          q: {
-            exist: [
-              "org_id"
-              "page"
-              "per_page"
-              "runner_group_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runner-groups"
-            }
-            {
-              var: "runner_group_id"
-            }
-            {
-              lit: "hosted-runners"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.runners`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "runner_group_id"
-                or: "runner_group_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}/repositories"
-          q: {
-            exist: [
-              "org_id"
-              "page"
-              "per_page"
-              "runner_group_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runner-groups"
-            }
-            {
-              var: "runner_group_id"
-            }
-            {
-              lit: "repositories"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.repositories`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/runners"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "runner_group_id"
-                or: "runner_group_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}/runners"
-          q: {
-            exist: [
-              "org_id"
-              "page"
-              "per_page"
-              "runner_group_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runner-groups"
-            }
-            {
-              var: "runner_group_id"
-            }
-            {
-              lit: "runners"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.runners`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/secrets/{secret_name}/repositories"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "secret_name"
-                or: "secret_name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/secrets/{secret_name}/repositories"
-          q: {
-            exist: [
-              "org_id"
-              "page"
-              "per_page"
-              "secret_name"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "secrets"
-            }
-            {
-              var: "secret_name"
-            }
-            {
-              lit: "repositories"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.repositories`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/actions/organization-secrets"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/actions/organization-secrets"
-          q: {
-            "$action": "organization_secret"
-            exist: [
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "organization-secrets"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.secrets`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/actions/organization-variables"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 10
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/actions/organization-variables"
-          q: {
-            "$action": "organization_variable"
-            exist: [
-              "owner"
-              "page"
-              "per_page"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "organization-variables"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.variables`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/runner-groups"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                k: "query"
-                n: "visible_to_repository"
-                or: "visible_to_repository"
-                r: false
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/runner-groups"
-          q: {
-            "$action": "runner_group"
-            exist: [
-              "org_id"
-              "page"
-              "per_page"
-              "visible_to_repository"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runner-groups"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.runner_groups`"
           }
         }
         {
@@ -3518,10 +3530,12 @@ main: kit: entity: action: {
             "$action": "secret"
             exist: [
               "owner"
-              "page"
-              "per_page"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3593,10 +3607,12 @@ main: kit: entity: action: {
             "$action": "variable"
             exist: [
               "owner"
-              "page"
-              "per_page"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3668,10 +3684,12 @@ main: kit: entity: action: {
             "$action": "workflow"
             exist: [
               "owner"
-              "page"
-              "per_page"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3735,14 +3753,16 @@ main: kit: entity: action: {
           q: {
             exist: [
               "org_id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3807,14 +3827,16 @@ main: kit: entity: action: {
             "$action": "hosted_runner"
             exist: [
               "org_id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3833,6 +3855,232 @@ main: kit: entity: action: {
           t: {
             req: "`reqdata`"
             res: "`body.runners`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/hosted-runners/images/github-owned"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/hosted-runners/images/github-owned"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "hosted-runners"
+            }
+            {
+              lit: "images"
+            }
+            {
+              lit: "github-owned"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.images`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/hosted-runners/images/partner"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/hosted-runners/images/partner"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "hosted-runners"
+            }
+            {
+              lit: "images"
+            }
+            {
+              lit: "partner"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.images`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/hosted-runners/machine-sizes"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/hosted-runners/machine-sizes"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "hosted-runners"
+            }
+            {
+              lit: "machine-sizes"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.machine_specs`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/hosted-runners/platforms"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/hosted-runners/platforms"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "hosted-runners"
+            }
+            {
+              lit: "platforms"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.platforms`"
           }
         }
         {
@@ -3875,14 +4123,16 @@ main: kit: entity: action: {
           q: {
             exist: [
               "org_id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3946,14 +4196,16 @@ main: kit: entity: action: {
           q: {
             exist: [
               "org_id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3978,6 +4230,162 @@ main: kit: entity: action: {
           t: {
             req: "`reqdata`"
             res: "`body.repositories`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/runners"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "name"
+                or: "name"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/runners"
+          q: {
+            "$action": "runner"
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.runners`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/runner-groups"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "visible_to_repository"
+                or: "visible_to_repository"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/runner-groups"
+          q: {
+            "$action": "runner_group"
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runner-groups"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.runner_groups`"
           }
         }
         {
@@ -4021,14 +4429,16 @@ main: kit: entity: action: {
             "$action": "secret"
             exist: [
               "org_id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -4090,14 +4500,16 @@ main: kit: entity: action: {
             "$action": "variable"
             exist: [
               "org_id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -4116,346 +4528,6 @@ main: kit: entity: action: {
           t: {
             req: "`reqdata`"
             res: "`body.variables`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "runner_id"
-                or: "runner_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-              "runner_id"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runners"
-            }
-            {
-              var: "runner_id"
-            }
-            {
-              lit: "labels"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.labels`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/runners/{runner_id}/labels"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "runner_id"
-                or: "runner_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/runners/{runner_id}/labels"
-          q: {
-            exist: [
-              "org_id"
-              "runner_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runners"
-            }
-            {
-              var: "runner_id"
-            }
-            {
-              lit: "labels"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.labels`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/hosted-runners/images/github-owned"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/hosted-runners/images/github-owned"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "hosted-runners"
-            }
-            {
-              lit: "images"
-            }
-            {
-              lit: "github-owned"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.images`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/hosted-runners/images/partner"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/hosted-runners/images/partner"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "hosted-runners"
-            }
-            {
-              lit: "images"
-            }
-            {
-              lit: "partner"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.images`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/hosted-runners/machine-sizes"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/hosted-runners/machine-sizes"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "hosted-runners"
-            }
-            {
-              lit: "machine-sizes"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.machine_specs`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/actions/hosted-runners/platforms"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/actions/hosted-runners/platforms"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "hosted-runners"
-            }
-            {
-              lit: "platforms"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.platforms`"
           }
         }
       ]
@@ -4786,6 +4858,10 @@ main: kit: entity: action: {
               org: "org_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -4832,6 +4908,10 @@ main: kit: entity: action: {
               "username"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "users"
@@ -4869,7 +4949,7 @@ main: kit: entity: action: {
             params: [
               {
                 k: "param"
-                n: "environment_id"
+                n: "environment_name"
                 or: "environment_name"
                 r: true
                 t: "`$STRING`"
@@ -4901,16 +4981,11 @@ main: kit: entity: action: {
           o: "/repos/{owner}/{repo}/environments/{environment_name}/variables/{name}"
           q: {
             exist: [
-              "environment_id"
+              "environment_name"
               "name"
               "owner"
               "repo"
             ]
-          }
-          r: {
-            param: {
-              environment_name: "environment_id"
-            }
           }
           s: [
             {
@@ -4926,7 +5001,7 @@ main: kit: entity: action: {
               lit: "environments"
             }
             {
-              var: "environment_id"
+              var: "environment_name"
             }
             {
               lit: "variables"
@@ -5079,7 +5154,7 @@ main: kit: entity: action: {
             params: [
               {
                 k: "param"
-                n: "environment_id"
+                n: "environment_name"
                 or: "environment_name"
                 r: true
                 t: "`$STRING`"
@@ -5111,16 +5186,11 @@ main: kit: entity: action: {
           o: "/repos/{owner}/{repo}/environments/{environment_name}/variables/{name}"
           q: {
             exist: [
-              "environment_id"
+              "environment_name"
               "name"
               "owner"
               "repo"
             ]
-          }
-          r: {
-            param: {
-              environment_name: "environment_id"
-            }
           }
           s: [
             {
@@ -5136,7 +5206,7 @@ main: kit: entity: action: {
               lit: "environments"
             }
             {
-              var: "environment_id"
+              var: "environment_name"
             }
             {
               lit: "variables"
@@ -5160,7 +5230,7 @@ main: kit: entity: action: {
             params: [
               {
                 k: "param"
-                n: "environment_id"
+                n: "environment_name"
                 or: "environment_name"
                 r: true
                 t: "`$STRING`"
@@ -5192,16 +5262,11 @@ main: kit: entity: action: {
           o: "/repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}"
           q: {
             exist: [
-              "environment_id"
+              "environment_name"
               "owner"
               "repo"
               "secret_name"
             ]
-          }
-          r: {
-            param: {
-              environment_name: "environment_id"
-            }
           }
           s: [
             {
@@ -5217,7 +5282,7 @@ main: kit: entity: action: {
               lit: "environments"
             }
             {
-              var: "environment_id"
+              var: "environment_name"
             }
             {
               lit: "secrets"
@@ -5278,6 +5343,10 @@ main: kit: entity: action: {
               "repo"
               "runner_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -5442,6 +5511,79 @@ main: kit: entity: action: {
         }
         {
           co: {
+            id: "DELETE /orgs/{org}/actions/variables/{name}/repositories/{repository_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "name"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repository_id"
+                or: "repository_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/actions/variables/{name}/repositories/{repository_id}"
+          q: {
+            exist: [
+              "name"
+              "org_id"
+              "repository_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "variables"
+            }
+            {
+              var: "name"
+            }
+            {
+              lit: "repositories"
+            }
+            {
+              var: "repository_id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "DELETE /orgs/{org}/actions/runners/{runner_id}/labels/{name}"
             source: "openapi3"
             version: 2
@@ -5484,6 +5626,10 @@ main: kit: entity: action: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -5675,7 +5821,7 @@ main: kit: entity: action: {
               }
               {
                 k: "param"
-                n: "secret_id"
+                n: "secret_name"
                 or: "secret_name"
                 r: true
                 t: "`$STRING`"
@@ -5688,13 +5834,12 @@ main: kit: entity: action: {
             exist: [
               "org_id"
               "repository_id"
-              "secret_id"
+              "secret_name"
             ]
           }
           r: {
             param: {
               org: "org_id"
-              secret_name: "secret_id"
             }
           }
           s: [
@@ -5711,81 +5856,7 @@ main: kit: entity: action: {
               lit: "secrets"
             }
             {
-              var: "secret_id"
-            }
-            {
-              lit: "repositories"
-            }
-            {
-              var: "repository_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /orgs/{org}/actions/variables/{name}/repositories/{repository_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repository_id"
-                or: "repository_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "variable_id"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/orgs/{org}/actions/variables/{name}/repositories/{repository_id}"
-          q: {
-            exist: [
-              "org_id"
-              "repository_id"
-              "variable_id"
-            ]
-          }
-          r: {
-            param: {
-              name: "variable_id"
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "variables"
-            }
-            {
-              var: "variable_id"
+              var: "secret_name"
             }
             {
               lit: "repositories"
@@ -6110,6 +6181,10 @@ main: kit: entity: action: {
               "runner_id"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -6239,6 +6314,10 @@ main: kit: entity: action: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -6603,6 +6682,10 @@ main: kit: entity: action: {
               org: "org_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -6692,6 +6775,79 @@ main: kit: entity: action: {
     update: {
       name: "update"
       points: [
+        {
+          co: {
+            id: "PUT /orgs/{org}/actions/variables/{name}/repositories/{repository_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "name"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repository_id"
+                or: "repository_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/orgs/{org}/actions/variables/{name}/repositories/{repository_id}"
+          q: {
+            exist: [
+              "name"
+              "org_id"
+              "repository_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "variables"
+            }
+            {
+              var: "name"
+            }
+            {
+              lit: "repositories"
+            }
+            {
+              var: "repository_id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "PUT /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories/{repository_id}"
@@ -6789,7 +6945,7 @@ main: kit: entity: action: {
               }
               {
                 k: "param"
-                n: "secret_id"
+                n: "secret_name"
                 or: "secret_name"
                 r: true
                 t: "`$STRING`"
@@ -6802,13 +6958,12 @@ main: kit: entity: action: {
             exist: [
               "org_id"
               "repository_id"
-              "secret_id"
+              "secret_name"
             ]
           }
           r: {
             param: {
               org: "org_id"
-              secret_name: "secret_id"
             }
           }
           s: [
@@ -6825,81 +6980,7 @@ main: kit: entity: action: {
               lit: "secrets"
             }
             {
-              var: "secret_id"
-            }
-            {
-              lit: "repositories"
-            }
-            {
-              var: "repository_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "PUT /orgs/{org}/actions/variables/{name}/repositories/{repository_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repository_id"
-                or: "repository_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "variable_id"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/orgs/{org}/actions/variables/{name}/repositories/{repository_id}"
-          q: {
-            exist: [
-              "org_id"
-              "repository_id"
-              "variable_id"
-            ]
-          }
-          r: {
-            param: {
-              name: "variable_id"
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "variables"
-            }
-            {
-              var: "variable_id"
+              var: "secret_name"
             }
             {
               lit: "repositories"
@@ -7025,6 +7106,10 @@ main: kit: entity: action: {
               "repo"
               "runner_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -7403,6 +7488,10 @@ main: kit: entity: action: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

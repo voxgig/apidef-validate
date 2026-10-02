@@ -450,10 +450,10 @@ main: kit: entity: api_entities_merge: {
             params: [
               {
                 k: "param"
-                n: "merge_request_id"
+                n: "merge_request_iid"
                 or: "merge_request_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$ANY`"
               }
               {
                 k: "param"
@@ -468,15 +468,18 @@ main: kit: entity: api_entities_merge: {
           o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/cancel_merge_when_pipeline_succeeds"
           q: {
             exist: [
-              "merge_request_id"
+              "merge_request_iid"
               "project_id"
             ]
           }
           r: {
             param: {
               id: "project_id"
-              merge_request_iid: "merge_request_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -495,7 +498,7 @@ main: kit: entity: api_entities_merge: {
               lit: "merge_requests"
             }
             {
-              var: "merge_request_id"
+              var: "merge_request_iid"
             }
             {
               lit: "cancel_merge_when_pipeline_succeeds"
@@ -544,6 +547,10 @@ main: kit: entity: api_entities_merge: {
             param: {
               id: "project_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -623,17 +630,18 @@ main: kit: entity: api_entities_merge: {
           o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}"
           q: {
             exist: [
-              "include_diverged_commits_count"
-              "include_rebase_in_progress"
               "merge_request_iid"
               "project_id"
-              "render_html"
             ]
           }
           r: {
             param: {
               id: "project_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -665,159 +673,6 @@ main: kit: entity: api_entities_merge: {
     update: {
       name: "update"
       points: [
-        {
-          co: {
-            id: "PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/merge"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "merge_request_id"
-                or: "merge_request_iid"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_merge_requests_merge_request_iid_merge"
-                or: "putApiV4ProjectsIdMergeRequestsMergeRequestIidMerge"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/merge"
-          q: {
-            exist: [
-              "merge_request_id"
-              "project_id"
-              "put_api_v4_projects_id_merge_requests_merge_request_iid_merge"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-              merge_request_iid: "merge_request_id"
-            }
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "merge_requests"
-            }
-            {
-              var: "merge_request_id"
-            }
-            {
-              lit: "merge"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/rebase"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "merge_request_id"
-                or: "merge_request_iid"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_merge_requests_merge_request_iid_rebase"
-                or: "putApiV4ProjectsIdMergeRequestsMergeRequestIidRebase"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/rebase"
-          q: {
-            "$action": "rebase"
-            exist: [
-              "merge_request_id"
-              "project_id"
-              "put_api_v4_projects_id_merge_requests_merge_request_iid_rebase"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-              merge_request_iid: "merge_request_id"
-            }
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "merge_requests"
-            }
-            {
-              var: "merge_request_id"
-            }
-            {
-              lit: "rebase"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           co: {
             id: "PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}"
@@ -865,6 +720,10 @@ main: kit: entity: api_entities_merge: {
               id: "project_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "api"
@@ -883,6 +742,161 @@ main: kit: entity: api_entities_merge: {
             }
             {
               var: "merge_request_iid"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/merge"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "merge_request_iid"
+                or: "merge_request_iid"
+                r: true
+                t: "`$ANY`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "put_api_v4_projects_id_merge_requests_merge_request_iid_merge"
+                or: "putApiV4ProjectsIdMergeRequestsMergeRequestIidMerge"
+                r: true
+                t: "`$OBJECT`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/merge"
+          q: {
+            exist: [
+              "merge_request_iid"
+              "project_id"
+              "put_api_v4_projects_id_merge_requests_merge_request_iid_merge"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "merge_requests"
+            }
+            {
+              var: "merge_request_iid"
+            }
+            {
+              lit: "merge"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/rebase"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "merge_request_iid"
+                or: "merge_request_iid"
+                r: true
+                t: "`$ANY`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "put_api_v4_projects_id_merge_requests_merge_request_iid_rebase"
+                or: "putApiV4ProjectsIdMergeRequestsMergeRequestIidRebase"
+                r: true
+                t: "`$OBJECT`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/rebase"
+          q: {
+            "$action": "rebase"
+            exist: [
+              "merge_request_iid"
+              "project_id"
+              "put_api_v4_projects_id_merge_requests_merge_request_iid_rebase"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "merge_requests"
+            }
+            {
+              var: "merge_request_iid"
+            }
+            {
+              lit: "rebase"
             }
           ]
           t: {

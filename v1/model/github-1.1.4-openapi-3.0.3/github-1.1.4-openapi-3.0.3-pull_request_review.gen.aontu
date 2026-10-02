@@ -176,7 +176,7 @@ main: kit: entity: pull_request_review: {
               }
               {
                 k: "param"
-                n: "pull_id"
+                n: "pull_number"
                 or: "pull_number"
                 r: true
                 t: "`$INTEGER`"
@@ -202,15 +202,14 @@ main: kit: entity: pull_request_review: {
           q: {
             exist: [
               "owner"
-              "pull_id"
+              "pull_number"
               "repo"
               "review_id"
             ]
           }
-          r: {
-            param: {
-              pull_number: "pull_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -226,7 +225,7 @@ main: kit: entity: pull_request_review: {
               lit: "pulls"
             }
             {
-              var: "pull_id"
+              var: "pull_number"
             }
             {
               lit: "reviews"
@@ -283,6 +282,10 @@ main: kit: entity: pull_request_review: {
               "repo"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -313,6 +316,75 @@ main: kit: entity: pull_request_review: {
     list: {
       name: "list"
       points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "pull_number"
+                or: "pull_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"
+          q: {
+            exist: [
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "pull_number"
+            }
+            {
+              lit: "requested_reviewers"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews"
@@ -367,11 +439,13 @@ main: kit: entity: pull_request_review: {
           q: {
             exist: [
               "owner"
-              "page"
-              "per_page"
               "pull_number"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -391,71 +465,6 @@ main: kit: entity: pull_request_review: {
             }
             {
               lit: "reviews"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "pull_number"
-                or: "pull_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"
-          q: {
-            exist: [
-              "owner"
-              "pull_number"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "pulls"
-            }
-            {
-              var: "pull_number"
-            }
-            {
-              lit: "requested_reviewers"
             }
           ]
           t: {
@@ -492,7 +501,7 @@ main: kit: entity: pull_request_review: {
               }
               {
                 k: "param"
-                n: "pull_id"
+                n: "pull_number"
                 or: "pull_number"
                 r: true
                 t: "`$INTEGER`"
@@ -512,15 +521,18 @@ main: kit: entity: pull_request_review: {
             exist: [
               "id"
               "owner"
-              "pull_id"
+              "pull_number"
               "repo"
             ]
           }
           r: {
             param: {
-              pull_number: "pull_id"
               review_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -536,7 +548,7 @@ main: kit: entity: pull_request_review: {
               lit: "pulls"
             }
             {
-              var: "pull_id"
+              var: "pull_number"
             }
             {
               lit: "reviews"
@@ -579,7 +591,7 @@ main: kit: entity: pull_request_review: {
               }
               {
                 k: "param"
-                n: "pull_id"
+                n: "pull_number"
                 or: "pull_number"
                 r: true
                 t: "`$INTEGER`"
@@ -599,15 +611,18 @@ main: kit: entity: pull_request_review: {
             exist: [
               "id"
               "owner"
-              "pull_id"
+              "pull_number"
               "repo"
             ]
           }
           r: {
             param: {
-              pull_number: "pull_id"
               review_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -623,7 +638,7 @@ main: kit: entity: pull_request_review: {
               lit: "pulls"
             }
             {
-              var: "pull_id"
+              var: "pull_number"
             }
             {
               lit: "reviews"
@@ -666,7 +681,7 @@ main: kit: entity: pull_request_review: {
               }
               {
                 k: "param"
-                n: "pull_id"
+                n: "pull_number"
                 or: "pull_number"
                 r: true
                 t: "`$INTEGER`"
@@ -686,15 +701,18 @@ main: kit: entity: pull_request_review: {
             exist: [
               "id"
               "owner"
-              "pull_id"
+              "pull_number"
               "repo"
             ]
           }
           r: {
             param: {
-              pull_number: "pull_id"
               review_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -710,7 +728,7 @@ main: kit: entity: pull_request_review: {
               lit: "pulls"
             }
             {
-              var: "pull_id"
+              var: "pull_number"
             }
             {
               lit: "reviews"
@@ -741,7 +759,7 @@ main: kit: entity: pull_request_review: {
               }
               {
                 k: "param"
-                n: "pull_id"
+                n: "pull_number"
                 or: "pull_number"
                 r: true
                 t: "`$INTEGER`"
@@ -767,15 +785,14 @@ main: kit: entity: pull_request_review: {
           q: {
             exist: [
               "owner"
-              "pull_id"
+              "pull_number"
               "repo"
               "review_id"
             ]
           }
-          r: {
-            param: {
-              pull_number: "pull_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -791,7 +808,7 @@ main: kit: entity: pull_request_review: {
               lit: "pulls"
             }
             {
-              var: "pull_id"
+              var: "pull_number"
             }
             {
               lit: "reviews"

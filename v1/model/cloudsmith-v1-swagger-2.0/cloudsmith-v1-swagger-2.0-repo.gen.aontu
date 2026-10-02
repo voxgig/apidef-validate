@@ -538,7 +538,6 @@ main: kit: entity: repo: {
           o: "/repos/{owner}/{identifier}/geoip/disable/"
           q: {
             exist: [
-              "data"
               "identifier"
               "owner"
             ]
@@ -602,7 +601,6 @@ main: kit: entity: repo: {
           o: "/repos/{owner}/{identifier}/geoip/enable/"
           q: {
             exist: [
-              "data"
               "identifier"
               "owner"
             ]
@@ -667,7 +665,6 @@ main: kit: entity: repo: {
           q: {
             "$action": "transfer_region"
             exist: [
-              "data"
               "owner"
               "repo"
             ]
@@ -721,7 +718,6 @@ main: kit: entity: repo: {
           o: "/repos/{owner}/"
           q: {
             exist: [
-              "data"
               "id"
             ]
           }
@@ -729,6 +725,10 @@ main: kit: entity: repo: {
             param: {
               owner: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -774,11 +774,9 @@ main: kit: entity: repo: {
           }
           m: "GET"
           o: "/repos/"
-          q: {
-            exist: [
-              "page"
-              "page_size"
-            ]
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -795,6 +793,58 @@ main: kit: entity: repo: {
     load: {
       name: "load"
       points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{identifier}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "identifier"
+                or: "identifier"
+                r: true
+                t: "`$ANY`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$ANY`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{identifier}/"
+          q: {
+            exist: [
+              "identifier"
+              "owner"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "identifier"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "GET /repos/{owner}/"
@@ -833,8 +883,6 @@ main: kit: entity: repo: {
           q: {
             exist: [
               "id"
-              "page"
-              "page_size"
             ]
           }
           r: {
@@ -842,60 +890,16 @@ main: kit: entity: repo: {
               owner: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
             }
             {
               var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{identifier}/"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "identifier"
-                or: "identifier"
-                r: true
-                t: "`$ANY`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$ANY`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{identifier}/"
-          q: {
-            exist: [
-              "identifier"
-              "owner"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "identifier"
             }
           ]
           t: {
@@ -945,10 +949,13 @@ main: kit: entity: repo: {
           o: "/repos/{owner}/{identifier}/"
           q: {
             exist: [
-              "data"
               "identifier"
               "owner"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1003,7 +1010,6 @@ main: kit: entity: repo: {
           o: "/repos/{owner}/{identifier}/privileges"
           q: {
             exist: [
-              "data"
               "identifier"
               "owner"
             ]
@@ -2292,7 +2298,6 @@ main: kit: entity: repo: {
           o: "/repos/{owner}/{identifier}/privileges"
           q: {
             exist: [
-              "data"
               "identifier"
               "owner"
             ]

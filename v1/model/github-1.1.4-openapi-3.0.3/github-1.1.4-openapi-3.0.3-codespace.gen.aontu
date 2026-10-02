@@ -1112,15 +1112,15 @@ main: kit: entity: codespace: {
               }
               {
                 k: "param"
-                n: "member_id"
-                or: "username"
+                n: "org_id"
+                or: "org"
                 r: true
                 t: "`$STRING`"
               }
               {
                 k: "param"
-                n: "org_id"
-                or: "org"
+                n: "username"
+                or: "username"
                 r: true
                 t: "`$STRING`"
               }
@@ -1132,15 +1132,18 @@ main: kit: entity: codespace: {
             "$action": "stop"
             exist: [
               "codespace_name"
-              "member_id"
               "org_id"
+              "username"
             ]
           }
           r: {
             param: {
               org: "org_id"
-              username: "member_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1153,7 +1156,7 @@ main: kit: entity: codespace: {
               lit: "members"
             }
             {
-              var: "member_id"
+              var: "username"
             }
             {
               lit: "codespaces"
@@ -1209,6 +1212,10 @@ main: kit: entity: codespace: {
               "pull_number"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1267,6 +1274,10 @@ main: kit: entity: codespace: {
               "repo"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -1310,6 +1321,10 @@ main: kit: entity: codespace: {
             exist: [
               "codespace_name"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1355,6 +1370,10 @@ main: kit: entity: codespace: {
               "codespace_name"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "user"
@@ -1399,6 +1418,10 @@ main: kit: entity: codespace: {
               "codespace_name"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "user"
@@ -1442,6 +1465,10 @@ main: kit: entity: codespace: {
             exist: [
               "codespace_name"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1521,6 +1548,10 @@ main: kit: entity: codespace: {
           }
           m: "POST"
           o: "/user/codespaces"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "user"
@@ -1539,89 +1570,6 @@ main: kit: entity: codespace: {
     list: {
       name: "list"
       points: [
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/codespaces/machines"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "client_ip"
-                or: "client_ip"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: "WestUs2"
-                k: "query"
-                n: "location"
-                or: "location"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: "main"
-                k: "query"
-                n: "ref"
-                or: "ref"
-                r: false
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/codespaces/machines"
-          q: {
-            "$action": "machine"
-            exist: [
-              "client_ip"
-              "location"
-              "owner"
-              "ref"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "codespaces"
-            }
-            {
-              lit: "machines"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.machines`"
-          }
-        }
         {
           co: {
             id: "GET /orgs/{org}/codespaces/secrets/{secret_name}/repositories"
@@ -1669,8 +1617,6 @@ main: kit: entity: codespace: {
           q: {
             exist: [
               "org_id"
-              "page"
-              "per_page"
               "secret_name"
             ]
           }
@@ -1678,6 +1624,10 @@ main: kit: entity: codespace: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1751,8 +1701,6 @@ main: kit: entity: codespace: {
           q: {
             exist: [
               "org_id"
-              "page"
-              "per_page"
               "username"
             ]
           }
@@ -1760,6 +1708,10 @@ main: kit: entity: codespace: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1830,10 +1782,12 @@ main: kit: entity: codespace: {
           q: {
             exist: [
               "owner"
-              "page"
-              "per_page"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1902,10 +1856,12 @@ main: kit: entity: codespace: {
             "$action": "devcontainer"
             exist: [
               "owner"
-              "page"
-              "per_page"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1927,6 +1883,90 @@ main: kit: entity: codespace: {
           t: {
             req: "`reqdata`"
             res: "`body.devcontainers`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/codespaces/machines"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "client_ip"
+                or: "client_ip"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: "WestUs2"
+                k: "query"
+                n: "location"
+                or: "location"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: "main"
+                k: "query"
+                n: "ref"
+                or: "ref"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/codespaces/machines"
+          q: {
+            "$action": "machine"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              lit: "machines"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.machines`"
           }
         }
         {
@@ -1977,10 +2017,12 @@ main: kit: entity: codespace: {
             "$action": "secret"
             exist: [
               "owner"
-              "page"
-              "per_page"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2002,6 +2044,54 @@ main: kit: entity: codespace: {
           t: {
             req: "`reqdata`"
             res: "`body.secrets`"
+          }
+        }
+        {
+          co: {
+            id: "GET /user/codespaces/{codespace_name}/machines"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "codespace_name"
+                or: "codespace_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/user/codespaces/{codespace_name}/machines"
+          q: {
+            "$action": "machine"
+            exist: [
+              "codespace_name"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              var: "codespace_name"
+            }
+            {
+              lit: "machines"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.machines`"
           }
         }
         {
@@ -2044,14 +2134,16 @@ main: kit: entity: codespace: {
           q: {
             exist: [
               "org_id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2110,14 +2202,16 @@ main: kit: entity: codespace: {
             "$action": "secret"
             exist: [
               "org_id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2136,6 +2230,56 @@ main: kit: entity: codespace: {
           t: {
             req: "`reqdata`"
             res: "`body.secrets`"
+          }
+        }
+        {
+          co: {
+            id: "GET /user/codespaces/secrets/{secret_name}/repositories"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "secret_name"
+                or: "secret_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/user/codespaces/secrets/{secret_name}/repositories"
+          q: {
+            exist: [
+              "secret_name"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              lit: "secrets"
+            }
+            {
+              var: "secret_name"
+            }
+            {
+              lit: "repositories"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.repositories`"
           }
         }
         {
@@ -2173,12 +2317,9 @@ main: kit: entity: codespace: {
           }
           m: "GET"
           o: "/user/codespaces"
-          q: {
-            exist: [
-              "page"
-              "per_page"
-              "repository_id"
-            ]
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2223,10 +2364,10 @@ main: kit: entity: codespace: {
           o: "/user/codespaces/secrets"
           q: {
             "$action": "secret"
-            exist: [
-              "page"
-              "per_page"
-            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2244,176 +2385,11 @@ main: kit: entity: codespace: {
             res: "`body.secrets`"
           }
         }
-        {
-          co: {
-            id: "GET /user/codespaces/{codespace_name}/machines"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "codespace_name"
-                or: "codespace_name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/user/codespaces/{codespace_name}/machines"
-          q: {
-            "$action": "machine"
-            exist: [
-              "codespace_name"
-            ]
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "codespaces"
-            }
-            {
-              var: "codespace_name"
-            }
-            {
-              lit: "machines"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.machines`"
-          }
-        }
-        {
-          co: {
-            id: "GET /user/codespaces/secrets/{secret_name}/repositories"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "secret_name"
-                or: "secret_name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/user/codespaces/secrets/{secret_name}/repositories"
-          q: {
-            exist: [
-              "secret_name"
-            ]
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "codespaces"
-            }
-            {
-              lit: "secrets"
-            }
-            {
-              var: "secret_name"
-            }
-            {
-              lit: "repositories"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.repositories`"
-          }
-        }
       ]
     }
     load: {
       name: "load"
       points: [
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/codespaces/new"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: "1.2.3.4"
-                k: "query"
-                n: "client_ip"
-                or: "client_ip"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: "main"
-                k: "query"
-                n: "ref"
-                or: "ref"
-                r: false
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/codespaces/new"
-          q: {
-            "$action": "new"
-            exist: [
-              "client_ip"
-              "owner"
-              "ref"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "codespaces"
-            }
-            {
-              lit: "new"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           co: {
             id: "GET /repos/{owner}/{repo}/codespaces/permissions_check"
@@ -2466,6 +2442,10 @@ main: kit: entity: codespace: {
               "ref"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2529,6 +2509,10 @@ main: kit: entity: codespace: {
               "secret_name"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -2564,7 +2548,7 @@ main: kit: entity: codespace: {
             params: [
               {
                 k: "param"
-                n: "codespace_id"
+                n: "codespace_name"
                 or: "codespace_name"
                 r: true
                 t: "`$STRING`"
@@ -2582,14 +2566,13 @@ main: kit: entity: codespace: {
           o: "/user/codespaces/{codespace_name}/exports/{export_id}"
           q: {
             exist: [
-              "codespace_id"
+              "codespace_name"
               "export_id"
             ]
           }
-          r: {
-            param: {
-              codespace_name: "codespace_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2599,7 +2582,7 @@ main: kit: entity: codespace: {
               lit: "codespaces"
             }
             {
-              var: "codespace_id"
+              var: "codespace_name"
             }
             {
               lit: "exports"
@@ -2650,6 +2633,10 @@ main: kit: entity: codespace: {
               org: "org_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -2665,6 +2652,83 @@ main: kit: entity: codespace: {
             }
             {
               var: "secret_name"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/codespaces/new"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "1.2.3.4"
+                k: "query"
+                n: "client_ip"
+                or: "client_ip"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: "main"
+                k: "query"
+                n: "ref"
+                or: "ref"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/codespaces/new"
+          q: {
+            "$action": "new"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              lit: "new"
             }
           ]
           t: {
@@ -2703,6 +2767,10 @@ main: kit: entity: codespace: {
               "owner"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2758,6 +2826,10 @@ main: kit: entity: codespace: {
               codespace_name: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "user"
@@ -2802,6 +2874,10 @@ main: kit: entity: codespace: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2849,6 +2925,10 @@ main: kit: entity: codespace: {
               "secret_name"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "user"
@@ -2876,6 +2956,10 @@ main: kit: entity: codespace: {
           }
           m: "GET"
           o: "/user/codespaces/secrets/public-key"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "user"
@@ -2929,6 +3013,10 @@ main: kit: entity: codespace: {
               codespace_name: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "user"
@@ -2967,15 +3055,15 @@ main: kit: entity: codespace: {
               }
               {
                 k: "param"
-                n: "member_id"
-                or: "username"
+                n: "org_id"
+                or: "org"
                 r: true
                 t: "`$STRING`"
               }
               {
                 k: "param"
-                n: "org_id"
-                or: "org"
+                n: "username"
+                or: "username"
                 r: true
                 t: "`$STRING`"
               }
@@ -2986,16 +3074,19 @@ main: kit: entity: codespace: {
           q: {
             exist: [
               "id"
-              "member_id"
               "org_id"
+              "username"
             ]
           }
           r: {
             param: {
               codespace_name: "id"
               org: "org_id"
-              username: "member_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3008,7 +3099,7 @@ main: kit: entity: codespace: {
               lit: "members"
             }
             {
-              var: "member_id"
+              var: "username"
             }
             {
               lit: "codespaces"
@@ -3046,7 +3137,7 @@ main: kit: entity: codespace: {
               }
               {
                 k: "param"
-                n: "secret_id"
+                n: "secret_name"
                 or: "secret_name"
                 r: true
                 t: "`$STRING`"
@@ -3059,13 +3150,12 @@ main: kit: entity: codespace: {
             exist: [
               "org_id"
               "repository_id"
-              "secret_id"
+              "secret_name"
             ]
           }
           r: {
             param: {
               org: "org_id"
-              secret_name: "secret_id"
             }
           }
           s: [
@@ -3082,7 +3172,7 @@ main: kit: entity: codespace: {
               lit: "secrets"
             }
             {
-              var: "secret_id"
+              var: "secret_name"
             }
             {
               lit: "repositories"
@@ -3237,7 +3327,7 @@ main: kit: entity: codespace: {
               }
               {
                 k: "param"
-                n: "secret_id"
+                n: "secret_name"
                 or: "secret_name"
                 r: true
                 t: "`$STRING`"
@@ -3249,13 +3339,8 @@ main: kit: entity: codespace: {
           q: {
             exist: [
               "repository_id"
-              "secret_id"
+              "secret_name"
             ]
-          }
-          r: {
-            param: {
-              secret_name: "secret_id"
-            }
           }
           s: [
             {
@@ -3268,7 +3353,7 @@ main: kit: entity: codespace: {
               lit: "secrets"
             }
             {
-              var: "secret_id"
+              var: "secret_name"
             }
             {
               lit: "repositories"
@@ -3310,6 +3395,10 @@ main: kit: entity: codespace: {
             param: {
               codespace_name: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3450,7 +3539,7 @@ main: kit: entity: codespace: {
               }
               {
                 k: "param"
-                n: "secret_id"
+                n: "secret_name"
                 or: "secret_name"
                 r: true
                 t: "`$STRING`"
@@ -3463,13 +3552,12 @@ main: kit: entity: codespace: {
             exist: [
               "org_id"
               "repository_id"
-              "secret_id"
+              "secret_name"
             ]
           }
           r: {
             param: {
               org: "org_id"
-              secret_name: "secret_id"
             }
           }
           s: [
@@ -3486,7 +3574,7 @@ main: kit: entity: codespace: {
               lit: "secrets"
             }
             {
-              var: "secret_id"
+              var: "secret_name"
             }
             {
               lit: "repositories"
@@ -3539,6 +3627,10 @@ main: kit: entity: codespace: {
               "repo"
               "secret_name"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3601,6 +3693,10 @@ main: kit: entity: codespace: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3703,7 +3799,7 @@ main: kit: entity: codespace: {
               }
               {
                 k: "param"
-                n: "secret_id"
+                n: "secret_name"
                 or: "secret_name"
                 r: true
                 t: "`$STRING`"
@@ -3715,13 +3811,8 @@ main: kit: entity: codespace: {
           q: {
             exist: [
               "repository_id"
-              "secret_id"
+              "secret_name"
             ]
-          }
-          r: {
-            param: {
-              secret_name: "secret_id"
-            }
           }
           s: [
             {
@@ -3734,7 +3825,7 @@ main: kit: entity: codespace: {
               lit: "secrets"
             }
             {
-              var: "secret_id"
+              var: "secret_name"
             }
             {
               lit: "repositories"
@@ -3820,6 +3911,10 @@ main: kit: entity: codespace: {
             exist: [
               "secret_name"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

@@ -200,7 +200,8 @@ and from 238 to 240.
 
 Two of the findings on the 8.20.0 refresh stay open as voxgig/apidef#110:
 github's repository invitations still join `repo`, and gitlab's runner
-registration still joins the runner detail entity.
+registration still joins the runner detail entity. voxgig/apidef#133 closes
+both in 8.23.0, recorded under 2026-10-02 below.
 
 ## 2026-09-29 — apidef 8.22.0 and go/v0.18.0
 
@@ -222,6 +223,72 @@ and every definition here parsed before 0.5.15, so none holds a number
 followed by a bracket (tabnas/yaml#99). The TypeScript suite passes 5/5
 unchanged, and the Go harness on go/v0.18.1 passes with every skip count as
 before.
+
+## 2026-10-02 — apidef 8.23.0 and go/v0.19.0
+
+The pins move from 8.22.1 to 8.23.0 and from go/v0.18.1 to go/v0.19.0. The
+release carries seven merges, voxgig/apidef#130 to #136. 775 of the 840
+OpenAPI entity goldens change, one entity is added, and the base and final
+guides of cloudsmith, github and gitlab change. No GraphQL golden changes.
+
+Each change was traced to its merge by generating the 15 OpenAPI cases at
+every merge between the two releases. 8.22.1 reproduces the old goldens and
+8.23.0 the new ones, file for file, and every difference between two
+neighbouring merges falls into one of the classes below.
+
+1. **The credential a client sends** (#130) changes nothing here, since the
+   corpus records no `api-info`.
+2. **A REST point is selected by its path parameters and required
+   arguments** (#131). `q.exist` drops the optional arguments of 987
+   points, and 141 points lose `q` altogether, since nothing is left to
+   select them. Points sort by selector, so 479 points re-sort within their
+   operation, and the fields of cloudsmith's `package`, github's `action`
+   and `repo`, and shortcut's `story` follow, since an entity's fields are
+   read from its points in order. 633 of 1,707 operations change, in 463
+   entity goldens.
+3. **A path parameter keeps one name across an entity's operations**
+   (#132). 175 points in cloudsmith, github and gitlab rename a parameter,
+   which changes 85 operations on 47 entities, and 152 `rename: param`
+   lines leave the three base guides. A parameter keeps its own name where
+   the deeper routes had called it an id: cloudsmith's `member` had been
+   `member_id`, gitlab's conan `package_name` had been `conan_id`, and
+   github's `environment_name` had been `environment_id`. github's
+   `enterprise-team` becomes `enterprise_team` rather than `team_id`. apidef
+   reads no type from a Swagger 2 parameter, which declares it beside its
+   name rather than in a schema, and infers `$STRING` from an `_id` name
+   alone, so the 79 such path parameters that lose an `_id` name go from
+   `$STRING` to `$ANY`, 6 in cloudsmith and 73 in gitlab. The new names
+   re-sort 31 points, and github's `repo` fields follow again.
+4. **A route joins the entity of the records it answers with** (#133),
+   which closes the two voxgig/apidef#110 findings recorded on 8.21.0.
+   github's `/user/repository_invitations` list, `PATCH` and `DELETE` move
+   from `repo` to `repository_invitation`, whose item key `invitation_id`
+   becomes `id`, and `repo` loses the invitation fields. gitlab's
+   `POST /api/v4/runners` stays on
+   `api_entities_ci_runner_registration_detail`, and `GET /api/v4/keys`
+   leaves `api_entities_ssh_key_with_user` for a new
+   `api_entities_user_with_admin`, so gitlab rises from 274 to 275
+   entities.
+5. **A request body that is not JSON alone** (#134): 19 points on 13
+   entities gain `rb`. They are contentful's `upload`; github's `markdown`
+   and `release_asset`; gitlab's `api_entities_appearance`,
+   `api_entities_bulk_import`, `api_entities_metric_image`,
+   `api_entities_project_import_status`,
+   `api_entities_relation_import_tracker`, `group_import` and
+   `terraform_registry`; petstore's `pet`; shortcut's `uploaded_file`; and
+   statuspage's `component`.
+6. **The media types a success response declares** (#135): 2,393 of the
+   3,240 points gain `rs`, on 709 of the 841 entities. No pokeapi point
+   has one, as its operations answer `default` only. Read against the
+   definitions, the points carrying `rs` are exactly those whose operation
+   declares a `2XX` body, and the points carrying `rb` exactly those whose
+   request body is not JSON alone.
+7. **Request paths** (#136) change nothing here.
+
+The TypeScript suite passes 5/5 on the refreshed goldens. The Go harness on
+go/v0.19.0 passes with every skip count unchanged, and the same 613 goldens
+differ under the known gaps as on 8.22.1 and go/v0.18.1. The Go port writes
+the new gitlab entity exactly, and every guide matches.
 
 ## Keeping goldens honest
 

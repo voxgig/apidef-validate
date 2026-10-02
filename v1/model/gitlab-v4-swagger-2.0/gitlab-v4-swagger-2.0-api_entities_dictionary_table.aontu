@@ -45,10 +45,10 @@ main: kit: entity: api_entities_dictionary_table: {
             params: [
               {
                 k: "param"
-                n: "database_id"
+                n: "database_name"
                 or: "database_name"
                 r: true
-                t: "`$STRING`"
+                t: "`$ANY`"
               }
               {
                 k: "param"
@@ -63,15 +63,18 @@ main: kit: entity: api_entities_dictionary_table: {
           o: "/api/v4/admin/databases/{database_name}/dictionary/tables/{table_name}"
           q: {
             exist: [
-              "database_id"
+              "database_name"
               "id"
             ]
           }
           r: {
             param: {
-              database_name: "database_id"
               table_name: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -87,7 +90,7 @@ main: kit: entity: api_entities_dictionary_table: {
               lit: "databases"
             }
             {
-              var: "database_id"
+              var: "database_name"
             }
             {
               lit: "dictionary"

@@ -175,32 +175,36 @@ main: kit: entity: api_entities_ci_runner_detail: {
 
   name: "api_entities_ci_runner_detail"
   op: {
-    create: {
-      name: "create"
+    load: {
+      name: "load"
       points: [
         {
           co: {
-            id: "POST /api/v4/runners"
+            id: "GET /api/v4/runners/{id}"
             source: "swagger2"
             version: 2
           }
           g: {
-            query: [
+            params: [
               {
-                k: "query"
-                n: "post_api_v4_runner"
-                or: "postApiV4Runners"
+                k: "param"
+                n: "id"
+                or: "id"
                 r: true
-                t: "`$OBJECT`"
+                t: "`$STRING`"
               }
             ]
           }
-          m: "POST"
-          o: "/api/v4/runners"
+          m: "GET"
+          o: "/api/v4/runners/{id}"
           q: {
             exist: [
-              "post_api_v4_runner"
+              "id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -212,17 +216,15 @@ main: kit: entity: api_entities_ci_runner_detail: {
             {
               lit: "runners"
             }
+            {
+              var: "id"
+            }
           ]
           t: {
             req: "`reqdata`"
             res: "`body`"
           }
         }
-      ]
-    }
-    load: {
-      name: "load"
-      points: [
         {
           co: {
             id: "GET /api/v4/runners"
@@ -295,17 +297,9 @@ main: kit: entity: api_entities_ci_runner_detail: {
           }
           m: "GET"
           o: "/api/v4/runners"
-          q: {
-            exist: [
-              "page"
-              "paused"
-              "per_page"
-              "scope"
-              "status"
-              "tag_list"
-              "type"
-              "version_prefix"
-            ]
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -316,49 +310,6 @@ main: kit: entity: api_entities_ci_runner_detail: {
             }
             {
               lit: "runners"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /api/v4/runners/{id}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/runners/{id}"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "runners"
-            }
-            {
-              var: "id"
             }
           ]
           t: {
@@ -449,6 +400,10 @@ main: kit: entity: api_entities_ci_runner_detail: {
               "id"
               "put_api_v4_runners_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

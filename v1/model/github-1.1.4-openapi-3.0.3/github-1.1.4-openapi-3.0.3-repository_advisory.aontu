@@ -321,6 +321,13 @@ main: kit: entity: repository_advisory: {
             params: [
               {
                 k: "param"
+                n: "ghsa_id"
+                or: "ghsa_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
                 n: "owner"
                 or: "owner"
                 r: true
@@ -333,13 +340,6 @@ main: kit: entity: repository_advisory: {
                 r: true
                 t: "`$STRING`"
               }
-              {
-                k: "param"
-                n: "security_advisory_id"
-                or: "ghsa_id"
-                r: true
-                t: "`$STRING`"
-              }
             ]
           }
           m: "POST"
@@ -347,15 +347,14 @@ main: kit: entity: repository_advisory: {
           q: {
             "$action": "cve"
             exist: [
+              "ghsa_id"
               "owner"
               "repo"
-              "security_advisory_id"
             ]
           }
-          r: {
-            param: {
-              ghsa_id: "security_advisory_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -371,7 +370,7 @@ main: kit: entity: repository_advisory: {
               lit: "security-advisories"
             }
             {
-              var: "security_advisory_id"
+              var: "ghsa_id"
             }
             {
               lit: "cve"
@@ -413,6 +412,10 @@ main: kit: entity: repository_advisory: {
               "owner"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -474,6 +477,10 @@ main: kit: entity: repository_advisory: {
               "owner"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -585,15 +592,13 @@ main: kit: entity: repository_advisory: {
           o: "/repos/{owner}/{repo}/security-advisories"
           q: {
             exist: [
-              "after"
-              "before"
-              "direction"
               "owner"
-              "per_page"
               "repo"
-              "sort"
-              "state"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -682,19 +687,17 @@ main: kit: entity: repository_advisory: {
           o: "/orgs/{org}/security-advisories"
           q: {
             exist: [
-              "after"
-              "before"
-              "direction"
               "org_id"
-              "per_page"
-              "sort"
-              "state"
             ]
           }
           r: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -756,6 +759,10 @@ main: kit: entity: repository_advisory: {
               "owner"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -823,6 +830,10 @@ main: kit: entity: repository_advisory: {
               "owner"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

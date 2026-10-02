@@ -4,7 +4,7 @@
 #   gitlab-v4-swagger-2.0-guide.aontu
 
 guide: {
-  metrics: count: entity: 274
+  metrics: count: entity: 275
   metrics: count: path: 861
   metrics: count: method: 1106
 
@@ -551,7 +551,6 @@ guide: {
 
   entity: api_entities_ci_runner_detail: {
     path: "/api/v4/runners": {  # ent=api_entities_ci_runner_detail;orig=API_Entities_Ci_RunnerDetails;cmp/resolve=api_entities_ci_runner;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
       op: load: method: *GET  # not-list
       op: remove: method: *DELETE  # not-load
     }
@@ -569,6 +568,9 @@ guide: {
   }
 
   entity: api_entities_ci_runner_registration_detail: {
+    path: "/api/v4/runners": {  # ent=api_entities_ci_runner_registration_detail;orig=API_Entities_Ci_RunnerRegistrationDetails;cmp/resolve=api_entities_ci_runner_registration_detail;path=t/;cmp-primary;cmp-infreq
+      op: create: method: *POST  # not-load
+    }
     path: "/api/v4/user/runners": {  # ent=api_entities_ci_runner_registration_detail;orig=API_Entities_Ci_RunnerRegistrationDetails;cmp/resolve=api_entities_ci_runner_registration_detail;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
     }
@@ -930,7 +932,6 @@ guide: {
 
   entity: api_entities_dictionary_table: {
     path: "/api/v4/admin/databases/{database_name}/dictionary/tables/{table_name}": {  # ent=api_entities_dictionary_table;orig=API_Entities_Dictionary_Table;cmp/resolve=api_entities_dictionary_table;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "database_name": *"database_id"  # not-primary
       rename: param: "table_name": *"id"  # end-id;GET;parent=true/table
       op: load: method: *GET  # end-param
     }
@@ -2060,18 +2061,15 @@ guide: {
     }
     path: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/cancel_merge_when_pipeline_succeeds": {  # ent=api_entities_merge;orig=API_Entities_MergeRequest;cmp/resolve=api_entities_merge;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_MergeRequest
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "merge_request_iid": *"merge_request_id"  # parent:merge_request
       op: create: method: *POST  # not-load
     }
     path: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/merge": {  # ent=api_entities_merge;orig=API_Entities_MergeRequest;cmp/resolve=api_entities_merge;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_MergeRequest
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "merge_request_iid": *"merge_request_id"  # parent:merge_request
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/rebase": {  # ent=api_entities_merge;orig=API_Entities_MergeRequest;tag=merge_request;cmp/resolve=merge_request;path=t/p/t/;verb-on-parent=api_entities_merge
       action: "rebase": {}  # ent;api_entities_merge;verb-on-parent;rebase;PUT
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "merge_request_iid": *"merge_request_id"  # parent:merge_request
       op: update: method: *PUT  # not-load
     }
   }
@@ -2309,15 +2307,12 @@ guide: {
   entity: api_entities_packages_conan_files_list: {
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files": {  # ent=api_entities_packages_conan_files_list;orig=API_Entities_Packages_Conan_FilesList;cmp/resolve=api_entities_packages_conan_files_list;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_Packages_Conan_FilesList
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.files`")|top
     }
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files": {  # ent=api_entities_packages_conan_files_list;orig=API_Entities_Packages_Conan_FilesList;cmp/resolve=api_entities_packages_conan_files_list;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_Packages_Conan_FilesList
       rename: param: "conan_package_reference": *"package_id"  # not-primary
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
-      rename: param: "recipe_revision": *"revision_id"  # not-primary
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.files`")|top
     }
@@ -2325,24 +2320,20 @@ guide: {
 
   entity: api_entities_packages_conan_package_manifest: {
     path: "/api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/digest": {  # ent=api_entities_packages_conan_package_manifest;orig=API_Entities_Packages_Conan_PackageManifest;cmp/resolve=api_entities_packages_conan_package_manifest;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_Packages_Conan_PackageManifest
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.package_urls`")|top
     }
     path: "/api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/download_urls": {  # ent=api_entities_packages_conan_package_manifest;orig=API_Entities_Packages_Conan_PackageManifest;cmp/resolve=api_entities_packages_conan_package_manifest;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_Packages_Conan_PackageManifest
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.package_urls`")|top
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/digest": {  # ent=api_entities_packages_conan_package_manifest;orig=API_Entities_Packages_Conan_PackageManifest;cmp/resolve=api_entities_packages_conan_package_manifest;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_Packages_Conan_PackageManifest
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.package_urls`")|top
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/download_urls": {  # ent=api_entities_packages_conan_package_manifest;orig=API_Entities_Packages_Conan_PackageManifest;cmp/resolve=api_entities_packages_conan_package_manifest;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_Packages_Conan_PackageManifest
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.package_urls`")|top
     }
@@ -2351,7 +2342,6 @@ guide: {
   entity: api_entities_packages_conan_package_revision: {
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions": {  # ent=api_entities_packages_conan_package_revision;orig=API_Entities_Packages_Conan_PackageRevisions;cmp/resolve=api_entities_packages_conan_package_revision;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_Packages_Conan_PackageRevisions
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       rename: param: "recipe_revision": *"revision_id"  # not-primary
       op: list: method: *GET  # array-prop:revisions
       op: list: transform: res: *("`body.revisions`")|top
@@ -2360,13 +2350,11 @@ guide: {
 
   entity: api_entities_packages_conan_package_snapshot: {
     path: "/api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}": {  # ent=api_entities_packages_conan_package_snapshot;orig=API_Entities_Packages_Conan_PackageSnapshot;cmp/resolve=api_entities_packages_conan_package_snapshot;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.package_snapshot`")|top
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}": {  # ent=api_entities_packages_conan_package_snapshot;orig=API_Entities_Packages_Conan_PackageSnapshot;cmp/resolve=api_entities_packages_conan_package_snapshot;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.package_snapshot`")|top
     }
@@ -2374,24 +2362,20 @@ guide: {
 
   entity: api_entities_packages_conan_recipe_manifest: {
     path: "/api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/digest": {  # ent=api_entities_packages_conan_recipe_manifest;orig=API_Entities_Packages_Conan_RecipeManifest;cmp/resolve=api_entities_packages_conan_recipe_manifest;path=p/t/;cmp-primary;cmp-infreq
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.recipe_urls`")|top
     }
     path: "/api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/download_urls": {  # ent=api_entities_packages_conan_recipe_manifest;orig=API_Entities_Packages_Conan_RecipeManifest;cmp/resolve=api_entities_packages_conan_recipe_manifest;path=p/t/;cmp-primary;cmp-infreq
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.recipe_urls`")|top
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/digest": {  # ent=api_entities_packages_conan_recipe_manifest;orig=API_Entities_Packages_Conan_RecipeManifest;cmp/resolve=api_entities_packages_conan_recipe_manifest;path=p/t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.recipe_urls`")|top
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/download_urls": {  # ent=api_entities_packages_conan_recipe_manifest;orig=API_Entities_Packages_Conan_RecipeManifest;cmp/resolve=api_entities_packages_conan_recipe_manifest;path=p/t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.recipe_urls`")|top
     }
@@ -2400,7 +2384,6 @@ guide: {
   entity: api_entities_packages_conan_recipe_revision: {
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions": {  # ent=api_entities_packages_conan_recipe_revision;orig=API_Entities_Packages_Conan_RecipeRevisions;cmp/resolve=api_entities_packages_conan_recipe_revision;path=p/t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: list: method: *GET  # array-prop:revisions
       op: list: transform: res: *("`body.revisions`")|top
     }
@@ -2420,12 +2403,10 @@ guide: {
   entity: api_entities_packages_conan_revision: {
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/latest": {  # ent=api_entities_packages_conan_revision;orig=API_Entities_Packages_Conan_Revision;cmp/resolve=api_entities_packages_conan_revision;path=p/t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # not-list
     }
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/latest": {  # ent=api_entities_packages_conan_revision;orig=API_Entities_Packages_Conan_Revision;cmp/resolve=api_entities_packages_conan_revision;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_Packages_Conan_Revision
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       rename: param: "recipe_revision": *"revision_id"  # not-primary
       op: load: method: *GET  # not-list
     }
@@ -2433,24 +2414,20 @@ guide: {
 
   entity: api_entities_packages_conan_upload_url: {
     path: "/api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/upload_urls": {  # ent=api_entities_packages_conan_upload_url;orig=API_Entities_Packages_Conan_UploadUrls;cmp/resolve=api_entities_packages_conan_upload_url;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_Packages_Conan_UploadUrls
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: create: method: *POST  # not-load
       op: create: transform: res: *("`body.upload_urls`")|top
     }
     path: "/api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/upload_urls": {  # ent=api_entities_packages_conan_upload_url;orig=API_Entities_Packages_Conan_UploadUrls;cmp/resolve=api_entities_packages_conan_upload_url;path=p/t/;cmp-primary;cmp-infreq
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: create: method: *POST  # not-load
       op: create: transform: res: *("`body.upload_urls`")|top
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/upload_urls": {  # ent=api_entities_packages_conan_upload_url;orig=API_Entities_Packages_Conan_UploadUrls;cmp/resolve=api_entities_packages_conan_upload_url;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_Packages_Conan_UploadUrls
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: create: method: *POST  # not-load
       op: create: transform: res: *("`body.upload_urls`")|top
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/upload_urls": {  # ent=api_entities_packages_conan_upload_url;orig=API_Entities_Packages_Conan_UploadUrls;cmp/resolve=api_entities_packages_conan_upload_url;path=p/t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: create: method: *POST  # not-load
       op: create: transform: res: *("`body.upload_urls`")|top
     }
@@ -2858,14 +2835,12 @@ guide: {
   entity: api_entities_releases_link: {
     path: "/api/v4/projects/{id}/releases/{tag_name}/assets/links": {  # ent=api_entities_releases_link;orig=API_Entities_Releases_Link;cmp/resolve=api_entities_releases_link;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "tag_name": *"release_id"  # not-primary
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
     path: "/api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}": {  # ent=api_entities_releases_link;orig=API_Entities_Releases_Link;cmp/resolve=api_entities_releases_link;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
       rename: param: "link_id": *"id"  # end-id;GET;parent=true/link
-      rename: param: "tag_name": *"release_id"  # not-primary
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
@@ -2941,9 +2916,6 @@ guide: {
   }
 
   entity: api_entities_ssh_key_with_user: {
-    path: "/api/v4/keys": {  # ent=api_entities_ssh_key_with_user;orig=API_Entities_SSHKeyWithUser;cmp/resolve=api_entities_user_with_admin;path=t/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array-prop:custom_attributes
-    }
     path: "/api/v4/keys/{id}": {  # ent=api_entities_ssh_key_with_user;orig=API_Entities_SSHKeyWithUser;cmp/resolve=api_entities_ssh_key_with_user;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
     }
@@ -3003,11 +2975,9 @@ guide: {
       op: load: method: *GET  # end-param
     }
     path: "/api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/*module_version": {  # ent=api_entities_terraform_module_version;orig=API_Entities_Terraform_ModuleVersion;cmp/resolve=api_entities_terraform_module_version;path=p/t/;cmp-primary;cmp-infreq
-      rename: param: "module_namespace": *"v1_id"  # not-primary
       op: load: method: *GET  # not-list
     }
     path: "/api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/versions": {  # ent=api_entities_terraform_module_version;orig=API_Entities_Terraform_ModuleVersion;cmp/resolve=api_entities_terraform_module_version;path=p/t/;cmp-primary;cmp-infreq
-      rename: param: "module_namespace": *"v1_id"  # not-primary
       op: list: method: *GET  # array
     }
   }
@@ -3063,6 +3033,12 @@ guide: {
     path: "/api/v4/groups/{id}/saml_users": {  # ent=api_entities_user_public;orig=API_Entities_UserPublic;cmp/resolve=api_entities_user_public;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API_Entities_UserPublic
       rename: param: "id": *"group_id"  # parent:group
       op: list: method: *GET  # array
+    }
+  }
+
+  entity: api_entities_user_with_admin: {
+    path: "/api/v4/keys": {  # ent=api_entities_user_with_admin;orig=API_Entities_UserWithAdmin;cmp/resolve=api_entities_user_with_admin;path=t/;cmp-primary;cmp-infreq
+      op: list: method: *GET  # array-prop:custom_attributes
     }
   }
 
@@ -3292,17 +3268,14 @@ guide: {
       op: load: method: *GET  # no-schema
     }
     path: "/api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/search": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=p/t/;cmp-primary;cmp-infreq
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # no-schema
     }
     path: "/api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "package_name": *"file_id"  # not-primary
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;verb-on-parent=conan_package
       action: "authorize": {}  # ent;conan_package;verb-on-parent;authorize;PUT
-      rename: param: "package_name": *"file_id"  # not-primary
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/p;cmp-primary;cmp-infreq
@@ -3310,8 +3283,6 @@ guide: {
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=p/t/;cmp-primary;cmp-infreq
-      rename: param: "conan_package_reference": *"package_id"  # not-primary
-      rename: param: "package_name": *"file_id"  # not-primary
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/packages/conan/v1/ping": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/;cmp-primary;cmp-infreq
@@ -3329,19 +3300,16 @@ guide: {
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/search": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=p/t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # no-schema
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"file_id"  # not-primary
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;verb-on-parent=conan_package
       action: "authorize": {}  # ent;conan_package;verb-on-parent;authorize;PUT
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"file_id"  # not-primary
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/p;cmp-primary;cmp-infreq
@@ -3349,9 +3317,7 @@ guide: {
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=p/t/;cmp-primary;cmp-infreq
-      rename: param: "conan_package_reference": *"package_id"  # not-primary
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"file_id"  # not-primary
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/ping": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/;cmp-primary;cmp-infreq
@@ -3372,35 +3338,26 @@ guide: {
     }
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: remove: method: *DELETE  # not-load
     }
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files/{file_name}": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
-      rename: param: "recipe_revision": *"revision_id"  # not-primary
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files/{file_name}/authorize": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;verb-on-parent=conan_package
       action: "authorize": {}  # ent;conan_package;verb-on-parent;authorize;PUT
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
-      rename: param: "recipe_revision": *"revision_id"  # not-primary
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "conan_package_reference": *"package_id"  # not-primary
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
-      rename: param: "recipe_revision": *"revision_id"  # not-primary
       op: remove: method: *DELETE  # not-load
     }
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files/{file_name}": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "conan_package_reference": *"package_id"  # not-primary
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
-      rename: param: "recipe_revision": *"revision_id"  # not-primary
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
@@ -3408,18 +3365,14 @@ guide: {
       action: "authorize": {}  # ent;conan_package;verb-on-parent;authorize;PUT
       rename: param: "conan_package_reference": *"package_id"  # not-primary
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
-      rename: param: "recipe_revision": *"revision_id"  # not-primary
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/search": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=conan_packages
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # no-schema
     }
     path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/search": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=p/t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"conan_id"  # not-primary
       op: load: method: *GET  # no-schema
     }
     path: "/api/v4/projects/{id}/packages/conan/v2/users/authenticate": {  # ent=conan_package;orig=conan_packages;tag=conan_package;cmp/resolve=conan_package;path=t/;cmp-primary;cmp-infreq
@@ -3754,11 +3707,9 @@ guide: {
       op: load: method: *GET  # end-param
     }
     path: "/api/v4/feature_flags/unleash/{project_id}/client/metrics": {  # ent=feature_flag;orig=feature_flags;tag=feature_flag;cmp/resolve=feature_flag;path=t/;cmp-primary;cmp-infreq
-      rename: param: "project_id": *"unleash_id"  # parent:unleash
       op: create: method: *POST  # not-load
     }
     path: "/api/v4/feature_flags/unleash/{project_id}/client/register": {  # ent=feature_flag;orig=feature_flags;tag=feature_flag;cmp/resolve=feature_flag;path=t/;cmp-primary;cmp-infreq
-      rename: param: "project_id": *"unleash_id"  # parent:unleash
       op: create: method: *POST  # not-load
     }
     path: "/api/v4/projects/{id}/feature_flags/{feature_flag_name}": {  # ent=feature_flag;orig=feature_flags;tag=feature_flag;cmp/resolve=feature_flag;path=t/p/;path-primary
@@ -3787,13 +3738,11 @@ guide: {
   entity: generic_package: {
     path: "/api/v4/projects/{id}/packages/generic/{package_name}/*package_version/(*path/){file_name}": {  # ent=generic_package;orig=generic_packages;tag=generic_package;cmp/resolve=generic_package;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"generic_id"  # not-primary
       op: load: method: *GET  # no-schema
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/packages/generic/{package_name}/*package_version/(*path/){file_name}/authorize": {  # ent=generic_package;orig=generic_packages;tag=generic_package;cmp/resolve=generic_package;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "package_name": *"generic_id"  # not-primary
       op: update: method: *PUT  # not-load
     }
   }
@@ -3934,12 +3883,10 @@ guide: {
       op: create: method: *POST  # not-load
     }
     path: "/api/v4/projects/{id}/packages/helm/api/{channel}/charts/authorize": {  # ent=helm_package;orig=helm_packages;tag=helm_package;cmp/resolve=helm_package;path=t/;cmp-primary;cmp-infreq
-      rename: param: "channel": *"api_id"  # not-primary
       rename: param: "id": *"project_id"  # parent:project
       op: create: method: *POST  # not-load
     }
     path: "/api/v4/projects/{id}/packages/helm/{channel}/charts/{file_name}.tgz": {  # ent=helm_package;orig=helm_packages;tag=helm_package;cmp/resolve=helm_package;path=t/;cmp-primary;cmp-infreq
-      rename: param: "channel": *"helm_id"  # not-primary
       rename: param: "id": *"project_id"  # parent:project
       op: load: method: *GET  # no-schema
     }
@@ -4413,11 +4360,9 @@ guide: {
       op: remove: method: *DELETE  # not-load
     }
     path: "/api/v4/projects/{id}/issues/{issue_iid}/metric_images": {  # ent=project;orig=projects;tag=project;cmp/resolve=project;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=projects
-      rename: param: "issue_iid": *"issue_id"  # parent:issue
       op: load: method: *GET  # no-schema
     }
     path: "/api/v4/projects/{id}/issues/{issue_iid}/metric_images/authorize": {  # ent=project;orig=projects;tag=project;cmp/resolve=project;path=t/;cmp-primary;cmp-infreq
-      rename: param: "issue_iid": *"issue_id"  # parent:issue
       op: create: method: *POST  # not-load
     }
     path: "/api/v4/projects/{id}/issues_statistics": {  # ent=project;orig=projects;tag=project;cmp/resolve=project;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=projects
@@ -4428,7 +4373,6 @@ guide: {
       op: load: method: *GET  # no-schema
     }
     path: "/api/v4/projects/{id}/jobs/artifacts/{ref_name}/raw/*artifact_path": {  # ent=project;orig=projects;tag=project;cmp/resolve=project;path=t/;cmp-primary;cmp-infreq
-      rename: param: "ref_name": *"artifact_id"  # not-primary
       op: load: method: *GET  # no-schema
     }
     path: "/api/v4/projects/{id}/jobs/{job_id}/artifacts": {  # ent=project;orig=projects;tag=project;cmp/resolve=project;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=projects
@@ -4686,7 +4630,6 @@ guide: {
     path: "/api/v4/projects/{id}/releases/{tag_name}/downloads/*direct_asset_path": {  # ent=release;orig=releases;tag=release;cmp/resolve=release;path=t/;cmp-primary;cmp-infreq
       action: "download_direct_asset_path": {}  # ent;release;ent-param-3rd-last;downloads/*direct_asset_path;GET
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "tag_name": *"release_id"  # not-primary
       op: load: method: *GET  # no-schema
     }
   }
@@ -4695,7 +4638,6 @@ guide: {
     path: "/api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}": {  # ent=release_link;orig=release_links;tag=release_link;cmp/resolve=release_link;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
       rename: param: "link_id": *"id"  # end-id;DELETE;parent=true/link
-      rename: param: "tag_name": *"release_id"  # not-primary
       op: remove: method: *DELETE  # not-load
     }
   }
@@ -4867,17 +4809,14 @@ guide: {
     }
     path: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}/*module_version": {  # ent=terraform_registry;tag=terraform_registry;cmp/resolve=terraform_registry;path=p/t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "module_name": *"module_id"  # not-primary
       op: load: method: *GET  # no-schema
     }
     path: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}/*module_version/file": {  # ent=terraform_registry;tag=terraform_registry;cmp/resolve=terraform_registry;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "module_name": *"module_id"  # not-primary
       op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}/*module_version/file/authorize": {  # ent=terraform_registry;tag=terraform_registry;cmp/resolve=terraform_registry;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "module_name": *"module_id"  # not-primary
       op: update: method: *PUT  # not-load
     }
   }
@@ -4898,7 +4837,6 @@ guide: {
     }
     path: "/api/v4/projects/{id}/terraform/state/{name}/versions/{serial}": {  # ent=terraform_state;tag=terraform_state;cmp/resolve=terraform_state;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      rename: param: "name": *"state_id"  # not-primary
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
     }

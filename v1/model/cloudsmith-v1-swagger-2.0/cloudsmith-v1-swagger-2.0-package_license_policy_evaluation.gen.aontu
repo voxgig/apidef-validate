@@ -111,7 +111,6 @@ main: kit: entity: package_license_policy_evaluation: {
           o: "/orgs/{org}/license-policy/{policy_slug_perm}/evaluation/"
           q: {
             exist: [
-              "data"
               "org_id"
               "policy_slug_perm"
             ]
@@ -120,6 +119,10 @@ main: kit: entity: package_license_policy_evaluation: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -193,8 +196,6 @@ main: kit: entity: package_license_policy_evaluation: {
           q: {
             exist: [
               "org_id"
-              "page"
-              "page_size"
               "policy_slug_perm"
             ]
           }
@@ -202,6 +203,10 @@ main: kit: entity: package_license_policy_evaluation: {
             param: {
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -247,17 +252,17 @@ main: kit: entity: package_license_policy_evaluation: {
               }
               {
                 k: "param"
-                n: "license_policy_id"
-                or: "policy_slug_perm"
+                n: "org_id"
+                or: "org"
                 r: true
                 t: "`$STRING`"
               }
               {
                 k: "param"
-                n: "org_id"
-                or: "org"
+                n: "policy_slug_perm"
+                or: "policy_slug_perm"
                 r: true
-                t: "`$STRING`"
+                t: "`$ANY`"
               }
             ]
           }
@@ -266,16 +271,19 @@ main: kit: entity: package_license_policy_evaluation: {
           q: {
             exist: [
               "id"
-              "license_policy_id"
               "org_id"
+              "policy_slug_perm"
             ]
           }
           r: {
             param: {
               org: "org_id"
-              policy_slug_perm: "license_policy_id"
               slug_perm: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -288,7 +296,7 @@ main: kit: entity: package_license_policy_evaluation: {
               lit: "license-policy"
             }
             {
-              var: "license_policy_id"
+              var: "policy_slug_perm"
             }
             {
               lit: "evaluation"

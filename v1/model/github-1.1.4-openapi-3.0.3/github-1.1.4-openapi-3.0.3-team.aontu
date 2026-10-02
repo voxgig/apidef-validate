@@ -1009,6 +1009,10 @@ main: kit: entity: team: {
               branch: "branch_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -1057,7 +1061,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -1076,22 +1080,25 @@ main: kit: entity: team: {
           q: {
             exist: [
               "discussion_number"
-              "org_id"
+              "org"
               "team_id"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -1151,6 +1158,10 @@ main: kit: entity: team: {
               team_id: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "teams"
@@ -1183,7 +1194,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -1202,21 +1213,20 @@ main: kit: entity: team: {
           q: {
             "$action": "discussion"
             exist: [
-              "org_id"
+              "org"
               "team_slug"
             ]
           }
-          r: {
-            param: {
-              org: "org_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -1263,6 +1273,10 @@ main: kit: entity: team: {
               team_id: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "teams"
@@ -1289,7 +1303,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -1300,20 +1314,19 @@ main: kit: entity: team: {
           o: "/orgs/{org}/teams"
           q: {
             exist: [
-              "org_id"
+              "org"
             ]
           }
-          r: {
-            param: {
-              org: "org_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -1331,6 +1344,86 @@ main: kit: entity: team: {
       points: [
         {
           co: {
+            id: "GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "branch_id"
+                or: "branch"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams"
+          q: {
+            exist: [
+              "branch_id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              branch: "branch_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "branches"
+            }
+            {
+              var: "branch_id"
+            }
+            {
+              lit: "protection"
+            }
+            {
+              lit: "restrictions"
+            }
+            {
+              lit: "teams"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"
             source: "openapi3"
             version: 2
@@ -1346,7 +1439,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -1390,26 +1483,26 @@ main: kit: entity: team: {
           o: "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"
           q: {
             exist: [
-              "direction"
               "discussion_number"
-              "org_id"
-              "page"
-              "per_page"
+              "org"
               "team_id"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -1425,103 +1518,6 @@ main: kit: entity: team: {
             }
             {
               lit: "comments"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/teams/{team_slug}/discussions"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "team_slug"
-                or: "team_slug"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: "desc"
-                k: "query"
-                n: "direction"
-                or: "direction"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                k: "query"
-                n: "pinned"
-                or: "pinned"
-                r: false
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/teams/{team_slug}/discussions"
-          q: {
-            "$action": "discussion"
-            exist: [
-              "direction"
-              "org_id"
-              "page"
-              "per_page"
-              "pinned"
-              "team_slug"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "teams"
-            }
-            {
-              var: "team_slug"
-            }
-            {
-              lit: "discussions"
             }
           ]
           t: {
@@ -1583,17 +1579,18 @@ main: kit: entity: team: {
           o: "/teams/{team_id}/discussions/{discussion_number}/comments"
           q: {
             exist: [
-              "direction"
               "discussion_number"
               "id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               team_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1619,6 +1616,332 @@ main: kit: entity: team: {
         }
         {
           co: {
+            id: "GET /orgs/{org}/invitations/{invitation_id}/teams"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "invitation_id"
+                or: "invitation_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/invitations/{invitation_id}/teams"
+          q: {
+            exist: [
+              "invitation_id"
+              "org"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org"
+            }
+            {
+              lit: "invitations"
+            }
+            {
+              var: "invitation_id"
+            }
+            {
+              lit: "teams"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/organization-roles/{role_id}/teams"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "organization_role_id"
+                or: "role_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/organization-roles/{role_id}/teams"
+          q: {
+            exist: [
+              "org"
+              "organization_role_id"
+            ]
+          }
+          r: {
+            param: {
+              role_id: "organization_role_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org"
+            }
+            {
+              lit: "organization-roles"
+            }
+            {
+              var: "organization_role_id"
+            }
+            {
+              lit: "teams"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/teams/{team_slug}/discussions"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "team_slug"
+                or: "team_slug"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "desc"
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "pinned"
+                or: "pinned"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/teams/{team_slug}/discussions"
+          q: {
+            "$action": "discussion"
+            exist: [
+              "org"
+              "team_slug"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_slug"
+            }
+            {
+              lit: "discussions"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/teams/{team_slug}/invitations"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "team_slug"
+                or: "team_slug"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/teams/{team_slug}/invitations"
+          q: {
+            "$action": "invitation"
+            exist: [
+              "org"
+              "team_slug"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_slug"
+            }
+            {
+              lit: "invitations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /orgs/{org}/teams/{team_slug}/members"
             source: "openapi3"
             version: 2
@@ -1627,7 +1950,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -1672,419 +1995,26 @@ main: kit: entity: team: {
           q: {
             "$action": "member"
             exist: [
-              "org_id"
-              "page"
-              "per_page"
-              "role"
+              "org"
               "team_slug"
             ]
           }
-          r: {
-            param: {
-              org: "org_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
             }
             {
               var: "team_slug"
-            }
-            {
-              lit: "members"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /teams/{team_id}/discussions"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "team_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                ex: "desc"
-                k: "query"
-                n: "direction"
-                or: "direction"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/teams/{team_id}/discussions"
-          q: {
-            "$action": "discussion"
-            exist: [
-              "direction"
-              "id"
-              "page"
-              "per_page"
-            ]
-          }
-          r: {
-            param: {
-              team_id: "id"
-            }
-          }
-          s: [
-            {
-              lit: "teams"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "discussions"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/invitations/{invitation_id}/teams"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "invitation_id"
-                or: "invitation_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/invitations/{invitation_id}/teams"
-          q: {
-            exist: [
-              "invitation_id"
-              "org_id"
-              "page"
-              "per_page"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "invitations"
-            }
-            {
-              var: "invitation_id"
-            }
-            {
-              lit: "teams"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/organization-roles/{role_id}/teams"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "organization_role_id"
-                or: "role_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/organization-roles/{role_id}/teams"
-          q: {
-            exist: [
-              "org_id"
-              "organization_role_id"
-              "page"
-              "per_page"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-              role_id: "organization_role_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "organization-roles"
-            }
-            {
-              var: "organization_role_id"
-            }
-            {
-              lit: "teams"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/teams/{team_slug}/invitations"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "team_slug"
-                or: "team_slug"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/teams/{team_slug}/invitations"
-          q: {
-            "$action": "invitation"
-            exist: [
-              "org_id"
-              "page"
-              "per_page"
-              "team_slug"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "teams"
-            }
-            {
-              var: "team_slug"
-            }
-            {
-              lit: "invitations"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /teams/{team_id}/members"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "team_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: "all"
-                k: "query"
-                n: "role"
-                or: "role"
-                r: false
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/teams/{team_id}/members"
-          q: {
-            "$action": "member"
-            exist: [
-              "id"
-              "page"
-              "per_page"
-              "role"
-            ]
-          }
-          r: {
-            param: {
-              team_id: "id"
-            }
-          }
-          s: [
-            {
-              lit: "teams"
-            }
-            {
-              var: "id"
             }
             {
               lit: "members"
@@ -2105,7 +2035,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -2142,23 +2072,20 @@ main: kit: entity: team: {
           q: {
             "$action": "project"
             exist: [
-              "org_id"
-              "page"
-              "per_page"
+              "org"
               "team_slug"
             ]
           }
-          r: {
-            param: {
-              org: "org_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -2185,7 +2112,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -2222,23 +2149,20 @@ main: kit: entity: team: {
           q: {
             "$action": "repo"
             exist: [
-              "org_id"
-              "page"
-              "per_page"
+              "org"
               "team_slug"
             ]
           }
-          r: {
-            param: {
-              org: "org_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -2265,7 +2189,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -2301,23 +2225,20 @@ main: kit: entity: team: {
           o: "/orgs/{org}/teams/{team_slug}/teams"
           q: {
             exist: [
-              "org_id"
-              "page"
-              "per_page"
+              "org"
               "team_slug"
             ]
           }
-          r: {
-            param: {
-              org: "org_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -2381,10 +2302,12 @@ main: kit: entity: team: {
           q: {
             exist: [
               "owner"
-              "page"
-              "per_page"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2407,7 +2330,7 @@ main: kit: entity: team: {
         }
         {
           co: {
-            id: "GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams"
+            id: "GET /teams/{team_id}/discussions"
             source: "openapi3"
             version: 2
           }
@@ -2415,65 +2338,65 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "branch_id"
-                or: "branch"
+                n: "id"
+                or: "team_id"
                 r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: "desc"
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
                 t: "`$STRING`"
               }
               {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
               }
               {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
               }
             ]
           }
           m: "GET"
-          o: "/repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams"
+          o: "/teams/{team_id}/discussions"
           q: {
+            "$action": "discussion"
             exist: [
-              "branch_id"
-              "owner"
-              "repo"
+              "id"
             ]
           }
           r: {
             param: {
-              branch: "branch_id"
+              team_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "branches"
-            }
-            {
-              var: "branch_id"
-            }
-            {
-              lit: "protection"
-            }
-            {
-              lit: "restrictions"
-            }
-            {
               lit: "teams"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "discussions"
             }
           ]
           t: {
@@ -2522,14 +2445,16 @@ main: kit: entity: team: {
             "$action": "invitation"
             exist: [
               "id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               team_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2540,6 +2465,82 @@ main: kit: entity: team: {
             }
             {
               lit: "invitations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /teams/{team_id}/members"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "team_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "all"
+                k: "query"
+                n: "role"
+                or: "role"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/teams/{team_id}/members"
+          q: {
+            "$action": "member"
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              team_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "teams"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "members"
             }
           ]
           t: {
@@ -2588,14 +2589,16 @@ main: kit: entity: team: {
             "$action": "project"
             exist: [
               "id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               team_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2654,14 +2657,16 @@ main: kit: entity: team: {
             "$action": "repo"
             exist: [
               "id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               team_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2719,14 +2724,16 @@ main: kit: entity: team: {
           q: {
             exist: [
               "id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               team_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2754,7 +2761,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -2783,22 +2790,19 @@ main: kit: entity: team: {
           o: "/orgs/{org}/teams"
           q: {
             exist: [
-              "org_id"
-              "page"
-              "per_page"
+              "org"
             ]
           }
-          r: {
-            param: {
-              org: "org_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -2837,11 +2841,9 @@ main: kit: entity: team: {
           }
           m: "GET"
           o: "/user/teams"
-          q: {
-            exist: [
-              "page"
-              "per_page"
-            ]
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2878,14 +2880,14 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "discussion_id"
+                n: "discussion_number"
                 or: "discussion_number"
                 r: true
                 t: "`$INTEGER`"
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -2904,24 +2906,26 @@ main: kit: entity: team: {
           q: {
             exist: [
               "comment_number"
-              "discussion_id"
-              "org_id"
+              "discussion_number"
+              "org"
               "team_id"
             ]
           }
           r: {
             param: {
-              discussion_number: "discussion_id"
-              org: "org_id"
               team_slug: "team_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -2933,7 +2937,7 @@ main: kit: entity: team: {
               lit: "discussions"
             }
             {
-              var: "discussion_id"
+              var: "discussion_number"
             }
             {
               lit: "comments"
@@ -2995,6 +2999,10 @@ main: kit: entity: team: {
               "team_slug"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -3040,7 +3048,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "discussion_id"
+                n: "discussion_number"
                 or: "discussion_number"
                 r: true
                 t: "`$INTEGER`"
@@ -3059,15 +3067,18 @@ main: kit: entity: team: {
           q: {
             exist: [
               "comment_number"
-              "discussion_id"
+              "discussion_number"
               "id"
             ]
           }
           r: {
             param: {
-              discussion_number: "discussion_id"
               team_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3080,7 +3091,7 @@ main: kit: entity: team: {
               lit: "discussions"
             }
             {
-              var: "discussion_id"
+              var: "discussion_number"
             }
             {
               lit: "comments"
@@ -3111,7 +3122,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -3130,22 +3141,25 @@ main: kit: entity: team: {
           q: {
             exist: [
               "discussion_number"
-              "org_id"
+              "org"
               "team_id"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -3175,7 +3189,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -3200,23 +3214,26 @@ main: kit: entity: team: {
           o: "/orgs/{org}/teams/{team_slug}/projects/{project_id}"
           q: {
             exist: [
-              "org_id"
+              "org"
               "project_id"
               "team_id"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -3246,7 +3263,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -3271,23 +3288,26 @@ main: kit: entity: team: {
           o: "/orgs/{org}/teams/{team_slug}/memberships/{username}"
           q: {
             exist: [
-              "org_id"
+              "org"
               "team_id"
               "username"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -3346,6 +3366,10 @@ main: kit: entity: team: {
               "repo"
               "team_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3406,6 +3430,10 @@ main: kit: entity: team: {
               team_id: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "teams"
@@ -3442,7 +3470,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -3454,21 +3482,24 @@ main: kit: entity: team: {
           q: {
             exist: [
               "id"
-              "org_id"
+              "org"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -3518,6 +3549,10 @@ main: kit: entity: team: {
             param: {
               team_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3631,6 +3666,10 @@ main: kit: entity: team: {
               team_id: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "teams"
@@ -3679,6 +3718,10 @@ main: kit: entity: team: {
               team_id: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "teams"
@@ -3714,14 +3757,14 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "discussion_id"
+                n: "discussion_number"
                 or: "discussion_number"
                 r: true
                 t: "`$INTEGER`"
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -3740,24 +3783,26 @@ main: kit: entity: team: {
           q: {
             exist: [
               "comment_number"
-              "discussion_id"
-              "org_id"
+              "discussion_number"
+              "org"
               "team_id"
             ]
           }
           r: {
             param: {
-              discussion_number: "discussion_id"
-              org: "org_id"
               team_slug: "team_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -3769,7 +3814,7 @@ main: kit: entity: team: {
               lit: "discussions"
             }
             {
-              var: "discussion_id"
+              var: "discussion_number"
             }
             {
               lit: "comments"
@@ -3800,7 +3845,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "discussion_id"
+                n: "discussion_number"
                 or: "discussion_number"
                 r: true
                 t: "`$INTEGER`"
@@ -3819,15 +3864,18 @@ main: kit: entity: team: {
           q: {
             exist: [
               "comment_number"
-              "discussion_id"
+              "discussion_number"
               "id"
             ]
           }
           r: {
             param: {
-              discussion_number: "discussion_id"
               team_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3840,7 +3888,7 @@ main: kit: entity: team: {
               lit: "discussions"
             }
             {
-              var: "discussion_id"
+              var: "discussion_number"
             }
             {
               lit: "comments"
@@ -3871,7 +3919,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -3890,22 +3938,25 @@ main: kit: entity: team: {
           q: {
             exist: [
               "discussion_number"
-              "org_id"
+              "org"
               "team_id"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -3962,6 +4013,10 @@ main: kit: entity: team: {
               team_id: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "teams"
@@ -3998,7 +4053,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -4010,21 +4065,24 @@ main: kit: entity: team: {
           q: {
             exist: [
               "id"
-              "org_id"
+              "org"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -4067,6 +4125,10 @@ main: kit: entity: team: {
               team_id: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "teams"
@@ -4102,14 +4164,14 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "discussion_id"
+                n: "discussion_number"
                 or: "discussion_number"
                 r: true
                 t: "`$INTEGER`"
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -4128,15 +4190,13 @@ main: kit: entity: team: {
           q: {
             exist: [
               "comment_number"
-              "discussion_id"
-              "org_id"
+              "discussion_number"
+              "org"
               "team_id"
             ]
           }
           r: {
             param: {
-              discussion_number: "discussion_id"
-              org: "org_id"
               team_slug: "team_id"
             }
           }
@@ -4145,7 +4205,7 @@ main: kit: entity: team: {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -4157,7 +4217,7 @@ main: kit: entity: team: {
               lit: "discussions"
             }
             {
-              var: "discussion_id"
+              var: "discussion_number"
             }
             {
               lit: "comments"
@@ -4292,6 +4352,10 @@ main: kit: entity: team: {
               branch: "branch_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -4340,7 +4404,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "discussion_id"
+                n: "discussion_number"
                 or: "discussion_number"
                 r: true
                 t: "`$INTEGER`"
@@ -4359,13 +4423,12 @@ main: kit: entity: team: {
           q: {
             exist: [
               "comment_number"
-              "discussion_id"
+              "discussion_number"
               "id"
             ]
           }
           r: {
             param: {
-              discussion_number: "discussion_id"
               team_id: "id"
             }
           }
@@ -4380,7 +4443,7 @@ main: kit: entity: team: {
               lit: "discussions"
             }
             {
-              var: "discussion_id"
+              var: "discussion_number"
             }
             {
               lit: "comments"
@@ -4411,7 +4474,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -4430,13 +4493,12 @@ main: kit: entity: team: {
           q: {
             exist: [
               "discussion_number"
-              "org_id"
+              "org"
               "team_id"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
           }
@@ -4445,7 +4507,7 @@ main: kit: entity: team: {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -4475,7 +4537,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -4500,14 +4562,13 @@ main: kit: entity: team: {
           o: "/orgs/{org}/teams/{team_slug}/projects/{project_id}"
           q: {
             exist: [
-              "org_id"
+              "org"
               "project_id"
               "team_id"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
           }
@@ -4516,7 +4577,7 @@ main: kit: entity: team: {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -4546,7 +4607,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -4571,14 +4632,13 @@ main: kit: entity: team: {
           o: "/orgs/{org}/teams/{team_slug}/memberships/{username}"
           q: {
             exist: [
-              "org_id"
+              "org"
               "team_id"
               "username"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
           }
@@ -4587,7 +4647,7 @@ main: kit: entity: team: {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -4742,7 +4802,7 @@ main: kit: entity: team: {
               }
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -4754,12 +4814,11 @@ main: kit: entity: team: {
           q: {
             exist: [
               "id"
-              "org_id"
+              "org"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "id"
             }
           }
@@ -4768,7 +4827,7 @@ main: kit: entity: team: {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -5118,6 +5177,10 @@ main: kit: entity: team: {
               branch: "branch_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -5159,7 +5222,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -5184,14 +5247,13 @@ main: kit: entity: team: {
           o: "/orgs/{org}/teams/{team_slug}/projects/{project_id}"
           q: {
             exist: [
-              "org_id"
+              "org"
               "project_id"
               "team_id"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
           }
@@ -5200,7 +5262,7 @@ main: kit: entity: team: {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -5230,7 +5292,7 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -5255,23 +5317,26 @@ main: kit: entity: team: {
           o: "/orgs/{org}/teams/{team_slug}/memberships/{username}"
           q: {
             exist: [
-              "org_id"
+              "org"
               "team_id"
               "username"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               team_slug: "team_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "teams"
@@ -5501,6 +5566,10 @@ main: kit: entity: team: {
             param: {
               team_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

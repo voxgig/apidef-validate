@@ -183,6 +183,13 @@ main: kit: entity: terraform_state: {
             params: [
               {
                 k: "param"
+                n: "name"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
                 n: "project_id"
                 or: "id"
                 r: true
@@ -195,29 +202,25 @@ main: kit: entity: terraform_state: {
                 r: true
                 t: "`$ANY`"
               }
-              {
-                k: "param"
-                n: "state_id"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
             ]
           }
           m: "GET"
           o: "/api/v4/projects/{id}/terraform/state/{name}/versions/{serial}"
           q: {
             exist: [
+              "name"
               "project_id"
               "serial"
-              "state_id"
             ]
           }
           r: {
             param: {
               id: "project_id"
-              name: "state_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -239,7 +242,7 @@ main: kit: entity: terraform_state: {
               lit: "state"
             }
             {
-              var: "state_id"
+              var: "name"
             }
             {
               lit: "versions"
@@ -335,7 +338,7 @@ main: kit: entity: terraform_state: {
       points: [
         {
           co: {
-            id: "DELETE /api/v4/projects/{id}/terraform/state/{name}/lock"
+            id: "DELETE /api/v4/projects/{id}/terraform/state/{name}/versions/{serial}"
             source: "swagger2"
             version: 2
           }
@@ -355,25 +358,22 @@ main: kit: entity: terraform_state: {
                 r: true
                 t: "`$STRING`"
               }
-            ]
-            query: [
               {
-                k: "query"
-                n: "id"
-                or: "ID"
-                r: false
-                t: "`$STRING`"
+                k: "param"
+                n: "serial"
+                or: "serial"
+                r: true
+                t: "`$ANY`"
               }
             ]
           }
           m: "DELETE"
-          o: "/api/v4/projects/{id}/terraform/state/{name}/lock"
+          o: "/api/v4/projects/{id}/terraform/state/{name}/versions/{serial}"
           q: {
-            "$action": "lock"
             exist: [
-              "id"
               "name"
               "project_id"
+              "serial"
             ]
           }
           r: {
@@ -402,83 +402,6 @@ main: kit: entity: terraform_state: {
             }
             {
               var: "name"
-            }
-            {
-              lit: "lock"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /api/v4/projects/{id}/terraform/state/{name}/versions/{serial}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "serial"
-                or: "serial"
-                r: true
-                t: "`$ANY`"
-              }
-              {
-                k: "param"
-                n: "state_id"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/terraform/state/{name}/versions/{serial}"
-          q: {
-            exist: [
-              "project_id"
-              "serial"
-              "state_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-              name: "state_id"
-            }
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "terraform"
-            }
-            {
-              lit: "state"
-            }
-            {
-              var: "state_id"
             }
             {
               lit: "versions"
@@ -551,6 +474,84 @@ main: kit: entity: terraform_state: {
             }
             {
               var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/terraform/state/{name}/lock"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "name"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "id"
+                or: "ID"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/terraform/state/{name}/lock"
+          q: {
+            "$action": "lock"
+            exist: [
+              "name"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "terraform"
+            }
+            {
+              lit: "state"
+            }
+            {
+              var: "name"
+            }
+            {
+              lit: "lock"
             }
           ]
           t: {
