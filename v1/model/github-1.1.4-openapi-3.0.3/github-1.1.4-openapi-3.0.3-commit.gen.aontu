@@ -155,6 +155,10 @@ main: kit: entity: commit: {
               "repo"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -179,6 +183,93 @@ main: kit: entity: commit: {
     list: {
       name: "list"
       points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "pull_number"
+                or: "pull_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/pulls/{pull_number}/commits"
+          q: {
+            exist: [
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "pull_number"
+            }
+            {
+              lit: "commits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "GET /repos/{owner}/{repo}/commits"
@@ -267,17 +358,13 @@ main: kit: entity: commit: {
           o: "/repos/{owner}/{repo}/commits"
           q: {
             exist: [
-              "author"
-              "committer"
               "owner"
-              "page"
-              "path"
-              "per_page"
               "repo"
-              "sha"
-              "since"
-              "until"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -288,91 +375,6 @@ main: kit: entity: commit: {
             }
             {
               var: "repo"
-            }
-            {
-              lit: "commits"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "pull_number"
-                or: "pull_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/pulls/{pull_number}/commits"
-          q: {
-            exist: [
-              "owner"
-              "page"
-              "per_page"
-              "pull_number"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "pulls"
-            }
-            {
-              var: "pull_number"
             }
             {
               lit: "commits"
@@ -443,8 +445,6 @@ main: kit: entity: commit: {
             exist: [
               "id"
               "owner"
-              "page"
-              "per_page"
               "repo"
             ]
           }
@@ -452,6 +452,10 @@ main: kit: entity: commit: {
             param: {
               ref: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

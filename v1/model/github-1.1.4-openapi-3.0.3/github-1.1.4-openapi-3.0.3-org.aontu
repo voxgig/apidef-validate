@@ -715,81 +715,6 @@ main: kit: entity: org: {
       points: [
         {
           co: {
-            id: "POST /orgs/{org}/attestations/bulk-list"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "after"
-                or: "after"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                k: "query"
-                n: "before"
-                or: "before"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/orgs/{org}/attestations/bulk-list"
-          q: {
-            exist: [
-              "after"
-              "before"
-              "id"
-              "per_page"
-            ]
-          }
-          r: {
-            param: {
-              org: "id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "attestations"
-            }
-            {
-              lit: "bulk-list"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"
             source: "openapi3"
             version: 2
@@ -832,6 +757,10 @@ main: kit: entity: org: {
             param: {
               org: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1120,6 +1049,10 @@ main: kit: entity: org: {
               org: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -1135,6 +1068,82 @@ main: kit: entity: org: {
             }
             {
               lit: "storage-record"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /orgs/{org}/attestations/bulk-list"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "after"
+                or: "after"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/attestations/bulk-list"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              org: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "attestations"
+            }
+            {
+              lit: "bulk-list"
             }
           ]
           t: {
@@ -1220,6 +1229,10 @@ main: kit: entity: org: {
               org: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -1266,6 +1279,10 @@ main: kit: entity: org: {
               org: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -1287,6 +1304,74 @@ main: kit: entity: org: {
     list: {
       name: "list"
       points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/artifacts/{subject_digest}/metadata/storage-records"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "sha256:1bb1e949e55dcefc6353e7b36c8897d2a107d8e8dca49d4e3c0ea8493fc0bc72"
+                k: "param"
+                n: "artifact_id"
+                or: "subject_digest"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/artifacts/{subject_digest}/metadata/storage-records"
+          q: {
+            exist: [
+              "artifact_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              org: "id"
+              subject_digest: "artifact_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "artifacts"
+            }
+            {
+              var: "artifact_id"
+            }
+            {
+              lit: "metadata"
+            }
+            {
+              lit: "storage-records"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.storage_records`"
+          }
+        }
         {
           co: {
             id: "GET /orgs/{org}/installations"
@@ -1328,14 +1413,16 @@ main: kit: entity: org: {
             "$action": "installation"
             exist: [
               "id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               org: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1355,60 +1442,52 @@ main: kit: entity: org: {
         }
         {
           co: {
-            id: "GET /user/memberships/orgs"
+            id: "GET /orgs/{org}/organization-roles"
             source: "openapi3"
             version: 2
           }
           g: {
-            query: [
+            params: [
               {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                k: "query"
-                n: "state"
-                or: "state"
-                r: false
+                k: "param"
+                n: "id"
+                or: "org"
+                r: true
                 t: "`$STRING`"
               }
             ]
           }
           m: "GET"
-          o: "/user/memberships/orgs"
+          o: "/orgs/{org}/organization-roles"
           q: {
+            "$action": "organization_role"
             exist: [
-              "page"
-              "per_page"
-              "state"
+              "id"
             ]
+          }
+          r: {
+            param: {
+              org: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
-              lit: "user"
-            }
-            {
-              lit: "memberships"
-            }
-            {
               lit: "orgs"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "organization-roles"
             }
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.roles`"
           }
         }
         {
@@ -1450,10 +1529,12 @@ main: kit: entity: org: {
           o: "/users/{username}/orgs"
           q: {
             exist: [
-              "page"
-              "per_page"
               "username"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1473,66 +1554,57 @@ main: kit: entity: org: {
         }
         {
           co: {
-            id: "GET /orgs/{org}/artifacts/{subject_digest}/metadata/storage-records"
+            id: "GET /user/memberships/orgs"
             source: "openapi3"
             version: 2
           }
           g: {
-            params: [
+            query: [
               {
-                ex: "sha256:1bb1e949e55dcefc6353e7b36c8897d2a107d8e8dca49d4e3c0ea8493fc0bc72"
-                k: "param"
-                n: "artifact_id"
-                or: "subject_digest"
-                r: true
-                t: "`$STRING`"
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
               }
               {
-                k: "param"
-                n: "id"
-                or: "org"
-                r: true
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "state"
+                or: "state"
+                r: false
                 t: "`$STRING`"
               }
             ]
           }
           m: "GET"
-          o: "/orgs/{org}/artifacts/{subject_digest}/metadata/storage-records"
-          q: {
-            exist: [
-              "artifact_id"
-              "id"
-            ]
-          }
-          r: {
-            param: {
-              org: "id"
-              subject_digest: "artifact_id"
-            }
+          o: "/user/memberships/orgs"
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
+              lit: "user"
+            }
+            {
+              lit: "memberships"
+            }
+            {
               lit: "orgs"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "artifacts"
-            }
-            {
-              var: "artifact_id"
-            }
-            {
-              lit: "metadata"
-            }
-            {
-              lit: "storage-records"
             }
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.storage_records`"
+            res: "`body`"
           }
         }
         {
@@ -1563,11 +1635,9 @@ main: kit: entity: org: {
           }
           m: "GET"
           o: "/user/orgs"
-          q: {
-            exist: [
-              "page"
-              "per_page"
-            ]
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1580,52 +1650,6 @@ main: kit: entity: org: {
           t: {
             req: "`reqdata`"
             res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/organization-roles"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/organization-roles"
-          q: {
-            "$action": "organization_role"
-            exist: [
-              "id"
-            ]
-          }
-          r: {
-            param: {
-              org: "id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "organization-roles"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.roles`"
           }
         }
       ]
@@ -1692,11 +1716,7 @@ main: kit: entity: org: {
           o: "/orgs/{org}/attestations/{subject_digest}"
           q: {
             exist: [
-              "after"
-              "before"
               "id"
-              "per_page"
-              "predicate_type"
               "subject_digest"
             ]
           }
@@ -1704,6 +1724,10 @@ main: kit: entity: org: {
             param: {
               org: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1921,6 +1945,10 @@ main: kit: entity: org: {
               org: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -1962,6 +1990,10 @@ main: kit: entity: org: {
             param: {
               org: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2015,6 +2047,10 @@ main: kit: entity: org: {
             param: {
               org: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -2105,6 +2141,10 @@ main: kit: entity: org: {
             param: {
               org: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -3088,6 +3128,10 @@ main: kit: entity: org: {
               org: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -3387,6 +3431,10 @@ main: kit: entity: org: {
             param: {
               org: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

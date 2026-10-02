@@ -55,9 +55,12 @@ main: kit: entity: webhook: {
           o: "/spaces/{space_id}/webhook_definitions"
           q: {
             exist: [
-              "content_type"
               "space_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -126,7 +129,6 @@ main: kit: entity: webhook: {
           q: {
             exist: [
               "call_id"
-              "content_type"
               "id"
               "space_id"
             ]
@@ -135,6 +137,10 @@ main: kit: entity: webhook: {
             param: {
               webhook_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -154,6 +160,70 @@ main: kit: entity: webhook: {
             }
             {
               var: "call_id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /spaces/{space_id}/webhooks/{webhook_id}/calls"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "webhook_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "space_id"
+                or: "space_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/spaces/{space_id}/webhooks/{webhook_id}/calls"
+          q: {
+            "$action": "call"
+            exist: [
+              "id"
+              "space_id"
+            ]
+          }
+          r: {
+            param: {
+              webhook_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "spaces"
+            }
+            {
+              var: "space_id"
+            }
+            {
+              lit: "webhooks"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "calls"
             }
           ]
           t: {
@@ -200,7 +270,6 @@ main: kit: entity: webhook: {
           q: {
             "$action": "health"
             exist: [
-              "content_type"
               "id"
               "space_id"
             ]
@@ -209,6 +278,10 @@ main: kit: entity: webhook: {
             param: {
               webhook_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -225,66 +298,6 @@ main: kit: entity: webhook: {
             }
             {
               lit: "health"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /spaces/{space_id}/webhooks/{webhook_id}/calls"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "webhook_id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "space_id"
-                or: "space_id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/spaces/{space_id}/webhooks/{webhook_id}/calls"
-          q: {
-            "$action": "call"
-            exist: [
-              "id"
-              "space_id"
-            ]
-          }
-          r: {
-            param: {
-              webhook_id: "id"
-            }
-          }
-          s: [
-            {
-              lit: "spaces"
-            }
-            {
-              var: "space_id"
-            }
-            {
-              lit: "webhooks"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "calls"
             }
           ]
           t: {
@@ -323,6 +336,10 @@ main: kit: entity: webhook: {
               "space_id"
               "webhook_definition_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -367,6 +384,10 @@ main: kit: entity: webhook: {
             exist: [
               "space_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -420,6 +441,10 @@ main: kit: entity: webhook: {
               "space_id"
               "webhook_definition_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -491,11 +516,13 @@ main: kit: entity: webhook: {
           o: "/spaces/{space_id}/webhook_definitions/{webhook_definition_id}"
           q: {
             exist: [
-              "content_type"
               "space_id"
               "webhook_definition_id"
-              "x_contentful_version"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

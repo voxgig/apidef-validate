@@ -303,6 +303,10 @@ main: kit: entity: subscriber: {
               "page_id"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "pages"
@@ -350,6 +354,10 @@ main: kit: entity: subscriber: {
             exist: [
               "page_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -508,6 +516,80 @@ main: kit: entity: subscriber: {
       points: [
         {
           co: {
+            id: "GET /pages/{page_id}/incidents/{incident_id}/subscribers"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "incident_id"
+                or: "incident_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "page_id"
+                or: "page_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/pages/{page_id}/incidents/{incident_id}/subscribers"
+          q: {
+            exist: [
+              "incident_id"
+              "page_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "pages"
+            }
+            {
+              var: "page_id"
+            }
+            {
+              lit: "incidents"
+            }
+            {
+              var: "incident_id"
+            }
+            {
+              lit: "subscribers"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /pages/{page_id}/subscribers"
             source: "openapi3"
             version: 2
@@ -582,15 +664,12 @@ main: kit: entity: subscriber: {
           o: "/pages/{page_id}/subscribers"
           q: {
             exist: [
-              "limit"
-              "page"
               "page_id"
-              "q"
-              "sort_direction"
-              "sort_field"
-              "state"
-              "type"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -598,78 +677,6 @@ main: kit: entity: subscriber: {
             }
             {
               var: "page_id"
-            }
-            {
-              lit: "subscribers"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /pages/{page_id}/incidents/{incident_id}/subscribers"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "incident_id"
-                or: "incident_id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "page_id"
-                or: "page_id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/pages/{page_id}/incidents/{incident_id}/subscribers"
-          q: {
-            exist: [
-              "incident_id"
-              "page"
-              "page_id"
-              "per_page"
-            ]
-          }
-          s: [
-            {
-              lit: "pages"
-            }
-            {
-              var: "page_id"
-            }
-            {
-              lit: "incidents"
-            }
-            {
-              var: "incident_id"
             }
             {
               lit: "subscribers"
@@ -718,10 +725,12 @@ main: kit: entity: subscriber: {
           q: {
             "$action": "unsubscribed"
             exist: [
-              "page"
               "page_id"
-              "per_page"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -792,6 +801,10 @@ main: kit: entity: subscriber: {
               subscriber_id: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "pages"
@@ -804,6 +817,66 @@ main: kit: entity: subscriber: {
             }
             {
               var: "incident_id"
+            }
+            {
+              lit: "subscribers"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /pages/{page_id}/subscribers/{subscriber_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "subscriber_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "page_id"
+                or: "page_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/pages/{page_id}/subscribers/{subscriber_id}"
+          q: {
+            exist: [
+              "id"
+              "page_id"
+            ]
+          }
+          r: {
+            param: {
+              subscriber_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "pages"
+            }
+            {
+              var: "page_id"
             }
             {
               lit: "subscribers"
@@ -857,9 +930,11 @@ main: kit: entity: subscriber: {
             "$action": "count"
             exist: [
               "page_id"
-              "state"
-              "type"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -873,62 +948,6 @@ main: kit: entity: subscriber: {
             }
             {
               lit: "count"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /pages/{page_id}/subscribers/{subscriber_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "subscriber_id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "page_id"
-                or: "page_id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/pages/{page_id}/subscribers/{subscriber_id}"
-          q: {
-            exist: [
-              "id"
-              "page_id"
-            ]
-          }
-          r: {
-            param: {
-              subscriber_id: "id"
-            }
-          }
-          s: [
-            {
-              lit: "pages"
-            }
-            {
-              var: "page_id"
-            }
-            {
-              lit: "subscribers"
-            }
-            {
-              var: "id"
             }
           ]
           t: {
@@ -960,6 +979,10 @@ main: kit: entity: subscriber: {
             exist: [
               "page_id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1030,6 +1053,10 @@ main: kit: entity: subscriber: {
               subscriber_id: "id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "pages"
@@ -1094,13 +1121,16 @@ main: kit: entity: subscriber: {
             exist: [
               "id"
               "page_id"
-              "skip_unsubscription_notification"
             ]
           }
           r: {
             param: {
               subscriber_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1162,6 +1192,10 @@ main: kit: entity: subscriber: {
             param: {
               subscriber_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

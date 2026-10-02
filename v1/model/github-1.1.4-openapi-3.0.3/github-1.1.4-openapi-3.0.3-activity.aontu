@@ -1222,17 +1222,13 @@ main: kit: entity: activity: {
           o: "/repos/{owner}/{repo}/activity"
           q: {
             exist: [
-              "activity_type"
-              "actor"
-              "after"
-              "before"
-              "direction"
               "owner"
-              "per_page"
-              "ref"
               "repo"
-              "time_period"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1297,13 +1293,15 @@ main: kit: entity: activity: {
           }
           m: "GET"
           o: "/user/starred"
-          q: {
-            exist: [
-              "direction"
-              "page"
-              "per_page"
-              "sort"
+          rs: {
+            alternatives: [
+              {
+                kind: "json"
+                media: "application/vnd.github.v3.star+json"
+              }
             ]
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1323,84 +1321,6 @@ main: kit: entity: activity: {
     load: {
       name: "load"
       points: [
-        {
-          co: {
-            id: "GET /users/{username}/starred"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: "desc"
-                k: "query"
-                n: "direction"
-                or: "direction"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: "created"
-                k: "query"
-                n: "sort"
-                or: "sort"
-                r: false
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/users/{username}/starred"
-          q: {
-            exist: [
-              "direction"
-              "page"
-              "per_page"
-              "sort"
-              "username"
-            ]
-          }
-          s: [
-            {
-              lit: "users"
-            }
-            {
-              var: "username"
-            }
-            {
-              lit: "starred"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           co: {
             id: "GET /repos/{owner}/{repo}/stargazers"
@@ -1448,10 +1368,12 @@ main: kit: entity: activity: {
           q: {
             exist: [
               "owner"
-              "page"
-              "per_page"
               "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1516,6 +1438,84 @@ main: kit: entity: activity: {
             }
             {
               var: "repo"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /users/{username}/starred"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "desc"
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "created"
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/users/{username}/starred"
+          q: {
+            exist: [
+              "username"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "users"
+            }
+            {
+              var: "username"
+            }
+            {
+              lit: "starred"
             }
           ]
           t: {
@@ -1752,6 +1752,10 @@ main: kit: entity: activity: {
               "repo"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "repos"
@@ -1830,6 +1834,10 @@ main: kit: entity: activity: {
           }
           m: "PUT"
           o: "/notifications"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "notifications"

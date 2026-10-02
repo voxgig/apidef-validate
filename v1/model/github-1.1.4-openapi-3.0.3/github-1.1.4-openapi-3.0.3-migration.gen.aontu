@@ -211,6 +211,10 @@ main: kit: entity: migration: {
               org: "org_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
@@ -235,6 +239,10 @@ main: kit: entity: migration: {
           }
           m: "POST"
           o: "/user/migrations"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "user"
@@ -253,79 +261,6 @@ main: kit: entity: migration: {
     list: {
       name: "list"
       points: [
-        {
-          co: {
-            id: "GET /orgs/{org}/migrations"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "exclude"
-                or: "exclude"
-                r: false
-                t: "`$ARRAY`"
-              }
-              {
-                ex: 1
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/migrations"
-          q: {
-            exist: [
-              "exclude"
-              "org_id"
-              "page"
-              "per_page"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "migrations"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           co: {
             id: "GET /orgs/{org}/migrations/{migration_id}/repositories"
@@ -375,8 +310,6 @@ main: kit: entity: migration: {
             exist: [
               "id"
               "org_id"
-              "page"
-              "per_page"
             ]
           }
           r: {
@@ -384,6 +317,10 @@ main: kit: entity: migration: {
               migration_id: "id"
               org: "org_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -448,14 +385,16 @@ main: kit: entity: migration: {
             "$action": "repository"
             exist: [
               "id"
-              "page"
-              "per_page"
             ]
           }
           r: {
             param: {
               migration_id: "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -469,6 +408,80 @@ main: kit: entity: migration: {
             }
             {
               lit: "repositories"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/migrations"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "exclude"
+                or: "exclude"
+                r: false
+                t: "`$ARRAY`"
+              }
+              {
+                ex: 1
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/migrations"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "migrations"
             }
           ]
           t: {
@@ -504,11 +517,9 @@ main: kit: entity: migration: {
           }
           m: "GET"
           o: "/user/migrations"
-          q: {
-            exist: [
-              "page"
-              "per_page"
-            ]
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -565,7 +576,6 @@ main: kit: entity: migration: {
           o: "/orgs/{org}/migrations/{migration_id}"
           q: {
             exist: [
-              "exclude"
               "id"
               "org_id"
             ]
@@ -576,67 +586,16 @@ main: kit: entity: migration: {
               org: "org_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "orgs"
             }
             {
               var: "org_id"
-            }
-            {
-              lit: "migrations"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /user/migrations/{migration_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "migration_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "exclude"
-                or: "exclude"
-                r: false
-                t: "`$ARRAY`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/user/migrations/{migration_id}"
-          q: {
-            exist: [
-              "exclude"
-              "id"
-            ]
-          }
-          r: {
-            param: {
-              migration_id: "id"
-            }
-          }
-          s: [
-            {
-              lit: "user"
             }
             {
               lit: "migrations"
@@ -704,6 +663,64 @@ main: kit: entity: migration: {
             }
             {
               lit: "archive"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /user/migrations/{migration_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "migration_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "exclude"
+                or: "exclude"
+                r: false
+                t: "`$ARRAY`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/user/migrations/{migration_id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              migration_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "migrations"
+            }
+            {
+              var: "id"
             }
           ]
           t: {

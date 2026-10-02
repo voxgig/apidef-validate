@@ -39,10 +39,10 @@ main: kit: entity: terraform_registry: {
               {
                 ex: "infra-registry"
                 k: "param"
-                n: "module_id"
+                n: "module_name"
                 or: "module_name"
                 r: true
-                t: "`$STRING`"
+                t: "`$ANY`"
               }
               {
                 ex: "aws"
@@ -81,17 +81,15 @@ main: kit: entity: terraform_registry: {
           o: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}/*module_version"
           q: {
             exist: [
-              "module_id"
+              "module_name"
               "module_system"
               "module_version"
               "project_id"
-              "terraform_get"
             ]
           }
           r: {
             param: {
               id: "project_id"
-              module_name: "module_id"
             }
           }
           s: [
@@ -117,99 +115,13 @@ main: kit: entity: terraform_registry: {
               lit: "modules"
             }
             {
-              var: "module_id"
+              var: "module_name"
             }
             {
               var: "module_system"
             }
             {
               lit: "*module_version"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                ex: "infra-registry"
-                k: "param"
-                n: "module_name"
-                or: "module_name"
-                r: true
-                t: "`$ANY`"
-              }
-              {
-                ex: "aws"
-                k: "param"
-                n: "module_system"
-                or: "module_system"
-                r: true
-                t: "`$ANY`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "terraform_get"
-                or: "terraform-get"
-                r: false
-                t: "`$ANY`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}"
-          q: {
-            exist: [
-              "id"
-              "module_name"
-              "module_system"
-              "terraform_get"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              lit: "terraform"
-            }
-            {
-              lit: "modules"
-            }
-            {
-              var: "module_name"
-            }
-            {
-              var: "module_system"
             }
           ]
           t: {
@@ -367,6 +279,10 @@ main: kit: entity: terraform_registry: {
               module_namespace: "v1_id"
             }
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "api"
@@ -400,6 +316,91 @@ main: kit: entity: terraform_registry: {
             }
             {
               lit: "file"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "infra-registry"
+                k: "param"
+                n: "module_name"
+                or: "module_name"
+                r: true
+                t: "`$ANY`"
+              }
+              {
+                ex: "aws"
+                k: "param"
+                n: "module_system"
+                or: "module_system"
+                r: true
+                t: "`$ANY`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "terraform_get"
+                or: "terraform-get"
+                r: false
+                t: "`$ANY`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}"
+          q: {
+            exist: [
+              "id"
+              "module_name"
+              "module_system"
+            ]
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "packages"
+            }
+            {
+              lit: "terraform"
+            }
+            {
+              lit: "modules"
+            }
+            {
+              var: "module_name"
+            }
+            {
+              var: "module_system"
             }
           ]
           t: {
@@ -505,10 +506,10 @@ main: kit: entity: terraform_registry: {
               {
                 ex: "infra-registry"
                 k: "param"
-                n: "module_id"
+                n: "module_name"
                 or: "module_name"
                 r: true
-                t: "`$STRING`"
+                t: "`$ANY`"
               }
               {
                 ex: "aws"
@@ -548,7 +549,7 @@ main: kit: entity: terraform_registry: {
           q: {
             exist: [
               "file"
-              "module_id"
+              "module_name"
               "module_system"
               "module_version"
               "project_id"
@@ -557,8 +558,20 @@ main: kit: entity: terraform_registry: {
           r: {
             param: {
               id: "project_id"
-              module_name: "module_id"
             }
+          }
+          rb: {
+            fields: [
+              {
+                binary: true
+                name: "file"
+              }
+              {
+                name: "module_version"
+              }
+            ]
+            kind: "multipart"
+            media: "multipart/form-data"
           }
           s: [
             {
@@ -583,7 +596,7 @@ main: kit: entity: terraform_registry: {
               lit: "modules"
             }
             {
-              var: "module_id"
+              var: "module_name"
             }
             {
               var: "module_system"
@@ -611,10 +624,10 @@ main: kit: entity: terraform_registry: {
               {
                 ex: "infra-registry"
                 k: "param"
-                n: "module_id"
+                n: "module_name"
                 or: "module_name"
                 r: true
-                t: "`$STRING`"
+                t: "`$ANY`"
               }
               {
                 ex: "aws"
@@ -646,7 +659,7 @@ main: kit: entity: terraform_registry: {
           o: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}/*module_version/file/authorize"
           q: {
             exist: [
-              "module_id"
+              "module_name"
               "module_system"
               "project_id"
               "put_api_v4_projects_id_packages_terraform_modules_module_name_module_system*module_version_file_authorize"
@@ -655,7 +668,6 @@ main: kit: entity: terraform_registry: {
           r: {
             param: {
               id: "project_id"
-              module_name: "module_id"
             }
           }
           s: [
@@ -681,7 +693,7 @@ main: kit: entity: terraform_registry: {
               lit: "modules"
             }
             {
-              var: "module_id"
+              var: "module_name"
             }
             {
               var: "module_system"

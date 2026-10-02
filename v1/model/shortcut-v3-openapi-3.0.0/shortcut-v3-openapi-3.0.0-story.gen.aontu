@@ -84,11 +84,11 @@ main: kit: entity: story: {
       n: "comment_ids"
       op: {
         list: {
-          req: true
+          req: false
           type: "`$ARRAY`"
         }
       }
-      r: false
+      r: true
       sh: "An array of IDs of Comments attached to the story."
       t: "`$ARRAY`"
     }
@@ -516,11 +516,11 @@ main: kit: entity: story: {
       n: "num_tasks_completed"
       op: {
         list: {
-          req: true
+          req: false
           type: "`$INTEGER`"
         }
       }
-      r: false
+      r: true
       sh: "The number of tasks on the story which are complete."
       t: "`$INTEGER`"
     }
@@ -742,11 +742,11 @@ main: kit: entity: story: {
       n: "task_ids"
       op: {
         list: {
-          req: true
+          req: false
           type: "`$ARRAY`"
         }
       }
-      r: false
+      r: true
       sh: "An array of IDs of Tasks attached to the story."
       t: "`$ARRAY`"
     }
@@ -827,6 +827,10 @@ main: kit: entity: story: {
           }
           m: "POST"
           o: "/api/v3/stories"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "api"
@@ -886,6 +890,10 @@ main: kit: entity: story: {
           o: "/api/v3/stories/from-template"
           q: {
             "$action": "from_template"
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -960,59 +968,45 @@ main: kit: entity: story: {
       points: [
         {
           co: {
-            id: "GET /api/v3/search/stories"
+            id: "GET /api/v3/epics/{epic-public-id}/stories"
             source: "openapi3"
             version: 2
           }
           g: {
+            params: [
+              {
+                k: "param"
+                n: "epic_id"
+                or: "epic-public-id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
             query: [
               {
                 k: "query"
-                n: "detail"
-                or: "detail"
+                n: "includes_description"
+                or: "includes_description"
                 r: false
-                t: "`$STRING`"
-              }
-              {
-                k: "query"
-                n: "entity_type"
-                or: "entity_types"
-                r: false
-                t: "`$ARRAY`"
-              }
-              {
-                k: "query"
-                n: "next"
-                or: "next"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                k: "query"
-                n: "page_size"
-                or: "page_size"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                k: "query"
-                n: "query"
-                or: "query"
-                r: true
-                t: "`$STRING`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
           m: "GET"
-          o: "/api/v3/search/stories"
+          o: "/api/v3/epics/{epic-public-id}/stories"
           q: {
             exist: [
-              "detail"
-              "entity_type"
-              "next"
-              "page_size"
-              "query"
+              "epic_id"
             ]
+          }
+          r: {
+            param: {
+              "epic-public-id": "epic_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1022,7 +1016,10 @@ main: kit: entity: story: {
               lit: "v3"
             }
             {
-              lit: "search"
+              lit: "epics"
+            }
+            {
+              var: "epic_id"
             }
             {
               lit: "stories"
@@ -1030,7 +1027,54 @@ main: kit: entity: story: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.data`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v3/external-link/stories"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "external_link"
+                or: "external_link"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/external-link/stories"
+          q: {
+            exist: [
+              "external_link"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v3"
+            }
+            {
+              lit: "external-link"
+            }
+            {
+              lit: "stories"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
           }
         }
         {
@@ -1071,14 +1115,16 @@ main: kit: entity: story: {
           q: {
             exist: [
               "group_id"
-              "limit"
-              "offset"
             ]
           }
           r: {
             param: {
               "group-public-id": "group_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1092,67 +1138,6 @@ main: kit: entity: story: {
             }
             {
               var: "group_id"
-            }
-            {
-              lit: "stories"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /api/v3/epics/{epic-public-id}/stories"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "epic_id"
-                or: "epic-public-id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "includes_description"
-                or: "includes_description"
-                r: false
-                t: "`$BOOLEAN`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v3/epics/{epic-public-id}/stories"
-          q: {
-            exist: [
-              "epic_id"
-              "includes_description"
-            ]
-          }
-          r: {
-            param: {
-              "epic-public-id": "epic_id"
-            }
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v3"
-            }
-            {
-              lit: "epics"
-            }
-            {
-              var: "epic_id"
             }
             {
               lit: "stories"
@@ -1193,7 +1178,6 @@ main: kit: entity: story: {
           o: "/api/v3/iterations/{iteration-public-id}/stories"
           q: {
             exist: [
-              "includes_description"
               "iteration_id"
             ]
           }
@@ -1201,6 +1185,10 @@ main: kit: entity: story: {
             param: {
               "iteration-public-id": "iteration_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1254,7 +1242,6 @@ main: kit: entity: story: {
           o: "/api/v3/labels/{label-public-id}/stories"
           q: {
             exist: [
-              "includes_description"
               "label_id"
             ]
           }
@@ -1262,6 +1249,10 @@ main: kit: entity: story: {
             param: {
               "label-public-id": "label_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1315,7 +1306,6 @@ main: kit: entity: story: {
           o: "/api/v3/projects/{project-public-id}/stories"
           q: {
             exist: [
-              "includes_description"
               "project_id"
             ]
           }
@@ -1323,6 +1313,10 @@ main: kit: entity: story: {
             param: {
               "project-public-id": "project_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1348,7 +1342,7 @@ main: kit: entity: story: {
         }
         {
           co: {
-            id: "GET /api/v3/external-link/stories"
+            id: "GET /api/v3/search/stories"
             source: "openapi3"
             version: 2
           }
@@ -1356,19 +1350,51 @@ main: kit: entity: story: {
             query: [
               {
                 k: "query"
-                n: "external_link"
-                or: "external_link"
+                n: "detail"
+                or: "detail"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "entity_type"
+                or: "entity_types"
+                r: false
+                t: "`$ARRAY`"
+              }
+              {
+                k: "query"
+                n: "next"
+                or: "next"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "page_size"
+                or: "page_size"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                k: "query"
+                n: "query"
+                or: "query"
                 r: true
                 t: "`$STRING`"
               }
             ]
           }
           m: "GET"
-          o: "/api/v3/external-link/stories"
+          o: "/api/v3/search/stories"
           q: {
             exist: [
-              "external_link"
+              "query"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1378,7 +1404,7 @@ main: kit: entity: story: {
               lit: "v3"
             }
             {
-              lit: "external-link"
+              lit: "search"
             }
             {
               lit: "stories"
@@ -1386,7 +1412,7 @@ main: kit: entity: story: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]
@@ -1422,6 +1448,10 @@ main: kit: entity: story: {
             param: {
               "story-public-id": "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -1528,6 +1558,10 @@ main: kit: entity: story: {
             param: {
               "story-public-id": "id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
