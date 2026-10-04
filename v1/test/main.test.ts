@@ -289,6 +289,7 @@ describe('main', () => {
           fails.push('BUILD FAIL: ' + fullname(c) + ' build not ok')
         }
         else {
+          dumpModel(c, bres.apimodel)
           validateGuide(c, fails, bres, fs, vol, testmetrics)
           validateModel(c, fails, bres, fs, vol, testmetrics)
         }
@@ -308,6 +309,18 @@ describe('main', () => {
 
 
 })
+
+
+// With DUMP_MODEL set to a folder, each case's API model is written there as
+// JSON, for scripts/port-diff.js to compare with the Go port's.
+function dumpModel(c: Case, apimodel: any) {
+  const dir = process.env.DUMP_MODEL
+  if (null == dir || '' === dir) {
+    return
+  }
+  Fs.mkdirSync(dir, { recursive: true })
+  Fs.writeFileSync(Path.join(dir, fullname(c) + '.ts.json'), JSON.stringify(apimodel, null, 1))
+}
 
 
 function readModelSource(volJSON: any, dir: string, stem: string): string {

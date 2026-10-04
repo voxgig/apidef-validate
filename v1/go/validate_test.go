@@ -201,6 +201,30 @@ func runCase(t *testing.T, c Case, step map[string]any) *caseRun {
 	return &caseRun{Case: c, Base: base, Result: result, Out: out}
 }
 
+// With DUMP_MODEL set to an absolute folder, each case's API model is written
+// there as JSON, for scripts/port-diff.js to compare with the TS port's. The
+// harness runs each case in a temporary working directory, hence absolute.
+func dumpModel(t *testing.T, cn string, model map[string]any) {
+	t.Helper()
+	dir := os.Getenv("DUMP_MODEL")
+	if dir == "" {
+		return
+	}
+	if !filepath.IsAbs(dir) {
+		t.Fatalf("DUMP_MODEL must be an absolute path: %s", dir)
+	}
+	src, err := json.MarshalIndent(model, "", " ")
+	if err != nil {
+		t.Fatalf("%s: encode model: %v", cn, err)
+	}
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatalf("%s: mkdir %s: %v", cn, dir, err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, cn+".go.json"), src, 0644); err != nil {
+		t.Fatalf("%s: write model: %v", cn, err)
+	}
+}
+
 // The TypeScript harness feeds apidef the case's guide overlay; the Go port
 // refuses an overlay it cannot honour, so the same file goes in here.
 func copyGuideOverlay(t *testing.T, base string, out string, cn string) {
@@ -692,6 +716,7 @@ func TestValidate(t *testing.T) {
 				})
 				result := run.Result
 				caseCount++
+				dumpModel(t, fullName(c), result.ApiModel)
 				main, ok := result.ApiModel["main"].(map[string]any)
 				if !ok {
 					t.Fatal("model main must be a map")
