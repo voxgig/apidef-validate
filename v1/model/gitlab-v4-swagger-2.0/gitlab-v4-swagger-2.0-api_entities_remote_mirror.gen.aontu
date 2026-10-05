@@ -9,12 +9,14 @@ main: kit: entity: api_entities_remote_mirror: {
       h: "Auth Method"
       n: "auth_method"
       r: false
+      sh: "Determines the mirror authentication method"
       t: "`$STRING`"
     }
     enabled: {
       h: "Enabled"
       n: "enabled"
       r: false
+      sh: "Determines if the mirror is enabled"
       t: "`$BOOLEAN`"
     }
     host_keys: {
@@ -34,6 +36,7 @@ main: kit: entity: api_entities_remote_mirror: {
       h: "Keep Divergent Refs"
       n: "keep_divergent_refs"
       r: false
+      sh: "Determines if divergent refs are kept on the target"
       t: "`$BOOLEAN`"
     }
     last_error: {
@@ -68,12 +71,14 @@ main: kit: entity: api_entities_remote_mirror: {
       h: "Mirror Branch Regex"
       n: "mirror_branch_regex"
       r: false
+      sh: "Determines if only matched branches are mirrored"
       t: "`$STRING`"
     }
     only_protected_branches: {
       h: "Only Protected Branches"
       n: "only_protected_branches"
       r: false
+      sh: "Determines if only protected branches are mirrored"
       t: "`$BOOLEAN`"
     }
     update_status: {
@@ -85,7 +90,14 @@ main: kit: entity: api_entities_remote_mirror: {
     url: {
       h: "Url"
       n: "url"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The URL for a remote mirror"
       t: "`$STRING`"
     }
   }
@@ -100,71 +112,6 @@ main: kit: entity: api_entities_remote_mirror: {
     create: {
       name: "create"
       points: [
-        {
-          co: {
-            id: "POST /api/v4/projects/{id}/remote_mirrors"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_remote_mirror"
-                or: "postApiV4ProjectsIdRemoteMirrors"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/remote_mirrors"
-          q: {
-            exist: [
-              "post_api_v4_projects_id_remote_mirror"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "remote_mirrors"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           co: {
             id: "POST /api/v4/projects/{id}/remote_mirrors/{mirror_id}/sync"
@@ -225,6 +172,61 @@ main: kit: entity: api_entities_remote_mirror: {
             }
             {
               lit: "sync"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /api/v4/projects/{id}/remote_mirrors"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/remote_mirrors"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "remote_mirrors"
             }
           ]
           t: {
@@ -410,15 +412,6 @@ main: kit: entity: api_entities_remote_mirror: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_remote_mirrors_mirror_id"
-                or: "putApiV4ProjectsIdRemoteMirrorsMirrorId"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/remote_mirrors/{mirror_id}"
@@ -426,7 +419,6 @@ main: kit: entity: api_entities_remote_mirror: {
             exist: [
               "id"
               "project_id"
-              "put_api_v4_projects_id_remote_mirrors_mirror_id"
             ]
           }
           r: {

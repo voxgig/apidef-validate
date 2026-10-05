@@ -5,6 +5,13 @@ main: kit: entity: api_entities_deploy_key: {
   alias: field: {}
 
   fields: {
+    can_push: {
+      h: "Can Push"
+      n: "can_push"
+      r: false
+      sh: "Can deploy key push to the project's repository"
+      t: "`$BOOLEAN`"
+    }
     created_at: {
       fo: "date-time"
       h: "Created At"
@@ -17,6 +24,7 @@ main: kit: entity: api_entities_deploy_key: {
       h: "Expires At"
       n: "expires_at"
       r: false
+      sh: "The expiration date of the SSH key in ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)"
       t: "`$STRING`"
     }
     fingerprint: {
@@ -41,7 +49,18 @@ main: kit: entity: api_entities_deploy_key: {
     key: {
       h: "Key"
       n: "key"
-      r: false
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "New deploy key"
       t: "`$STRING`"
     }
     last_used_at: {
@@ -66,7 +85,18 @@ main: kit: entity: api_entities_deploy_key: {
     title: {
       h: "Title"
       n: "title"
-      r: false
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "New deploy key's title"
       t: "`$STRING`"
     }
     usage_type: {
@@ -100,7 +130,7 @@ main: kit: entity: api_entities_deploy_key: {
                 n: "deploy_key_id"
                 or: "key_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -163,24 +193,8 @@ main: kit: entity: api_entities_deploy_key: {
             source: "swagger2"
             version: 2
           }
-          g: {
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_deploy_key"
-                or: "postApiV4DeployKeys"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
           m: "POST"
           o: "/api/v4/deploy_keys"
-          q: {
-            exist: [
-              "post_api_v4_deploy_key"
-            ]
-          }
           rs: {
             kind: "json"
             media: "application/json"
@@ -231,6 +245,7 @@ main: kit: entity: api_entities_deploy_key: {
                 t: "`$INTEGER`"
               }
               {
+                ex: false
                 k: "query"
                 n: "public"
                 or: "public"
@@ -279,7 +294,7 @@ main: kit: entity: api_entities_deploy_key: {
                 n: "id"
                 or: "key_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -289,15 +304,6 @@ main: kit: entity: api_entities_deploy_key: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_deploy_keys_key_id"
-                or: "putApiV4ProjectsIdDeployKeysKeyId"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/deploy_keys/{key_id}"
@@ -305,7 +311,6 @@ main: kit: entity: api_entities_deploy_key: {
             exist: [
               "id"
               "project_id"
-              "put_api_v4_projects_id_deploy_keys_key_id"
             ]
           }
           r: {

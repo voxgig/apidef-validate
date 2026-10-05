@@ -15,18 +15,21 @@ main: kit: entity: api_entities_project_hook: {
       h: "Branch Filter Strategy"
       n: "branch_filter_strategy"
       r: false
+      sh: "Filter push events by branch."
       t: "`$STRING`"
     }
     confidential_issues_events: {
       h: "Confidential Issues Events"
       n: "confidential_issues_events"
       r: false
+      sh: "Trigger hook on confidential issues events"
       t: "`$BOOLEAN`"
     }
     confidential_note_events: {
       h: "Confidential Note Events"
       n: "confidential_note_events"
       r: false
+      sh: "Trigger hook on confidential note (comment) events"
       t: "`$BOOLEAN`"
     }
     created_at: {
@@ -40,24 +43,28 @@ main: kit: entity: api_entities_project_hook: {
       h: "Custom Headers"
       n: "custom_headers"
       r: false
+      sh: "Custom headers"
       t: "`$ARRAY`"
     }
     custom_webhook_template: {
       h: "Custom Webhook Template"
       n: "custom_webhook_template"
       r: false
+      sh: "Custom template for the request payload"
       t: "`$STRING`"
     }
     deployment_events: {
       h: "Deployment Events"
       n: "deployment_events"
       r: false
+      sh: "Trigger hook on deployment events"
       t: "`$BOOLEAN`"
     }
     description: {
       h: "Description"
       n: "description"
       r: false
+      sh: "Description of the hook"
       t: "`$STRING`"
     }
     disabled_until: {
@@ -71,18 +78,21 @@ main: kit: entity: api_entities_project_hook: {
       h: "Emoji Events"
       n: "emoji_events"
       r: false
+      sh: "Trigger hook on emoji events"
       t: "`$BOOLEAN`"
     }
     enable_ssl_verification: {
       h: "Enable Ssl Verification"
       n: "enable_ssl_verification"
       r: false
+      sh: "Do SSL verification when triggering the hook"
       t: "`$BOOLEAN`"
     }
     feature_flag_events: {
       h: "Feature Flag Events"
       n: "feature_flag_events"
       r: false
+      sh: "Trigger hook on feature flag events"
       t: "`$BOOLEAN`"
     }
     id: {
@@ -95,42 +105,49 @@ main: kit: entity: api_entities_project_hook: {
       h: "Issues Events"
       n: "issues_events"
       r: false
+      sh: "Trigger hook on issues events"
       t: "`$BOOLEAN`"
     }
     job_events: {
       h: "Job Events"
       n: "job_events"
       r: false
+      sh: "Trigger hook on job events"
       t: "`$BOOLEAN`"
     }
     merge_requests_events: {
       h: "Merge Requests Events"
       n: "merge_requests_events"
       r: false
+      sh: "Trigger hook on merge request events"
       t: "`$BOOLEAN`"
     }
     milestone_events: {
       h: "Milestone Events"
       n: "milestone_events"
       r: false
+      sh: "Trigger hook on milestone events"
       t: "`$BOOLEAN`"
     }
     name: {
       h: "Name"
       n: "name"
       r: false
+      sh: "Name of the hook"
       t: "`$STRING`"
     }
     note_events: {
       h: "Note Events"
       n: "note_events"
       r: false
+      sh: "Trigger hook on note (comment) events"
       t: "`$BOOLEAN`"
     }
     pipeline_events: {
       h: "Pipeline Events"
       n: "pipeline_events"
       r: false
+      sh: "Trigger hook on pipeline events"
       t: "`$BOOLEAN`"
     }
     project_id: {
@@ -143,18 +160,21 @@ main: kit: entity: api_entities_project_hook: {
       h: "Push Events"
       n: "push_events"
       r: false
+      sh: "Trigger hook on push events"
       t: "`$BOOLEAN`"
     }
     push_events_branch_filter: {
       h: "Push Events Branch Filter"
       n: "push_events_branch_filter"
       r: false
+      sh: "Trigger hook on specified branch only"
       t: "`$STRING`"
     }
     releases_events: {
       h: "Releases Events"
       n: "releases_events"
       r: false
+      sh: "Trigger hook on release events"
       t: "`$BOOLEAN`"
     }
     repository_update_events: {
@@ -167,36 +187,55 @@ main: kit: entity: api_entities_project_hook: {
       h: "Resource Access Token Events"
       n: "resource_access_token_events"
       r: false
+      sh: "Trigger hook on project access token expiry events"
       t: "`$BOOLEAN`"
     }
     tag_push_events: {
       h: "Tag Push Events"
       n: "tag_push_events"
       r: false
+      sh: "Trigger hook on tag push events"
       t: "`$BOOLEAN`"
+    }
+    token: {
+      h: "Token"
+      n: "token"
+      r: false
+      sh: "Secret token to validate received payloads; this will not be returned in the response"
+      t: "`$STRING`"
     }
     url: {
       h: "Url"
       n: "url"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The URL to send the request to"
       t: "`$STRING`"
     }
     url_variables: {
       h: "Url Variables"
       n: "url_variables"
       r: false
+      sh: "URL variables for interpolation"
       t: "`$ARRAY`"
     }
     vulnerability_events: {
       h: "Vulnerability Events"
       n: "vulnerability_events"
       r: false
+      sh: "Trigger hook on vulnerability events"
       t: "`$BOOLEAN`"
     }
     wiki_page_events: {
       h: "Wiki Page Events"
       n: "wiki_page_events"
       r: false
+      sh: "Trigger hook on wiki events"
       t: "`$BOOLEAN`"
     }
   }
@@ -227,21 +266,11 @@ main: kit: entity: api_entities_project_hook: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_hook"
-                or: "postApiV4ProjectsIdHooks"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/hooks"
           q: {
             exist: [
-              "post_api_v4_projects_id_hook"
               "project_id"
             ]
           }
@@ -372,7 +401,7 @@ main: kit: entity: api_entities_project_hook: {
                 n: "id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -444,7 +473,7 @@ main: kit: entity: api_entities_project_hook: {
                 n: "id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -454,15 +483,6 @@ main: kit: entity: api_entities_project_hook: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_hooks_hook_id"
-                or: "putApiV4ProjectsIdHooksHookId"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/hooks/{hook_id}"
@@ -470,7 +490,6 @@ main: kit: entity: api_entities_project_hook: {
             exist: [
               "id"
               "project_id"
-              "put_api_v4_projects_id_hooks_hook_id"
             ]
           }
           r: {

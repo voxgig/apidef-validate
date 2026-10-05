@@ -16,18 +16,33 @@ main: kit: entity: api_entities_freeze_period: {
       h: "Cron Timezone"
       n: "cron_timezone"
       r: false
+      sh: "The time zone for the cron fields, defaults to UTC if not provided"
       t: "`$STRING`"
     }
     freeze_end: {
       h: "Freeze End"
       n: "freeze_end"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "End of the freeze period in cron format"
       t: "`$STRING`"
     }
     freeze_start: {
       h: "Freeze Start"
       n: "freeze_start"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "Start of the freeze period in cron format."
       t: "`$STRING`"
     }
     id: {
@@ -72,21 +87,11 @@ main: kit: entity: api_entities_freeze_period: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_freeze_period"
-                or: "postApiV4ProjectsIdFreezePeriods"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/freeze_periods"
           q: {
             exist: [
-              "post_api_v4_projects_id_freeze_period"
               "project_id"
             ]
           }
@@ -217,7 +222,7 @@ main: kit: entity: api_entities_freeze_period: {
                 n: "id"
                 or: "freeze_period_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -289,7 +294,7 @@ main: kit: entity: api_entities_freeze_period: {
                 n: "id"
                 or: "freeze_period_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -299,15 +304,6 @@ main: kit: entity: api_entities_freeze_period: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_freeze_periods_freeze_period_id"
-                or: "putApiV4ProjectsIdFreezePeriodsFreezePeriodId"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/freeze_periods/{freeze_period_id}"
@@ -315,7 +311,6 @@ main: kit: entity: api_entities_freeze_period: {
             exist: [
               "id"
               "project_id"
-              "put_api_v4_projects_id_freeze_periods_freeze_period_id"
             ]
           }
           r: {

@@ -5,6 +5,13 @@ main: kit: entity: api_entities_projects_topic: {
   alias: field: {}
 
   fields: {
+    avatar: {
+      h: "Avatar"
+      n: "avatar"
+      r: false
+      sh: "Avatar image for topic"
+      t: "Any"
+    }
     avatar_url: {
       h: "Avatar Url"
       n: "avatar_url"
@@ -15,6 +22,7 @@ main: kit: entity: api_entities_projects_topic: {
       h: "Description"
       n: "description"
       r: false
+      sh: "Description"
       t: "`$STRING`"
     }
     id: {
@@ -26,19 +34,51 @@ main: kit: entity: api_entities_projects_topic: {
     name: {
       h: "Name"
       n: "name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "Slug (name)"
       t: "`$STRING`"
     }
     organization_id: {
+      fo: "int32"
       h: "Organization Id"
       n: "organization_id"
       r: false
+      sh: "The organization id for the topic"
       t: "`$STRING`"
+    }
+    source_topic_id: {
+      fo: "int32"
+      h: "Source Topic Id"
+      n: "source_topic_id"
+      r: true
+      sh: "ID of source project topic"
+      t: "`$INTEGER`"
+    }
+    target_topic_id: {
+      fo: "int32"
+      h: "Target Topic Id"
+      n: "target_topic_id"
+      r: true
+      sh: "ID of target project topic"
+      t: "`$INTEGER`"
     }
     title: {
       h: "Title"
       n: "title"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "Title"
       t: "`$STRING`"
     }
     total_projects_count: {
@@ -65,24 +105,8 @@ main: kit: entity: api_entities_projects_topic: {
             source: "swagger2"
             version: 2
           }
-          g: {
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_topic"
-                or: "postApiV4Topics"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
           m: "POST"
           o: "/api/v4/topics"
-          q: {
-            exist: [
-              "post_api_v4_topic"
-            ]
-          }
           rs: {
             kind: "json"
             media: "application/json"
@@ -109,24 +133,8 @@ main: kit: entity: api_entities_projects_topic: {
             source: "swagger2"
             version: 2
           }
-          g: {
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_topics_merge"
-                or: "postApiV4TopicsMerge"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
           m: "POST"
           o: "/api/v4/topics/merge"
-          q: {
-            exist: [
-              "post_api_v4_topics_merge"
-            ]
-          }
           rs: {
             kind: "json"
             media: "application/json"
@@ -168,7 +176,7 @@ main: kit: entity: api_entities_projects_topic: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -215,7 +223,7 @@ main: kit: entity: api_entities_projects_topic: {
                 n: "organization_id"
                 or: "organization_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 ex: 1
@@ -239,14 +247,14 @@ main: kit: entity: api_entities_projects_topic: {
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "without_project"
                 or: "without_projects"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -290,16 +298,7 @@ main: kit: entity: api_entities_projects_topic: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_topics_id"
-                or: "putApiV4TopicsId"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -308,7 +307,6 @@ main: kit: entity: api_entities_projects_topic: {
           q: {
             exist: [
               "id"
-              "put_api_v4_topics_id"
             ]
           }
           rs: {

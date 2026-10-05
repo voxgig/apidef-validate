@@ -42,6 +42,7 @@ main: kit: entity: api_entities_release: {
       h: "Description"
       n: "description"
       r: false
+      sh: "The description of the release."
       t: "`$STRING`"
     }
     description_html: {
@@ -62,22 +63,45 @@ main: kit: entity: api_entities_release: {
       r: false
       t: "`$STRING`"
     }
+    legacy_catalog_publish: {
+      h: "Legacy Catalog Publish"
+      n: "legacy_catalog_publish"
+      r: false
+      sh: "If true, the release will be published to the CI catalog."
+      t: "`$BOOLEAN`"
+    }
     links: {
       h: "Links"
       n: "links"
       r: false
       t: "`$OBJECT`"
     }
+    milestone_ids: {
+      h: "Milestone Ids"
+      n: "milestone_ids"
+      r: false
+      sh: "The ID of each milestone the release is associated with."
+      t: "`$STRING`"
+    }
     milestones: {
       h: "Milestones"
       n: "milestones"
       r: false
+      sh: "The title of each milestone the release is associated with."
       t: "`$OBJECT`"
     }
     name: {
       h: "Name"
       n: "name"
       r: false
+      sh: "The release name"
+      t: "`$STRING`"
+    }
+    ref: {
+      h: "Ref"
+      n: "ref"
+      r: false
+      sh: "If a tag specified in `tag_name` doesn't exist, the release is created from `ref` and tagged with `tag_name`."
       t: "`$STRING`"
     }
     released_at: {
@@ -85,12 +109,27 @@ main: kit: entity: api_entities_release: {
       h: "Released At"
       n: "released_at"
       r: false
+      sh: "Date and time for the release."
+      t: "`$STRING`"
+    }
+    tag_message: {
+      h: "Tag Message"
+      n: "tag_message"
+      r: false
+      sh: "Message to use if creating a new annotated tag"
       t: "`$STRING`"
     }
     tag_name: {
       h: "Tag Name"
       n: "tag_name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The tag where the release is created from"
       t: "`$STRING`"
     }
     tag_path: {
@@ -119,71 +158,6 @@ main: kit: entity: api_entities_release: {
       points: [
         {
           co: {
-            id: "POST /api/v4/projects/{id}/releases"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_release"
-                or: "postApiV4ProjectsIdReleases"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/releases"
-          q: {
-            exist: [
-              "post_api_v4_projects_id_release"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "releases"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "POST /api/v4/projects/{id}/releases/{tag_name}/evidence"
             source: "swagger2"
             version: 2
@@ -195,14 +169,14 @@ main: kit: entity: api_entities_release: {
                 n: "project_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "tag_name"
                 or: "tag_name"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -251,6 +225,61 @@ main: kit: entity: api_entities_release: {
             res: "`body`"
           }
         }
+        {
+          co: {
+            id: "POST /api/v4/projects/{id}/releases"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/releases"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "releases"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
       ]
     }
     list: {
@@ -290,18 +319,20 @@ main: kit: entity: api_entities_release: {
                 t: "`$INTEGER`"
               }
               {
+                ex: false
                 k: "query"
                 n: "simple"
                 or: "simple"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
+                ex: "desc"
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -365,14 +396,15 @@ main: kit: entity: api_entities_release: {
                 n: "include_html_description"
                 or: "include_html_description"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
+                ex: "released_at"
                 k: "query"
                 n: "order_by"
                 or: "order_by"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 1
@@ -391,25 +423,26 @@ main: kit: entity: api_entities_release: {
                 t: "`$INTEGER`"
               }
               {
+                ex: "desc"
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "updated_after"
                 or: "updated_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "updated_before"
                 or: "updated_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -485,7 +518,7 @@ main: kit: entity: api_entities_release: {
                 n: "include_html_description"
                 or: "include_html_description"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -560,15 +593,6 @@ main: kit: entity: api_entities_release: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_releases_tag_name"
-                or: "putApiV4ProjectsIdReleasesTagName"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/releases/{tag_name}"
@@ -576,7 +600,6 @@ main: kit: entity: api_entities_release: {
             exist: [
               "id"
               "project_id"
-              "put_api_v4_projects_id_releases_tag_name"
             ]
           }
           r: {

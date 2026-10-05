@@ -15,6 +15,7 @@ main: kit: entity: api_entities_hook: {
       h: "Branch Filter Strategy"
       n: "branch_filter_strategy"
       r: false
+      sh: "Filter push events by branch."
       t: "`$STRING`"
     }
     created_at: {
@@ -28,6 +29,7 @@ main: kit: entity: api_entities_hook: {
       h: "Custom Headers"
       n: "custom_headers"
       r: false
+      sh: "Custom headers"
       t: "`$ARRAY`"
     }
     custom_webhook_template: {
@@ -40,6 +42,7 @@ main: kit: entity: api_entities_hook: {
       h: "Description"
       n: "description"
       r: false
+      sh: "Description of the hook"
       t: "`$STRING`"
     }
     disabled_until: {
@@ -53,6 +56,7 @@ main: kit: entity: api_entities_hook: {
       h: "Enable Ssl Verification"
       n: "enable_ssl_verification"
       r: false
+      sh: "Do SSL verification when triggering the hook"
       t: "`$BOOLEAN`"
     }
     id: {
@@ -65,48 +69,69 @@ main: kit: entity: api_entities_hook: {
       h: "Merge Requests Events"
       n: "merge_requests_events"
       r: false
+      sh: "Trigger hook on merge requests events"
       t: "`$BOOLEAN`"
     }
     name: {
       h: "Name"
       n: "name"
       r: false
+      sh: "Name of the hook"
       t: "`$STRING`"
     }
     push_events: {
       h: "Push Events"
       n: "push_events"
       r: false
+      sh: "When true, the hook fires on push events"
       t: "`$BOOLEAN`"
     }
     push_events_branch_filter: {
       h: "Push Events Branch Filter"
       n: "push_events_branch_filter"
       r: false
+      sh: "Trigger hook on specified branch only"
       t: "`$STRING`"
     }
     repository_update_events: {
       h: "Repository Update Events"
       n: "repository_update_events"
       r: false
+      sh: "Trigger hook on repository update events"
       t: "`$BOOLEAN`"
     }
     tag_push_events: {
       h: "Tag Push Events"
       n: "tag_push_events"
       r: false
+      sh: "When true, the hook fires on new tags being pushed"
       t: "`$BOOLEAN`"
+    }
+    token: {
+      h: "Token"
+      n: "token"
+      r: false
+      sh: "Secret token to validate received payloads; this isn't returned in the response"
+      t: "`$STRING`"
     }
     url: {
       h: "Url"
       n: "url"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The URL to send the request to"
       t: "`$STRING`"
     }
     url_variables: {
       h: "Url Variables"
       n: "url_variables"
       r: false
+      sh: "URL variables for interpolation"
       t: "`$ARRAY`"
     }
   }
@@ -127,24 +152,8 @@ main: kit: entity: api_entities_hook: {
             source: "swagger2"
             version: 2
           }
-          g: {
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_hook"
-                or: "postApiV4Hooks"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
           m: "POST"
           o: "/api/v4/hooks"
-          q: {
-            exist: [
-              "post_api_v4_hook"
-            ]
-          }
           rs: {
             kind: "json"
             media: "application/json"
@@ -236,7 +245,7 @@ main: kit: entity: api_entities_hook: {
                 n: "id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -293,16 +302,7 @@ main: kit: entity: api_entities_hook: {
                 n: "id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_hooks_hook_id"
-                or: "putApiV4HooksHookId"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -311,7 +311,6 @@ main: kit: entity: api_entities_hook: {
           q: {
             exist: [
               "id"
-              "put_api_v4_hooks_hook_id"
             ]
           }
           r: {

@@ -29,6 +29,7 @@ main: kit: entity: api_entities_tag: {
       h: "Message"
       n: "message"
       r: false
+      sh: "Specifying a message creates an annotated tag"
       t: "`$STRING`"
     }
     name: {
@@ -43,11 +44,25 @@ main: kit: entity: api_entities_tag: {
       r: false
       t: "`$BOOLEAN`"
     }
+    ref: {
+      h: "Ref"
+      n: "ref"
+      r: true
+      sh: "The commit sha or branch name"
+      t: "`$STRING`"
+    }
     release: {
       h: "Release"
       n: "release"
       r: false
       t: "`$OBJECT`"
+    }
+    tag_name: {
+      h: "Tag Name"
+      n: "tag_name"
+      r: true
+      sh: "The name of the tag"
+      t: "`$STRING`"
     }
     target: {
       h: "Target"
@@ -83,21 +98,11 @@ main: kit: entity: api_entities_tag: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_repository_tag"
-                or: "postApiV4ProjectsIdRepositoryTags"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/repository/tags"
           q: {
             exist: [
-              "post_api_v4_projects_id_repository_tag"
               "project_id"
             ]
           }
@@ -158,11 +163,12 @@ main: kit: entity: api_entities_tag: {
             ]
             query: [
               {
+                ex: "updated"
                 k: "query"
                 n: "order_by"
                 or: "order_by"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 1
@@ -177,7 +183,7 @@ main: kit: entity: api_entities_tag: {
                 n: "page_token"
                 or: "page_token"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 20
@@ -192,14 +198,15 @@ main: kit: entity: api_entities_tag: {
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: "desc"
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }

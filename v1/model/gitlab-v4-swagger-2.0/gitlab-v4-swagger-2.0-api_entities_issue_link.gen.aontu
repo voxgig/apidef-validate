@@ -15,6 +15,7 @@ main: kit: entity: api_entities_issue_link: {
       h: "Link Type"
       n: "link_type"
       r: false
+      sh: "The type of the relation (“relates_to”, “blocks”, “is_blocked_by”),defaults to “relates_to”)"
       t: "`$STRING`"
     }
     source_issue: {
@@ -28,6 +29,20 @@ main: kit: entity: api_entities_issue_link: {
       n: "target_issue"
       r: false
       t: "`$OBJECT`"
+    }
+    target_issue_iid: {
+      h: "Target Issue Iid"
+      n: "target_issue_iid"
+      r: true
+      sh: "The internal ID of a target project’s issue"
+      t: "`$STRING`"
+    }
+    target_project_id: {
+      h: "Target Project Id"
+      n: "target_project_id"
+      r: true
+      sh: "The ID or URL-encoded path of a target project"
+      t: "`$STRING`"
     }
   }
 
@@ -54,7 +69,7 @@ main: kit: entity: api_entities_issue_link: {
                 n: "issue_id"
                 or: "issue_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -64,22 +79,12 @@ main: kit: entity: api_entities_issue_link: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_issues_issue_iid_link"
-                or: "postApiV4ProjectsIdIssuesIssueIidLinks"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/issues/{issue_iid}/links"
           q: {
             exist: [
               "issue_id"
-              "post_api_v4_projects_id_issues_issue_iid_link"
               "project_id"
             ]
           }
@@ -146,7 +151,7 @@ main: kit: entity: api_entities_issue_link: {
                 n: "issue_id"
                 or: "issue_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"

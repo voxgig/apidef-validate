@@ -16,12 +16,14 @@ main: kit: entity: api_entities_projects_container_registry_protection_rule: {
       h: "Minimum Access Level For Delete"
       n: "minimum_access_level_for_delete"
       r: false
+      sh: "Minimum GitLab access level to allow to delete container images in the container registry."
       t: "`$STRING`"
     }
     minimum_access_level_for_push: {
       h: "Minimum Access Level For Push"
       n: "minimum_access_level_for_push"
       r: false
+      sh: "Minimum GitLab access level to allow to push container images to the container registry."
       t: "`$STRING`"
     }
     project_id: {
@@ -34,7 +36,18 @@ main: kit: entity: api_entities_projects_container_registry_protection_rule: {
     repository_path_pattern: {
       h: "Repository Path Pattern"
       n: "repository_path_pattern"
-      r: false
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "Container repository path pattern protected by the protection rule."
       t: "`$STRING`"
     }
   }
@@ -65,21 +78,11 @@ main: kit: entity: api_entities_projects_container_registry_protection_rule: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_registry_protection_repository_rule"
-                or: "postApiV4ProjectsIdRegistryProtectionRepositoryRules"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/registry/protection/repository/rules"
           q: {
             exist: [
-              "post_api_v4_projects_id_registry_protection_repository_rule"
               "project_id"
             ]
           }
@@ -210,7 +213,7 @@ main: kit: entity: api_entities_projects_container_registry_protection_rule: {
                 n: "id"
                 or: "protection_rule_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -220,22 +223,12 @@ main: kit: entity: api_entities_projects_container_registry_protection_rule: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "patch_api_v4_projects_id_registry_protection_repository_rules_protection_rule_id"
-                or: "patchApiV4ProjectsIdRegistryProtectionRepositoryRulesProtectionRuleId"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PATCH"
           o: "/api/v4/projects/{id}/registry/protection/repository/rules/{protection_rule_id}"
           q: {
             exist: [
               "id"
-              "patch_api_v4_projects_id_registry_protection_repository_rules_protection_rule_id"
               "project_id"
             ]
           }

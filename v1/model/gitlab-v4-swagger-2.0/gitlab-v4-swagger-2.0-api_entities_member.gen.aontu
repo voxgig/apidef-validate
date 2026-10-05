@@ -6,9 +6,21 @@ main: kit: entity: api_entities_member: {
 
   fields: {
     access_level: {
+      fo: "int32"
       h: "Access Level"
       n: "access_level"
+      op: {
+        create: {
+          req: true
+          type: "`$INTEGER`"
+        }
+        update: {
+          req: true
+          type: "`$INTEGER`"
+        }
+      }
       r: false
+      sh: "A valid access level."
       t: "`$STRING`"
     }
     avatar_path: {
@@ -49,9 +61,11 @@ main: kit: entity: api_entities_member: {
       t: "`$STRING`"
     }
     expires_at: {
+      fo: "date-time"
       h: "Expires At"
       n: "expires_at"
       r: false
+      sh: "Date string in the format YEAR-MONTH-DAY"
       t: "`$STRING`"
     }
     group_saml_identity: {
@@ -72,6 +86,13 @@ main: kit: entity: api_entities_member: {
       n: "id"
       r: false
       t: "`$INTEGER`"
+    }
+    invite_source: {
+      h: "Invite Source"
+      n: "invite_source"
+      r: false
+      sh: "Source that triggered the member creation process"
+      t: "`$STRING`"
     }
     is_using_seat: {
       h: "Is Using Seat"
@@ -96,6 +117,14 @@ main: kit: entity: api_entities_member: {
       n: "member_role"
       r: false
       t: "`$OBJECT`"
+    }
+    member_role_id: {
+      fo: "int32"
+      h: "Member Role Id"
+      n: "member_role_id"
+      r: false
+      sh: "The ID of the Member Role to be updated"
+      t: "`$INTEGER`"
     }
     membership_state: {
       h: "Membership State"
@@ -127,10 +156,19 @@ main: kit: entity: api_entities_member: {
       r: false
       t: "`$STRING`"
     }
+    user_id: {
+      fo: "int32"
+      h: "User Id"
+      n: "user_id"
+      r: false
+      sh: "The user ID of the new member or multiple IDs separated by commas."
+      t: "`$INTEGER`"
+    }
     username: {
       h: "Username"
       n: "username"
       r: false
+      sh: "The username of the new member or multiple usernames separated by commas."
       t: "`$STRING`"
     }
     value: {
@@ -177,7 +215,7 @@ main: kit: entity: api_entities_member: {
                 n: "member_id"
                 or: "user_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -243,22 +281,12 @@ main: kit: entity: api_entities_member: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_groups_id_member"
-                or: "postApiV4GroupsIdMembers"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/groups/{id}/members"
           q: {
             exist: [
               "group_id"
-              "post_api_v4_groups_id_member"
             ]
           }
           r: {
@@ -308,21 +336,11 @@ main: kit: entity: api_entities_member: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_member"
-                or: "postApiV4ProjectsIdMembers"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/members"
           q: {
             exist: [
-              "post_api_v4_projects_id_member"
               "project_id"
             ]
           }
@@ -400,14 +418,14 @@ main: kit: entity: api_entities_member: {
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -487,35 +505,35 @@ main: kit: entity: api_entities_member: {
                 n: "query"
                 or: "query"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "show_seat_info"
                 or: "show_seat_info"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "skip_user"
                 or: "skip_users"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "user_id"
                 or: "user_ids"
                 r: false
-                t: "`$STRING`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "with_saml_identity"
                 or: "with_saml_identity"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -595,28 +613,28 @@ main: kit: entity: api_entities_member: {
                 n: "query"
                 or: "query"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "show_seat_info"
                 or: "show_seat_info"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "state"
                 or: "state"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "user_id"
                 or: "user_ids"
                 r: false
-                t: "`$STRING`"
+                t: "`$ARRAY`"
               }
             ]
           }
@@ -699,35 +717,35 @@ main: kit: entity: api_entities_member: {
                 n: "query"
                 or: "query"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "show_seat_info"
                 or: "show_seat_info"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "skip_user"
                 or: "skip_users"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "user_id"
                 or: "user_ids"
                 r: false
-                t: "`$STRING`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "with_saml_identity"
                 or: "with_saml_identity"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -807,28 +825,28 @@ main: kit: entity: api_entities_member: {
                 n: "query"
                 or: "query"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "show_seat_info"
                 or: "show_seat_info"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "state"
                 or: "state"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "user_id"
                 or: "user_ids"
                 r: false
-                t: "`$STRING`"
+                t: "`$ARRAY`"
               }
             ]
           }
@@ -898,7 +916,7 @@ main: kit: entity: api_entities_member: {
                 n: "id"
                 or: "user_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -965,7 +983,7 @@ main: kit: entity: api_entities_member: {
                 n: "user_id"
                 or: "user_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -1027,7 +1045,7 @@ main: kit: entity: api_entities_member: {
                 n: "id"
                 or: "user_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -1101,7 +1119,7 @@ main: kit: entity: api_entities_member: {
                 n: "user_id"
                 or: "user_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -1175,7 +1193,7 @@ main: kit: entity: api_entities_member: {
                 n: "member_id"
                 or: "user_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -1250,16 +1268,7 @@ main: kit: entity: api_entities_member: {
                 n: "id"
                 or: "user_id"
                 r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_groups_id_members_user_id"
-                or: "putApiV4GroupsIdMembersUserId"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -1269,7 +1278,6 @@ main: kit: entity: api_entities_member: {
             exist: [
               "group_id"
               "id"
-              "put_api_v4_groups_id_members_user_id"
             ]
           }
           r: {
@@ -1327,16 +1335,7 @@ main: kit: entity: api_entities_member: {
                 n: "member_id"
                 or: "user_id"
                 r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_groups_id_members_user_id_state"
-                or: "putApiV4GroupsIdMembersUserIdState"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -1347,7 +1346,6 @@ main: kit: entity: api_entities_member: {
             exist: [
               "group_id"
               "member_id"
-              "put_api_v4_groups_id_members_user_id_state"
             ]
           }
           r: {
@@ -1397,7 +1395,7 @@ main: kit: entity: api_entities_member: {
                 n: "id"
                 or: "user_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -1407,15 +1405,6 @@ main: kit: entity: api_entities_member: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_members_user_id"
-                or: "putApiV4ProjectsIdMembersUserId"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/members/{user_id}"
@@ -1423,7 +1412,6 @@ main: kit: entity: api_entities_member: {
             exist: [
               "id"
               "project_id"
-              "put_api_v4_projects_id_members_user_id"
             ]
           }
           r: {

@@ -5,16 +5,25 @@ main: kit: entity: api_entities_commit_detail: {
   alias: field: {}
 
   fields: {
+    actions: {
+      h: "Actions"
+      n: "actions"
+      r: true
+      sh: "Actions to perform in commit"
+      t: "`$ARRAY`"
+    }
     author_email: {
       h: "Author Email"
       n: "author_email"
       r: false
+      sh: "Author email for commit"
       t: "`$STRING`"
     }
     author_name: {
       h: "Author Name"
       n: "author_name"
       r: false
+      sh: "Author name for commit"
       t: "`$STRING`"
     }
     authored_date: {
@@ -22,6 +31,33 @@ main: kit: entity: api_entities_commit_detail: {
       h: "Authored Date"
       n: "authored_date"
       r: false
+      t: "`$STRING`"
+    }
+    branch: {
+      h: "Branch"
+      n: "branch"
+      r: true
+      sh: "Name of the branch to commit into."
+      t: "`$STRING`"
+    }
+    commit_message: {
+      h: "Commit Message"
+      n: "commit_message"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "Commit message"
+      t: "`$STRING`"
+    }
+    commit_sha: {
+      h: "Commit Sha"
+      n: "commit_sha"
+      r: true
+      sh: "Commit sha to update the submodule to."
       t: "`$STRING`"
     }
     committed_date: {
@@ -55,6 +91,13 @@ main: kit: entity: api_entities_commit_detail: {
       n: "extended_trailers"
       r: false
       t: "`$OBJECT`"
+    }
+    force: {
+      h: "Force"
+      n: "force"
+      r: false
+      sh: "When `true` overwrites the target branch with a new commit based on the `start_branch` or `start_sha`"
+      t: "`$BOOLEAN`"
     }
     id: {
       h: "Id"
@@ -94,10 +137,33 @@ main: kit: entity: api_entities_commit_detail: {
       r: false
       t: "`$STRING`"
     }
+    start_branch: {
+      h: "Start Branch"
+      n: "start_branch"
+      r: false
+      sh: "Name of the branch to start the new branch from"
+      t: "`$STRING`"
+    }
+    start_project: {
+      fo: "int32"
+      h: "Start Project"
+      n: "start_project"
+      r: false
+      sh: "The ID or path of the project to start the new branch from"
+      t: "`$INTEGER`"
+    }
+    start_sha: {
+      h: "Start Sha"
+      n: "start_sha"
+      r: false
+      sh: "SHA of the commit to start the new branch from"
+      t: "`$STRING`"
+    }
     stats: {
       h: "Stats"
       n: "stats"
       r: false
+      sh: "Include commit stats"
       t: "`$OBJECT`"
     }
     status: {
@@ -152,21 +218,11 @@ main: kit: entity: api_entities_commit_detail: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_repository_commit"
-                or: "postApiV4ProjectsIdRepositoryCommits"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/repository/commits"
           q: {
             exist: [
-              "post_api_v4_projects_id_repository_commit"
               "project_id"
             ]
           }
@@ -229,16 +285,17 @@ main: kit: entity: api_entities_commit_detail: {
                 n: "sha"
                 or: "sha"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
             query: [
               {
+                ex: true
                 k: "query"
                 n: "stat"
                 or: "stats"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -314,16 +371,7 @@ main: kit: entity: api_entities_commit_detail: {
                 n: "submodule"
                 or: "submodule"
                 r: true
-                t: "`$ANY`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_repository_submodules_submodule"
-                or: "putApiV4ProjectsIdRepositorySubmodulesSubmodule"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -332,7 +380,6 @@ main: kit: entity: api_entities_commit_detail: {
           q: {
             exist: [
               "project_id"
-              "put_api_v4_projects_id_repository_submodules_submodule"
               "submodule"
             ]
           }

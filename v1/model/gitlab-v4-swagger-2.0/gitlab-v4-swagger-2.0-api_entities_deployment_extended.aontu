@@ -35,6 +35,12 @@ main: kit: entity: api_entities_deployment_extended: {
     environment: {
       h: "Environment"
       n: "environment"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
       sh: "API_Entities_EnvironmentBasic model"
       t: "`$OBJECT`"
@@ -63,20 +69,52 @@ main: kit: entity: api_entities_deployment_extended: {
     ref: {
       h: "Ref"
       n: "ref"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The name of the branch or tag that is deployed"
       t: "`$STRING`"
     }
     sha: {
       h: "Sha"
       n: "sha"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The SHA of the commit that is deployed"
       t: "`$STRING`"
     }
     status: {
       h: "Status"
       n: "status"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+        update: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The status of the deployment that is created."
       t: "`$STRING`"
+    }
+    tag: {
+      h: "Tag"
+      n: "tag"
+      r: true
+      sh: "A boolean that indicates if the deployed ref is a tag (`true`) or not (`false`)"
+      t: "`$BOOLEAN`"
     }
     updated_at: {
       fo: "date-time"
@@ -120,21 +158,11 @@ main: kit: entity: api_entities_deployment_extended: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_deployment"
-                or: "postApiV4ProjectsIdDeployments"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/deployments"
           q: {
             exist: [
-              "post_api_v4_projects_id_deployment"
               "project_id"
             ]
           }
@@ -187,7 +215,7 @@ main: kit: entity: api_entities_deployment_extended: {
                 n: "deployment_id"
                 or: "deployment_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -258,7 +286,7 @@ main: kit: entity: api_entities_deployment_extended: {
                 n: "deployment_id"
                 or: "deployment_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -268,15 +296,6 @@ main: kit: entity: api_entities_deployment_extended: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_deployments_deployment_id"
-                or: "putApiV4ProjectsIdDeploymentsDeploymentId"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/deployments/{deployment_id}"
@@ -284,7 +303,6 @@ main: kit: entity: api_entities_deployment_extended: {
             exist: [
               "deployment_id"
               "project_id"
-              "put_api_v4_projects_id_deployments_deployment_id"
             ]
           }
           r: {

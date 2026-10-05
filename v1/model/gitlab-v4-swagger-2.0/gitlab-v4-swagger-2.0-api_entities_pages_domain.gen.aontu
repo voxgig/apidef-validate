@@ -9,18 +9,27 @@ main: kit: entity: api_entities_pages_domain: {
       h: "Auto Ssl Enabled"
       n: "auto_ssl_enabled"
       r: false
+      sh: "Enables automatic generation of SSL certificates issued by Let's Encrypt for custom domains."
       t: "`$STRING`"
     }
     certificate: {
       h: "Certificate"
       n: "certificate"
       r: false
+      sh: "The certificate"
       t: "`$OBJECT`"
     }
     domain: {
       h: "Domain"
       n: "domain"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The domain"
       t: "`$STRING`"
     }
     enabled_until: {
@@ -35,9 +44,28 @@ main: kit: entity: api_entities_pages_domain: {
       r: false
       t: "`$STRING`"
     }
+    key: {
+      h: "Key"
+      n: "key"
+      r: false
+      sh: "The key"
+      t: "Any"
+    }
     url: {
       h: "Url"
       n: "url"
+      r: false
+      t: "`$STRING`"
+    }
+    user_provided_certificate: {
+      h: "User Provided Certificate"
+      n: "user_provided_certificate"
+      r: false
+      t: "`$STRING`"
+    }
+    user_provided_key: {
+      h: "User Provided Key"
+      n: "user_provided_key"
       r: false
       t: "`$STRING`"
     }
@@ -81,21 +109,11 @@ main: kit: entity: api_entities_pages_domain: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_pages_domain"
-                or: "postApiV4ProjectsIdPagesDomains"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/pages/domains"
           q: {
             exist: [
-              "post_api_v4_projects_id_pages_domain"
               "project_id"
             ]
           }

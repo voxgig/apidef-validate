@@ -16,6 +16,7 @@ main: kit: entity: api_entities_environment: {
       h: "Auto Stop Setting"
       n: "auto_stop_setting"
       r: false
+      sh: "The auto stop setting for the environment."
       t: "`$STRING`"
     }
     cluster_agent: {
@@ -24,6 +25,14 @@ main: kit: entity: api_entities_environment: {
       r: false
       sh: "API_Entities_Clusters_Agent model"
       t: "`$OBJECT`"
+    }
+    cluster_agent_id: {
+      fo: "int32"
+      h: "Cluster Agent Id"
+      n: "cluster_agent_id"
+      r: false
+      sh: "The ID of the Cluster Agent to associate with this environment"
+      t: "`$INTEGER`"
     }
     created_at: {
       fo: "date-time"
@@ -36,19 +45,29 @@ main: kit: entity: api_entities_environment: {
       h: "Description"
       n: "description"
       r: false
+      sh: "The description of the environment"
       t: "`$STRING`"
     }
     external_url: {
       h: "External Url"
       n: "external_url"
       r: false
+      sh: "Place to link to for this environment"
       t: "`$STRING`"
     }
     flux_resource_path: {
       h: "Flux Resource Path"
       n: "flux_resource_path"
       r: false
+      sh: "The Flux resource path to associate with this environment"
       t: "`$STRING`"
+    }
+    force: {
+      h: "Force"
+      n: "force"
+      r: false
+      sh: "Force environment to stop without executing `on_stop` actions"
+      t: "`$BOOLEAN`"
     }
     id: {
       fo: "int32"
@@ -61,6 +80,7 @@ main: kit: entity: api_entities_environment: {
       h: "Kubernetes Namespace"
       n: "kubernetes_namespace"
       r: false
+      sh: "The Kubernetes namespace to associate with this environment"
       t: "`$STRING`"
     }
     last_deployment: {
@@ -73,7 +93,14 @@ main: kit: entity: api_entities_environment: {
     name: {
       h: "Name"
       n: "name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The name of the environment"
       t: "`$STRING`"
     }
     project: {
@@ -99,6 +126,7 @@ main: kit: entity: api_entities_environment: {
       h: "Tier"
       n: "tier"
       r: false
+      sh: "The tier of the new environment."
       t: "`$STRING`"
     }
     updated_at: {
@@ -133,7 +161,7 @@ main: kit: entity: api_entities_environment: {
                 n: "environment_id"
                 or: "environment_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -143,22 +171,12 @@ main: kit: entity: api_entities_environment: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_environments_environment_id_stop"
-                or: "postApiV4ProjectsIdEnvironmentsEnvironmentIdStop"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/environments/{environment_id}/stop"
           q: {
             exist: [
               "environment_id"
-              "post_api_v4_projects_id_environments_environment_id_stop"
               "project_id"
             ]
           }
@@ -215,21 +233,11 @@ main: kit: entity: api_entities_environment: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_environment"
-                or: "postApiV4ProjectsIdEnvironments"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/environments"
           q: {
             exist: [
-              "post_api_v4_projects_id_environment"
               "project_id"
             ]
           }
@@ -314,14 +322,14 @@ main: kit: entity: api_entities_environment: {
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "state"
                 or: "states"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -381,7 +389,7 @@ main: kit: entity: api_entities_environment: {
                 n: "id"
                 or: "environment_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -453,7 +461,7 @@ main: kit: entity: api_entities_environment: {
                 n: "id"
                 or: "environment_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -463,15 +471,6 @@ main: kit: entity: api_entities_environment: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_environments_environment_id"
-                or: "putApiV4ProjectsIdEnvironmentsEnvironmentId"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/environments/{environment_id}"
@@ -479,7 +478,6 @@ main: kit: entity: api_entities_environment: {
             exist: [
               "id"
               "project_id"
-              "put_api_v4_projects_id_environments_environment_id"
             ]
           }
           r: {

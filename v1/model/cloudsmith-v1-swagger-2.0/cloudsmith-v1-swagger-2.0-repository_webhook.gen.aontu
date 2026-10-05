@@ -45,6 +45,12 @@ main: kit: entity: repository_webhook: {
     events: {
       h: "Events"
       n: "events"
+      op: {
+        update: {
+          req: false
+          type: "`$ARRAY`"
+        }
+      }
       r: true
       t: "`$ARRAY`"
     }
@@ -146,12 +152,26 @@ main: kit: entity: repository_webhook: {
       sh: "The header to send the predefined secret in."
       t: "`$STRING`"
     }
+    secret_value: {
+      h: "Secret Value"
+      n: "secret_value"
+      r: false
+      sh: "The value for the predefined secret (note: this is treated as a passphrase and is encrypted when we store it)."
+      t: "`$STRING`"
+    }
     self_url: {
       fo: "uri"
       h: "Self Url"
       n: "self_url"
       r: false
       ro: true
+      t: "`$STRING`"
+    }
+    signature_key: {
+      h: "Signature Key"
+      n: "signature_key"
+      r: false
+      sh: "The value for the signature key - This is used to generate an HMAC-based hex digest of the request body, which we send as the X-Cloudsmith-Signature header so that you can ensure that the request wasn't modified by a malicious party (note:…"
       t: "`$STRING`"
     }
     slug_perm: {
@@ -166,6 +186,12 @@ main: kit: entity: repository_webhook: {
       fo: "uri"
       h: "Target Url"
       n: "target_url"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
       sh: "The destination URL that webhook payloads will be POST'ed to."
       t: "`$STRING`"
@@ -173,6 +199,12 @@ main: kit: entity: repository_webhook: {
     templates: {
       h: "Templates"
       n: "templates"
+      op: {
+        update: {
+          req: false
+          type: "`$ARRAY`"
+        }
+      }
       r: true
       t: "`$ARRAY`"
     }
@@ -240,23 +272,14 @@ main: kit: entity: repository_webhook: {
                 n: "owner"
                 or: "owner"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "param"
                 n: "repo"
                 or: "repo"
                 r: true
-                t: "`$ANY`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "data"
-                or: "data"
-                r: false
-                t: "`$OBJECT`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -306,14 +329,14 @@ main: kit: entity: repository_webhook: {
                 n: "owner"
                 or: "owner"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "param"
                 n: "repo"
                 or: "repo"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
             query: [
@@ -379,21 +402,21 @@ main: kit: entity: repository_webhook: {
                 n: "identifier"
                 or: "identifier"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "param"
                 n: "owner"
                 or: "owner"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "param"
                 n: "repo"
                 or: "repo"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -447,30 +470,21 @@ main: kit: entity: repository_webhook: {
                 n: "identifier"
                 or: "identifier"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "param"
                 n: "owner"
                 or: "owner"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "param"
                 n: "repo"
                 or: "repo"
                 r: true
-                t: "`$ANY`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "data"
-                or: "data"
-                r: false
-                t: "`$OBJECT`"
+                t: "`$STRING`"
               }
             ]
           }

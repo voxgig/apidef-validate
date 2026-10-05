@@ -5,6 +5,21 @@ main: kit: entity: api_entities_protected_tag: {
   alias: field: {}
 
   fields: {
+    allowed_to_create: {
+      h: "Allowed To Create"
+      n: "allowed_to_create"
+      r: false
+      sh: "An array of users/groups allowed to create"
+      t: "`$ARRAY`"
+    }
+    create_access_level: {
+      fo: "int32"
+      h: "Create Access Level"
+      n: "create_access_level"
+      r: false
+      sh: "Access levels allowed to create (defaults: `40`, maintainer access level)"
+      t: "`$INTEGER`"
+    }
     create_access_levels: {
       h: "Create Access Levels"
       n: "create_access_levels"
@@ -20,7 +35,14 @@ main: kit: entity: api_entities_protected_tag: {
     name: {
       h: "Name"
       n: "name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The name of the protected tag"
       t: "`$STRING`"
     }
   }
@@ -51,21 +73,11 @@ main: kit: entity: api_entities_protected_tag: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_protected_tag"
-                or: "postApiV4ProjectsIdProtectedTags"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/protected_tags"
           q: {
             exist: [
-              "post_api_v4_projects_id_protected_tag"
               "project_id"
             ]
           }

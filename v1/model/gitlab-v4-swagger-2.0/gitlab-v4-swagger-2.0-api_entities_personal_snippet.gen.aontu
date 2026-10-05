@@ -12,6 +12,13 @@ main: kit: entity: api_entities_personal_snippet: {
       sh: "API_Entities_UserBasic model"
       t: "`$OBJECT`"
     }
+    content: {
+      h: "Content"
+      n: "content"
+      r: false
+      sh: "The content of a snippet"
+      t: "`$STRING`"
+    }
     created_at: {
       fo: "date-time"
       h: "Created At"
@@ -23,18 +30,27 @@ main: kit: entity: api_entities_personal_snippet: {
       h: "Description"
       n: "description"
       r: false
+      sh: "The description of a snippet"
       t: "`$STRING`"
     }
     file_name: {
       h: "File Name"
       n: "file_name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The name of a snippet file"
       t: "`$STRING`"
     }
     files: {
       h: "Files"
       n: "files"
       r: false
+      sh: "An array of files"
       t: "`$ARRAY`"
     }
     http_url_to_repo: {
@@ -90,7 +106,14 @@ main: kit: entity: api_entities_personal_snippet: {
     title: {
       h: "Title"
       n: "title"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The title of a snippet"
       t: "`$STRING`"
     }
     updated_at: {
@@ -104,6 +127,7 @@ main: kit: entity: api_entities_personal_snippet: {
       h: "Visibility"
       n: "visibility"
       r: false
+      sh: "The visibility of the snippet"
       t: "`$STRING`"
     }
     web_url: {
@@ -130,24 +154,8 @@ main: kit: entity: api_entities_personal_snippet: {
             source: "swagger2"
             version: 2
           }
-          g: {
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_snippet"
-                or: "postApiV4Snippets"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
           m: "POST"
           o: "/api/v4/snippets"
-          q: {
-            exist: [
-              "post_api_v4_snippet"
-            ]
-          }
           rs: {
             kind: "json"
             media: "application/json"
@@ -186,14 +194,14 @@ main: kit: entity: api_entities_personal_snippet: {
                 n: "created_after"
                 or: "created_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "created_before"
                 or: "created_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 1
@@ -248,14 +256,14 @@ main: kit: entity: api_entities_personal_snippet: {
                 n: "created_after"
                 or: "created_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "created_before"
                 or: "created_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 1
@@ -318,7 +326,7 @@ main: kit: entity: api_entities_personal_snippet: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -370,16 +378,7 @@ main: kit: entity: api_entities_personal_snippet: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_snippets_id"
-                or: "putApiV4SnippetsId"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -388,7 +387,6 @@ main: kit: entity: api_entities_personal_snippet: {
           q: {
             exist: [
               "id"
-              "put_api_v4_snippets_id"
             ]
           }
           rs: {

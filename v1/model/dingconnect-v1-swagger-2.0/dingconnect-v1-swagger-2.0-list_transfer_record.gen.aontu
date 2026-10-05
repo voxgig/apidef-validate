@@ -5,6 +5,20 @@ main: kit: entity: list_transfer_record: {
   alias: field: {}
 
   fields: {
+    AccountNumber: {
+      h: "Account Number"
+      n: "AccountNumber"
+      r: false
+      sh: "Filter transfers by AccountNumber"
+      t: "`$STRING`"
+    }
+    DistributorRef: {
+      h: "Distributor Ref"
+      n: "DistributorRef"
+      r: false
+      sh: "Filter transfers by DistributorRef."
+      t: "`$STRING`"
+    }
     ErrorCodes: {
       h: "Error Codes"
       n: "ErrorCodes"
@@ -25,12 +39,35 @@ main: kit: entity: list_transfer_record: {
       r: true
       t: "`$INTEGER`"
     }
+    Skip: {
+      fo: "int32"
+      h: "Skip"
+      n: "Skip"
+      r: false
+      sh: "The amount of records to by-pass before returning the remaining records"
+      t: "`$INTEGER`"
+    }
+    Take: {
+      fo: "int32"
+      h: "Take"
+      n: "Take"
+      r: true
+      sh: "The amount of records to return"
+      t: "`$INTEGER`"
+    }
     ThereAreMoreItems: {
       h: "There Are More Items"
       n: "ThereAreMoreItems"
       r: true
       sh: "Indicates if the caller should execute the query again."
       t: "`$BOOLEAN`"
+    }
+    TransferRef: {
+      h: "Transfer Ref"
+      n: "TransferRef"
+      r: false
+      sh: "Filter by Ding TransferRef"
+      t: "`$STRING`"
     }
   }
 
@@ -55,23 +92,9 @@ main: kit: entity: list_transfer_record: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "request"
-                or: "request"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/V1/ListTransferRecords"
-          q: {
-            exist: [
-              "request"
-            ]
-          }
           rs: {
             alternatives: [
               {

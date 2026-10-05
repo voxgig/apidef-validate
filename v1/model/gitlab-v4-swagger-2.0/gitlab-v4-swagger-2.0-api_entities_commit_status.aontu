@@ -18,11 +18,19 @@ main: kit: entity: api_entities_commit_status: {
       sh: "API_Entities_UserBasic model"
       t: "`$OBJECT`"
     }
+    context: {
+      h: "Context"
+      n: "context"
+      r: false
+      sh: "A string label to differentiate this status from the status of other systems"
+      t: "`$STRING`"
+    }
     coverage: {
       fo: "float"
       h: "Coverage"
       n: "coverage"
       r: false
+      sh: "The total code coverage"
       t: "`$NUMBER`"
     }
     created_at: {
@@ -36,6 +44,7 @@ main: kit: entity: api_entities_commit_status: {
       h: "Description"
       n: "description"
       r: false
+      sh: "A short description of the status"
       t: "`$STRING`"
     }
     finished_at: {
@@ -56,6 +65,7 @@ main: kit: entity: api_entities_commit_status: {
       h: "Name"
       n: "name"
       r: false
+      sh: "A string label to differentiate this status from the status of other systems"
       t: "`$STRING`"
     }
     pipeline_id: {
@@ -63,12 +73,14 @@ main: kit: entity: api_entities_commit_status: {
       h: "Pipeline Id"
       n: "pipeline_id"
       r: false
+      sh: "An existing pipeline ID, when multiple pipelines on the same commit SHA have been triggered"
       t: "`$INTEGER`"
     }
     ref: {
       h: "Ref"
       n: "ref"
       r: false
+      sh: "The ref"
       t: "`$STRING`"
     }
     sha: {
@@ -84,6 +96,13 @@ main: kit: entity: api_entities_commit_status: {
       r: false
       t: "`$STRING`"
     }
+    state: {
+      h: "State"
+      n: "state"
+      r: true
+      sh: "The state of the status"
+      t: "`$STRING`"
+    }
     status: {
       h: "Status"
       n: "status"
@@ -94,6 +113,7 @@ main: kit: entity: api_entities_commit_status: {
       h: "Target Url"
       n: "target_url"
       r: false
+      sh: "The target URL to associate with this status"
       t: "`$STRING`"
     }
   }
@@ -132,22 +152,12 @@ main: kit: entity: api_entities_commit_status: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_statuses_sha"
-                or: "postApiV4ProjectsIdStatusesSha"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/statuses/{sha}"
           q: {
             exist: [
               "id"
-              "post_api_v4_projects_id_statuses_sha"
               "project_id"
             ]
           }
@@ -212,16 +222,17 @@ main: kit: entity: api_entities_commit_status: {
                 n: "sha"
                 or: "sha"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
             query: [
               {
+                ex: false
                 k: "query"
                 n: "all"
                 or: "all"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 ex: "bundler:audit"
@@ -232,11 +243,12 @@ main: kit: entity: api_entities_commit_status: {
                 t: "`$STRING`"
               }
               {
+                ex: "id"
                 k: "query"
                 n: "order_by"
                 or: "order_by"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 1
@@ -260,7 +272,7 @@ main: kit: entity: api_entities_commit_status: {
                 n: "pipeline_id"
                 or: "pipeline_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 ex: "develop"
@@ -268,14 +280,15 @@ main: kit: entity: api_entities_commit_status: {
                 n: "ref"
                 or: "ref"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: "asc"
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "test"
@@ -283,7 +296,7 @@ main: kit: entity: api_entities_commit_status: {
                 n: "stage"
                 or: "stage"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }

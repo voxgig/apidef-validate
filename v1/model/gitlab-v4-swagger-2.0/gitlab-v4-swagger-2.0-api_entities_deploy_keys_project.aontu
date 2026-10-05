@@ -9,6 +9,7 @@ main: kit: entity: api_entities_deploy_keys_project: {
       h: "Can Push"
       n: "can_push"
       r: false
+      sh: "Can deploy key push to the project's repository"
       t: "`$BOOLEAN`"
     }
     created_at: {
@@ -23,6 +24,7 @@ main: kit: entity: api_entities_deploy_keys_project: {
       h: "Expires At"
       n: "expires_at"
       r: false
+      sh: "The expiration date of the SSH key in ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)"
       t: "`$STRING`"
     }
     fingerprint: {
@@ -47,7 +49,14 @@ main: kit: entity: api_entities_deploy_keys_project: {
     key: {
       h: "Key"
       n: "key"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "New deploy key"
       t: "`$STRING`"
     }
     last_used_at: {
@@ -72,7 +81,14 @@ main: kit: entity: api_entities_deploy_keys_project: {
     title: {
       h: "Title"
       n: "title"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "New deploy key's title"
       t: "`$STRING`"
     }
     usage_type: {
@@ -109,21 +125,11 @@ main: kit: entity: api_entities_deploy_keys_project: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_deploy_key"
-                or: "postApiV4ProjectsIdDeployKeys"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/deploy_keys"
           q: {
             exist: [
-              "post_api_v4_projects_id_deploy_key"
               "project_id"
             ]
           }
@@ -254,7 +260,7 @@ main: kit: entity: api_entities_deploy_keys_project: {
                 n: "key_id"
                 or: "key_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"

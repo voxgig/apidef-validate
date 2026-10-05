@@ -24,6 +24,13 @@ main: kit: entity: cancel_transfer: {
       r: true
       t: "`$INTEGER`"
     }
+    cancellations: {
+      h: "Cancellations"
+      n: "cancellations"
+      r: false
+      sh: "An explicit list of records to cancel."
+      t: "`$ARRAY`"
+    }
   }
 
   name: "cancel_transfer"
@@ -47,21 +54,12 @@ main: kit: entity: cancel_transfer: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "cancellation_request"
-                or: "cancellationRequests"
-                r: true
-                t: "`$ARRAY`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/V1/CancelTransfers"
           q: {
             exist: [
-              "cancellation_request"
+              "cancellations"
             ]
           }
           rs: {
@@ -86,7 +84,7 @@ main: kit: entity: cancel_transfer: {
             }
           ]
           t: {
-            req: "`reqdata`"
+            req: "`reqdata.cancellations`"
             res: "`body`"
           }
         }

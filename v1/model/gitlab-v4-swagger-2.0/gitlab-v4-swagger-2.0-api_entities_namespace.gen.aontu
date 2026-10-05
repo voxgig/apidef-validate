@@ -10,6 +10,7 @@ main: kit: entity: api_entities_namespace: {
       h: "Additional Purchased Storage Ends On"
       n: "additional_purchased_storage_ends_on"
       r: false
+      sh: "End of subscription of the additional purchased storage"
       t: "`$STRING`"
     }
     additional_purchased_storage_size: {
@@ -17,6 +18,7 @@ main: kit: entity: api_entities_namespace: {
       h: "Additional Purchased Storage Size"
       n: "additional_purchased_storage_size"
       r: false
+      sh: "Additional storage size for this namespace"
       t: "`$INTEGER`"
     }
     avatar_url: {
@@ -44,6 +46,7 @@ main: kit: entity: api_entities_namespace: {
       h: "Extra Shared Runners Minutes Limit"
       n: "extra_shared_runners_minutes_limit"
       r: false
+      sh: "Extra compute minutes for this namespace"
       t: "`$INTEGER`"
     }
     full_path: {
@@ -51,6 +54,12 @@ main: kit: entity: api_entities_namespace: {
       n: "full_path"
       r: false
       t: "`$STRING`"
+    }
+    gitlab_subscription_attributes: {
+      h: "Gitlab Subscription Attributes"
+      n: "gitlab_subscription_attributes"
+      r: false
+      t: "`$OBJECT`"
     }
     id: {
       fo: "int32"
@@ -137,6 +146,7 @@ main: kit: entity: api_entities_namespace: {
       h: "Shared Runners Minutes Limit"
       n: "shared_runners_minutes_limit"
       r: false
+      sh: "Compute minutes quota for this namespace"
       t: "`$INTEGER`"
     }
     trial: {
@@ -179,18 +189,19 @@ main: kit: entity: api_entities_namespace: {
           g: {
             query: [
               {
+                ex: false
                 k: "query"
                 n: "full_path_search"
                 or: "full_path_search"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "owned_only"
                 or: "owned_only"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 ex: 1
@@ -213,21 +224,22 @@ main: kit: entity: api_entities_namespace: {
                 n: "requested_hosted_plan"
                 or: "requested_hosted_plan"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: false
                 k: "query"
                 n: "top_level_only"
                 or: "top_level_only"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -323,16 +335,7 @@ main: kit: entity: api_entities_namespace: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_namespaces_id"
-                or: "putApiV4NamespacesId"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -341,7 +344,6 @@ main: kit: entity: api_entities_namespace: {
           q: {
             exist: [
               "id"
-              "put_api_v4_namespaces_id"
             ]
           }
           rs: {

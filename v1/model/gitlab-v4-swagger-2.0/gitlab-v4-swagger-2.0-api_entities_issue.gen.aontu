@@ -5,12 +5,34 @@ main: kit: entity: api_entities_issue: {
   alias: field: {}
 
   fields: {
+    add_labels: {
+      h: "Add Labels"
+      n: "add_labels"
+      r: false
+      sh: "Comma-separated list of label names"
+      t: "`$ARRAY`"
+    }
     assignee: {
       h: "Assignee"
       n: "assignee"
       r: false
       sh: "API_Entities_UserBasic model"
       t: "`$OBJECT`"
+    }
+    assignee_id: {
+      fo: "int32"
+      h: "Assignee Id"
+      n: "assignee_id"
+      r: false
+      sh: "[Deprecated] The ID of a user to assign issue"
+      t: "`$INTEGER`"
+    }
+    assignee_ids: {
+      h: "Assignee Ids"
+      n: "assignee_ids"
+      r: false
+      sh: "The array of user IDs to assign issue"
+      t: "`$ARRAY`"
     }
     assignees: {
       h: "Assignees"
@@ -50,6 +72,7 @@ main: kit: entity: api_entities_issue: {
       h: "Confidential"
       n: "confidential"
       r: false
+      sh: "Boolean parameter if the issue should be confidential"
       t: "`$BOOLEAN`"
     }
     created_at: {
@@ -57,19 +80,29 @@ main: kit: entity: api_entities_issue: {
       h: "Created At"
       n: "created_at"
       r: false
+      sh: "Date time when the issue was created."
       t: "`$STRING`"
     }
     description: {
       h: "Description"
       n: "description"
       r: false
+      sh: "The description of an issue"
       t: "`$STRING`"
     }
     discussion_locked: {
       h: "Discussion Locked"
       n: "discussion_locked"
       r: false
+      sh: "Boolean parameter indicating if the issue's discussion is locked"
       t: "`$BOOLEAN`"
+    }
+    discussion_to_resolve: {
+      h: "Discussion To Resolve"
+      n: "discussion_to_resolve"
+      r: false
+      sh: "The ID of a discussion to resolve, also pass `merge_request_to_resolve_discussions_of`"
+      t: "`$STRING`"
     }
     downvotes: {
       h: "Downvotes"
@@ -82,6 +115,7 @@ main: kit: entity: api_entities_issue: {
       h: "Due Date"
       n: "due_date"
       r: false
+      sh: "Date string in the format YEAR-MONTH-DAY"
       t: "`$STRING`"
     }
     epic: {
@@ -90,10 +124,20 @@ main: kit: entity: api_entities_issue: {
       r: false
       t: "`$OBJECT`"
     }
+    epic_id: {
+      fo: "int32"
+      h: "Epic Id"
+      n: "epic_id"
+      r: false
+      sh: "The ID of an epic to associate the issue with"
+      t: "`$INTEGER`"
+    }
     epic_iid: {
+      fo: "int32"
       h: "Epic Iid"
       n: "epic_iid"
       r: false
+      sh: "The IID of an epic to associate the issue with (deprecated)"
       t: "`$STRING`"
     }
     has_tasks: {
@@ -120,6 +164,7 @@ main: kit: entity: api_entities_issue: {
       h: "Iid"
       n: "iid"
       r: false
+      sh: "The internal ID of a project issue."
       t: "`$INTEGER`"
     }
     imported: {
@@ -138,6 +183,7 @@ main: kit: entity: api_entities_issue: {
       h: "Issue Type"
       n: "issue_type"
       r: false
+      sh: "The type of the issue."
       t: "`$STRING`"
     }
     iteration: {
@@ -150,6 +196,7 @@ main: kit: entity: api_entities_issue: {
       h: "Labels"
       n: "labels"
       r: false
+      sh: "Comma-separated list of label names"
       t: "`$ARRAY`"
     }
     links: {
@@ -157,6 +204,14 @@ main: kit: entity: api_entities_issue: {
       n: "links"
       r: false
       t: "`$OBJECT`"
+    }
+    merge_request_to_resolve_discussions_of: {
+      fo: "int32"
+      h: "Merge Request To Resolve Discussions Of"
+      n: "merge_request_to_resolve_discussions_of"
+      r: false
+      sh: "The IID of a merge request for which to resolve discussions"
+      t: "`$INTEGER`"
     }
     merge_requests_count: {
       h: "Merge Requests Count"
@@ -169,6 +224,30 @@ main: kit: entity: api_entities_issue: {
       n: "milestone"
       r: false
       t: "`$OBJECT`"
+    }
+    milestone_id: {
+      fo: "int32"
+      h: "Milestone Id"
+      n: "milestone_id"
+      r: false
+      sh: "The ID of a milestone to assign issue"
+      t: "`$INTEGER`"
+    }
+    move_after_id: {
+      fo: "int32"
+      h: "Move After Id"
+      n: "move_after_id"
+      r: false
+      sh: "The ID of the issue we want to be after"
+      t: "`$INTEGER`"
+    }
+    move_before_id: {
+      fo: "int32"
+      h: "Move Before Id"
+      n: "move_before_id"
+      r: false
+      sh: "The ID of the issue we want to be before"
+      t: "`$INTEGER`"
     }
     moved_to_id: {
       h: "Moved To Id"
@@ -189,6 +268,13 @@ main: kit: entity: api_entities_issue: {
       r: false
       t: "`$OBJECT`"
     }
+    remove_labels: {
+      h: "Remove Labels"
+      n: "remove_labels"
+      r: false
+      sh: "Comma-separated list of label names"
+      t: "`$ARRAY`"
+    }
     service_desk_reply_to: {
       h: "Service Desk Reply To"
       n: "service_desk_reply_to"
@@ -206,6 +292,13 @@ main: kit: entity: api_entities_issue: {
       h: "State"
       n: "state"
       r: false
+      t: "`$STRING`"
+    }
+    state_event: {
+      h: "State Event"
+      n: "state_event"
+      r: false
+      sh: "State of the issue"
       t: "`$STRING`"
     }
     subscribed: {
@@ -236,8 +329,23 @@ main: kit: entity: api_entities_issue: {
     title: {
       h: "Title"
       n: "title"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The title of an issue"
       t: "`$STRING`"
+    }
+    to_project_id: {
+      fo: "int32"
+      h: "To Project Id"
+      n: "to_project_id"
+      r: true
+      sh: "The ID of the new project"
+      t: "`$INTEGER`"
     }
     type: {
       h: "Type"
@@ -251,6 +359,7 @@ main: kit: entity: api_entities_issue: {
       h: "Updated At"
       n: "updated_at"
       r: false
+      sh: "Date time when the issue was updated."
       t: "`$STRING`"
     }
     upvotes: {
@@ -272,10 +381,19 @@ main: kit: entity: api_entities_issue: {
       t: "`$STRING`"
     }
     weight: {
+      fo: "int32"
       h: "Weight"
       n: "weight"
       r: false
+      sh: "The weight of the issue"
       t: "`$STRING`"
+    }
+    with_notes: {
+      h: "With Notes"
+      n: "with_notes"
+      r: false
+      sh: "Clone issue with notes"
+      t: "`$BOOLEAN`"
     }
   }
 
@@ -302,7 +420,7 @@ main: kit: entity: api_entities_issue: {
                 n: "issue_id"
                 or: "issue_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -312,22 +430,12 @@ main: kit: entity: api_entities_issue: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_issues_issue_iid_clone"
-                or: "postApiV4ProjectsIdIssuesIssueIidClone"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/issues/{issue_iid}/clone"
           q: {
             exist: [
               "issue_id"
-              "post_api_v4_projects_id_issues_issue_iid_clone"
               "project_id"
             ]
           }
@@ -382,7 +490,7 @@ main: kit: entity: api_entities_issue: {
                 n: "issue_id"
                 or: "issue_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -392,22 +500,12 @@ main: kit: entity: api_entities_issue: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_issues_issue_iid_move"
-                or: "postApiV4ProjectsIdIssuesIssueIidMove"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/issues/{issue_iid}/move"
           q: {
             exist: [
               "issue_id"
-              "post_api_v4_projects_id_issues_issue_iid_move"
               "project_id"
             ]
           }
@@ -465,21 +563,11 @@ main: kit: entity: api_entities_issue: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_issue"
-                or: "postApiV4ProjectsIdIssues"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/issues"
           q: {
             exist: [
-              "post_api_v4_projects_id_issue"
               "project_id"
             ]
           }
@@ -541,126 +629,126 @@ main: kit: entity: api_entities_issue: {
                 n: "assignee_id"
                 or: "assignee_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "assignee_username"
                 or: "assignee_username"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "author_id"
                 or: "author_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "author_username"
                 or: "author_username"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "closed_by_id"
                 or: "closed_by_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "confidential"
                 or: "confidential"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "created_after"
                 or: "created_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "created_before"
                 or: "created_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "due_date"
                 or: "due_date"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "epic_id"
                 or: "epic_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "health_status"
                 or: "health_status"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "iid"
                 or: "iids"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "in"
                 or: "in"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "issue_type"
                 or: "issue_type"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "iteration_id"
                 or: "iteration_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "iteration_title"
                 or: "iteration_title"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "label"
                 or: "labels"
                 r: false
-                t: "`$STRING`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "milestone"
                 or: "milestone"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
@@ -674,77 +762,78 @@ main: kit: entity: api_entities_issue: {
                 n: "my_reaction_emoji"
                 or: "my_reaction_emoji"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: true
                 k: "query"
                 n: "non_archived"
                 or: "non_archived"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "not_assignee_id"
                 or: "not[assignee_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_assignee_username"
                 or: "not[assignee_username]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_author_id"
                 or: "not[author_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_author_username"
                 or: "not[author_username]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "not_iid"
                 or: "not[iids]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_iteration_id"
                 or: "not[iteration_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_iteration_title"
                 or: "not[iteration_title]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "not_label"
                 or: "not[labels]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_milestone"
                 or: "not[milestone]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
@@ -758,14 +847,15 @@ main: kit: entity: api_entities_issue: {
                 n: "not_weight"
                 or: "not[weight]"
                 r: false
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
+                ex: "created_at"
                 k: "query"
                 n: "order_by"
                 or: "order_by"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 1
@@ -788,56 +878,59 @@ main: kit: entity: api_entities_issue: {
                 n: "scope"
                 or: "scope"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: "desc"
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: "all"
                 k: "query"
                 n: "state"
                 or: "state"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "updated_after"
                 or: "updated_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "updated_before"
                 or: "updated_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "weight"
                 or: "weight"
                 r: false
-                t: "`$NUMBER`"
+                t: "`$INTEGER`"
               }
               {
+                ex: false
                 k: "query"
                 n: "with_labels_detail"
                 or: "with_labels_details"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -901,133 +994,133 @@ main: kit: entity: api_entities_issue: {
                 n: "assignee_id"
                 or: "assignee_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "assignee_username"
                 or: "assignee_username"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "author_id"
                 or: "author_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "author_username"
                 or: "author_username"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "closed_by_id"
                 or: "closed_by_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "confidential"
                 or: "confidential"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "created_after"
                 or: "created_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "created_before"
                 or: "created_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "cursor"
                 or: "cursor"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "due_date"
                 or: "due_date"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "epic_id"
                 or: "epic_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "health_status"
                 or: "health_status"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "iid"
                 or: "iids"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "in"
                 or: "in"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "issue_type"
                 or: "issue_type"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "iteration_id"
                 or: "iteration_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "iteration_title"
                 or: "iteration_title"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "label"
                 or: "labels"
                 r: false
-                t: "`$STRING`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "milestone"
                 or: "milestone"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
@@ -1041,70 +1134,70 @@ main: kit: entity: api_entities_issue: {
                 n: "my_reaction_emoji"
                 or: "my_reaction_emoji"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "not_assignee_id"
                 or: "not[assignee_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_assignee_username"
                 or: "not[assignee_username]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_author_id"
                 or: "not[author_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_author_username"
                 or: "not[author_username]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "not_iid"
                 or: "not[iids]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_iteration_id"
                 or: "not[iteration_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_iteration_title"
                 or: "not[iteration_title]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "not_label"
                 or: "not[labels]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_milestone"
                 or: "not[milestone]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
@@ -1118,14 +1211,15 @@ main: kit: entity: api_entities_issue: {
                 n: "not_weight"
                 or: "not[weight]"
                 r: false
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
+                ex: "created_at"
                 k: "query"
                 n: "order_by"
                 or: "order_by"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 1
@@ -1148,56 +1242,59 @@ main: kit: entity: api_entities_issue: {
                 n: "scope"
                 or: "scope"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: "desc"
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: "all"
                 k: "query"
                 n: "state"
                 or: "state"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "updated_after"
                 or: "updated_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "updated_before"
                 or: "updated_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "weight"
                 or: "weight"
                 r: false
-                t: "`$NUMBER`"
+                t: "`$INTEGER`"
               }
               {
+                ex: false
                 k: "query"
                 n: "with_labels_detail"
                 or: "with_labels_details"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -1252,126 +1349,126 @@ main: kit: entity: api_entities_issue: {
                 n: "assignee_id"
                 or: "assignee_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "assignee_username"
                 or: "assignee_username"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "author_id"
                 or: "author_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "author_username"
                 or: "author_username"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "closed_by_id"
                 or: "closed_by_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "confidential"
                 or: "confidential"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "created_after"
                 or: "created_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "created_before"
                 or: "created_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "due_date"
                 or: "due_date"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "epic_id"
                 or: "epic_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "health_status"
                 or: "health_status"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "iid"
                 or: "iids"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "in"
                 or: "in"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "issue_type"
                 or: "issue_type"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "iteration_id"
                 or: "iteration_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "iteration_title"
                 or: "iteration_title"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "label"
                 or: "labels"
                 r: false
-                t: "`$STRING`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "milestone"
                 or: "milestone"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
@@ -1385,77 +1482,78 @@ main: kit: entity: api_entities_issue: {
                 n: "my_reaction_emoji"
                 or: "my_reaction_emoji"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: true
                 k: "query"
                 n: "non_archived"
                 or: "non_archived"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "not_assignee_id"
                 or: "not[assignee_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_assignee_username"
                 or: "not[assignee_username]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_author_id"
                 or: "not[author_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_author_username"
                 or: "not[author_username]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "not_iid"
                 or: "not[iids]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_iteration_id"
                 or: "not[iteration_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_iteration_title"
                 or: "not[iteration_title]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "not_label"
                 or: "not[labels]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_milestone"
                 or: "not[milestone]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
@@ -1469,14 +1567,15 @@ main: kit: entity: api_entities_issue: {
                 n: "not_weight"
                 or: "not[weight]"
                 r: false
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
+                ex: "created_at"
                 k: "query"
                 n: "order_by"
                 or: "order_by"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 1
@@ -1495,60 +1594,64 @@ main: kit: entity: api_entities_issue: {
                 t: "`$INTEGER`"
               }
               {
+                ex: "created_by_me"
                 k: "query"
                 n: "scope"
                 or: "scope"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: "desc"
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: "all"
                 k: "query"
                 n: "state"
                 or: "state"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "updated_after"
                 or: "updated_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "updated_before"
                 or: "updated_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "weight"
                 or: "weight"
                 r: false
-                t: "`$NUMBER`"
+                t: "`$INTEGER`"
               }
               {
+                ex: false
                 k: "query"
                 n: "with_labels_detail"
                 or: "with_labels_details"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -1592,7 +1695,7 @@ main: kit: entity: api_entities_issue: {
                 n: "id"
                 or: "issue_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -1711,7 +1814,7 @@ main: kit: entity: api_entities_issue: {
                 n: "id"
                 or: "issue_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -1721,15 +1824,6 @@ main: kit: entity: api_entities_issue: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_issues_issue_iid"
-                or: "putApiV4ProjectsIdIssuesIssueIid"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/issues/{issue_iid}"
@@ -1737,7 +1831,6 @@ main: kit: entity: api_entities_issue: {
             exist: [
               "id"
               "project_id"
-              "put_api_v4_projects_id_issues_issue_iid"
             ]
           }
           r: {
@@ -1788,7 +1881,7 @@ main: kit: entity: api_entities_issue: {
                 n: "issue_id"
                 or: "issue_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -1798,15 +1891,6 @@ main: kit: entity: api_entities_issue: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_issues_issue_iid_reorder"
-                or: "putApiV4ProjectsIdIssuesIssueIidReorder"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/issues/{issue_iid}/reorder"
@@ -1814,7 +1898,6 @@ main: kit: entity: api_entities_issue: {
             exist: [
               "issue_id"
               "project_id"
-              "put_api_v4_projects_id_issues_issue_iid_reorder"
             ]
           }
           r: {
