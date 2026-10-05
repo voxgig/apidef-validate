@@ -5,10 +5,52 @@ main: kit: entity: project: {
   alias: field: {}
 
   fields: {
+    author_email: {
+      h: "Author Email"
+      n: "author_email"
+      r: false
+      sh: "The email of the author"
+      t: "`$STRING`"
+    }
+    author_name: {
+      h: "Author Name"
+      n: "author_name"
+      r: false
+      sh: "The name of the author"
+      t: "`$STRING`"
+    }
+    auto_ssl_enabled: {
+      h: "Auto Ssl Enabled"
+      n: "auto_ssl_enabled"
+      r: false
+      sh: "Enables automatic generation of SSL certificates issued by Let's Encrypt for custom domains."
+      t: "`$BOOLEAN`"
+    }
     before_sha: {
       h: "Before Sha"
       n: "before_sha"
       r: false
+      t: "`$STRING`"
+    }
+    branch: {
+      h: "Branch"
+      n: "branch"
+      r: true
+      sh: "Name of the branch to commit into."
+      t: "`$STRING`"
+    }
+    certificate: {
+      h: "Certificate"
+      n: "certificate"
+      r: false
+      sh: "The certificate"
+      t: "Any"
+    }
+    commit_message: {
+      h: "Commit Message"
+      n: "commit_message"
+      r: true
+      sh: "Commit message"
       t: "`$STRING`"
     }
     committed_at: {
@@ -16,6 +58,13 @@ main: kit: entity: project: {
       h: "Committed At"
       n: "committed_at"
       r: false
+      t: "`$STRING`"
+    }
+    content: {
+      h: "Content"
+      n: "content"
+      r: true
+      sh: "File content"
       t: "`$STRING`"
     }
     coverage: {
@@ -46,6 +95,20 @@ main: kit: entity: project: {
       sh: "Time spent running in seconds"
       t: "`$INTEGER`"
     }
+    encoding: {
+      h: "Encoding"
+      n: "encoding"
+      r: false
+      sh: "File encoding"
+      t: "`$STRING`"
+    }
+    execute_filemode: {
+      h: "Execute Filemode"
+      n: "execute_filemode"
+      r: false
+      sh: "Enable / Disable the executable flag on the file path"
+      t: "`$BOOLEAN`"
+    }
     finished_at: {
       fo: "date-time"
       h: "Finished At"
@@ -66,6 +129,20 @@ main: kit: entity: project: {
       n: "iid"
       r: false
       t: "`$INTEGER`"
+    }
+    key: {
+      h: "Key"
+      n: "key"
+      r: false
+      sh: "The key"
+      t: "Any"
+    }
+    last_commit_id: {
+      h: "Last Commit Id"
+      n: "last_commit_id"
+      r: false
+      sh: "Last known commit id for this file"
+      t: "`$STRING`"
     }
     name: {
       h: "Name"
@@ -106,6 +183,13 @@ main: kit: entity: project: {
       r: false
       t: "`$STRING`"
     }
+    start_branch: {
+      h: "Start Branch"
+      n: "start_branch"
+      r: false
+      sh: "Name of the branch to start the new commit from"
+      t: "`$STRING`"
+    }
     started_at: {
       fo: "date-time"
       h: "Started At"
@@ -138,6 +222,13 @@ main: kit: entity: project: {
       r: false
       sh: "API_Entities_UserBasic model"
       t: "`$OBJECT`"
+    }
+    value: {
+      h: "Value"
+      n: "value"
+      r: true
+      sh: "The value of the custom header"
+      t: "`$STRING`"
     }
     web_url: {
       h: "Web Url"
@@ -176,21 +267,21 @@ main: kit: entity: project: {
                 n: "event_id"
                 or: "hook_log_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "hook_id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -244,78 +335,6 @@ main: kit: entity: project: {
         }
         {
           co: {
-            id: "POST /api/v4/projects/{id}/repository/files/{file_path}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: "lib%2Fclass%2Erb"
-                k: "param"
-                n: "file_path"
-                or: "file_path"
-                r: true
-                t: "`$ANY`"
-              }
-              {
-                ex: "gitlab-org/gitlab"
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_repository_files_file_path"
-                or: "postApiV4ProjectsIdRepositoryFilesFilePath"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/repository/files/{file_path}"
-          q: {
-            exist: [
-              "file_path"
-              "id"
-              "post_api_v4_projects_id_repository_files_file_path"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "repository"
-            }
-            {
-              lit: "files"
-            }
-            {
-              var: "file_path"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "POST /api/v4/projects/{id}/hooks/{hook_id}/test/{trigger}"
             source: "swagger2"
             version: 2
@@ -327,21 +346,21 @@ main: kit: entity: project: {
                 n: "hook_id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "trigger"
                 or: "trigger"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -387,6 +406,68 @@ main: kit: entity: project: {
         }
         {
           co: {
+            id: "POST /api/v4/projects/{id}/repository/files/{file_path}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "lib%2Fclass%2Erb"
+                k: "param"
+                n: "file_path"
+                or: "file_path"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "gitlab-org/gitlab"
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/repository/files/{file_path}"
+          q: {
+            exist: [
+              "file_path"
+              "id"
+            ]
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "files"
+            }
+            {
+              var: "file_path"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "POST /api/v4/projects/{id}/issues/{issue_iid}/metric_images/authorize"
             source: "swagger2"
             version: 2
@@ -405,7 +486,7 @@ main: kit: entity: project: {
                 n: "issue_iid"
                 or: "issue_iid"
                 r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -468,7 +549,7 @@ main: kit: entity: project: {
                 n: "merge_request_id"
                 or: "merge_request_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -518,67 +599,6 @@ main: kit: entity: project: {
         }
         {
           co: {
-            id: "POST /api/v4/projects/{id}/repository/changelog"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 1
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_repository_changelog"
-                or: "postApiV4ProjectsIdRepositoryChangelog"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/repository/changelog"
-          q: {
-            "$action": "repository_changelog"
-            exist: [
-              "id"
-              "post_api_v4_projects_id_repository_changelog"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "repository"
-            }
-            {
-              lit: "changelog"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "POST /api/v4/projects/{id}/import_project_members/{project_id}"
             source: "swagger2"
             version: 2
@@ -597,7 +617,7 @@ main: kit: entity: project: {
                 n: "project_id"
                 or: "project_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -636,6 +656,57 @@ main: kit: entity: project: {
         }
         {
           co: {
+            id: "POST /api/v4/projects/{id}/repository/changelog"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 1
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/repository/changelog"
+          q: {
+            "$action": "repository_changelog"
+            exist: [
+              "id"
+            ]
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "changelog"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "POST /api/v4/projects/{id}/uploads/authorize"
             source: "swagger2"
             version: 2
@@ -647,7 +718,7 @@ main: kit: entity: project: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -703,7 +774,7 @@ main: kit: entity: project: {
                 n: "file_path"
                 or: "file_path"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "gitlab-org/gitlab"
@@ -720,14 +791,14 @@ main: kit: entity: project: {
                 n: "range_end"
                 or: "range[end]"
                 r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "range_start"
                 or: "range[start]"
                 r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
                 ex: "main"
@@ -735,7 +806,7 @@ main: kit: entity: project: {
                 n: "ref"
                 or: "ref"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -801,7 +872,7 @@ main: kit: entity: project: {
                 n: "ref_name"
                 or: "ref_name"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
             query: [
@@ -810,21 +881,21 @@ main: kit: entity: project: {
                 n: "artifact_path"
                 or: "artifact_path"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "job"
                 or: "job"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "job_token"
                 or: "job_token"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -892,7 +963,7 @@ main: kit: entity: project: {
                 n: "job_id"
                 or: "job_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
             query: [
@@ -901,14 +972,14 @@ main: kit: entity: project: {
                 n: "artifact_path"
                 or: "artifact_path"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "job_token"
                 or: "job_token"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -966,7 +1037,7 @@ main: kit: entity: project: {
                 n: "file_path"
                 or: "file_path"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "gitlab-org/gitlab"
@@ -984,7 +1055,7 @@ main: kit: entity: project: {
                 n: "ref"
                 or: "ref"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -1038,21 +1109,21 @@ main: kit: entity: project: {
                 n: "filename"
                 or: "filename"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "param"
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "secret"
                 or: "secret"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -1117,7 +1188,7 @@ main: kit: entity: project: {
                 n: "ref_name"
                 or: "ref_name"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
             query: [
@@ -1126,14 +1197,14 @@ main: kit: entity: project: {
                 n: "job"
                 or: "job"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "job_token"
                 or: "job_token"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -1199,14 +1270,14 @@ main: kit: entity: project: {
                 n: "confidential"
                 or: "confidential"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "field"
                 or: "fields"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 ex: 1
@@ -1229,28 +1300,28 @@ main: kit: entity: project: {
                 n: "ref"
                 or: "ref"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "scope"
                 or: "scope"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "search"
                 or: "search"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "state"
                 or: "state"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -1303,7 +1374,7 @@ main: kit: entity: project: {
                 n: "file_path"
                 or: "file_path"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "gitlab-org/gitlab"
@@ -1316,11 +1387,12 @@ main: kit: entity: project: {
             ]
             query: [
               {
+                ex: false
                 k: "query"
                 n: "lfs"
                 or: "lfs"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 ex: "main"
@@ -1328,7 +1400,7 @@ main: kit: entity: project: {
                 n: "ref"
                 or: "ref"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -1388,14 +1460,14 @@ main: kit: entity: project: {
                 n: "hook_id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
             query: [
@@ -1420,7 +1492,7 @@ main: kit: entity: project: {
                 n: "status"
                 or: "status"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
             ]
           }
@@ -1480,7 +1552,7 @@ main: kit: entity: project: {
                 n: "issue_iid"
                 or: "issue_iid"
                 r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -1540,7 +1612,7 @@ main: kit: entity: project: {
                 n: "job_id"
                 or: "job_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
             query: [
@@ -1549,7 +1621,7 @@ main: kit: entity: project: {
                 n: "job_token"
                 or: "job_token"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -1611,7 +1683,7 @@ main: kit: entity: project: {
                 n: "pipeline_id"
                 or: "pipeline_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -1674,7 +1746,7 @@ main: kit: entity: project: {
                 n: "sha"
                 or: "sha"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -1736,7 +1808,7 @@ main: kit: entity: project: {
                 n: "sha"
                 or: "sha"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -1792,14 +1864,14 @@ main: kit: entity: project: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "upload_id"
                 or: "upload_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -1862,105 +1934,105 @@ main: kit: entity: project: {
                 n: "assignee_id"
                 or: "assignee_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "assignee_username"
                 or: "assignee_username"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "author_id"
                 or: "author_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "author_username"
                 or: "author_username"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "confidential"
                 or: "confidential"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "created_after"
                 or: "created_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "created_before"
                 or: "created_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "epic_id"
                 or: "epic_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "health_status"
                 or: "health_status"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "iid"
                 or: "iids"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "in"
                 or: "in"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "iteration_id"
                 or: "iteration_id"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "iteration_title"
                 or: "iteration_title"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "label"
                 or: "labels"
                 r: false
-                t: "`$STRING`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "milestone"
                 or: "milestone"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
@@ -1974,70 +2046,70 @@ main: kit: entity: project: {
                 n: "my_reaction_emoji"
                 or: "my_reaction_emoji"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "not_assignee_id"
                 or: "not[assignee_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_assignee_username"
                 or: "not[assignee_username]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_author_id"
                 or: "not[author_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_author_username"
                 or: "not[author_username]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "not_iid"
                 or: "not[iids]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_iteration_id"
                 or: "not[iteration_id]"
                 r: false
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "not_iteration_title"
                 or: "not[iteration_title]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "not_label"
                 or: "not[labels]"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 k: "query"
                 n: "not_milestone"
                 or: "not[milestone]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
@@ -2051,42 +2123,42 @@ main: kit: entity: project: {
                 n: "not_weight"
                 or: "not[weight]"
                 r: false
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
                 k: "query"
                 n: "scope"
                 or: "scope"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "updated_after"
                 or: "updated_after"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "updated_before"
                 or: "updated_before"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "weight"
                 or: "weight"
                 r: false
-                t: "`$NUMBER`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -2238,7 +2310,7 @@ main: kit: entity: project: {
                 n: "ref"
                 or: "ref"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -2302,7 +2374,7 @@ main: kit: entity: project: {
                 n: "exclude_path"
                 or: "exclude_paths"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
               {
                 ex: "tar.gz"
@@ -2310,14 +2382,15 @@ main: kit: entity: project: {
                 n: "format"
                 or: "format"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: true
                 k: "query"
                 n: "include_lfs_blob"
                 or: "include_lfs_blobs"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 ex: "files/archives"
@@ -2333,7 +2406,7 @@ main: kit: entity: project: {
                 n: "sha"
                 or: "sha"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -2383,7 +2456,7 @@ main: kit: entity: project: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
             query: [
@@ -2392,7 +2465,7 @@ main: kit: entity: project: {
                 n: "wiki"
                 or: "wiki"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -2450,7 +2523,7 @@ main: kit: entity: project: {
                 n: "file_path"
                 or: "file_path"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "gitlab-org/gitlab"
@@ -2468,7 +2541,7 @@ main: kit: entity: project: {
                 n: "author_email"
                 or: "author_email"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "John Doe"
@@ -2476,7 +2549,7 @@ main: kit: entity: project: {
                 n: "author_name"
                 or: "author_name"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "main"
@@ -2484,7 +2557,7 @@ main: kit: entity: project: {
                 n: "branch"
                 or: "branch"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "Initial commit"
@@ -2492,7 +2565,7 @@ main: kit: entity: project: {
                 n: "commit_message"
                 or: "commit_message"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "main"
@@ -2500,7 +2573,7 @@ main: kit: entity: project: {
                 n: "start_branch"
                 or: "start_branch"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -2555,7 +2628,7 @@ main: kit: entity: project: {
                 n: "draft_note_id"
                 or: "draft_note_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -2569,7 +2642,7 @@ main: kit: entity: project: {
                 n: "merge_request_id"
                 or: "merge_request_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -2631,21 +2704,21 @@ main: kit: entity: project: {
                 n: "filename"
                 or: "filename"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "param"
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "secret"
                 or: "secret"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -2699,14 +2772,14 @@ main: kit: entity: project: {
                 n: "hook_id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -2770,14 +2843,14 @@ main: kit: entity: project: {
                 n: "hook_id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -2858,7 +2931,7 @@ main: kit: entity: project: {
                 n: "pipeline_schedule_id"
                 or: "pipeline_schedule_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -2919,7 +2992,7 @@ main: kit: entity: project: {
                 n: "domain"
                 or: "domain"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "param"
@@ -2979,7 +3052,7 @@ main: kit: entity: project: {
                 n: "group_id"
                 or: "group_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -3043,7 +3116,7 @@ main: kit: entity: project: {
                 n: "issue_iid"
                 or: "issue_iid"
                 r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -3100,7 +3173,7 @@ main: kit: entity: project: {
                 n: "job_id"
                 or: "job_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -3153,7 +3226,7 @@ main: kit: entity: project: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -3276,7 +3349,7 @@ main: kit: entity: project: {
                 n: "package_protection_rule_id"
                 or: "package_protection_rule_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -3341,7 +3414,7 @@ main: kit: entity: project: {
                 n: "pipeline_id"
                 or: "pipeline_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -3400,7 +3473,7 @@ main: kit: entity: project: {
                 n: "pipeline_schedule_id"
                 or: "pipeline_schedule_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -3457,7 +3530,7 @@ main: kit: entity: project: {
                 n: "protection_rule_id"
                 or: "protection_rule_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -3525,7 +3598,7 @@ main: kit: entity: project: {
                 n: "trigger_id"
                 or: "trigger_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -3575,14 +3648,14 @@ main: kit: entity: project: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "upload_id"
                 or: "upload_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -3774,14 +3847,14 @@ main: kit: entity: project: {
                 n: "hook_id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -3789,15 +3862,6 @@ main: kit: entity: project: {
                 or: "key"
                 r: true
                 t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_hooks_hook_id_custom_headers_key"
-                or: "putApiV4ProjectsIdHooksHookIdCustomHeadersKey"
-                r: true
-                t: "`$OBJECT`"
               }
             ]
           }
@@ -3808,7 +3872,6 @@ main: kit: entity: project: {
               "hook_id"
               "id"
               "key"
-              "put_api_v4_projects_id_hooks_hook_id_custom_headers_key"
             ]
           }
           s: [
@@ -3855,14 +3918,14 @@ main: kit: entity: project: {
                 n: "hook_id"
                 or: "hook_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -3870,15 +3933,6 @@ main: kit: entity: project: {
                 or: "key"
                 r: true
                 t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_hooks_hook_id_url_variables_key"
-                or: "putApiV4ProjectsIdHooksHookIdUrlVariablesKey"
-                r: true
-                t: "`$OBJECT`"
               }
             ]
           }
@@ -3889,7 +3943,6 @@ main: kit: entity: project: {
               "hook_id"
               "id"
               "key"
-              "put_api_v4_projects_id_hooks_hook_id_url_variables_key"
             ]
           }
           s: [
@@ -3936,7 +3989,7 @@ main: kit: entity: project: {
                 n: "domain"
                 or: "domain"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "param"
@@ -3946,15 +3999,6 @@ main: kit: entity: project: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_pages_domains_domain"
-                or: "putApiV4ProjectsIdPagesDomainsDomain"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/pages/domains/{domain}"
@@ -3962,7 +4006,6 @@ main: kit: entity: project: {
             exist: [
               "domain"
               "id"
-              "put_api_v4_projects_id_pages_domains_domain"
             ]
           }
           s: [
@@ -4007,7 +4050,7 @@ main: kit: entity: project: {
                 n: "file_path"
                 or: "file_path"
                 r: true
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "gitlab-org/gitlab"
@@ -4018,15 +4061,6 @@ main: kit: entity: project: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_repository_files_file_path"
-                or: "putApiV4ProjectsIdRepositoryFilesFilePath"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/repository/files/{file_path}"
@@ -4034,7 +4068,6 @@ main: kit: entity: project: {
             exist: [
               "file_path"
               "id"
-              "put_api_v4_projects_id_repository_files_file_path"
             ]
           }
           s: [
@@ -4078,7 +4111,7 @@ main: kit: entity: project: {
                 n: "id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -4088,15 +4121,6 @@ main: kit: entity: project: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_custom_attributes_key"
-                or: "putApiV4ProjectsIdCustomAttributesKey"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/custom_attributes/{key}"
@@ -4104,7 +4128,6 @@ main: kit: entity: project: {
             exist: [
               "id"
               "key"
-              "put_api_v4_projects_id_custom_attributes_key"
             ]
           }
           s: [
@@ -4154,16 +4177,7 @@ main: kit: entity: project: {
                 n: "pipeline_id"
                 or: "pipeline_id"
                 r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_pipelines_pipeline_id_metadata"
-                or: "putApiV4ProjectsIdPipelinesPipelineIdMetadata"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -4174,7 +4188,6 @@ main: kit: entity: project: {
             exist: [
               "id"
               "pipeline_id"
-              "put_api_v4_projects_id_pipelines_pipeline_id_metadata"
             ]
           }
           rs: {

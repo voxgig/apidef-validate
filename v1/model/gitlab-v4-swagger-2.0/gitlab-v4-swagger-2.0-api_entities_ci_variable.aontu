@@ -9,13 +9,22 @@ main: kit: entity: api_entities_ci_variable: {
       h: "Description"
       n: "description"
       r: false
+      sh: "The description of the variable"
       t: "`$STRING`"
     }
     environment_scope: {
       h: "Environment Scope"
       n: "environment_scope"
       r: false
+      sh: "The environment scope of the variable"
       t: "`$STRING`"
+    }
+    filter: {
+      h: "Filter"
+      n: "filter"
+      r: false
+      sh: "Available filters: [environment_scope]."
+      t: "`$OBJECT`"
     }
     hidden: {
       h: "Hidden"
@@ -32,37 +41,62 @@ main: kit: entity: api_entities_ci_variable: {
     key: {
       h: "Key"
       n: "key"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The key of the variable"
       t: "`$STRING`"
     }
     masked: {
       h: "Masked"
       n: "masked"
       r: false
+      sh: "Whether the variable is masked"
+      t: "`$BOOLEAN`"
+    }
+    masked_and_hidden: {
+      h: "Masked And Hidden"
+      n: "masked_and_hidden"
+      r: false
+      sh: "Whether the variable is masked and hidden"
       t: "`$BOOLEAN`"
     }
     protected: {
       h: "Protected"
       n: "protected"
       r: false
+      sh: "Whether the variable is protected"
       t: "`$BOOLEAN`"
     }
     raw: {
       h: "Raw"
       n: "raw"
       r: false
+      sh: "Whether the variable will be expanded"
       t: "`$BOOLEAN`"
     }
     value: {
       h: "Value"
       n: "value"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The value of the variable"
       t: "`$STRING`"
     }
     variable_type: {
       h: "Variable Type"
       n: "variable_type"
       r: false
+      sh: "The type of variable, must be one of env_var or file."
       t: "`$STRING`"
     }
   }
@@ -91,7 +125,7 @@ main: kit: entity: api_entities_ci_variable: {
                 n: "pipeline_schedule_id"
                 or: "pipeline_schedule_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 ex: 18
@@ -102,22 +136,12 @@ main: kit: entity: api_entities_ci_variable: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_pipeline_schedules_pipeline_schedule_id_variable"
-                or: "postApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariables"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables"
           q: {
             exist: [
               "pipeline_schedule_id"
-              "post_api_v4_projects_id_pipeline_schedules_pipeline_schedule_id_variable"
               "project_id"
             ]
           }
@@ -174,22 +198,12 @@ main: kit: entity: api_entities_ci_variable: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_groups_id_variable"
-                or: "postApiV4GroupsIdVariables"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/groups/{id}/variables"
           q: {
             exist: [
               "group_id"
-              "post_api_v4_groups_id_variable"
             ]
           }
           r: {
@@ -239,21 +253,11 @@ main: kit: entity: api_entities_ci_variable: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_variable"
-                or: "postApiV4ProjectsIdVariables"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/variables"
           q: {
             exist: [
-              "post_api_v4_projects_id_variable"
               "project_id"
             ]
           }
@@ -294,24 +298,8 @@ main: kit: entity: api_entities_ci_variable: {
             source: "swagger2"
             version: 2
           }
-          g: {
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_admin_ci_variable"
-                or: "postApiV4AdminCiVariables"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
           m: "POST"
           o: "/api/v4/admin/ci/variables"
-          q: {
-            exist: [
-              "post_api_v4_admin_ci_variable"
-            ]
-          }
           rs: {
             kind: "json"
             media: "application/json"
@@ -357,7 +345,7 @@ main: kit: entity: api_entities_ci_variable: {
                 n: "pipeline_id"
                 or: "pipeline_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 ex: 11
@@ -515,7 +503,7 @@ main: kit: entity: api_entities_ci_variable: {
                 n: "filter_environment_scope"
                 or: "filter[environment_scope]"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -847,7 +835,7 @@ main: kit: entity: api_entities_ci_variable: {
                 n: "pipeline_schedule_id"
                 or: "pipeline_schedule_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 ex: 18
@@ -858,15 +846,6 @@ main: kit: entity: api_entities_ci_variable: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_pipeline_schedules_pipeline_schedule_id_variables_key"
-                or: "putApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKey"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}"
@@ -875,7 +854,6 @@ main: kit: entity: api_entities_ci_variable: {
               "id"
               "pipeline_schedule_id"
               "project_id"
-              "put_api_v4_projects_id_pipeline_schedules_pipeline_schedule_id_variables_key"
             ]
           }
           r: {
@@ -942,15 +920,6 @@ main: kit: entity: api_entities_ci_variable: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_groups_id_variables_key"
-                or: "putApiV4GroupsIdVariablesKey"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/groups/{id}/variables/{key}"
@@ -958,7 +927,6 @@ main: kit: entity: api_entities_ci_variable: {
             exist: [
               "group_id"
               "id"
-              "put_api_v4_groups_id_variables_key"
             ]
           }
           r: {
@@ -1019,15 +987,6 @@ main: kit: entity: api_entities_ci_variable: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_variables_key"
-                or: "putApiV4ProjectsIdVariablesKey"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/variables/{key}"
@@ -1035,7 +994,6 @@ main: kit: entity: api_entities_ci_variable: {
             exist: [
               "id"
               "project_id"
-              "put_api_v4_projects_id_variables_key"
             ]
           }
           r: {
@@ -1089,22 +1047,12 @@ main: kit: entity: api_entities_ci_variable: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_admin_ci_variables_key"
-                or: "putApiV4AdminCiVariablesKey"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/admin/ci/variables/{key}"
           q: {
             exist: [
               "id"
-              "put_api_v4_admin_ci_variables_key"
             ]
           }
           r: {

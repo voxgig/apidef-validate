@@ -109,6 +109,14 @@ main: kit: entity: api_entities_group_detail: {
       r: false
       t: "`$STRING`"
     }
+    expires_at: {
+      fo: "date"
+      h: "Expires At"
+      n: "expires_at"
+      r: false
+      sh: "Share expiration date"
+      t: "`$STRING`"
+    }
     extra_shared_runners_minutes_limit: {
       h: "Extra Shared Runners Minutes Limit"
       n: "extra_shared_runners_minutes_limit"
@@ -132,6 +140,22 @@ main: kit: entity: api_entities_group_detail: {
       n: "full_path"
       r: false
       t: "`$STRING`"
+    }
+    group_access: {
+      fo: "int32"
+      h: "Group Access"
+      n: "group_access"
+      r: true
+      sh: "The group access level"
+      t: "`$INTEGER`"
+    }
+    group_id: {
+      fo: "int32"
+      h: "Group Id"
+      n: "group_id"
+      r: true
+      sh: "The ID of the group to share"
+      t: "`$INTEGER`"
     }
     id: {
       h: "Id"
@@ -198,6 +222,14 @@ main: kit: entity: api_entities_group_detail: {
       h: "Max Artifacts Size"
       n: "max_artifacts_size"
       r: false
+      t: "`$INTEGER`"
+    }
+    member_role_id: {
+      fo: "int32"
+      h: "Member Role Id"
+      n: "member_role_id"
+      r: false
+      sh: "The ID of the Member Role to be assigned to the group"
       t: "`$INTEGER`"
     }
     membership_lock: {
@@ -420,133 +452,6 @@ main: kit: entity: api_entities_group_detail: {
       points: [
         {
           co: {
-            id: "POST /api/v4/groups/{id}/share"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "group_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_groups_id_share"
-                or: "postApiV4GroupsIdShare"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/groups/{id}/share"
-          q: {
-            exist: [
-              "group_id"
-              "post_api_v4_groups_id_share"
-            ]
-          }
-          r: {
-            param: {
-              id: "group_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "groups"
-            }
-            {
-              var: "group_id"
-            }
-            {
-              lit: "share"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /api/v4/groups/{id}/transfer"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "group_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_groups_id_transfer"
-                or: "postApiV4GroupsIdTransfer"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/groups/{id}/transfer"
-          q: {
-            "$action": "transfer"
-            exist: [
-              "group_id"
-              "post_api_v4_groups_id_transfer"
-            ]
-          }
-          r: {
-            param: {
-              id: "group_id"
-            }
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "groups"
-            }
-            {
-              var: "group_id"
-            }
-            {
-              lit: "transfer"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "POST /api/v4/groups/{id}/projects/{project_id}"
             source: "swagger2"
             version: 2
@@ -624,7 +529,7 @@ main: kit: entity: api_entities_group_detail: {
                 n: "group_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -715,6 +620,113 @@ main: kit: entity: api_entities_group_detail: {
             res: "`body`"
           }
         }
+        {
+          co: {
+            id: "POST /api/v4/groups/{id}/share"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/groups/{id}/share"
+          q: {
+            exist: [
+              "group_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "share"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /api/v4/groups/{id}/transfer"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/groups/{id}/transfer"
+          q: {
+            "$action": "transfer"
+            exist: [
+              "group_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "transfer"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
       ]
     }
     load: {
@@ -738,18 +750,20 @@ main: kit: entity: api_entities_group_detail: {
             ]
             query: [
               {
+                ex: false
                 k: "query"
                 n: "with_custom_attribute"
                 or: "with_custom_attributes"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
+                ex: true
                 k: "query"
                 n: "with_project"
                 or: "with_projects"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }

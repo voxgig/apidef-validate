@@ -9,12 +9,35 @@ main: kit: entity: api_entities_protected_branch: {
       h: "Allow Force Push"
       n: "allow_force_push"
       r: false
+      sh: "Allow force push for all users with push access."
       t: "`$BOOLEAN`"
+    }
+    allowed_to_merge: {
+      h: "Allowed To Merge"
+      n: "allowed_to_merge"
+      r: false
+      sh: "An array of users/groups allowed to merge"
+      t: "`$ARRAY`"
+    }
+    allowed_to_push: {
+      h: "Allowed To Push"
+      n: "allowed_to_push"
+      r: false
+      sh: "An array of users/groups allowed to push"
+      t: "`$ARRAY`"
+    }
+    allowed_to_unprotect: {
+      h: "Allowed To Unprotect"
+      n: "allowed_to_unprotect"
+      r: false
+      sh: "An array of users/groups allowed to unprotect"
+      t: "`$ARRAY`"
     }
     code_owner_approval_required: {
       h: "Code Owner Approval Required"
       n: "code_owner_approval_required"
       r: false
+      sh: "Prevent pushes to this branch if it matches an item in CODEOWNERS"
       t: "`$BOOLEAN`"
     }
     id: {
@@ -30,6 +53,14 @@ main: kit: entity: api_entities_protected_branch: {
       r: false
       t: "`$BOOLEAN`"
     }
+    merge_access_level: {
+      fo: "int32"
+      h: "Merge Access Level"
+      n: "merge_access_level"
+      r: false
+      sh: "Access levels allowed to merge (defaults: `40`, maintainer access level)"
+      t: "`$INTEGER`"
+    }
     merge_access_levels: {
       h: "Merge Access Levels"
       n: "merge_access_levels"
@@ -39,14 +70,37 @@ main: kit: entity: api_entities_protected_branch: {
     name: {
       h: "Name"
       n: "name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The name of the protected branch"
       t: "`$STRING`"
+    }
+    push_access_level: {
+      fo: "int32"
+      h: "Push Access Level"
+      n: "push_access_level"
+      r: false
+      sh: "Access levels allowed to push (defaults: `40`, maintainer access level)"
+      t: "`$INTEGER`"
     }
     push_access_levels: {
       h: "Push Access Levels"
       n: "push_access_levels"
       r: false
       t: "`$ARRAY`"
+    }
+    unprotect_access_level: {
+      fo: "int32"
+      h: "Unprotect Access Level"
+      n: "unprotect_access_level"
+      r: false
+      sh: "Access levels allowed to unprotect (defaults: `40`, maintainer access level)"
+      t: "`$INTEGER`"
     }
     unprotect_access_levels: {
       h: "Unprotect Access Levels"
@@ -83,21 +137,11 @@ main: kit: entity: api_entities_protected_branch: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_protected_branch"
-                or: "postApiV4ProjectsIdProtectedBranches"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/protected_branches"
           q: {
             exist: [
-              "post_api_v4_projects_id_protected_branch"
               "project_id"
             ]
           }
@@ -177,7 +221,7 @@ main: kit: entity: api_entities_protected_branch: {
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -323,22 +367,12 @@ main: kit: entity: api_entities_protected_branch: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "patch_api_v4_projects_id_protected_branches_name"
-                or: "patchApiV4ProjectsIdProtectedBranchesName"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PATCH"
           o: "/api/v4/projects/{id}/protected_branches/{name}"
           q: {
             exist: [
               "id"
-              "patch_api_v4_projects_id_protected_branches_name"
               "project_id"
             ]
           }

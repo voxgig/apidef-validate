@@ -103,6 +103,13 @@ main: kit: entity: api_entities_ci_job: {
       r: false
       t: "`$STRING`"
     }
+    force: {
+      h: "Force"
+      n: "force"
+      r: false
+      sh: "Force cancellation for a job with a state of `canceling`"
+      t: "`$BOOLEAN`"
+    }
     id: {
       fo: "int32"
       h: "Id"
@@ -221,86 +228,6 @@ main: kit: entity: api_entities_ci_job: {
       points: [
         {
           co: {
-            id: "POST /api/v4/projects/{id}/jobs/{job_id}/cancel"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 88
-                k: "param"
-                n: "job_id"
-                or: "job_id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_jobs_job_id_cancel"
-                or: "postApiV4ProjectsIdJobsJobIdCancel"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/jobs/{job_id}/cancel"
-          q: {
-            exist: [
-              "job_id"
-              "post_api_v4_projects_id_jobs_job_id_cancel"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "jobs"
-            }
-            {
-              var: "job_id"
-            }
-            {
-              lit: "cancel"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "POST /api/v4/projects/{id}/jobs/{job_id}/artifacts/keep"
             source: "swagger2"
             version: 2
@@ -312,7 +239,7 @@ main: kit: entity: api_entities_ci_job: {
                 n: "job_id"
                 or: "job_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -373,6 +300,76 @@ main: kit: entity: api_entities_ci_job: {
         }
         {
           co: {
+            id: "POST /api/v4/projects/{id}/jobs/{job_id}/cancel"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 88
+                k: "param"
+                n: "job_id"
+                or: "job_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/jobs/{job_id}/cancel"
+          q: {
+            exist: [
+              "job_id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "jobs"
+            }
+            {
+              var: "job_id"
+            }
+            {
+              lit: "cancel"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "POST /api/v4/projects/{id}/jobs/{job_id}/erase"
             source: "swagger2"
             version: 2
@@ -385,14 +382,14 @@ main: kit: entity: api_entities_ci_job: {
                 n: "job_id"
                 or: "job_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "project_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -455,14 +452,14 @@ main: kit: entity: api_entities_ci_job: {
                 n: "job_id"
                 or: "job_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "project_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -530,14 +527,14 @@ main: kit: entity: api_entities_ci_job: {
                 n: "job_id"
                 or: "job_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "project_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -600,7 +597,7 @@ main: kit: entity: api_entities_ci_job: {
                 n: "pipeline_id"
                 or: "pipeline_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 ex: 11
@@ -613,11 +610,12 @@ main: kit: entity: api_entities_ci_job: {
             ]
             query: [
               {
+                ex: false
                 k: "query"
                 n: "include_retried"
                 or: "include_retried"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 ex: 1
@@ -644,7 +642,7 @@ main: kit: entity: api_entities_ci_job: {
                 n: "scope"
                 or: "scope"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -735,7 +733,7 @@ main: kit: entity: api_entities_ci_job: {
                 n: "scope"
                 or: "scope"
                 r: false
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
             ]
           }
@@ -855,14 +853,14 @@ main: kit: entity: api_entities_ci_job: {
                 n: "id"
                 or: "job_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "project_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }

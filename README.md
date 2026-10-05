@@ -78,9 +78,11 @@ their human titles match their names. The Go module writes no `# why`
 annotations, so the trailing comments of the golden are dropped before the
 base guide comparison.
 
-The Go port does not yet reproduce every golden. The list at the top of
-`v1/go/validate_test.go` holds one entry per known gap: a path glob, the
-reason, and the number of distinct goldens under that glob the port is
+The Go port reproduces every golden of its cases, so `guide-case` and
+`model-case` compare each one strictly, and the list at the top of
+`v1/go/validate_test.go` is empty. The list is where a known gap goes when
+a release leaves the port behind: one entry per gap, holding a path glob,
+the reason, and the number of distinct goldens under that glob the port is
 expected to miss. A matching golden is still compared and logged, and a
 mismatch does not fail the run; the count does. A complete run holds every
 entry to its number in both directions, so a golden the port has started to

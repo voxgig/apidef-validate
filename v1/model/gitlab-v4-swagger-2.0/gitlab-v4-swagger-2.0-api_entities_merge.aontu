@@ -5,22 +5,33 @@ main: kit: entity: api_entities_merge: {
   alias: field: {}
 
   fields: {
+    add_labels: {
+      h: "Add Labels"
+      n: "add_labels"
+      r: false
+      sh: "Comma-separated label names to add to a merge request."
+      t: "`$ARRAY`"
+    }
     allow_collaboration: {
       h: "Allow Collaboration"
       n: "allow_collaboration"
       r: false
+      sh: "Allow commits from members who can merge to the target branch."
       t: "`$BOOLEAN`"
     }
     allow_maintainer_to_push: {
       h: "Allow Maintainer To Push"
       n: "allow_maintainer_to_push"
       r: false
+      sh: "[deprecated] See allow_collaboration"
       t: "`$BOOLEAN`"
     }
     approvals_before_merge: {
+      fo: "int32"
       h: "Approvals Before Merge"
       n: "approvals_before_merge"
       r: false
+      sh: "Number of approvals required before this can be merged"
       t: "`$STRING`"
     }
     assignee: {
@@ -29,6 +40,21 @@ main: kit: entity: api_entities_merge: {
       r: false
       sh: "API_Entities_UserBasic model"
       t: "`$OBJECT`"
+    }
+    assignee_id: {
+      fo: "int32"
+      h: "Assignee Id"
+      n: "assignee_id"
+      r: false
+      sh: "Assignee user ID."
+      t: "`$INTEGER`"
+    }
+    assignee_ids: {
+      h: "Assignee Ids"
+      n: "assignee_ids"
+      r: false
+      sh: "The IDs of the users to assign the merge request to, as a comma-separated list."
+      t: "`$ARRAY`"
     }
     assignees: {
       h: "Assignees"
@@ -43,6 +69,13 @@ main: kit: entity: api_entities_merge: {
       r: false
       sh: "API_Entities_UserBasic model"
       t: "`$OBJECT`"
+    }
+    auto_merge: {
+      h: "Auto Merge"
+      n: "auto_merge"
+      r: false
+      sh: "If `true`, the merge request is set to auto merge."
+      t: "`$BOOLEAN`"
     }
     blocking_discussions_resolved: {
       h: "Blocking Discussions Resolved"
@@ -80,6 +113,7 @@ main: kit: entity: api_entities_merge: {
       h: "Description"
       n: "description"
       r: false
+      sh: "Description of the merge request."
       t: "`$STRING`"
     }
     description_html: {
@@ -104,6 +138,7 @@ main: kit: entity: api_entities_merge: {
       h: "Discussion Locked"
       n: "discussion_locked"
       r: false
+      sh: "Flag indicating if the merge request’s discussion is locked."
       t: "`$STRING`"
     }
     diverged_commits_count: {
@@ -185,6 +220,7 @@ main: kit: entity: api_entities_merge: {
       h: "Labels"
       n: "labels"
       r: false
+      sh: "Comma-separated label names for a merge request."
       t: "`$STRING`"
     }
     latest_build_finished_at: {
@@ -203,6 +239,14 @@ main: kit: entity: api_entities_merge: {
       h: "Merge After"
       n: "merge_after"
       r: false
+      sh: "Date after which the merge request can be merged."
+      t: "`$STRING`"
+    }
+    merge_commit_message: {
+      h: "Merge Commit Message"
+      n: "merge_commit_message"
+      r: false
+      sh: "Custom merge commit message."
       t: "`$STRING`"
     }
     merge_commit_sha: {
@@ -234,6 +278,7 @@ main: kit: entity: api_entities_merge: {
       h: "Merge When Pipeline Succeeds"
       n: "merge_when_pipeline_succeeds"
       r: false
+      sh: "Deprecated: Use auto_merge instead."
       t: "`$STRING`"
     }
     merged_at: {
@@ -254,6 +299,14 @@ main: kit: entity: api_entities_merge: {
       n: "milestone"
       r: false
       t: "`$OBJECT`"
+    }
+    milestone_id: {
+      fo: "int32"
+      h: "Milestone Id"
+      n: "milestone_id"
+      r: false
+      sh: "The global ID of a milestone to assign the merge reques to."
+      t: "`$INTEGER`"
     }
     pipeline: {
       h: "Pipeline"
@@ -293,6 +346,27 @@ main: kit: entity: api_entities_merge: {
       r: false
       t: "`$OBJECT`"
     }
+    remove_labels: {
+      h: "Remove Labels"
+      n: "remove_labels"
+      r: false
+      sh: "Comma-separated label names to remove from a merge request."
+      t: "`$ARRAY`"
+    }
+    remove_source_branch: {
+      h: "Remove Source Branch"
+      n: "remove_source_branch"
+      r: false
+      sh: "Flag indicating if a merge request should remove the source branch when merging."
+      t: "`$BOOLEAN`"
+    }
+    reviewer_ids: {
+      h: "Reviewer Ids"
+      n: "reviewer_ids"
+      r: false
+      sh: "The IDs of the users to review the merge request, as a comma-separated list."
+      t: "`$ARRAY`"
+    }
     reviewers: {
       h: "Reviewers"
       n: "reviewers"
@@ -304,18 +378,34 @@ main: kit: entity: api_entities_merge: {
       h: "Sha"
       n: "sha"
       r: false
+      sh: "If present, then this SHA must match the HEAD of the source branch, otherwise the merge fails."
       t: "`$STRING`"
     }
     should_remove_source_branch: {
       h: "Should Remove Source Branch"
       n: "should_remove_source_branch"
       r: false
+      sh: "If `true`, removes the source branch."
+      t: "`$BOOLEAN`"
+    }
+    skip_merge_train: {
+      h: "Skip Merge Train"
+      n: "skip_merge_train"
+      r: false
+      sh: "If `true` skips train restart when merging immediately in a merge train configured project."
       t: "`$BOOLEAN`"
     }
     source_branch: {
       h: "Source Branch"
       n: "source_branch"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The source branch."
       t: "`$STRING`"
     }
     source_project_id: {
@@ -328,6 +418,14 @@ main: kit: entity: api_entities_merge: {
       h: "Squash"
       n: "squash"
       r: false
+      sh: "Squash commits into a single commit when merging."
+      t: "`$STRING`"
+    }
+    squash_commit_message: {
+      h: "Squash Commit Message"
+      n: "squash_commit_message"
+      r: false
+      sh: "Custom squash commit message."
       t: "`$STRING`"
     }
     squash_commit_sha: {
@@ -348,6 +446,13 @@ main: kit: entity: api_entities_merge: {
       r: false
       t: "`$STRING`"
     }
+    state_event: {
+      h: "State Event"
+      n: "state_event"
+      r: false
+      sh: "New state (close/reopen)."
+      t: "`$STRING`"
+    }
     subscribed: {
       h: "Subscribed"
       n: "subscribed"
@@ -357,13 +462,22 @@ main: kit: entity: api_entities_merge: {
     target_branch: {
       h: "Target Branch"
       n: "target_branch"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The target branch."
       t: "`$STRING`"
     }
     target_project_id: {
+      fo: "int32"
       h: "Target Project Id"
       n: "target_project_id"
       r: false
+      sh: "The target project of the merge request defaults to the :id of the project."
       t: "`$STRING`"
     }
     task_completion_status: {
@@ -382,7 +496,14 @@ main: kit: entity: api_entities_merge: {
     title: {
       h: "Title"
       n: "title"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The title of the merge request."
       t: "`$STRING`"
     }
     title_html: {
@@ -453,7 +574,7 @@ main: kit: entity: api_entities_merge: {
                 n: "merge_request_iid"
                 or: "merge_request_iid"
                 r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -525,21 +646,11 @@ main: kit: entity: api_entities_merge: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_merge_request"
-                or: "postApiV4ProjectsIdMergeRequests"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/merge_requests"
           q: {
             exist: [
-              "post_api_v4_projects_id_merge_request"
               "project_id"
             ]
           }
@@ -592,7 +703,7 @@ main: kit: entity: api_entities_merge: {
                 n: "merge_request_iid"
                 or: "merge_request_iid"
                 r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -608,21 +719,21 @@ main: kit: entity: api_entities_merge: {
                 n: "include_diverged_commits_count"
                 or: "include_diverged_commits_count"
                 r: false
-                t: "`$INTEGER`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "include_rebase_in_progress"
                 or: "include_rebase_in_progress"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "render_html"
                 or: "render_html"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }
@@ -686,7 +797,7 @@ main: kit: entity: api_entities_merge: {
                 n: "merge_request_iid"
                 or: "merge_request_iid"
                 r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -696,15 +807,6 @@ main: kit: entity: api_entities_merge: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_merge_requests_merge_request_iid"
-                or: "putApiV4ProjectsIdMergeRequestsMergeRequestIid"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}"
@@ -712,7 +814,6 @@ main: kit: entity: api_entities_merge: {
             exist: [
               "merge_request_iid"
               "project_id"
-              "put_api_v4_projects_id_merge_requests_merge_request_iid"
             ]
           }
           r: {
@@ -762,7 +863,7 @@ main: kit: entity: api_entities_merge: {
                 n: "merge_request_iid"
                 or: "merge_request_iid"
                 r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -772,15 +873,6 @@ main: kit: entity: api_entities_merge: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_merge_requests_merge_request_iid_merge"
-                or: "putApiV4ProjectsIdMergeRequestsMergeRequestIidMerge"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/merge"
@@ -788,7 +880,6 @@ main: kit: entity: api_entities_merge: {
             exist: [
               "merge_request_iid"
               "project_id"
-              "put_api_v4_projects_id_merge_requests_merge_request_iid_merge"
             ]
           }
           r: {
@@ -841,7 +932,7 @@ main: kit: entity: api_entities_merge: {
                 n: "merge_request_iid"
                 or: "merge_request_iid"
                 r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -849,15 +940,6 @@ main: kit: entity: api_entities_merge: {
                 or: "id"
                 r: true
                 t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_merge_requests_merge_request_iid_rebase"
-                or: "putApiV4ProjectsIdMergeRequestsMergeRequestIidRebase"
-                r: true
-                t: "`$OBJECT`"
               }
             ]
           }
@@ -868,7 +950,6 @@ main: kit: entity: api_entities_merge: {
             exist: [
               "merge_request_iid"
               "project_id"
-              "put_api_v4_projects_id_merge_requests_merge_request_iid_rebase"
             ]
           }
           r: {

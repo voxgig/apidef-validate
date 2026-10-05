@@ -5,6 +5,13 @@ main: kit: entity: api_entities_branch: {
   alias: field: {}
 
   fields: {
+    branch: {
+      h: "Branch"
+      n: "branch"
+      r: true
+      sh: "The name of the branch"
+      t: "`$STRING`"
+    }
     can_push: {
       h: "Can Push"
       n: "can_push"
@@ -28,12 +35,14 @@ main: kit: entity: api_entities_branch: {
       h: "Developers Can Merge"
       n: "developers_can_merge"
       r: false
+      sh: "Flag if developers can merge to that branch"
       t: "`$BOOLEAN`"
     }
     developers_can_push: {
       h: "Developers Can Push"
       n: "developers_can_push"
       r: false
+      sh: "Flag if developers can push to that branch"
       t: "`$BOOLEAN`"
     }
     id: {
@@ -59,6 +68,13 @@ main: kit: entity: api_entities_branch: {
       n: "protected"
       r: false
       t: "`$BOOLEAN`"
+    }
+    ref: {
+      h: "Ref"
+      n: "ref"
+      r: true
+      sh: "Create branch from commit sha or existing branch"
+      t: "`$STRING`"
     }
     web_url: {
       h: "Web Url"
@@ -94,21 +110,11 @@ main: kit: entity: api_entities_branch: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_repository_branch"
-                or: "postApiV4ProjectsIdRepositoryBranches"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/repository/branches"
           q: {
             exist: [
-              "post_api_v4_projects_id_repository_branch"
               "project_id"
             ]
           }
@@ -181,7 +187,7 @@ main: kit: entity: api_entities_branch: {
                 n: "page_token"
                 or: "page_token"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 20
@@ -196,21 +202,21 @@ main: kit: entity: api_entities_branch: {
                 n: "regex"
                 or: "regex"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "search"
                 or: "search"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -273,7 +279,7 @@ main: kit: entity: api_entities_branch: {
                 n: "id"
                 or: "branch"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -358,15 +364,6 @@ main: kit: entity: api_entities_branch: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_repository_branches_branch_protect"
-                or: "putApiV4ProjectsIdRepositoryBranchesBranchProtect"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/repository/branches/{branch}/protect"
@@ -374,7 +371,6 @@ main: kit: entity: api_entities_branch: {
             exist: [
               "branch_id"
               "project_id"
-              "put_api_v4_projects_id_repository_branches_branch_protect"
             ]
           }
           r: {

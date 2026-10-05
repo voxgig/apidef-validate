@@ -17,6 +17,7 @@ main: kit: entity: api_entities_draft_note: {
       h: "Commit Id"
       n: "commit_id"
       r: false
+      sh: "The sha of a commit to associate the draft note to."
       t: "`$INTEGER`"
     }
     discussion_id: {
@@ -32,6 +33,13 @@ main: kit: entity: api_entities_draft_note: {
       n: "id"
       r: false
       t: "`$INTEGER`"
+    }
+    in_reply_to_discussion_id: {
+      h: "In Reply To Discussion Id"
+      n: "in_reply_to_discussion_id"
+      r: false
+      sh: "The ID of a discussion the draft note replies to."
+      t: "`$STRING`"
     }
     line_code: {
       h: "Line Code"
@@ -49,12 +57,29 @@ main: kit: entity: api_entities_draft_note: {
     note: {
       h: "Note"
       n: "note"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "The content of a note."
       t: "`$STRING`"
     }
     position: {
       h: "Position"
       n: "position"
+      op: {
+        create: {
+          req: true
+          type: "`$OBJECT`"
+        }
+        update: {
+          req: true
+          type: "`$OBJECT`"
+        }
+      }
       r: false
       t: "`$OBJECT`"
     }
@@ -62,6 +87,7 @@ main: kit: entity: api_entities_draft_note: {
       h: "Resolve Discussion"
       n: "resolve_discussion"
       r: false
+      sh: "The associated discussion should be resolved."
       t: "`$BOOLEAN`"
     }
   }
@@ -89,7 +115,7 @@ main: kit: entity: api_entities_draft_note: {
                 n: "merge_request_id"
                 or: "merge_request_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -99,22 +125,12 @@ main: kit: entity: api_entities_draft_note: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_merge_requests_merge_request_iid_draft_note"
-                or: "postApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotes"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes"
           q: {
             exist: [
               "merge_request_id"
-              "post_api_v4_projects_id_merge_requests_merge_request_iid_draft_note"
               "project_id"
             ]
           }
@@ -174,7 +190,7 @@ main: kit: entity: api_entities_draft_note: {
                 n: "merge_request_id"
                 or: "merge_request_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -249,14 +265,14 @@ main: kit: entity: api_entities_draft_note: {
                 n: "id"
                 or: "draft_note_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "merge_request_id"
                 or: "merge_request_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -325,98 +341,6 @@ main: kit: entity: api_entities_draft_note: {
       points: [
         {
           co: {
-            id: "PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "draft_note_id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "merge_request_id"
-                or: "merge_request_iid"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_merge_requests_merge_request_iid_draft_notes_draft_note_id"
-                or: "putApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}"
-          q: {
-            exist: [
-              "id"
-              "merge_request_id"
-              "project_id"
-              "put_api_v4_projects_id_merge_requests_merge_request_iid_draft_notes_draft_note_id"
-            ]
-          }
-          r: {
-            param: {
-              draft_note_id: "id"
-              id: "project_id"
-              merge_request_iid: "merge_request_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "merge_requests"
-            }
-            {
-              var: "merge_request_id"
-            }
-            {
-              lit: "draft_notes"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}/publish"
             source: "swagger2"
             version: 2
@@ -428,14 +352,14 @@ main: kit: entity: api_entities_draft_note: {
                 n: "draft_note_id"
                 or: "draft_note_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
                 n: "merge_request_id"
                 or: "merge_request_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -489,6 +413,88 @@ main: kit: entity: api_entities_draft_note: {
             }
             {
               lit: "publish"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "draft_note_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "merge_request_id"
+                or: "merge_request_iid"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}"
+          q: {
+            exist: [
+              "id"
+              "merge_request_id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              draft_note_id: "id"
+              id: "project_id"
+              merge_request_iid: "merge_request_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "merge_requests"
+            }
+            {
+              var: "merge_request_id"
+            }
+            {
+              lit: "draft_notes"
+            }
+            {
+              var: "id"
             }
           ]
           t: {

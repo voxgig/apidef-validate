@@ -24,6 +24,20 @@ main: kit: entity: api_entities_commit: {
       r: false
       t: "`$STRING`"
     }
+    branch: {
+      h: "Branch"
+      n: "branch"
+      r: true
+      sh: "The name of the branch"
+      t: "`$STRING`"
+    }
+    commits: {
+      h: "Commits"
+      n: "commits"
+      r: true
+      sh: "The context commits’ SHA."
+      t: "`$ARRAY`"
+    }
     committed_date: {
       fo: "date-time"
       h: "Committed Date"
@@ -50,6 +64,13 @@ main: kit: entity: api_entities_commit: {
       r: false
       t: "`$STRING`"
     }
+    dry_run: {
+      h: "Dry Run"
+      n: "dry_run"
+      r: false
+      sh: "Does not commit any changes"
+      t: "`$BOOLEAN`"
+    }
     extended_trailers: {
       h: "Extended Trailers"
       n: "extended_trailers"
@@ -66,6 +87,7 @@ main: kit: entity: api_entities_commit: {
       h: "Message"
       n: "message"
       r: false
+      sh: "A custom commit message to use for the picked commit"
       t: "`$STRING`"
     }
     parent_ids: {
@@ -123,7 +145,7 @@ main: kit: entity: api_entities_commit: {
                 n: "merge_request_id"
                 or: "merge_request_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -133,22 +155,12 @@ main: kit: entity: api_entities_commit: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_merge_requests_merge_request_iid_context_commit"
-                or: "postApiV4ProjectsIdMergeRequestsMergeRequestIidContextCommits"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits"
           q: {
             exist: [
               "merge_request_id"
-              "post_api_v4_projects_id_merge_requests_merge_request_iid_context_commit"
               "project_id"
             ]
           }
@@ -210,16 +222,7 @@ main: kit: entity: api_entities_commit: {
                 n: "sha"
                 or: "sha"
                 r: true
-                t: "`$ANY`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_repository_commits_sha_cherry_pick"
-                or: "postApiV4ProjectsIdRepositoryCommitsShaCherryPick"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -227,7 +230,6 @@ main: kit: entity: api_entities_commit: {
           o: "/api/v4/projects/{id}/repository/commits/{sha}/cherry_pick"
           q: {
             exist: [
-              "post_api_v4_projects_id_repository_commits_sha_cherry_pick"
               "project_id"
               "sha"
             ]
@@ -292,16 +294,7 @@ main: kit: entity: api_entities_commit: {
                 n: "sha"
                 or: "sha"
                 r: true
-                t: "`$ANY`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_repository_commits_sha_revert"
-                or: "postApiV4ProjectsIdRepositoryCommitsShaRevert"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -309,7 +302,6 @@ main: kit: entity: api_entities_commit: {
           o: "/api/v4/projects/{id}/repository/commits/{sha}/revert"
           q: {
             exist: [
-              "post_api_v4_projects_id_repository_commits_sha_revert"
               "project_id"
               "sha"
             ]
@@ -372,7 +364,7 @@ main: kit: entity: api_entities_commit: {
                 n: "merge_request_id"
                 or: "merge_request_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -460,7 +452,7 @@ main: kit: entity: api_entities_commit: {
                 n: "merge_request_id"
                 or: "merge_request_iid"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -541,7 +533,7 @@ main: kit: entity: api_entities_commit: {
                 n: "ref"
                 or: "refs"
                 r: true
-                t: "`$ANY`"
+                t: "`$ARRAY`"
               }
             ]
           }
@@ -609,7 +601,7 @@ main: kit: entity: api_entities_commit: {
                 n: "all"
                 or: "all"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 ex: "John Smith"
@@ -617,21 +609,22 @@ main: kit: entity: api_entities_commit: {
                 n: "author"
                 or: "author"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "first_parent"
                 or: "first_parent"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
+                ex: "default"
                 k: "query"
                 n: "order"
                 or: "order"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: 1
@@ -663,7 +656,7 @@ main: kit: entity: api_entities_commit: {
                 n: "ref_name"
                 or: "ref_name"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 ex: "2021-09-20T11:50:22.001"
@@ -671,14 +664,15 @@ main: kit: entity: api_entities_commit: {
                 n: "since"
                 or: "since"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: false
                 k: "query"
                 n: "trailer"
                 or: "trailers"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 ex: "2021-09-20T11:50:22.001"
@@ -686,14 +680,14 @@ main: kit: entity: api_entities_commit: {
                 n: "until"
                 or: "until"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "with_stat"
                 or: "with_stats"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
             ]
           }

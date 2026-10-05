@@ -6,10 +6,22 @@ main: kit: entity: api_entities_invitation: {
 
   fields: {
     access_level: {
+      fo: "int32"
       h: "Access Level"
       n: "access_level"
-      r: false
-      t: "`$STRING`"
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      r: true
+      sh: "A valid access level (defaults: `30`, developer access level)"
+      t: "`$INTEGER`"
     }
     created_at: {
       h: "Created At"
@@ -23,10 +35,19 @@ main: kit: entity: api_entities_invitation: {
       r: false
       t: "`$STRING`"
     }
+    email: {
+      h: "Email"
+      n: "email"
+      r: false
+      sh: "The email address to invite, or multiple emails separated by comma"
+      t: "`$ARRAY`"
+    }
     expires_at: {
+      fo: "date-time"
       h: "Expires At"
       n: "expires_at"
       r: false
+      sh: "Date string in the format YEAR-MONTH-DAY"
       t: "`$STRING`"
     }
     id: {
@@ -41,11 +62,33 @@ main: kit: entity: api_entities_invitation: {
       r: false
       t: "`$STRING`"
     }
+    invite_source: {
+      h: "Invite Source"
+      n: "invite_source"
+      r: false
+      sh: "Source that triggered the member creation process"
+      t: "`$STRING`"
+    }
     invite_token: {
       h: "Invite Token"
       n: "invite_token"
       r: false
       t: "`$STRING`"
+    }
+    member_role_id: {
+      fo: "int32"
+      h: "Member Role Id"
+      n: "member_role_id"
+      r: false
+      sh: "The ID of a member role for the invited user"
+      t: "`$INTEGER`"
+    }
+    user_id: {
+      h: "User Id"
+      n: "user_id"
+      r: false
+      sh: "The user ID of the new member or multiple IDs separated by commas."
+      t: "`$ARRAY`"
     }
     user_name: {
       h: "User Name"
@@ -81,22 +124,12 @@ main: kit: entity: api_entities_invitation: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_groups_id_invitation"
-                or: "postApiV4GroupsIdInvitations"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/groups/{id}/invitations"
           q: {
             exist: [
               "group_id"
-              "post_api_v4_groups_id_invitation"
             ]
           }
           r: {
@@ -146,21 +179,11 @@ main: kit: entity: api_entities_invitation: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_invitation"
-                or: "postApiV4ProjectsIdInvitations"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/invitations"
           q: {
             exist: [
-              "post_api_v4_projects_id_invitation"
               "project_id"
             ]
           }
@@ -238,7 +261,7 @@ main: kit: entity: api_entities_invitation: {
                 n: "query"
                 or: "query"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -318,7 +341,7 @@ main: kit: entity: api_entities_invitation: {
                 n: "query"
                 or: "query"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }
@@ -388,15 +411,6 @@ main: kit: entity: api_entities_invitation: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_groups_id_invitations_email"
-                or: "putApiV4GroupsIdInvitationsEmail"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/groups/{id}/invitations/{email}"
@@ -404,7 +418,6 @@ main: kit: entity: api_entities_invitation: {
             exist: [
               "group_id"
               "id"
-              "put_api_v4_groups_id_invitations_email"
             ]
           }
           r: {
@@ -465,15 +478,6 @@ main: kit: entity: api_entities_invitation: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_projects_id_invitations_email"
-                or: "putApiV4ProjectsIdInvitationsEmail"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "PUT"
           o: "/api/v4/projects/{id}/invitations/{email}"
@@ -481,7 +485,6 @@ main: kit: entity: api_entities_invitation: {
             exist: [
               "id"
               "project_id"
-              "put_api_v4_projects_id_invitations_email"
             ]
           }
           r: {

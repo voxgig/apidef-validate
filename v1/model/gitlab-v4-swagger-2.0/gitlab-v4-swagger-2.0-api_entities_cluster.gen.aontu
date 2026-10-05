@@ -21,18 +21,21 @@ main: kit: entity: api_entities_cluster: {
       h: "Domain"
       n: "domain"
       r: false
+      sh: "Cluster base domain"
       t: "`$STRING`"
     }
     enabled: {
       h: "Enabled"
       n: "enabled"
       r: false
+      sh: "Determines if cluster is active or not, defaults to true"
       t: "`$BOOLEAN`"
     }
     environment_scope: {
       h: "Environment Scope"
       n: "environment_scope"
       r: false
+      sh: "The associated environment to the cluster"
       t: "`$STRING`"
     }
     id: {
@@ -45,6 +48,7 @@ main: kit: entity: api_entities_cluster: {
       h: "Managed"
       n: "managed"
       r: false
+      sh: "Determines if GitLab will manage namespaces and service accounts for this cluster, defaults to true"
       t: "`$STRING`"
     }
     management_project: {
@@ -53,22 +57,51 @@ main: kit: entity: api_entities_cluster: {
       r: false
       t: "`$OBJECT`"
     }
+    management_project_id: {
+      fo: "int32"
+      h: "Management Project Id"
+      n: "management_project_id"
+      r: false
+      sh: "The ID of the management project"
+      t: "`$INTEGER`"
+    }
     name: {
       h: "Name"
       n: "name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
       r: false
+      sh: "Cluster name"
       t: "`$STRING`"
     }
     namespace_per_environment: {
       h: "Namespace Per Environment"
       n: "namespace_per_environment"
       r: false
+      sh: "Deploy each environment to a separate Kubernetes namespace"
       t: "`$STRING`"
     }
     platform_kubernetes: {
       h: "Platform Kubernetes"
       n: "platform_kubernetes"
       r: false
+      t: "`$OBJECT`"
+    }
+    platform_kubernetes_attributes: {
+      h: "Platform Kubernetes Attributes"
+      n: "platform_kubernetes_attributes"
+      op: {
+        update: {
+          req: false
+          type: "`$OBJECT`"
+        }
+      }
+      r: true
+      sh: "Platform Kubernetes data"
       t: "`$OBJECT`"
     }
     platform_type: {
@@ -114,24 +147,8 @@ main: kit: entity: api_entities_cluster: {
             source: "swagger2"
             version: 2
           }
-          g: {
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_admin_clusters_add"
-                or: "postApiV4AdminClustersAdd"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
           m: "POST"
           o: "/api/v4/admin/clusters/add"
-          q: {
-            exist: [
-              "post_api_v4_admin_clusters_add"
-            ]
-          }
           rs: {
             kind: "json"
             media: "application/json"
@@ -358,7 +375,7 @@ main: kit: entity: api_entities_cluster: {
                 n: "id"
                 or: "cluster_id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -418,16 +435,7 @@ main: kit: entity: api_entities_cluster: {
                 n: "id"
                 or: "cluster_id"
                 r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "put_api_v4_admin_clusters_cluster_id"
-                or: "putApiV4AdminClustersClusterId"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -436,7 +444,6 @@ main: kit: entity: api_entities_cluster: {
           q: {
             exist: [
               "id"
-              "put_api_v4_admin_clusters_cluster_id"
             ]
           }
           r: {

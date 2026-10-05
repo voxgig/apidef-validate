@@ -290,6 +290,131 @@ go/v0.19.0 passes with every skip count unchanged, and the same 613 goldens
 differ under the known gaps as on 8.22.1 and go/v0.18.1. The Go port writes
 the new gitlab entity exactly, and every guide matches.
 
+## 2026-10-05 — apidef 8.24.0 and go/v0.20.0
+
+The pins move from 8.23.0 to 8.24.0 and from go/v0.19.0 to go/v0.20.0. The
+release carries eighteen merges, voxgig/apidef#138 to #166. 348 of the 841
+OpenAPI entity goldens change: 246 in gitlab, 65 in cloudsmith, 13 in
+dingconnect, 12 in statuspage, 4 each in github and petstore, 3 in taxonomy
+and 1 in codatplatform. No entity is added or removed, no guide changes, and
+no GraphQL golden changes.
+
+Each change was traced to its merge by generating the corpus at every merge
+between the two releases, with both ports, from an apidef checkout at that
+merge. 8.23.0 reproduces the old goldens and 8.24.0 the new ones, file for
+file, and every difference between two neighbouring merges falls into one of
+the classes below. Six merges move goldens. 149 goldens change at #145
+alone, 141 at #145 and #151, 38 at #151 alone, and the rest at one merge
+each.
+
+1. **A property written as an allOf of one scalar takes that scalar's type**
+   (#138). taxonomy's `parentId` on `domain`, `kingdom` and `phylum` goes
+   from `$ANY` to `$STRING`. 3 goldens.
+2. **A Swagger 2 parameter is typed from its own facts** (#145). apidef had
+   looked for them under a `schema`, which Swagger 2 gives only a body
+   parameter. 2,679 arguments take the type their parameter declares, 580 in
+   cloudsmith, 2,071 in gitlab, 19 in dingconnect and 9 in petstore: 1,574
+   from `$ANY` to `$STRING`, 733 from `$STRING` to `$INTEGER`, 195 from
+   `$ANY` to `$BOOLEAN`, and 177 otherwise. 253 gain `ex`, the default or
+   example the parameter declares. 1,090 of the 3,240 points change, in 519
+   of the 1,707 operations and 290 goldens.
+3. **Every allOf member of a request schema is read for fields** (#149).
+   codatplatform's `setting` gains `clientId`, `overridesDefaults` and
+   `settings` from the members of its request body. 1 golden.
+4. **A Swagger 2 body parameter is the request body** (#151), no longer a
+   query argument. The 579 that had been arguments leave their points, 405
+   in gitlab, 162 in cloudsmith, 7 in petstore and 5 in dingconnect. 417 of
+   those points' selectors drop them, and 38 are left with nothing to select
+   by. 111 entities gain 495 fields, the bodies' properties and two array
+   carriers, and fields already there gain 417 descriptions, 128
+   per-operation overrides and 20 formats, and change 9 types, 8 required
+   flags, a description and a format. An array body is sent from one field:
+   dingconnect's cancellations and estimations, whose carriers are those two
+   fields, and petstore's two user list actions, which declare none, since an
+   action's request fields are its own. 18 operations re-sort their points.
+   579 points change, in 275 operations and 179 goldens.
+5. **A wrapped request body's fields are read through its key** (#159).
+   Twelve statuspage entities lose the field named after the wrapper, six of
+   them gain the 20 record fields the wrapped bodies declare, and seven
+   fields they already had gain a description or a per-operation override.
+   12 goldens.
+6. **A response's properties are read without changing the definition**
+   (#163). The guide had copied a schema two references share into two
+   objects, so the union scan counted a union reached through both twice.
+   The `protection` of github's `branch` and `short_branch`, the
+   `required_pull_request_reviews` of `branch_protection`, and the `payload`
+   of `event` each count one union fewer, the count the Go port gives. 4
+   goldens.
+
+The other twelve merges move no golden. No server URL here is written in
+Postman's `{{name}}` form, and the info block is unchanged in both ports
+(#141). No envelope here turns on a composed scalar (#144). Each of the
+5,485 path segment variables was already named by its path argument, and
+each of the 5,503 path arguments already required (#147). The list, item
+envelope and tag rules of #155, #158 and #156 meet no case here. The six Go
+merges, #160, #161, #162, #164, #165 and #166, change the Go port alone.
+
+Read against the definitions at 8.24.0, each of the 9,057 arguments with a
+declared parameter carries the type and the example that parameter
+declares, as apidef reads them: a parameter declaring no type is typed by
+its name, and an empty example is dropped by the clean step. No argument
+comes from a body parameter, and every path argument that fills a
+placeholder is required. Each field #149, #151 and #159 adds is a property
+of a request body the definition declares for one of the entity's
+operations: #149's through an allOf member, #151's in a body parameter's
+schema, and #159's under the key that wraps the record. The exceptions are
+dingconnect's two array carriers, which #151 names itself.
+
+The Go port moves with #138, #145, #149, #151 and #159, entity file for
+entity file, and already gave #163's counts. On go/v0.20.0 it reproduces
+every golden. Measured at each merge against the goldens the TypeScript
+port gives at that merge, the goldens differing under the Go harness's
+skips fall from 613 to none, and none starts to differ on the way:
+
+- #149 writes a field's union metadata, so github's
+  `integration_installation` and shortcut's `story_slim` match, and their
+  counts fall from 240 to 239 and from 14 to 13. Those are the two counts
+  reported stale.
+- #151 fills the empty fields blocks of cloudsmith's `user_auth_token` and
+  six gitlab entities from their bodies, and the block no longer sits out of
+  place: 611 to 604.
+- #160 names a path's ancestors as the TypeScript port does, in 582 entity
+  files: 604 to 63.
+- #163 brings github's four union counts to the Go port's: 63 to 59.
+- #166 writes an empty fields block after `op`, and keeps the `active` key
+  of a request transform, which it had dropped from github's `hook`: 59
+  to 2.
+- #164 reads named examples in the order they are declared, so github's
+  `activity` and `repo` take their fields from the example declared first:
+  2 to 0.
+
+#162, #165 and #161 bring the flow steps and the info block into line,
+which no golden covers. `make port-diff` follows each gap closing: unions at
+#149 and #163, relations at #160, flow steps at #162, info at #165 and #161,
+and the last 16 fields, github's, at #164. From #164 on, it finds no
+difference over the 15 definitions.
+
+All twelve skip entries now find no differing golden, though each glob still
+matches goldens, so each is removed, with the two reasons only they used. The
+harness fails an entry whose count is stale, and an entry recounted to zero
+would only turn a strict line diff into a count:
+
+- `model/cloudsmith-*/*` (56): 1 at #151 and 55 at #160.
+- `model/codatplatform-*/*` (12): 11 at #160 and 1 at #166.
+- `model/contentfulcma-*/*` (34): 21 at #160 and 13 at #166.
+- `model/foo-*/*-bar.aontu`, `*-qaz.aontu` and `*-yike.aontu` (1 each), and
+  `model/petstore-*/*-store.aontu` (1): the empty fields block, at #166.
+- `model/github-*/*` (240): 1 at #149, 222 at #160, 4 at #163, 11 at #166
+  and 2 at #164.
+- `model/gitlab-*/*` (230): 6 at #151, 199 at #160 and 25 at #166.
+- `model/learnworlds-*/*` (9) and `model/statuspage-*/*` (14): all at #160.
+- `model/shortcut-*/*` (14): 1 at #149, 10 at #160 and 3 at #166.
+
+The TypeScript suite passes 23/23 on the refreshed goldens, main's five
+tests among them. The Go harness on go/v0.20.0 passes its 36 tests and
+compares all 871 distinct goldens strictly. `make port-diff` finds no
+difference over the 15 definitions.
+
 ## Keeping goldens honest
 
 The lesson from both: a stale golden does not announce itself. It sits there

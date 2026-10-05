@@ -4,6 +4,38 @@ main: kit: entity: api_entities_deploy_token_with_token: {
 
   alias: field: {}
 
+  fields: {
+    expires_at: {
+      fo: "date-time"
+      h: "Expires At"
+      n: "expires_at"
+      r: false
+      sh: "Expiration date for the deploy token."
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "New deploy token's name"
+      t: "`$STRING`"
+    }
+    scopes: {
+      h: "Scopes"
+      n: "scopes"
+      r: true
+      sh: "Indicates the deploy token scopes."
+      t: "`$ARRAY`"
+    }
+    username: {
+      h: "Username"
+      n: "username"
+      r: false
+      sh: "Username for deploy token."
+      t: "`$STRING`"
+    }
+  }
+
   name: "api_entities_deploy_token_with_token"
   op: {
     create: {
@@ -22,16 +54,7 @@ main: kit: entity: api_entities_deploy_token_with_token: {
                 n: "group_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_groups_id_deploy_token"
-                or: "postApiV4GroupsIdDeployTokens"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -40,7 +63,6 @@ main: kit: entity: api_entities_deploy_token_with_token: {
           q: {
             exist: [
               "group_id"
-              "post_api_v4_groups_id_deploy_token"
             ]
           }
           r: {
@@ -90,21 +112,11 @@ main: kit: entity: api_entities_deploy_token_with_token: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_deploy_token"
-                or: "postApiV4ProjectsIdDeployTokens"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/deploy_tokens"
           q: {
             exist: [
-              "post_api_v4_projects_id_deploy_token"
               "project_id"
             ]
           }
@@ -141,9 +153,6 @@ main: kit: entity: api_entities_deploy_token_with_token: {
         }
       ]
     }
-  }
-
-  fields: {
   }
 
 

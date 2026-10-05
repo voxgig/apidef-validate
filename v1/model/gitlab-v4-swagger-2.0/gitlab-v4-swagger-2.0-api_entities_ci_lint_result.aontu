@@ -11,6 +11,13 @@ main: kit: entity: api_entities_ci_lint_result: {
       r: false
       t: "`$STRING`"
     }
+    content: {
+      h: "Content"
+      n: "content"
+      r: true
+      sh: "Content of .gitlab-ci.yml"
+      t: "`$STRING`"
+    }
     context_project: {
       h: "Context Project"
       n: "context_project"
@@ -23,6 +30,13 @@ main: kit: entity: api_entities_ci_lint_result: {
       r: false
       t: "`$STRING`"
     }
+    dry_run: {
+      h: "Dry Run"
+      n: "dry_run"
+      r: false
+      sh: "Run pipeline creation simulation, or only do static check."
+      t: "`$BOOLEAN`"
+    }
     errors: {
       h: "Errors"
       n: "errors"
@@ -34,6 +48,13 @@ main: kit: entity: api_entities_ci_lint_result: {
       n: "extra"
       r: false
       t: "`$OBJECT`"
+    }
+    include_jobs: {
+      h: "Include Jobs"
+      n: "include_jobs"
+      r: false
+      sh: "If the list of jobs that would exist in a static check or pipeline simulation should be included in the response."
+      t: "`$BOOLEAN`"
     }
     includes: {
       h: "Includes"
@@ -63,6 +84,13 @@ main: kit: entity: api_entities_ci_lint_result: {
       h: "Raw"
       n: "raw"
       r: false
+      t: "`$STRING`"
+    }
+    ref: {
+      h: "Ref"
+      n: "ref"
+      r: false
+      sh: "When dry_run is true, sets the branch or tag to use."
       t: "`$STRING`"
     }
     type: {
@@ -103,16 +131,7 @@ main: kit: entity: api_entities_ci_lint_result: {
                 n: "project_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_ci_lint"
-                or: "postApiV4ProjectsIdCiLint"
-                r: true
-                t: "`$OBJECT`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -120,7 +139,6 @@ main: kit: entity: api_entities_ci_lint_result: {
           o: "/api/v4/projects/{id}/ci/lint"
           q: {
             exist: [
-              "post_api_v4_projects_id_ci_lint"
               "project_id"
             ]
           }
@@ -176,7 +194,7 @@ main: kit: entity: api_entities_ci_lint_result: {
                 n: "project_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
             query: [
@@ -185,42 +203,43 @@ main: kit: entity: api_entities_ci_lint_result: {
                 n: "content_ref"
                 or: "content_ref"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
+                ex: false
                 k: "query"
                 n: "dry_run"
                 or: "dry_run"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "dry_run_ref"
                 or: "dry_run_ref"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "include_job"
                 or: "include_jobs"
                 r: false
-                t: "`$ANY`"
+                t: "`$BOOLEAN`"
               }
               {
                 k: "query"
                 n: "ref"
                 or: "ref"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
               {
                 k: "query"
                 n: "sha"
                 or: "sha"
                 r: false
-                t: "`$ANY`"
+                t: "`$STRING`"
               }
             ]
           }

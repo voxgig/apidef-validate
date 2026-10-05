@@ -5,10 +5,73 @@ main: kit: entity: integration: {
   alias: field: {}
 
   fields: {
+    api_app_id: {
+      h: "Api App Id"
+      n: "api_app_id"
+      r: false
+      sh: "The Slack app ID"
+      t: "`$STRING`"
+    }
+    authed_users: {
+      h: "Authed Users"
+      n: "authed_users"
+      r: false
+      sh: "(Deprecated by Slack) An array of Slack user IDs"
+      t: "`$ARRAY`"
+    }
+    event: {
+      h: "Event"
+      n: "event"
+      r: false
+      sh: "The event object with variable properties"
+      t: "`$OBJECT`"
+    }
+    event_id: {
+      h: "Event Id"
+      n: "event_id"
+      r: false
+      sh: "A unique identifier for this specific event"
+      t: "`$STRING`"
+    }
+    event_time: {
+      fo: "int32"
+      h: "Event Time"
+      n: "event_time"
+      r: false
+      sh: "The epoch timestamp in seconds when this event was dispatched"
+      t: "`$INTEGER`"
+    }
     id: {
       h: "Id"
       n: "id"
       r: false
+      t: "`$STRING`"
+    }
+    team_id: {
+      h: "Team Id"
+      n: "team_id"
+      r: false
+      sh: "The Slack workspace ID of where the event occurred"
+      t: "`$STRING`"
+    }
+    token: {
+      h: "Token"
+      n: "token"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "The Mattermost token."
+      t: "`$STRING`"
+    }
+    type: {
+      h: "Type"
+      n: "type"
+      r: false
+      sh: "The kind of event this is, usually `event_callback`"
       t: "`$STRING`"
     }
   }
@@ -39,21 +102,11 @@ main: kit: entity: integration: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_integrations_mattermost_slash_commands_trigger"
-                or: "postApiV4ProjectsIdIntegrationsMattermostSlashCommandsTrigger"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/integrations/mattermost_slash_commands/trigger"
           q: {
             exist: [
-              "post_api_v4_projects_id_integrations_mattermost_slash_commands_trigger"
               "project_id"
             ]
           }
@@ -106,21 +159,11 @@ main: kit: entity: integration: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_integrations_slack_slash_commands_trigger"
-                or: "postApiV4ProjectsIdIntegrationsSlackSlashCommandsTrigger"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/integrations/slack_slash_commands/trigger"
           q: {
             exist: [
-              "post_api_v4_projects_id_integrations_slack_slash_commands_trigger"
               "project_id"
             ]
           }
@@ -173,21 +216,11 @@ main: kit: entity: integration: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_services_mattermost_slash_commands_trigger"
-                or: "postApiV4ProjectsIdServicesMattermostSlashCommandsTrigger"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/services/mattermost_slash_commands/trigger"
           q: {
             exist: [
-              "post_api_v4_projects_id_services_mattermost_slash_commands_trigger"
               "project_id"
             ]
           }
@@ -240,21 +273,11 @@ main: kit: entity: integration: {
                 t: "`$STRING`"
               }
             ]
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_projects_id_services_slack_slash_commands_trigger"
-                or: "postApiV4ProjectsIdServicesSlackSlashCommandsTrigger"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
           }
           m: "POST"
           o: "/api/v4/projects/{id}/services/slack_slash_commands/trigger"
           q: {
             exist: [
-              "post_api_v4_projects_id_services_slack_slash_commands_trigger"
               "project_id"
             ]
           }
@@ -297,24 +320,8 @@ main: kit: entity: integration: {
             source: "swagger2"
             version: 2
           }
-          g: {
-            query: [
-              {
-                k: "query"
-                n: "post_api_v4_integrations_slack_event"
-                or: "postApiV4IntegrationsSlackEvents"
-                r: true
-                t: "`$OBJECT`"
-              }
-            ]
-          }
           m: "POST"
           o: "/api/v4/integrations/slack/events"
-          q: {
-            exist: [
-              "post_api_v4_integrations_slack_event"
-            ]
-          }
           s: [
             {
               lit: "api"
@@ -415,7 +422,7 @@ main: kit: entity: integration: {
                 n: "group_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -485,7 +492,7 @@ main: kit: entity: integration: {
                 n: "project_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
@@ -541,7 +548,7 @@ main: kit: entity: integration: {
                 n: "project_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
               {
                 k: "param"

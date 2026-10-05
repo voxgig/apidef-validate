@@ -74,25 +74,7 @@ func (skip *goldenSkip) noteDiffers(rel string) {
 	skip.mismatched[rel] = true
 }
 
-const emptyFieldsGap = "an empty fields block sits before name instead of after op"
-const ancestorGap = "ancestor relations are missing, partial or out of order"
-
-var goldenSkips = []*goldenSkip{
-	{Glob: "model/cloudsmith-*/*", Expect: 56, Reason: ancestorGap + ", and " + emptyFieldsGap},
-	{Glob: "model/codatplatform-*/*", Expect: 12, Reason: ancestorGap + ", and " + emptyFieldsGap},
-	{Glob: "model/contentfulcma-*/*", Expect: 34, Reason: ancestorGap + ", and " + emptyFieldsGap},
-	{Glob: "model/foo-*/*-bar.aontu", Expect: 1, Reason: emptyFieldsGap},
-	{Glob: "model/foo-*/*-qaz.aontu", Expect: 1, Reason: emptyFieldsGap},
-	{Glob: "model/foo-*/*-yike.aontu", Expect: 1, Reason: emptyFieldsGap},
-	{Glob: "model/github-*/*", Expect: 240, Reason: ancestorGap + "; union metadata, some " +
-		"fields and a request mapping are missing; and " + emptyFieldsGap},
-	{Glob: "model/gitlab-*/*", Expect: 230, Reason: ancestorGap + ", and " + emptyFieldsGap},
-	{Glob: "model/learnworlds-*/*", Expect: 9, Reason: ancestorGap},
-	{Glob: "model/petstore-*/*-store.aontu", Expect: 1, Reason: emptyFieldsGap},
-	{Glob: "model/shortcut-*/*", Expect: 14, Reason: ancestorGap + "; union metadata is missing; " +
-		"and " + emptyFieldsGap},
-	{Glob: "model/statuspage-*/*", Expect: 14, Reason: ancestorGap},
-}
+var goldenSkips = []*goldenSkip{}
 
 func findSkip(rel string) *goldenSkip {
 	for _, skip := range goldenSkips {
