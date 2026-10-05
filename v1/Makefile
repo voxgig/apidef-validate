@@ -28,14 +28,29 @@ test-model-case:
 
 # Both ports' API models, case by case: each harness writes them to
 # PORT_DIFF_DIR, and scripts/port-diff.js counts the differences by class. A
-# golden that disagrees fails its harness without stopping the dump.
+# golden that disagrees fails its harness without stopping the dump; the target
+# then fails too, naming the harness log. The Go harness runs each case in a
+# temporary directory, so the folder is made absolute.
 PORT_DIFF_DIR ?= $(CURDIR)/port-diff-out
+override PORT_DIFF_DIR := $(abspath $(PORT_DIFF_DIR))
+PORT_DIFF_FLAGS ?=
 
+# The Go case list is the TS one minus its GraphQL cases.
 port-diff:
 	rm -rf $(PORT_DIFF_DIR)
-	-DUMP_MODEL=$(PORT_DIFF_DIR) npm run test-model-case > /dev/null 2>&1
-	-cd $(GODIR) && DUMP_MODEL=$(PORT_DIFF_DIR) $(GOTEST) -run "/model-case" ./... > /dev/null 2>&1
-	node scripts/port-diff.js $(PORT_DIFF_DIR)
+	mkdir -p $(PORT_DIFF_DIR)
+	@ts=0; go=0; diff=0; \
+	echo "port-diff: 1/3 TS harness, output in $(PORT_DIFF_DIR)/ts-harness.log"; \
+	DUMP_MODEL=$(PORT_DIFF_DIR) npm run test-model-case \
+	  > $(PORT_DIFF_DIR)/ts-harness.log 2>&1 || ts=$$?; \
+	echo "port-diff: 2/3 Go harness, output in $(PORT_DIFF_DIR)/go-harness.log"; \
+	(cd $(GODIR) && DUMP_MODEL=$(PORT_DIFF_DIR) $(GOTEST) -run "/model-case" ./...) \
+	  > $(PORT_DIFF_DIR)/go-harness.log 2>&1 || go=$$?; \
+	echo "port-diff: 3/3 comparing"; \
+	node scripts/port-diff.js $(PORT_DIFF_DIR) --ts-only=graphql $(PORT_DIFF_FLAGS) || diff=$$?; \
+	[ $$ts = 0 ] || echo "port-diff: the TS harness exited $$ts; see $(PORT_DIFF_DIR)/ts-harness.log" >&2; \
+	[ $$go = 0 ] || echo "port-diff: the Go harness exited $$go; see $(PORT_DIFF_DIR)/go-harness.log" >&2; \
+	[ $$ts = 0 ] && [ $$go = 0 ] && [ $$diff = 0 ]
 
 # Pull the latest published github.com/voxgig/apidef/go and refresh go.sum.
 update-apidef:

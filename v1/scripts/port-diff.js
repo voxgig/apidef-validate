@@ -1,18 +1,23 @@
 // Compares the API models the two harnesses write with DUMP_MODEL set,
 // `<case>.ts.json` from the TS port and `<case>.go.json` from the Go port, and
-// counts their differences by class, as a markdown table.
-//
-//   node scripts/port-diff.js <dir> [--detail]
+// counts their differences by class, as a markdown table. A case only one port
+// dumped fails the run unless --allow-one-sided is given or --ts-only=<spec>
+// names its spec; a run that pairs no case always fails.
 
 const Fs = require('node:fs')
 const Path = require('node:path')
 
-const [dir, ...flags] = process.argv.slice(2)
-if (null == dir) {
-  console.error('usage: node scripts/port-diff.js <dir> [--detail]')
+const args = process.argv.slice(2)
+const flags = args.filter((arg) => arg.startsWith('--'))
+const [dir, ...extra] = args.filter((arg) => !arg.startsWith('--'))
+const tsOnlySpecs = flags.filter((flag) => flag.startsWith('--ts-only=')).map((flag) => flag.slice('--ts-only='.length))
+const known = (flag) => ['--detail', '--allow-one-sided'].includes(flag) || /^--ts-only=./.test(flag)
+if (null == dir || 0 < extra.length || !flags.every(known)) {
+  console.error('usage: node scripts/port-diff.js <dir> [--detail] [--allow-one-sided] [--ts-only=<spec>]...')
   process.exit(2)
 }
 const detail = flags.includes('--detail')
+const allowOneSided = flags.includes('--allow-one-sided')
 
 const isMap = (v) => null != v && 'object' === typeof v && !Array.isArray(v)
 
@@ -76,11 +81,30 @@ function classify(path) {
   return [path.slice(0, 3).join('.'), path.slice(0, 4).join('.')]
 }
 
-const cases = Fs.readdirSync(dir)
-  .filter((file) => file.endsWith('.ts.json'))
-  .map((file) => file.slice(0, -'.ts.json'.length))
-  .filter((name) => Fs.existsSync(Path.join(dir, name + '.go.json')))
+function listDir(dir) {
+  try {
+    return Fs.readdirSync(dir)
+  }
+  catch (err) {
+    if ('ENOENT' === err.code) return []
+    throw err
+  }
+}
+
+const files = listDir(dir)
+const dumped = (port) => new Set(files
+  .filter((file) => file.endsWith('.' + port + '.json'))
+  .map((file) => file.slice(0, -('.' + port + '.json').length)))
+const tsCases = dumped('ts')
+const goCases = dumped('go')
+
+const cases = [...tsCases].filter((name) => goCases.has(name)).sort()
+const oneSided = [...new Set([...tsCases, ...goCases])]
+  .filter((name) => !(tsCases.has(name) && goCases.has(name)))
   .sort()
+  .map((name) => tsCases.has(name)
+    ? { name, port: 'TS', spec: tsOnlySpecs.find((spec) => name.endsWith('-' + spec)) }
+    : { name, port: 'Go' })
 
 const read = (name, port) =>
   normalize(JSON.parse(Fs.readFileSync(Path.join(dir, name + '.' + port + '.json'), 'utf8')))
@@ -133,3 +157,21 @@ for (const [cls, name, units, ts, go, differ] of rows) {
 }
 
 console.log(`\n${cases.length} cases compared`)
+
+if (0 < oneSided.length) {
+  console.log(`${oneSided.length} cases dumped by one port only:`)
+  for (const { name, port, spec } of oneSided) {
+    console.log(`  ${port} only: ${name}` + (null == spec ? '' : ` (expected: --ts-only=${spec})`))
+  }
+}
+
+const unexpected = oneSided.filter((one) => null == one.spec)
+if (0 === cases.length) {
+  console.error(`port-diff: no case was compared: ${dir} holds no <case>.ts.json and <case>.go.json pair`)
+  process.exit(1)
+}
+if (0 < unexpected.length && !allowOneSided) {
+  console.error(`port-diff: ${unexpected.length} cases dumped by one port only; ` +
+    'the other harness did not write them (--allow-one-sided compares the rest)')
+  process.exit(1)
+}
