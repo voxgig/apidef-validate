@@ -158,20 +158,21 @@ for (const [cls, name, units, ts, go, differ] of rows) {
 
 console.log(`\n${cases.length} cases compared`)
 
+const unexpected = oneSided.filter((one) => null == one.spec)
 if (0 < oneSided.length) {
-  console.log(`${oneSided.length} cases dumped by one port only:`)
+  console.log(`${oneSided.length} cases dumped by one port only ` +
+    `(${oneSided.length - unexpected.length} expected, ${unexpected.length} unexpected):`)
   for (const { name, port, spec } of oneSided) {
     console.log(`  ${port} only: ${name}` + (null == spec ? '' : ` (expected: --ts-only=${spec})`))
   }
 }
 
-const unexpected = oneSided.filter((one) => null == one.spec)
 if (0 === cases.length) {
   console.error(`port-diff: no case was compared: ${dir} holds no <case>.ts.json and <case>.go.json pair`)
   process.exit(1)
 }
 if (0 < unexpected.length && !allowOneSided) {
-  console.error(`port-diff: ${unexpected.length} cases dumped by one port only; ` +
+  console.error(`port-diff: ${unexpected.length} unexpected cases dumped by one port only; ` +
     'the other harness did not write them (--allow-one-sided compares the rest)')
   process.exit(1)
 }
