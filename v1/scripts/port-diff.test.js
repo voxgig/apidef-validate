@@ -113,7 +113,7 @@ describe('port-diff script', () => {
       for (const flags of [[], ['--allow-one-sided']]) {
         const run = portDiff(dir, ...flags)
         assert.notEqual(run.status, 0, run.out)
-        assert.match(run.out, /no case was compared/)
+        assert.match(run.stderr, /^port-diff: no case was compared: /m)
       }
     }
   })
@@ -143,14 +143,38 @@ function makeEnv(env) {
 
 function make(args, env) {
   const run = spawnSync('make', ['-s', ...args], { cwd: V1, encoding: 'utf8', env: makeEnv(env) })
-  return { status: run.status, out: run.stdout + run.stderr }
+  return { status: run.status, stdout: run.stdout, stderr: run.stderr, out: run.stdout + run.stderr }
 }
+
+const lines = (text) => text.split('\n').filter((line) => '' !== line)
 
 // The paths named by the rm lines of a dry run.
 function removals(out) {
   return out.split('\n').filter((line) => /^rm /.test(line))
     .flatMap((line) => line.split(/\s+/).slice(1).filter((arg) => '' !== arg && !arg.startsWith('-')))
 }
+
+// make stops on $(error) with `Makefile:<line>: *** <message>.  Stop.`
+const refusal = (run) => run.stderr.match(/\*\*\* (port-diff: .*)\.  Stop\.$/m)?.[1]
+
+const dirRuns = (dir) => [
+  make(['-n', 'port-diff', 'PORT_DIFF_DIR=' + dir], {}),
+  make(['-n', 'port-diff'], { PORT_DIFF_DIR: dir }),
+]
+
+// The $(abspath) make shows PORT_DIFF_DIR as, word by word.
+const shown = (dir) => dir.split(' ').filter((word) => '' !== word).map((word) => Path.resolve(V1, word)).join(' ')
+
+function assertRefusedDir(dir, reason) {
+  for (const run of dirRuns(dir)) {
+    assert.notEqual(run.status, 0, run.out)
+    assert.equal(refusal(run), `port-diff: PORT_DIFF_DIR=${shown(dir)} ${reason}; name a new or empty folder`, run.out)
+    assert.deepEqual(removals(run.out), [], run.out)
+  }
+}
+
+// The N in the status loop's `$((t % N))`, as a dry run prints it.
+const beatOf = (out) => Number(out.match(/\$\(\(t % (\S+?)\)\)/)?.[1])
 
 // Stands in for npm and go on PATH: each writes the dump DUMP_MODEL names,
 // waits the seconds given, then exits with the status given.
@@ -185,17 +209,36 @@ describe('make port-diff', { skip: NO_MAKE }, () => {
   })
 
 
-  test('refused-dir', () => {
+  test('refused-dir: not a single path', () => {
+    for (const dir of ['', 'a b']) {
+      assertRefusedDir(dir, 'is not a single path')
+    }
+  })
+
+
+  test('refused-dir: v1 or above', () => {
+    for (const dir of ['.', '..', './', 'go/..', REPO, '/']) {
+      assertRefusedDir(dir, `is ${V1} or a folder above it`)
+    }
+  })
+
+
+  test('refused-dir: other files', () => {
+    const notes = tmpDir('port-diff-out-')
+    Fs.writeFileSync(Path.join(notes, 'notes.md'), 'kept')
+    assertRefusedDir(notes, 'holds files port-diff did not write: notes.md')
+
     const link = Path.join(tmpDir('port-diff-link-'), 'repo')
     Fs.symlinkSync(REPO, link)
-    for (const dir of ['.', '..', './', 'go/..', REPO, '/', 'go', link]) {
-      for (const [args, env] of [
-        [['-n', 'port-diff', 'PORT_DIFF_DIR=' + dir], {}],
-        [['-n', 'port-diff'], { PORT_DIFF_DIR: dir }],
-      ]) {
-        const run = make(args, env)
-        assert.notEqual(run.status, 0, dir + '\n' + run.out)
-        assert.match(run.out, /port-diff: PORT_DIFF_DIR=\S+ (is \S+ or a folder above it|holds files port-diff did not write: .+); name a new or empty folder/)
+    for (const dir of ['go', link]) {
+      for (const run of dirRuns(dir)) {
+        assert.notEqual(run.status, 0, run.out)
+        const said = refusal(run)?.match(/^port-diff: PORT_DIFF_DIR=(\S+) holds files port-diff did not write: (.+); name a new or empty folder$/)
+        assert.ok(said, run.out)
+        assert.equal(said[1], shown(dir), run.out)
+        const entries = Fs.readdirSync(Path.resolve(V1, dir))
+        const named = said[2].split(' ')
+        assert.ok(named.length <= 3 && named.every((name) => entries.includes(name)), run.out)
         assert.deepEqual(removals(run.out), [], run.out)
       }
     }
@@ -228,6 +271,41 @@ describe('make port-diff', { skip: NO_MAKE }, () => {
   })
 
 
+  test('beat-default', () => {
+    const run = make(['-n', 'port-diff', 'PORT_DIFF_DIR=' + tmpDir('port-diff-out-')], {})
+    assert.equal(run.status, 0, run.out)
+    const beat = beatOf(run.out)
+    assert.ok(1 <= beat && beat <= 30, `the default PORT_DIFF_BEAT, ${beat}, is not from 1 to 30:\n` + run.out)
+  })
+
+
+  test('beat-refused', () => {
+    const out = tmpDir('port-diff-out-')
+    for (const beat of ['0', '31', '60', '-1', 'x', '1.5', '08', '%', '', '1 2']) {
+      for (const run of [
+        make(['-n', 'port-diff', 'PORT_DIFF_DIR=' + out, 'PORT_DIFF_BEAT=' + beat], {}),
+        make(['-n', 'port-diff', 'PORT_DIFF_DIR=' + out], { PORT_DIFF_BEAT: beat }),
+      ]) {
+        assert.notEqual(run.status, 0, run.out)
+        assert.equal(refusal(run), `port-diff: PORT_DIFF_BEAT=${beat} is not a whole number of seconds from 1 to 30`, run.out)
+        assert.deepEqual(removals(run.out), [], run.out)
+      }
+    }
+
+    for (const beat of ['1', '30']) {
+      const run = make(['-n', 'port-diff', 'PORT_DIFF_DIR=' + out, 'PORT_DIFF_BEAT=' + beat], {})
+      assert.equal(run.status, 0, run.out)
+      assert.equal(beatOf(run.out), Number(beat), run.out)
+    }
+
+    Fs.writeFileSync(Path.join(out, 'old-1-openapi.go.json'), 'stale')
+    const real = make(['port-diff', 'PORT_DIFF_DIR=' + out], { ...stubHarnesses(0, 0), PORT_DIFF_BEAT: '0' })
+    assert.notEqual(real.status, 0, real.out)
+    assert.equal(lines(real.stdout).length, 0, real.out)
+    assert.deepEqual(Fs.readdirSync(out), ['old-1-openapi.go.json'], real.out)
+  })
+
+
   test('harness-exit', () => {
     const out = tmpDir('port-diff-out-')
 
@@ -240,9 +318,22 @@ describe('make port-diff', { skip: NO_MAKE }, () => {
       assert.notEqual(failed.status, 0, failed.out)
       assert.match(failed.out, /^1 cases compared$/m)
       const log = Path.join(out, port.toLowerCase() + '-harness.log')
-      assert.ok(failed.out.includes(`the ${port} harness exited ${tsExit || goExit}; see ${log}`), failed.out)
+      assert.ok(lines(failed.stderr).includes(`port-diff: the ${port} harness exited ${tsExit || goExit}; see ${log}`), failed.out)
       assert.match(Fs.readFileSync(log, 'utf8'), new RegExp(`stub exit ${tsExit || goExit}`))
     }
+  })
+
+
+  test('status-on-stderr', () => {
+    const out = tmpDir('port-diff-out-')
+    const run = make(['port-diff', 'PORT_DIFF_DIR=' + out], stubHarnesses(0, 0))
+    assert.equal(run.status, 0, run.out)
+    assert.equal(run.stdout, portDiff(out).stdout, 'stdout holds more than the report:\n' + run.out)
+    assert.deepEqual(lines(run.stderr), [
+      `port-diff: 1/3 TS harness, output in ${out}/ts-harness.log`,
+      `port-diff: 2/3 Go harness, output in ${out}/go-harness.log`,
+      'port-diff: 3/3 comparing',
+    ], run.out)
   })
 
 
@@ -250,9 +341,10 @@ describe('make port-diff', { skip: NO_MAKE }, () => {
     const out = tmpDir('port-diff-out-')
     const run = make(['port-diff', 'PORT_DIFF_DIR=' + out], { ...stubHarnesses(0, 0, 3), PORT_DIFF_BEAT: '1' })
     assert.equal(run.status, 0, run.out)
+    assert.doesNotMatch(run.stdout, /harness running/, run.out)
     for (const phase of ['1/3 TS', '2/3 Go']) {
       const beat = new RegExp(`^port-diff: ${phase} harness running \\d+s, 1 of ([1-9]\\d*) cases dumped \\((\\d+)%\\)$`, 'm')
-      const [, total, pct] = run.out.match(beat) ?? assert.fail(run.out)
+      const [, total, pct] = run.stderr.match(beat) ?? assert.fail(run.out)
       assert.equal(Number(pct), Math.floor(100 / Number(total)), run.out)
     }
   })
