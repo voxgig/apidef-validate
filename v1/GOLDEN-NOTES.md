@@ -332,7 +332,12 @@ each.
    dingconnect's cancellations and estimations, whose carriers are those two
    fields, and petstore's two user list actions, which declare none, since an
    action's request fields are its own. 18 operations re-sort their points.
-   579 points change, in 275 operations and 179 goldens.
+   579 points change, in 275 operations and 179 goldens. 21 of the new
+   fields, file uploads in 20 gitlab goldens (`file`, `avatar`, `key`,
+   `certificate`, `chart`, `package`, `content`), are typed with the bare
+   string `Any` rather than `` `$ANY` ``. Their properties declare
+   `type: file`, and apidef maps a type it does not know to that string,
+   in both ports.
 5. **A wrapped request body's fields are read through its key** (#159).
    Twelve statuspage entities lose the field named after the wrapper, six of
    them gain the 20 record fields the wrapped bodies declare, and seven
@@ -352,14 +357,20 @@ Postman's `{{name}}` form, and the info block is unchanged in both ports
 5,485 path segment variables was already named by its path argument, and
 each of the 5,503 path arguments already required (#147). The list, item
 envelope and tag rules of #155, #158 and #156 meet no case here. The six Go
-merges, #160, #161, #162, #164, #165 and #166, change the Go port alone.
+merges, #160, #161, #162, #164, #165 and #166, change no TypeScript output.
 
-Read against the definitions at 8.24.0, each of the 9,057 arguments with a
-declared parameter carries the type and the example that parameter
-declares, as apidef reads them: a parameter declaring no type is typed by
-its name, and an empty example is dropped by the clean step. No argument
-comes from a body parameter, and every path argument that fills a
-placeholder is required. Each field #149, #151 and #159 adds is a property
+Read against the definitions at 8.24.0, 8,721 of the 9,058 arguments match
+a parameter declared at the same location. Of the 8,705 of those that
+declare a type, 8,701 carry it; the other four, statuspage's `start` and
+`end`, declare type names that are not standard. The 16 that declare no type
+are typed by their name, and 2,216 of the 2,218 declared examples are
+carried, the two dropped being empty. 336 more arguments, 332 in gitlab and
+4 in petstore, come from Swagger 2 `formData` parameters. apidef still
+models those as query arguments and reads no type from them, so 318 do not
+carry the type they declare, which voxgig/apidef#150 records. The last is
+taxonomy's `kingdom_id`, whose reference the full definition leaves
+unresolved. No argument comes from an `in: body` parameter, and every path
+argument that fills a placeholder is required. Each field #149, #151 and #159 adds is a property
 of a request body the definition declares for one of the entity's
 operations: #149's through an allOf member, #151's in a body parameter's
 schema, and #159's under the key that wraps the record. The exceptions are
@@ -373,8 +384,8 @@ skips fall from 613 to none, and none starts to differ on the way:
 
 - #149 writes a field's union metadata, so github's
   `integration_installation` and shortcut's `story_slim` match, and their
-  counts fall from 240 to 239 and from 14 to 13. Those are the two counts
-  reported stale.
+  counts fall from 240 to 239 and from 14 to 13, the two counts
+  voxgig/apidef#160's verification found stale.
 - #151 fills the empty fields blocks of cloudsmith's `user_auth_token` and
   six gitlab entities from their bodies, and the block no longer sits out of
   place: 611 to 604.
