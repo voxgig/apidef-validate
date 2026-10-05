@@ -275,24 +275,24 @@ describe('make port-diff', { skip: NO_MAKE }, () => {
     const run = make(['-n', 'port-diff', 'PORT_DIFF_DIR=' + tmpDir('port-diff-out-')], {})
     assert.equal(run.status, 0, run.out)
     const beat = beatOf(run.out)
-    assert.ok(1 <= beat && beat <= 30, `the default PORT_DIFF_BEAT, ${beat}, is not from 1 to 30:\n` + run.out)
+    assert.ok(1 <= beat && beat <= 25, `the default PORT_DIFF_BEAT, ${beat}, is not from 1 to 25:\n` + run.out)
   })
 
 
   test('beat-refused', () => {
     const out = tmpDir('port-diff-out-')
-    for (const beat of ['0', '31', '60', '-1', 'x', '1.5', '08', '%', '', '1 2']) {
+    for (const beat of ['0', '26', '30', '60', '-1', 'x', '1.5', '08', '%', '', '1 2']) {
       for (const run of [
         make(['-n', 'port-diff', 'PORT_DIFF_DIR=' + out, 'PORT_DIFF_BEAT=' + beat], {}),
         make(['-n', 'port-diff', 'PORT_DIFF_DIR=' + out], { PORT_DIFF_BEAT: beat }),
       ]) {
         assert.notEqual(run.status, 0, run.out)
-        assert.equal(refusal(run), `port-diff: PORT_DIFF_BEAT=${beat} is not a whole number of seconds from 1 to 30`, run.out)
+        assert.equal(refusal(run), `port-diff: PORT_DIFF_BEAT=${beat} is not a whole number of seconds from 1 to 25`, run.out)
         assert.deepEqual(removals(run.out), [], run.out)
       }
     }
 
-    for (const beat of ['1', '30']) {
+    for (const beat of ['1', '25']) {
       const run = make(['-n', 'port-diff', 'PORT_DIFF_DIR=' + out, 'PORT_DIFF_BEAT=' + beat], {})
       assert.equal(run.status, 0, run.out)
       assert.equal(beatOf(run.out), Number(beat), run.out)

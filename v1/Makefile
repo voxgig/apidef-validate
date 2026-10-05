@@ -34,10 +34,10 @@ test-model-case:
 PORT_DIFF_DIR ?= $(CURDIR)/port-diff-out
 override PORT_DIFF_DIR := $(abspath $(PORT_DIFF_DIR))
 PORT_DIFF_FLAGS ?=
-# Seconds between the status lines of a running harness: at most 30, the
-# longest silence ../AGENTS.md allows a long-running task.
+# Seconds between the status lines of a running harness: at most 25, so the
+# loop's one-second ticks stay inside the 30-second silence ../AGENTS.md allows.
 PORT_DIFF_BEAT ?= 15
-port_diff_beats := 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
+port_diff_beats := 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
 port_diff_beat_ok = $(and $(filter 1,$(words $(PORT_DIFF_BEAT))),$(filter $(port_diff_beats),$(PORT_DIFF_BEAT)))
 
 # What port-diff writes in PORT_DIFF_DIR, and so all it removes there; dotfiles
