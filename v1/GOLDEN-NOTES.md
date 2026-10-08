@@ -445,7 +445,8 @@ give the 8.24.0 goldens file for file, and at #173 the 8.25.0 ones. The
 release commit after #173 moves only version numbers.
 
 1. **A tag's nested, cut-named, and stored-form item routes take names of
-   their own** (#172). No golden moves, in either port.
+   their own, and a verb keeps a long-named item route's name** (#172). No
+   golden moves, in either port.
 2. **A point names the properties its JSON request body declares** (#173).
    1,082 of the 4,008 points gain `bf`: 1,019 hold a list of names, 5,959
    in all, and 63 hold `false`, for a body that declares no property.
