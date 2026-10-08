@@ -426,6 +426,61 @@ tests among them. The Go harness on go/v0.20.0 passes its 36 tests and
 compares all 871 distinct goldens strictly. `make port-diff` finds no
 difference over the 15 definitions.
 
+## 2026-10-08 — apidef 8.25.0 and go/v0.21.0
+
+The pins move from 8.24.0 to 8.25.0 and from go/v0.20.0 to go/v0.21.0. The
+release carries two merges, voxgig/apidef#172 and #173. 384 of the 1,016
+entity goldens change, in 14 of the 18 cases: 122 in gitlab, 107 in github,
+49 in cloudsmith, 30 in contentfulcma, 24 in shortcut, 15 in statuspage, 13
+in learnworlds, 8 in codatplatform, 5 in dingconnect, 3 in petstore, and 2
+each in elementdemo, foo, solar, and taxonomy. Every change is a `bf` key
+added to a point. With each `bf` entry stripped, the 768 changed files, the
+goldens and their twins, are byte for byte those of 8.24.0, and read as
+models they differ in nothing else. No entity is added or removed, no guide
+changes, and no golden of the GraphQL cases or of pokeapi changes.
+
+Each change was traced to its merge by generating the corpus at both merges,
+with both ports, from an apidef checkout at that merge. At #172 both ports
+give the 8.24.0 goldens file for file, and at #173 the 8.25.0 ones. The
+release commit after #173 moves only version numbers.
+
+1. **A tag's nested, cut-named, and stored-form item routes take names of
+   their own, and a verb keeps a long-named item route's name** (#172). No
+   golden moves, in either port.
+2. **A point names the properties its JSON request body declares** (#173).
+   1,082 of the 4,008 points gain `bf`: 1,019 hold a list of names, 5,959
+   in all, and 63 hold `false`, for a body that declares no property.
+   No GraphQL point gains it, and no pokeapi point, since no pokeapi
+   operation declares a request body.
+
+Read against the definitions, every one of the 4,008 points carries the `bf`
+its request body gives. The 1,019 lists are 920 bodies' own properties, 67
+bodies whose request transform maps them key by key, 28 wrapped bodies,
+which name the record under their key, and 4 array bodies, which name the
+field that sends them: petstore's two user list actions, and dingconnect's
+cancellations and estimations. Of the 63 `false`, 56 are contentfulcma's:
+43 objects that declare an example but no property, 2 that declare
+neither, and 11 request bodies with no content. The other 7 are 5
+cloudsmith objects with an empty properties block, a codatplatform map, and
+a learnworlds object with no property. The 2,926 points without `bf` are
+the 768 GraphQL points, 2,141 that declare no request body, and 17 whose
+body is not JSON. Two points carry `rb` beside `bf`, petstore's pet create
+and update, whose JSON body has an XML alternative. The one JSON request
+body no point carries is elementdemo's `POST /auth/token`. 191 of the 5,959
+names, on 88 points, name no field of the entity: the arguments of 74
+actions, the members of 9 bodies that may be one of several objects, which
+the fields do not read, and the bodies of 5 removes.
+
+The Go port moves with #173 point for point. Generated at each merge, its
+841 entity models are the 8.24.0 goldens at #172 and the 8.25.0 ones at
+#173, and on go/v0.21.0 it reproduces every golden. Both ports' API models
+carry the same 1,082 `bf` keys, and `make port-diff` finds no difference
+over the 15 definitions.
+
+The TypeScript suite passes 23/23 on the refreshed goldens. The Go harness
+on go/v0.21.0 passes its 36 tests and compares all 871 distinct goldens
+strictly, and its skip list stays empty.
+
 ## Keeping goldens honest
 
 The lesson from both: a stale golden does not announce itself. It sits there
