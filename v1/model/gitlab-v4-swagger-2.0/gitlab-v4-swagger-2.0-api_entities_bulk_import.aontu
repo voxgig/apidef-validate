@@ -12,6 +12,18 @@ main: kit: entity: api_entities_bulk_import: {
       r: false
       t: "`$INTEGER`"
     }
+    configuration_access_token: {
+      h: "Configuration Access Token"
+      n: "configuration_access_token"
+      r: true
+      t: "`$STRING`"
+    }
+    configuration_url: {
+      h: "Configuration Url"
+      n: "configuration_url"
+      r: true
+      t: "`$STRING`"
+    }
     created_at: {
       fo: "date-time"
       h: "Created At"
@@ -42,6 +54,48 @@ main: kit: entity: api_entities_bulk_import: {
       n: "destination_slug"
       r: false
       t: "`$STRING`"
+    }
+    entities_destination_name: {
+      h: "Entities Destination Name"
+      n: "entities_destination_name"
+      r: false
+      t: "`$ARRAY`"
+    }
+    entities_destination_namespace: {
+      h: "Entities Destination Namespace"
+      n: "entities_destination_namespace"
+      r: true
+      t: "`$ARRAY`"
+    }
+    entities_destination_slug: {
+      h: "Entities Destination Slug"
+      n: "entities_destination_slug"
+      r: false
+      t: "`$ARRAY`"
+    }
+    entities_migrate_memberships: {
+      h: "Entities Migrate Memberships"
+      n: "entities_migrate_memberships"
+      r: false
+      t: "`$ARRAY`"
+    }
+    entities_migrate_projects: {
+      h: "Entities Migrate Projects"
+      n: "entities_migrate_projects"
+      r: false
+      t: "`$ARRAY`"
+    }
+    entities_source_full_path: {
+      h: "Entities Source Full Path"
+      n: "entities_source_full_path"
+      r: true
+      t: "`$ARRAY`"
+    }
+    entities_source_type: {
+      h: "Entities Source Type"
+      n: "entities_source_type"
+      r: true
+      t: "`$ARRAY`"
     }
     entity_type: {
       h: "Entity Type"
@@ -152,92 +206,67 @@ main: kit: entity: api_entities_bulk_import: {
       points: [
         {
           co: {
-            id: "POST /api/v4/bulk_imports"
+            id: "POST /api/v4/bulk_imports/{import_id}/cancel"
             source: "swagger2"
             version: 2
           }
           g: {
-            query: [
+            params: [
               {
-                k: "query"
-                n: "configuration_access_token"
-                or: "configuration[access_token]"
+                k: "param"
+                n: "bulk_import_id"
+                or: "import_id"
                 r: true
-                t: "`$ANY`"
-              }
-              {
-                k: "query"
-                n: "configuration_url"
-                or: "configuration[url]"
-                r: true
-                t: "`$ANY`"
-              }
-              {
-                ex: "'destination_slug' not 'destination/slug'"
-                k: "query"
-                n: "entities_destination_name"
-                or: "entities[destination_name]"
-                r: false
-                t: "`$ANY`"
-              }
-              {
-                ex: "'destination_namespace' or 'destination/namespace'"
-                k: "query"
-                n: "entities_destination_namespace"
-                or: "entities[destination_namespace]"
-                r: true
-                t: "`$ANY`"
-              }
-              {
-                ex: "'destination_slug' not 'destination/slug'"
-                k: "query"
-                n: "entities_destination_slug"
-                or: "entities[destination_slug]"
-                r: false
-                t: "`$ANY`"
-              }
-              {
-                k: "query"
-                n: "entities_migrate_membership"
-                or: "entities[migrate_memberships]"
-                r: false
-                t: "`$ANY`"
-              }
-              {
-                k: "query"
-                n: "entities_migrate_project"
-                or: "entities[migrate_projects]"
-                r: false
-                t: "`$ANY`"
-              }
-              {
-                ex: "'source/full/path' not 'https://example.com/source/full/path'"
-                k: "query"
-                n: "entities_source_full_path"
-                or: "entities[source_full_path]"
-                r: true
-                t: "`$ANY`"
-              }
-              {
-                k: "query"
-                n: "entities_source_type"
-                or: "entities[source_type]"
-                r: true
-                t: "`$ANY`"
+                t: "`$INTEGER`"
               }
             ]
           }
           m: "POST"
-          o: "/api/v4/bulk_imports"
+          o: "/api/v4/bulk_imports/{import_id}/cancel"
           q: {
             exist: [
-              "configuration_access_token"
-              "configuration_url"
-              "entities_destination_namespace"
-              "entities_source_full_path"
-              "entities_source_type"
+              "bulk_import_id"
             ]
           }
+          r: {
+            param: {
+              import_id: "bulk_import_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "bulk_imports"
+            }
+            {
+              var: "bulk_import_id"
+            }
+            {
+              lit: "cancel"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /api/v4/bulk_imports"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/api/v4/bulk_imports"
           rb: {
             fields: [
               {
@@ -291,61 +320,6 @@ main: kit: entity: api_entities_bulk_import: {
             }
             {
               lit: "bulk_imports"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /api/v4/bulk_imports/{import_id}/cancel"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "bulk_import_id"
-                or: "import_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/bulk_imports/{import_id}/cancel"
-          q: {
-            exist: [
-              "bulk_import_id"
-            ]
-          }
-          r: {
-            param: {
-              import_id: "bulk_import_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "bulk_imports"
-            }
-            {
-              var: "bulk_import_id"
-            }
-            {
-              lit: "cancel"
             }
           ]
           t: {
