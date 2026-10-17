@@ -487,3 +487,9 @@ The lesson from both: a stale golden does not announce itself. It sits there
 asserting old behaviour, and the longer it sits the more it looks like the
 specification. Refresh them deliberately when behaviour changes, and write
 down why — that is what this file is for.
+
+## 2026-10-17 — apidef 8.25.3
+
+Recorded by release wave 2026-10-15-0 (voxgig/admin `npm run wave -- record`).
+The release moved the goldens (294 files changed, 3443 insertions(+), 6525 deletions(-)); the issues it fixed are listed in the wave's REPORT.md, and the diff is in this commit.
+TypeScript suite rc=0; Go suite rc=2.
