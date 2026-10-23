@@ -493,3 +493,93 @@ down why — that is what this file is for.
 Recorded by release wave 2026-10-15-0 (voxgig/admin `npm run wave -- record`).
 The release moved the goldens (294 files changed, 3443 insertions(+), 6525 deletions(-)); the issues it fixed are listed in the wave's REPORT.md, and the diff is in this commit.
 TypeScript suite rc=0; Go suite rc=2.
+
+## 2026-10-23 — apidef 8.25.5 and go/v0.21.3
+
+The pins move from 8.25.3 to 8.25.5, and from go/v0.21.0 to go/v0.21.3.
+The Go pin catches up with npm here. 8.25.3 and 8.25.4 were published to
+npm only, so the Go harness ran v0.21.0 against goldens refreshed for
+8.25.3, which is the failing Go suite the preceding entry records. go/v0.21.3
+carries the Go side of 8.25.3, 8.25.4 and 8.25.5.
+
+### What moves
+
+212 operations change entity, in 7 of the 18 cases, and 30 entities go.
+235 goldens change and 30 are removed, each with its twin: 530 files. No
+operation is added or lost. Every case keeps its point count, and each
+point that moves keeps its path and method.
+
+| Case | Entities | Operations that change entity |
+|---|---|---|
+| petstore | 4 → 4 | 1 DELETE |
+| statuspage | 17 → 16 | 1 DELETE |
+| learnworlds | 29 → 29 | 1 DELETE |
+| codatplatform | 21 → 20 | 1 POST, 1 PUT |
+| cloudsmith | 74 → 73 | 28 DELETE, 2 PUT, 1 PATCH |
+| gitlab | 274 → 250 | 74 DELETE, 3 PUT, 2 POST, 1 PATCH, 1 HEAD |
+| github | 267 → 264 | 65 DELETE, 18 PUT, 9 PATCH, 3 POST |
+
+All of it is one rule of 8.25.4 (voxgig/apidef 5da5807, ported to Go in
+49d6343). A method named only from its tag joins the entity a read of its
+own path resolved to, when the read carries the same tag. Before, such a
+method took its tag's name, so a DELETE answering 204 landed on a wrapper
+entity named after the tag, or on a stub entity of its own. GitHub's
+`DELETE /repos/{owner}/{repo}` now belongs to `full_repository` rather than
+`repo`, and the label and milestone deletes to `label` and `milestone`.
+The 30 entities that go held nothing but such routes. 24 are gitlab's:
+`tag`, `wiki`, `deployment` and the rest each held only a DELETE whose
+`GET` another entity owns. The other two rules of 8.25.4, current API
+versions over deprecated ones and sub-resource envelopes folding to their
+record, move no golden here.
+
+The rest follows from the moves. An entity's fields, ancestors and id
+descriptor come from the routes it holds. A wrapper that loses routes loses
+what they brought, and an owner that gains a write gains its body's fields.
+
+- Petstore's `store` loses its `order` ancestor with the order DELETE.
+- Cloudsmith's `org` loses a `members` field and a `service` ancestor that
+  a team route gave it. Its `repo` gives the privileges PUT to
+  `repository_privilege_dict`, so the repository's own PATCH takes the
+  `update` slot rather than `patch`.
+- Six entities lose their id descriptor, since their only item route moved
+  to its owner: gitlab's `branch`, `environment`, `feature_flag`,
+  `integration` and `release`, and github's `private_registry`.
+- Four routes gain the parent rename their owners already had. Gitlab's
+  issue metric image routes rename `issue_iid` to `issue_id`, and
+  cloudsmith's member refresh and remove routes rename `member` to
+  `member_id`.
+
+### A defect this run found, fixed in 8.25.5
+
+On 8.25.4 a joining method still looked for actions with its tag as the
+resource. A route whose second-last segment is the tag gained an action,
+and so did the read it joined. Seven routes did: GitHub's dependabot
+repository access, forks, organization personal access tokens and token
+requests, and GitLab's changelog, merge request context commits and
+`personal_access_tokens/self`. The worst was GitHub's
+`dependabot_repository_access_detail`: its list became an action point and
+the entity lost all 46 of its fields. On 8.25.5 it keeps them and gains the
+two its PATCH body declares.
+
+apidef 8.25.5 (voxgig/apidef 87d823e) leaves a path's actions to the read a
+method joins. It also records a join in the base guide only where the join
+changes the entity, so a path its shape already names keeps the shape's
+reasons. Contentfulcma, whose base guide comments 8.25.4 rewrote on 98
+lines, no longer changes at all. Against 8.25.4's output, 8.25.5 differs
+in the models of those six entities and in guide comments, nothing else.
+
+### Verification
+
+- v1 `npm test` on 8.25.5 passes 23/23, strictly. Its port-diff self-test
+  `status-on-stderr` used to fail on macOS, where bash 3.2 prints
+  "Terminated: 15" on stderr when `make port-diff` kills its status loop.
+  The target now waits on the loop it kills, which keeps the notice quiet.
+- On go/v0.21.3, `go vet ./...` is clean and `go test -count=1 ./...`
+  passes its 36 tests, comparing 840 distinct goldens strictly with none
+  skipped. `goldenSkips` stays empty.
+- `make port-diff` compares 15 cases and finds no difference.
+- apidef's own Go golden tests, `TestValidateGuide`, `TestValidateModel`
+  and `TestValidateModelData`, pass against this corpus. The last reads
+  `ts/test/model-ref`, which 8.25.5 refreshes for petstore's order DELETE.
+- `make comments`, `make deps`, the root `npm test` and the prose gate are
+  clean.

@@ -12,6 +12,20 @@ main: kit: entity: org_private_registry_configuration: {
       r: true
       t: "`$STRING`"
     }
+    encrypted_value: {
+      h: "Encrypted Value"
+      n: "encrypted_value"
+      r: false
+      sh: "The value for your secret, encrypted with [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages) using the public key retrieved from the [Get private registries public key for an…"
+      t: "`$STRING`"
+    }
+    key_id: {
+      h: "Key Id"
+      n: "key_id"
+      r: false
+      sh: "The ID of the key you used to encrypt the secret."
+      t: "`$STRING`"
+    }
     name: {
       h: "Name"
       n: "name"
@@ -22,15 +36,36 @@ main: kit: entity: org_private_registry_configuration: {
     registry_type: {
       h: "Registry Type"
       n: "registry_type"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
       sh: "The registry type."
       t: "`$STRING`"
+    }
+    selected_repository_ids: {
+      h: "Selected Repository Ids"
+      n: "selected_repository_ids"
+      r: false
+      sh: "An array of repository IDs that can access the organization private registry."
+      t: "`$ARRAY`"
     }
     updated_at: {
       fo: "date-time"
       h: "Updated At"
       n: "updated_at"
       r: true
+      t: "`$STRING`"
+    }
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: false
+      sh: "The URL of the private registry."
       t: "`$STRING`"
     }
     username: {
@@ -43,6 +78,12 @@ main: kit: entity: org_private_registry_configuration: {
     visibility: {
       h: "Visibility"
       n: "visibility"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
       sh: "Which type of organization repositories have access to the private registry."
       t: "`$STRING`"
@@ -94,6 +135,137 @@ main: kit: entity: org_private_registry_configuration: {
           rs: {
             kind: "json"
             media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "private-registries"
+            }
+            {
+              var: "secret_name"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /orgs/{org}/private-registries/{secret_name}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "secret_name"
+                or: "secret_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/private-registries/{secret_name}"
+          q: {
+            exist: [
+              "org_id"
+              "secret_name"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "private-registries"
+            }
+            {
+              var: "secret_name"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "encrypted_value"
+            "key_id"
+            "registry_type"
+            "selected_repository_ids"
+            "url"
+            "username"
+            "visibility"
+          ]
+          co: {
+            id: "PATCH /orgs/{org}/private-registries/{secret_name}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "secret_name"
+                or: "secret_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/orgs/{org}/private-registries/{secret_name}"
+          q: {
+            exist: [
+              "org_id"
+              "secret_name"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
           }
           s: [
             {

@@ -5,16 +5,159 @@ main: kit: entity: api_entities_changelog: {
   alias: field: {}
 
   fields: {
+    branch: {
+      h: "Branch"
+      n: "branch"
+      r: false
+      sh: "The branch to commit the changelog changes to"
+      t: "`$STRING`"
+    }
+    config_file: {
+      h: "Config File"
+      n: "config_file"
+      r: false
+      sh: "The file path to the configuration file as stored in the project's Git repository."
+      t: "`$STRING`"
+    }
+    config_file_ref: {
+      h: "Config File Ref"
+      n: "config_file_ref"
+      r: false
+      sh: "The git reference (for example, branch) where the changelog configuration file is defined."
+      t: "`$STRING`"
+    }
+    date: {
+      fo: "date-time"
+      h: "Date"
+      n: "date"
+      r: false
+      sh: "The date and time of the release"
+      t: "`$STRING`"
+    }
+    file: {
+      h: "File"
+      n: "file"
+      r: false
+      sh: "The file to commit the changelog changes to"
+      t: "`$STRING`"
+    }
+    from: {
+      h: "From"
+      n: "from"
+      r: false
+      sh: "The first commit in the range of commits to use for the changelog"
+      t: "`$STRING`"
+    }
+    message: {
+      h: "Message"
+      n: "message"
+      r: false
+      sh: "The commit message to use when committing the changelog"
+      t: "`$STRING`"
+    }
     notes: {
       h: "Notes"
       n: "notes"
       r: false
       t: "`$STRING`"
     }
+    to: {
+      h: "To"
+      n: "to"
+      r: false
+      sh: "The last commit in the range of commits to use for the changelog"
+      t: "`$STRING`"
+    }
+    trailer: {
+      h: "Trailer"
+      n: "trailer"
+      r: false
+      sh: "The Git trailer to use for determining if commits are to be included in the changelog"
+      t: "`$STRING`"
+    }
+    version: {
+      h: "Version"
+      n: "version"
+      r: true
+      sh: "The version of the release, using the semantic versioning format"
+      t: "`$STRING`"
+    }
   }
 
   name: "api_entities_changelog"
   op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "branch"
+            "config_file"
+            "config_file_ref"
+            "date"
+            "file"
+            "from"
+            "message"
+            "to"
+            "trailer"
+            "version"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/repository/changelog"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 1
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/repository/changelog"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "changelog"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [

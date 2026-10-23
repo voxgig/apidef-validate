@@ -468,6 +468,70 @@ main: kit: entity: repository_webhook: {
         }
       ]
     }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /webhooks/{owner}/{repo}/{identifier}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "identifier"
+                or: "identifier"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/webhooks/{owner}/{repo}/{identifier}/"
+          q: {
+            exist: [
+              "identifier"
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "webhooks"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              var: "identifier"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     update: {
       name: "update"
       points: [
@@ -553,8 +617,5 @@ main: kit: entity: repository_webhook: {
   }
 
 
-  relations: ancestors: [
-    [path("$.main.kit.entity.webhook")]
-  ]
 
 }

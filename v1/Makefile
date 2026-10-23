@@ -59,6 +59,7 @@ port_diff_go_cases = $(words $(filter-out %-$(port_diff_ts_only),$(port_diff_def
 
 # A background job ignores Ctrl-C, so the status loop also ends with the shell.
 # Status lines go to stderr, so under make -s stdout carries the report alone.
+# Waiting on the killed loop keeps bash's "Terminated" notice off stderr.
 port-diff:
 	$(if $(port_diff_refusal),$(error port-diff: PORT_DIFF_DIR=$(PORT_DIFF_DIR) $(port_diff_refusal); name a new or empty folder))
 	$(if $(port_diff_beat_ok),,$(error port-diff: PORT_DIFF_BEAT=$(PORT_DIFF_BEAT) is not a whole number of seconds from 1 to $(lastword $(port_diff_beats))))
@@ -77,12 +78,12 @@ port-diff:
 	beat "1/3 TS" ts $(port_diff_ts_cases) & beating=$$!; \
 	DUMP_MODEL=$(PORT_DIFF_DIR) npm run test-model-case \
 	  > $(PORT_DIFF_DIR)/ts-harness.log 2>&1 || ts=$$?; \
-	kill $$beating 2> /dev/null; \
+	kill $$beating 2> /dev/null; wait $$beating 2> /dev/null; \
 	say "2/3 Go harness, output in $(PORT_DIFF_DIR)/go-harness.log"; \
 	beat "2/3 Go" go $(port_diff_go_cases) & beating=$$!; \
 	(cd $(GODIR) && DUMP_MODEL=$(PORT_DIFF_DIR) $(GOTEST) -run "/model-case" ./...) \
 	  > $(PORT_DIFF_DIR)/go-harness.log 2>&1 || go=$$?; \
-	kill $$beating 2> /dev/null; \
+	kill $$beating 2> /dev/null; wait $$beating 2> /dev/null; \
 	say "3/3 comparing"; \
 	node scripts/port-diff.js $(PORT_DIFF_DIR) --ts-only=$(port_diff_ts_only) $(PORT_DIFF_FLAGS) || diff=$$?; \
 	[ $$ts = 0 ] || say "the TS harness exited $$ts; see $(PORT_DIFF_DIR)/ts-harness.log"; \

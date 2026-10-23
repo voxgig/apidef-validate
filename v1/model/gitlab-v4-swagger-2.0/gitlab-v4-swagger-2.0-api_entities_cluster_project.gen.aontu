@@ -289,6 +289,77 @@ main: kit: entity: api_entities_cluster_project: {
         }
       ]
     }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/clusters/{cluster_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "cluster_id"
+                or: "cluster_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/clusters/{cluster_id}"
+          q: {
+            exist: [
+              "cluster_id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "clusters"
+            }
+            {
+              var: "cluster_id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     update: {
       name: "update"
       points: [
@@ -375,7 +446,7 @@ main: kit: entity: api_entities_cluster_project: {
 
   relations: ancestors: [
     [path("$.main.kit.entity.project")]
-    [path("$.main.kit.entity.project") path("$.main.kit.entity.cluster")]
+    [path("$.main.kit.entity.project")]
   ]
 
 }

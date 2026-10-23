@@ -4,7 +4,7 @@
 #   statuspage-1.0.0-openapi-3.0.0-guide.aontu
 
 guide: {
-  metrics: count: entity: 17
+  metrics: count: entity: 16
   metrics: count: path: 54
   metrics: count: method: 112
 
@@ -97,13 +97,6 @@ guide: {
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
       op: update: transform: req: "incident": *("`reqdata`")|top
-    }
-  }
-
-  entity: incident_postmortem: {
-    path: "/pages/{page_id}/incidents/{incident_id}/postmortem": {  # ent=incident_postmortem;orig=incident postmortem;tag=incident_postmortem;cmp/resolve=incident_postmortem;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=incident postmortem
-      rename: param: "incident_id": *"id"  # action-parent:incident_postmortem
-      op: remove: method: *DELETE  # not-load
     }
   }
 
@@ -270,8 +263,9 @@ guide: {
   }
 
   entity: postmortem: {
-    path: "/pages/{page_id}/incidents/{incident_id}/postmortem": {  # ent=postmortem;orig=Postmortem;cmp/resolve=postmortem;path=t/p/t/;path-primary;has-cmp=Postmortem
+    path: "/pages/{page_id}/incidents/{incident_id}/postmortem": {  # ent=postmortem;orig=Postmortem;tag=incident_postmortem;cmp/resolve=incident_postmortem;same-path-tag=postmortem/GET
       op: load: method: *GET  # not-list
+      op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
       op: update: transform: req: "postmortem": *("`reqdata`")|top
     }

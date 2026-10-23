@@ -8,6 +8,12 @@ main: kit: entity: actions_fork_pr_workflows_private_repo: {
     require_approval_for_fork_pr_workflows: {
       h: "Require Approval For Fork Pr Workflows"
       n: "require_approval_for_fork_pr_workflows"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
       r: true
       sh: "Whether workflows triggered by pull requests from forks require approval from a repository administrator to run."
       t: "`$BOOLEAN`"
@@ -22,6 +28,12 @@ main: kit: entity: actions_fork_pr_workflows_private_repo: {
     send_secrets_and_variables: {
       h: "Send Secrets And Variables"
       n: "send_secrets_and_variables"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
       r: true
       sh: "Whether to make secrets and variables available to workflows triggered by pull requests from forks."
       t: "`$BOOLEAN`"
@@ -29,6 +41,12 @@ main: kit: entity: actions_fork_pr_workflows_private_repo: {
     send_write_tokens_to_workflows: {
       h: "Send Write Tokens To Workflows"
       n: "send_write_tokens_to_workflows"
+      op: {
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
       r: true
       sh: "Whether GitHub Actions can create pull requests or submit approving pull request reviews from a workflow triggered by a fork pull request."
       t: "`$BOOLEAN`"
@@ -133,6 +151,131 @@ main: kit: entity: actions_fork_pr_workflows_private_repo: {
           rs: {
             kind: "json"
             media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "permissions"
+            }
+            {
+              lit: "fork-pr-workflows-private-repos"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "require_approval_for_fork_pr_workflows"
+            "run_workflows_from_fork_pull_requests"
+            "send_secrets_and_variables"
+            "send_write_tokens_to_workflows"
+          ]
+          co: {
+            id: "PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "permissions"
+            }
+            {
+              lit: "fork-pr-workflows-private-repos"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "require_approval_for_fork_pr_workflows"
+            "run_workflows_from_fork_pull_requests"
+            "send_secrets_and_variables"
+            "send_write_tokens_to_workflows"
+          ]
+          co: {
+            id: "PUT /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/orgs/{org}/actions/permissions/fork-pr-workflows-private-repos"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
           }
           s: [
             {

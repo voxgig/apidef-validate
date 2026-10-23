@@ -12,10 +12,31 @@ main: kit: entity: thread: {
       t: "`$STRING`"
     }
     last_read_at: {
+      fo: "date-time"
       h: "Last Read At"
       n: "last_read_at"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
+      sh: "Describes the last point that notifications were checked."
       t: "`$STRING`"
+    }
+    message: {
+      h: "Message"
+      n: "message"
+      r: false
+      t: "`$STRING`"
+    }
+    read: {
+      h: "Read"
+      n: "read"
+      r: false
+      sh: "Whether the notification has been read."
+      t: "`$BOOLEAN`"
     }
     reason: {
       h: "Reason"
@@ -57,6 +78,12 @@ main: kit: entity: thread: {
     url: {
       h: "Url"
       n: "url"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
       t: "`$STRING`"
     }
@@ -303,12 +330,12 @@ main: kit: entity: thread: {
         }
       ]
     }
-    remove: {
-      name: "remove"
+    patch: {
+      name: "patch"
       points: [
         {
           co: {
-            id: "DELETE /notifications/threads/{thread_id}/subscription"
+            id: "PATCH /notifications/threads/{thread_id}"
             source: "openapi3"
             version: 2
           }
@@ -323,10 +350,9 @@ main: kit: entity: thread: {
               }
             ]
           }
-          m: "DELETE"
-          o: "/notifications/threads/{thread_id}/subscription"
+          m: "PATCH"
+          o: "/notifications/threads/{thread_id}"
           q: {
-            "$action": "subscription"
             exist: [
               "id"
             ]
@@ -346,8 +372,144 @@ main: kit: entity: thread: {
             {
               var: "id"
             }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /notifications/threads/{thread_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "thread_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/notifications/threads/{thread_id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              thread_id: "id"
+            }
+          }
+          s: [
             {
-              lit: "subscription"
+              lit: "notifications"
+            }
+            {
+              lit: "threads"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "last_read_at"
+          ]
+          co: {
+            id: "PUT /repos/{owner}/{repo}/notifications"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/repos/{owner}/{repo}/notifications"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "notifications"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "last_read_at"
+            "read"
+          ]
+          co: {
+            id: "PUT /notifications"
+            source: "openapi3"
+            version: 2
+          }
+          m: "PUT"
+          o: "/notifications"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "notifications"
             }
           ]
           t: {

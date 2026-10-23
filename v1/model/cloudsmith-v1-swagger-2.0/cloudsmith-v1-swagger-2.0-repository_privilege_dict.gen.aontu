@@ -12,6 +12,19 @@ main: kit: entity: repository_privilege_dict: {
       sh: "The level of privilege that the user or team should be granted to the specified repository."
       t: "`$STRING`"
     }
+    privileges: {
+      h: "Privileges"
+      n: "privileges"
+      op: {
+        patch: {
+          req: false
+          type: "`$ARRAY`"
+        }
+      }
+      r: true
+      sh: "List of objects with explicit privileges to the repository."
+      t: "`$ARRAY`"
+    }
     service: {
       fo: "slug"
       h: "Service"
@@ -112,6 +125,124 @@ main: kit: entity: repository_privilege_dict: {
           t: {
             req: "`reqdata`"
             res: "`body.privileges`"
+          }
+        }
+      ]
+    }
+    patch: {
+      name: "patch"
+      points: [
+        {
+          bf: [
+            "privileges"
+          ]
+          co: {
+            id: "PATCH /repos/{owner}/{identifier}/privileges"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "identifier"
+                or: "identifier"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/repos/{owner}/{identifier}/privileges"
+          q: {
+            exist: [
+              "identifier"
+              "owner"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "identifier"
+            }
+            {
+              lit: "privileges"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "privileges"
+          ]
+          co: {
+            id: "PUT /repos/{owner}/{identifier}/privileges"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "identifier"
+                or: "identifier"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/repos/{owner}/{identifier}/privileges"
+          q: {
+            exist: [
+              "identifier"
+              "owner"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "identifier"
+            }
+            {
+              lit: "privileges"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
           }
         }
       ]

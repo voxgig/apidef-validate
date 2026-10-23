@@ -281,6 +281,20 @@ main: kit: entity: dependabot_repository_access_detail: {
       sh: "A template for the API URL to get information about releases on the repository."
       t: "`$STRING`"
     }
+    repository_ids_to_add: {
+      h: "Repository Ids To Add"
+      n: "repository_ids_to_add"
+      r: false
+      sh: "List of repository IDs to add."
+      t: "`$ARRAY`"
+    }
+    repository_ids_to_remove: {
+      h: "Repository Ids To Remove"
+      n: "repository_ids_to_remove"
+      r: false
+      sh: "List of repository IDs to remove."
+      t: "`$ARRAY`"
+    }
     stargazers_url: {
       fo: "uri"
       h: "Stargazers Url"
@@ -418,6 +432,58 @@ main: kit: entity: dependabot_repository_access_detail: {
           t: {
             req: "`reqdata`"
             res: "`body.accessible_repositories`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "repository_ids_to_add"
+            "repository_ids_to_remove"
+          ]
+          co: {
+            id: "PATCH /organizations/{org}/dependabot/repository-access"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/organizations/{org}/dependabot/repository-access"
+          q: {
+            exist: [
+              "org"
+            ]
+          }
+          s: [
+            {
+              lit: "organizations"
+            }
+            {
+              var: "org"
+            }
+            {
+              lit: "dependabot"
+            }
+            {
+              lit: "repository-access"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
           }
         }
       ]

@@ -5,6 +5,14 @@ main: kit: entity: sync_setting: {
   alias: field: {}
 
   fields: {
+    clientId: {
+      fo: "uuid"
+      h: "Client Id"
+      n: "clientId"
+      r: true
+      sh: "Unique identifier for your client in Codat."
+      t: "`$STRING`"
+    }
     dataType: {
       h: "Data Type"
       n: "dataType"
@@ -32,6 +40,19 @@ main: kit: entity: sync_setting: {
       r: false
       sh: "Months of data to fetch, for report data types (`balanceSheet` & `profitAndLoss`) only."
       t: "`$INTEGER`"
+    }
+    overridesDefaults: {
+      h: "Overrides Defaults"
+      n: "overridesDefaults"
+      r: true
+      sh: "Set to `True` if you want to override default [sync settings](https://docs.codat.io/knowledge-base/advanced-sync-settings)."
+      t: "`$BOOLEAN`"
+    }
+    settings: {
+      h: "Settings"
+      n: "settings"
+      r: true
+      t: "`$ARRAY`"
     }
     syncFromUtc: {
       h: "Sync From Utc"
@@ -65,6 +86,37 @@ main: kit: entity: sync_setting: {
 
   name: "sync_setting"
   op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "clientId"
+            "overridesDefaults"
+            "settings"
+          ]
+          co: {
+            id: "POST /profile/syncSettings"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/profile/syncSettings"
+          s: [
+            {
+              lit: "profile"
+            }
+            {
+              lit: "syncSettings"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     list: {
       name: "list"
       points: [
