@@ -154,6 +154,68 @@ main: kit: entity: org_membership: {
         }
       ]
     }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /orgs/{org}/memberships/{username}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/memberships/{username}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              username: "id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "memberships"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     update: {
       name: "update"
       points: [

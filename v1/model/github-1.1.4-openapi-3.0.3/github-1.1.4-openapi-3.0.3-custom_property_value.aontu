@@ -5,6 +5,18 @@ main: kit: entity: custom_property_value: {
   alias: field: {}
 
   fields: {
+    properties: {
+      h: "Properties"
+      n: "properties"
+      r: true
+      sh: "A list of custom property names and associated values to apply to the repositories."
+      t: "`$ARRAY`"
+      union: {
+        branches: 2
+        count: 1
+        depth: 3
+      }
+    }
     property_name: {
       h: "Property Name"
       n: "property_name"
@@ -66,6 +78,68 @@ main: kit: entity: custom_property_value: {
           rs: {
             kind: "json"
             media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "properties"
+            }
+            {
+              lit: "values"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "properties"
+          ]
+          co: {
+            id: "PATCH /repos/{owner}/{repo}/properties/values"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/repos/{owner}/{repo}/properties/values"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
           }
           s: [
             {

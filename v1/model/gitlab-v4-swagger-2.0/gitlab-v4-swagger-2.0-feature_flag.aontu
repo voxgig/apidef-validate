@@ -12,12 +12,6 @@ main: kit: entity: feature_flag: {
       sh: "The application name of Unleash Client"
       t: "`$STRING`"
     }
-    id: {
-      h: "Id"
-      n: "id"
-      r: false
-      t: "`$STRING`"
-    }
     instance_id: {
       h: "Instance Id"
       n: "instance_id"
@@ -25,11 +19,6 @@ main: kit: entity: feature_flag: {
       sh: "The instance ID of Unleash Client"
       t: "`$STRING`"
     }
-  }
-
-  id: {
-    field: "id"
-    name: "id"
   }
 
   name: "feature_flag"
@@ -218,79 +207,8 @@ main: kit: entity: feature_flag: {
         }
       ]
     }
-    remove: {
-      name: "remove"
-      points: [
-        {
-          co: {
-            id: "DELETE /api/v4/projects/{id}/feature_flags/{feature_flag_name}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "feature_flag_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/feature_flags/{feature_flag_name}"
-          q: {
-            exist: [
-              "id"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              feature_flag_name: "id"
-              id: "project_id"
-            }
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "feature_flags"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
   }
 
 
-  relations: ancestors: [
-    [path("$.main.kit.entity.project")]
-  ]
 
 }

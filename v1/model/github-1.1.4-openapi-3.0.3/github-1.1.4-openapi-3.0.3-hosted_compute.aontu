@@ -125,76 +125,11 @@ main: kit: entity: hosted_compute: {
         }
       ]
     }
-    remove: {
-      name: "remove"
-      points: [
-        {
-          co: {
-            id: "DELETE /orgs/{org}/settings/network-configurations/{network_configuration_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "network_configuration_id"
-                or: "network_configuration_id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/orgs/{org}/settings/network-configurations/{network_configuration_id}"
-          q: {
-            exist: [
-              "network_configuration_id"
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "settings"
-            }
-            {
-              lit: "network-configurations"
-            }
-            {
-              var: "network_configuration_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
   }
 
 
   relations: ancestors: [
     [path("$.main.kit.entity.org")]
-    [path("$.main.kit.entity.org") path("$.main.kit.entity.network_configuration")]
   ]
 
 }

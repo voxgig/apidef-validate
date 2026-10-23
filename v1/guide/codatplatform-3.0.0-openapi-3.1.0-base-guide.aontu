@@ -4,7 +4,7 @@
 #   codatplatform-3.0.0-openapi-3.1.0-guide.aontu
 
 guide: {
-  metrics: count: entity: 21
+  metrics: count: entity: 20
   metrics: count: path: 34
   metrics: count: method: 50
 
@@ -196,30 +196,21 @@ guide: {
       rename: param: "apiKeyId": *"api_key_id"  # snake-case
       op: remove: method: *DELETE  # not-load
     }
-    path: "/profile/syncSettings": {  # ent=setting;orig=Settings;tag=setting;cmp/resolve=setting;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: supplemental_data: {
-    path: "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {  # ent=supplemental_data;orig=Supplemental data;tag=supplemental_data;cmp/resolve=supplemental_data;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Supplemental data
-      rename: param: "dataType": *"data_type_id"  # parent:data_type
-      rename: param: "platformKey": *"platform_key"  # snake-case
-      op: update: method: *PUT  # not-load
-    }
   }
 
   entity: supplemental_data_config: {
-    path: "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {  # ent=supplemental_data_config;orig=SupplementalDataConfiguration;cmp/resolve=supplemental_data_configuration;path=t/p/t/;path-primary;has-cmp=SupplementalDataConfiguration
+    path: "/integrations/{platformKey}/dataTypes/{dataType}/supplementalDataConfig": {  # ent=supplemental_data_config;orig=SupplementalDataConfiguration;tag=supplemental_data;cmp/resolve=supplemental_data;same-path-tag=supplemental_data_config/GET
       rename: param: "dataType": *"data_type_id"  # parent:data_type
       rename: param: "platformKey": *"platform_key"  # snake-case
       op: load: method: *GET  # not-list
       op: load: transform: res: *("`body.supplementalDataConfig`")|top
+      op: update: method: *PUT  # not-load
     }
   }
 
   entity: sync_setting: {
-    path: "/profile/syncSettings": {  # ent=sync_setting;orig=SyncSettings;cmp/resolve=sync_setting;path=t/;path-primary
+    path: "/profile/syncSettings": {  # ent=sync_setting;orig=SyncSettings;tag=setting;cmp/resolve=setting;same-path-tag=sync_setting/GET
+      op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:settings
       op: list: transform: res: *("`body.settings`")|top
     }

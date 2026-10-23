@@ -22,6 +22,12 @@ main: kit: entity: organization_actions_variable: {
     name: {
       h: "Name"
       n: "name"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
       sh: "The name of the variable."
       t: "`$STRING`"
@@ -32,6 +38,13 @@ main: kit: entity: organization_actions_variable: {
       n: "selected_repositories_url"
       r: false
       t: "`$STRING`"
+    }
+    selected_repository_ids: {
+      h: "Selected Repository Ids"
+      n: "selected_repository_ids"
+      r: false
+      sh: "An array of repository ids that can access the organization variable."
+      t: "`$ARRAY`"
     }
     updated_at: {
       fo: "date-time"
@@ -44,6 +57,12 @@ main: kit: entity: organization_actions_variable: {
     value: {
       h: "Value"
       n: "value"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
       sh: "The value of the variable."
       t: "`$STRING`"
@@ -51,6 +70,12 @@ main: kit: entity: organization_actions_variable: {
     visibility: {
       h: "Visibility"
       n: "visibility"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
       sh: "Visibility of a variable"
       t: "`$STRING`"
@@ -108,6 +133,142 @@ main: kit: entity: organization_actions_variable: {
           rs: {
             kind: "json"
             media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "variables"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /orgs/{org}/actions/variables/{name}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/actions/variables/{name}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              name: "id"
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "variables"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "name"
+            "selected_repository_ids"
+            "value"
+            "visibility"
+          ]
+          co: {
+            id: "PATCH /orgs/{org}/actions/variables/{name}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/orgs/{org}/actions/variables/{name}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              name: "id"
+              org: "org_id"
+            }
           }
           s: [
             {

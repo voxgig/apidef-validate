@@ -149,11 +149,94 @@ main: kit: entity: api_entities_clusters_agent_token: {
         }
       ]
     }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/cluster_agents/{agent_id}/tokens/{token_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "cluster_agent_id"
+                or: "agent_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "token_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/cluster_agents/{agent_id}/tokens/{token_id}"
+          q: {
+            exist: [
+              "cluster_agent_id"
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              agent_id: "cluster_agent_id"
+              id: "project_id"
+              token_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "cluster_agents"
+            }
+            {
+              var: "cluster_agent_id"
+            }
+            {
+              lit: "tokens"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
   }
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.project") path("$.main.kit.entity.cluster_agent")]
+    [path("$.main.kit.entity.project")]
   ]
 
 }

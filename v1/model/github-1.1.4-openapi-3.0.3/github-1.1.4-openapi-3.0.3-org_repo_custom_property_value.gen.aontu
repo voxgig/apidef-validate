@@ -9,7 +9,7 @@ main: kit: entity: org_repo_custom_property_value: {
       h: "Properties"
       n: "properties"
       r: true
-      sh: "List of custom property names and associated values"
+      sh: "List of custom property names and associated values to apply to the repositories."
       t: "`$ARRAY`"
       union: {
         branches: 2
@@ -34,6 +34,13 @@ main: kit: entity: org_repo_custom_property_value: {
       n: "repository_name"
       r: true
       t: "`$STRING`"
+    }
+    repository_names: {
+      h: "Repository Names"
+      n: "repository_names"
+      r: true
+      sh: "The names of repositories that the custom property values will be applied to."
+      t: "`$ARRAY`"
     }
   }
 
@@ -99,6 +106,63 @@ main: kit: entity: org_repo_custom_property_value: {
           rs: {
             kind: "json"
             media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "properties"
+            }
+            {
+              lit: "values"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "properties"
+            "repository_names"
+          ]
+          co: {
+            id: "PATCH /orgs/{org}/properties/values"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/orgs/{org}/properties/values"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
           }
           s: [
             {

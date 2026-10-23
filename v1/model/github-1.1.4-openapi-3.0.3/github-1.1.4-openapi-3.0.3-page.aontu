@@ -15,6 +15,12 @@ main: kit: entity: page: {
     cname: {
       h: "Cname"
       n: "cname"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
       sh: "The Pages site's custom domain"
       t: "`$STRING`"
@@ -72,6 +78,12 @@ main: kit: entity: page: {
     source: {
       h: "Source"
       n: "source"
+      op: {
+        update: {
+          req: false
+          type: "`$ANY`"
+        }
+      }
       r: true
       sh: "The source branch and directory used to publish your Pages site."
       t: "`$OBJECT`"
@@ -197,6 +209,124 @@ main: kit: entity: page: {
           rs: {
             kind: "json"
             media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pages"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/pages"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/pages"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pages"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "build_type"
+            "cname"
+            "https_enforced"
+            "source"
+          ]
+          co: {
+            id: "PUT /repos/{owner}/{repo}/pages"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/repos/{owner}/{repo}/pages"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
           }
           s: [
             {

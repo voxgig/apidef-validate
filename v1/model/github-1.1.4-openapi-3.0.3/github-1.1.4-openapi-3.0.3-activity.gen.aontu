@@ -640,14 +640,6 @@ main: kit: entity: activity: {
       r: false
       t: "`$STRING`"
     }
-    last_read_at: {
-      fo: "date-time"
-      h: "Last Read At"
-      n: "last_read_at"
-      r: false
-      sh: "Describes the last point that notifications were checked."
-      t: "`$STRING`"
-    }
     license: {
       h: "License"
       n: "license"
@@ -691,12 +683,6 @@ main: kit: entity: activity: {
           type: "`$STRING`"
         }
       }
-      r: false
-      t: "`$STRING`"
-    }
-    message: {
-      h: "Message"
-      n: "message"
       r: false
       t: "`$STRING`"
     }
@@ -830,13 +816,6 @@ main: kit: entity: activity: {
       n: "pushed_at"
       r: true
       t: "`$STRING`"
-    }
-    read: {
-      h: "Read"
-      n: "read"
-      r: false
-      sh: "Whether the notification has been read."
-      t: "`$BOOLEAN`"
     }
     received_events_url: {
       h: "Received Events Url"
@@ -1525,105 +1504,9 @@ main: kit: entity: activity: {
         }
       ]
     }
-    patch: {
-      name: "patch"
-      points: [
-        {
-          co: {
-            id: "PATCH /notifications/threads/{thread_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "thread_id"
-                or: "thread_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "PATCH"
-          o: "/notifications/threads/{thread_id}"
-          q: {
-            exist: [
-              "thread_id"
-            ]
-          }
-          s: [
-            {
-              lit: "notifications"
-            }
-            {
-              lit: "threads"
-            }
-            {
-              var: "thread_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
     remove: {
       name: "remove"
       points: [
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/subscription"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/subscription"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "subscription"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           co: {
             id: "DELETE /user/starred/{owner}/{repo}"
@@ -1675,109 +1558,11 @@ main: kit: entity: activity: {
             res: "`body`"
           }
         }
-        {
-          co: {
-            id: "DELETE /notifications/threads/{thread_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "thread_id"
-                or: "thread_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/notifications/threads/{thread_id}"
-          q: {
-            exist: [
-              "thread_id"
-            ]
-          }
-          s: [
-            {
-              lit: "notifications"
-            }
-            {
-              lit: "threads"
-            }
-            {
-              var: "thread_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
       ]
     }
     update: {
       name: "update"
       points: [
-        {
-          bf: [
-            "last_read_at"
-          ]
-          co: {
-            id: "PUT /repos/{owner}/{repo}/notifications"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/repos/{owner}/{repo}/notifications"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "notifications"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           co: {
             id: "PUT /user/starred/{owner}/{repo}"
@@ -1829,39 +1614,12 @@ main: kit: entity: activity: {
             res: "`body`"
           }
         }
-        {
-          bf: [
-            "last_read_at"
-            "read"
-          ]
-          co: {
-            id: "PUT /notifications"
-            source: "openapi3"
-            version: 2
-          }
-          m: "PUT"
-          o: "/notifications"
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "notifications"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
       ]
     }
   }
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.thread")]
     [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.user")]
   ]

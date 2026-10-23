@@ -12,9 +12,10 @@ guide: {
     path: "/store/order": {  # ent=order;orig=Order;cmp/resolve=order;path=t/;path-primary
       op: create: method: *POST  # not-load
     }
-    path: "/store/order/{orderId}": {  # ent=order;orig=Order;cmp/resolve=order;path=t/p/;path-primary
+    path: "/store/order/{orderId}": {  # ent=order;orig=Order;tag=store;cmp/resolve=store;same-path-tag=order/GET
       rename: param: "orderId": *"id"  # end-id;GET;parent=true/order
       op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
     }
   }
 
@@ -48,10 +49,6 @@ guide: {
     path: "/store/inventory": {  # ent=store;tag=store;cmp/resolve=store;path=t/;cmp-primary;cmp-infreq
       action: "inventory": {}  # ent;store;no-param;inventory;GET
       op: load: method: *GET  # not-list
-    }
-    path: "/store/order/{orderId}": {  # ent=store;tag=store;cmp/resolve=store;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "orderId": *"order_id"  # snake-case
-      op: remove: method: *DELETE  # not-load
     }
   }
 

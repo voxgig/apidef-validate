@@ -277,6 +277,73 @@ main: kit: entity: api_entities_deployment_extended: {
         }
       ]
     }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/deployments/{deployment_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "deployment_id"
+                or: "deployment_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/deployments/{deployment_id}"
+          q: {
+            exist: [
+              "deployment_id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "deployments"
+            }
+            {
+              var: "deployment_id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     update: {
       name: "update"
       points: [
@@ -356,7 +423,7 @@ main: kit: entity: api_entities_deployment_extended: {
 
   relations: ancestors: [
     [path("$.main.kit.entity.project")]
-    [path("$.main.kit.entity.project") path("$.main.kit.entity.deployment")]
+    [path("$.main.kit.entity.project")]
   ]
 
 }

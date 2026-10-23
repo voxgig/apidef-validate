@@ -4,6 +4,12 @@ main: kit: entity: project: {
 
   alias: field: {}
 
+  alias: {
+    field: {
+      gitlab_id: "id"
+    }
+  }
+
   fields: {
     author_email: {
       h: "Author Email"
@@ -19,13 +25,6 @@ main: kit: entity: project: {
       sh: "The name of the author"
       t: "`$STRING`"
     }
-    auto_ssl_enabled: {
-      h: "Auto Ssl Enabled"
-      n: "auto_ssl_enabled"
-      r: false
-      sh: "Enables automatic generation of SSL certificates issued by Let's Encrypt for custom domains."
-      t: "`$BOOLEAN`"
-    }
     before_sha: {
       h: "Before Sha"
       n: "before_sha"
@@ -37,14 +36,6 @@ main: kit: entity: project: {
       n: "branch"
       r: true
       sh: "Name of the branch to commit into."
-      t: "`$STRING`"
-    }
-    certificate: {
-      fo: "binary"
-      h: "Certificate"
-      n: "certificate"
-      r: false
-      sh: "The certificate"
       t: "`$STRING`"
     }
     commit_message: {
@@ -117,12 +108,18 @@ main: kit: entity: project: {
       r: false
       t: "`$STRING`"
     }
-    id: {
+    gitlab_id: {
       fo: "int32"
+      h: "Gitlab Id"
+      n: "gitlab_id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    id: {
       h: "Id"
       n: "id"
       r: false
-      t: "`$INTEGER`"
+      t: "`$STRING`"
     }
     iid: {
       fo: "int32"
@@ -130,14 +127,6 @@ main: kit: entity: project: {
       n: "iid"
       r: false
       t: "`$INTEGER`"
-    }
-    key: {
-      fo: "binary"
-      h: "Key"
-      n: "key"
-      r: false
-      sh: "The key"
-      t: "`$STRING`"
     }
     last_commit_id: {
       h: "Last Commit Id"
@@ -249,6 +238,11 @@ main: kit: entity: project: {
   id: {
     field: "id"
     name: "id"
+    parts: [
+      "secret"
+      "filename"
+    ]
+    sep: "/"
   }
 
   name: "project"
@@ -496,7 +490,7 @@ main: kit: entity: project: {
               }
               {
                 k: "param"
-                n: "issue_iid"
+                n: "issue_id"
                 or: "issue_iid"
                 r: true
                 t: "`$INTEGER`"
@@ -508,8 +502,13 @@ main: kit: entity: project: {
           q: {
             exist: [
               "id"
-              "issue_iid"
+              "issue_id"
             ]
+          }
+          r: {
+            param: {
+              issue_iid: "issue_id"
+            }
           }
           s: [
             {
@@ -528,7 +527,7 @@ main: kit: entity: project: {
               lit: "issues"
             }
             {
-              var: "issue_iid"
+              var: "issue_id"
             }
             {
               lit: "metric_images"
@@ -660,69 +659,6 @@ main: kit: entity: project: {
             }
             {
               var: "project_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "branch"
-            "config_file"
-            "config_file_ref"
-            "date"
-            "file"
-            "from"
-            "message"
-            "to"
-            "trailer"
-            "version"
-          ]
-          co: {
-            id: "POST /api/v4/projects/{id}/repository/changelog"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 1
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/repository/changelog"
-          q: {
-            "$action": "repository_changelog"
-            exist: [
-              "id"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "repository"
-            }
-            {
-              lit: "changelog"
             }
           ]
           t: {
@@ -1574,7 +1510,7 @@ main: kit: entity: project: {
               }
               {
                 k: "param"
-                n: "issue_iid"
+                n: "issue_id"
                 or: "issue_iid"
                 r: true
                 t: "`$INTEGER`"
@@ -1586,8 +1522,13 @@ main: kit: entity: project: {
           q: {
             exist: [
               "id"
-              "issue_iid"
+              "issue_id"
             ]
+          }
+          r: {
+            param: {
+              issue_iid: "issue_id"
+            }
           }
           s: [
             {
@@ -1606,7 +1547,7 @@ main: kit: entity: project: {
               lit: "issues"
             }
             {
-              var: "issue_iid"
+              var: "issue_id"
             }
             {
               lit: "metric_images"
@@ -2642,82 +2583,6 @@ main: kit: entity: project: {
         }
         {
           co: {
-            id: "DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "draft_note_id"
-                or: "draft_note_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "merge_request_id"
-                or: "merge_request_iid"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}"
-          q: {
-            exist: [
-              "draft_note_id"
-              "id"
-              "merge_request_id"
-            ]
-          }
-          r: {
-            param: {
-              merge_request_iid: "merge_request_id"
-            }
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "merge_requests"
-            }
-            {
-              var: "merge_request_id"
-            }
-            {
-              lit: "draft_notes"
-            }
-            {
-              var: "draft_note_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "DELETE /api/v4/projects/{id}/uploads/{secret}/{filename}"
             source: "swagger2"
             version: 2
@@ -2928,144 +2793,6 @@ main: kit: entity: project: {
         }
         {
           co: {
-            id: "DELETE /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 18
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                ex: "NEW_VARIABLE"
-                k: "param"
-                n: "key"
-                or: "key"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                ex: 13
-                k: "param"
-                n: "pipeline_schedule_id"
-                or: "pipeline_schedule_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}"
-          q: {
-            exist: [
-              "id"
-              "key"
-              "pipeline_schedule_id"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "pipeline_schedules"
-            }
-            {
-              var: "pipeline_schedule_id"
-            }
-            {
-              lit: "variables"
-            }
-            {
-              var: "key"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /api/v4/projects/{id}/pages/domains/{domain}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "domain"
-                or: "domain"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/pages/domains/{domain}"
-          q: {
-            exist: [
-              "domain"
-              "id"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "pages"
-            }
-            {
-              lit: "domains"
-            }
-            {
-              var: "domain"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "DELETE /api/v4/projects/{id}/share/{group_id}"
             source: "swagger2"
             version: 2
@@ -3114,63 +2841,6 @@ main: kit: entity: project: {
             }
             {
               var: "group_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /api/v4/projects/{id}/issues/{issue_iid}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "issue_iid"
-                or: "issue_iid"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/issues/{issue_iid}"
-          q: {
-            exist: [
-              "id"
-              "issue_iid"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              var: "issue_iid"
             }
           ]
           t: {
@@ -3240,185 +2910,6 @@ main: kit: entity: project: {
         }
         {
           co: {
-            id: "DELETE /api/v4/projects/{id}/custom_attributes/{key}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "key"
-                or: "key"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/custom_attributes/{key}"
-          q: {
-            exist: [
-              "id"
-              "key"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "custom_attributes"
-            }
-            {
-              var: "key"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /api/v4/projects/{id}/protected_branches/{name}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: "gitlab-org/gitlab"
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                ex: "main"
-                k: "param"
-                n: "name"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/protected_branches/{name}"
-          q: {
-            exist: [
-              "id"
-              "name"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "protected_branches"
-            }
-            {
-              var: "name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /api/v4/projects/{id}/packages/protection/rules/{package_protection_rule_id}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_protection_rule_id"
-                or: "package_protection_rule_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/packages/protection/rules/{package_protection_rule_id}"
-          q: {
-            exist: [
-              "id"
-              "package_protection_rule_id"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              lit: "protection"
-            }
-            {
-              lit: "rules"
-            }
-            {
-              var: "package_protection_rule_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "DELETE /api/v4/projects/{id}/pipelines/{pipeline_id}"
             source: "swagger2"
             version: 2
@@ -3478,190 +2969,6 @@ main: kit: entity: project: {
         }
         {
           co: {
-            id: "DELETE /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 18
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                ex: 13
-                k: "param"
-                n: "pipeline_schedule_id"
-                or: "pipeline_schedule_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}"
-          q: {
-            exist: [
-              "id"
-              "pipeline_schedule_id"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "pipeline_schedules"
-            }
-            {
-              var: "pipeline_schedule_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /api/v4/projects/{id}/registry/protection/repository/rules/{protection_rule_id}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "protection_rule_id"
-                or: "protection_rule_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/registry/protection/repository/rules/{protection_rule_id}"
-          q: {
-            exist: [
-              "id"
-              "protection_rule_id"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "registry"
-            }
-            {
-              lit: "protection"
-            }
-            {
-              lit: "repository"
-            }
-            {
-              lit: "rules"
-            }
-            {
-              var: "protection_rule_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /api/v4/projects/{id}/triggers/{trigger_id}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 18
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                ex: 10
-                k: "param"
-                n: "trigger_id"
-                or: "trigger_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/triggers/{trigger_id}"
-          q: {
-            exist: [
-              "id"
-              "trigger_id"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "triggers"
-            }
-            {
-              var: "trigger_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "DELETE /api/v4/projects/{id}/uploads/{upload_id}"
             source: "swagger2"
             version: 2
@@ -3710,49 +3017,6 @@ main: kit: entity: project: {
             }
             {
               var: "upload_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /api/v4/projects/{id}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
             }
           ]
           t: {
@@ -4009,71 +3273,6 @@ main: kit: entity: project: {
         }
         {
           bf: [
-            "auto_ssl_enabled"
-            "certificate"
-            "key"
-          ]
-          co: {
-            id: "PUT /api/v4/projects/{id}/pages/domains/{domain}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "domain"
-                or: "domain"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/api/v4/projects/{id}/pages/domains/{domain}"
-          q: {
-            exist: [
-              "domain"
-              "id"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "pages"
-            }
-            {
-              lit: "domains"
-            }
-            {
-              var: "domain"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
             "author_email"
             "author_name"
             "branch"
@@ -4138,66 +3337,6 @@ main: kit: entity: project: {
             }
             {
               var: "file_path"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "value"
-          ]
-          co: {
-            id: "PUT /api/v4/projects/{id}/custom_attributes/{key}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "key"
-                or: "key"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/api/v4/projects/{id}/custom_attributes/{key}"
-          q: {
-            exist: [
-              "id"
-              "key"
-            ]
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "custom_attributes"
-            }
-            {
-              var: "key"
             }
           ]
           t: {
@@ -4281,7 +3420,6 @@ main: kit: entity: project: {
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.custom_attribute")]
     [path("$.main.kit.entity.hook")]
     [path("$.main.kit.entity.job")]
     [path("$.main.kit.entity.merge_request")]
@@ -4289,7 +3427,6 @@ main: kit: entity: project: {
     [path("$.main.kit.entity.hook")]
     [path("$.main.kit.entity.hook")]
     [path("$.main.kit.entity.hook")]
-    [path("$.main.kit.entity.merge_request")]
   ]
 
 }

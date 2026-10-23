@@ -4,14 +4,13 @@ main: kit: entity: action: {
 
   alias: field: {}
 
-  fields: {
-    access_level: {
-      h: "Access Level"
-      n: "access_level"
-      r: true
-      sh: "Defines the level of access that workflows outside of the repository have to actions and reusable workflows within the repository."
-      t: "`$STRING`"
+  alias: {
+    field: {
+      github_id: "id"
     }
+  }
+
+  fields: {
     active_caches_count: {
       h: "Active Caches Count"
       n: "active_caches_count"
@@ -82,13 +81,6 @@ main: kit: entity: action: {
       sh: "Whether anonymous git access is enabled for this repository"
       t: "`$BOOLEAN`"
     }
-    approval_policy: {
-      h: "Approval Policy"
-      n: "approval_policy"
-      r: true
-      sh: "The policy that controls when fork PR workflows require approval from a maintainer."
-      t: "`$STRING`"
-    }
     archive_download_url: {
       h: "Archive Download Url"
       n: "archive_download_url"
@@ -143,13 +135,6 @@ main: kit: entity: action: {
       h: "Busy"
       n: "busy"
       r: true
-      t: "`$BOOLEAN`"
-    }
-    can_approve_pull_request_reviews: {
-      h: "Can Approve Pull Request Reviews"
-      n: "can_approve_pull_request_reviews"
-      r: false
-      sh: "Whether GitHub Actions can approve pull requests."
       t: "`$BOOLEAN`"
     }
     cancel_url: {
@@ -292,13 +277,6 @@ main: kit: entity: action: {
       sh: "The custom properties that were defined for the repository."
       t: "`$OBJECT`"
     }
-    days: {
-      h: "Days"
-      n: "days"
-      r: true
-      sh: "The number of days to retain artifacts and logs"
-      t: "`$INTEGER`"
-    }
     default_branch: {
       h: "Default Branch"
       n: "default_branch"
@@ -310,13 +288,6 @@ main: kit: entity: action: {
       }
       r: false
       sh: "The default branch of the repository."
-      t: "`$STRING`"
-    }
-    default_workflow_permissions: {
-      h: "Default Workflow Permissions"
-      n: "default_workflow_permissions"
-      r: false
-      sh: "The default workflow permissions granted to the GITHUB_TOKEN when running workflows."
       t: "`$STRING`"
     }
     delete_branch_on_merge: {
@@ -378,13 +349,6 @@ main: kit: entity: action: {
       h: "Downloads Url"
       n: "downloads_url"
       r: true
-      t: "`$STRING`"
-    }
-    enabled_repositories: {
-      h: "Enabled Repositories"
-      n: "enabled_repositories"
-      r: true
-      sh: "The policy that controls whether self-hosted runners can be used in the organization"
       t: "`$STRING`"
     }
     ephemeral: {
@@ -494,12 +458,19 @@ main: kit: entity: action: {
       r: false
       t: "`$STRING`"
     }
-    github_owned_allowed: {
-      h: "Github Owned Allowed"
-      n: "github_owned_allowed"
-      r: false
-      sh: "Whether GitHub-owned actions are allowed."
-      t: "`$BOOLEAN`"
+    github_id: {
+      fo: "int64"
+      h: "Github Id"
+      n: "github_id"
+      op: {
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      r: true
+      sh: "The id of the job."
+      t: "`$INTEGER`"
     }
     has_discussions: {
       h: "Has Discussions"
@@ -635,18 +606,16 @@ main: kit: entity: action: {
       t: "`$STRING`"
     }
     id: {
-      fo: "int64"
       h: "Id"
       n: "id"
       op: {
         list: {
           req: false
-          type: "`$INTEGER`"
         }
       }
       r: true
       sh: "The id of the job."
-      t: "`$INTEGER`"
+      t: "`$STRING`"
     }
     image_details: {
       h: "Image Details"
@@ -848,10 +817,6 @@ main: kit: entity: action: {
           req: false
           type: "`$STRING`"
         }
-        patch: {
-          req: false
-          type: "`$STRING`"
-        }
       }
       r: true
       sh: "The name of the new runner."
@@ -919,13 +884,6 @@ main: kit: entity: action: {
       r: true
       sh: "The full path of the workflow"
       t: "`$STRING`"
-    }
-    patterns_allowed: {
-      h: "Patterns Allowed"
-      n: "patterns_allowed"
-      r: false
-      sh: "Specifies a list of string-matching patterns to allow specific action(s) and reusable workflow(s)."
-      t: "`$ARRAY`"
     }
     permissions: {
       h: "Permissions"
@@ -1032,13 +990,6 @@ main: kit: entity: action: {
       sh: "Minimal Repository"
       t: "`$OBJECT`"
     }
-    require_approval_for_fork_pr_workflows: {
-      h: "Require Approval For Fork Pr Workflows"
-      n: "require_approval_for_fork_pr_workflows"
-      r: false
-      sh: "Whether workflows triggered by pull requests from forks require approval from a repository administrator to run."
-      t: "`$BOOLEAN`"
-    }
     rerun_url: {
       h: "Rerun Url"
       n: "rerun_url"
@@ -1086,13 +1037,6 @@ main: kit: entity: action: {
       n: "run_url"
       r: true
       t: "`$STRING`"
-    }
-    run_workflows_from_fork_pull_requests: {
-      h: "Run Workflows From Fork Pull Requests"
-      n: "run_workflows_from_fork_pull_requests"
-      r: true
-      sh: "Whether workflows triggered by pull requests from forks are allowed to run on private repositories."
-      t: "`$BOOLEAN`"
     }
     runner_group_id: {
       h: "Runner Group Id"
@@ -1144,29 +1088,9 @@ main: kit: entity: action: {
     selected_repository_ids: {
       h: "Selected Repository Ids"
       n: "selected_repository_ids"
-      op: {
-        patch: {
-          req: false
-          type: "`$ARRAY`"
-        }
-      }
       r: true
       sh: "The IDs of the repositories that can access the organization variable."
       t: "`$ARRAY`"
-    }
-    send_secrets_and_variables: {
-      h: "Send Secrets And Variables"
-      n: "send_secrets_and_variables"
-      r: false
-      sh: "Whether to make secrets and variables available to workflows triggered by pull requests from forks."
-      t: "`$BOOLEAN`"
-    }
-    send_write_tokens_to_workflows: {
-      h: "Send Write Tokens To Workflows"
-      n: "send_write_tokens_to_workflows"
-      r: false
-      sh: "Whether GitHub Actions can create pull requests or submit approving pull request reviews from a workflow triggered by a fork pull request."
-      t: "`$BOOLEAN`"
     }
     size: {
       h: "Size"
@@ -1420,28 +1344,15 @@ main: kit: entity: action: {
     value: {
       h: "Value"
       n: "value"
-      op: {
-        list: {
-          req: true
-          type: "`$STRING`"
-        }
-      }
-      r: false
+      r: true
       sh: "The value of the variable."
       t: "`$STRING`"
-    }
-    verified_allowed: {
-      h: "Verified Allowed"
-      n: "verified_allowed"
-      r: false
-      sh: "Whether actions from GitHub Marketplace verified creators are allowed."
-      t: "`$BOOLEAN`"
     }
     visibility: {
       h: "Visibility"
       n: "visibility"
       r: false
-      sh: "The type of repositories in the organization that can access the variable."
+      sh: "The repository visibility: public, private, or internal."
       t: "`$STRING`"
     }
     watchers: {
@@ -1514,6 +1425,11 @@ main: kit: entity: action: {
   id: {
     field: "id"
     name: "id"
+    parts: [
+      "artifact_id"
+      "archive_format"
+    ]
+    sep: "/"
   }
 
   name: "action"
@@ -4958,380 +4874,9 @@ main: kit: entity: action: {
         }
       ]
     }
-    patch: {
-      name: "patch"
-      points: [
-        {
-          bf: [
-            "name"
-            "value"
-          ]
-          co: {
-            id: "PATCH /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "environment_name"
-                or: "environment_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "name"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PATCH"
-          o: "/repos/{owner}/{repo}/environments/{environment_name}/variables/{name}"
-          q: {
-            exist: [
-              "environment_name"
-              "name"
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "environments"
-            }
-            {
-              var: "environment_name"
-            }
-            {
-              lit: "variables"
-            }
-            {
-              var: "name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "name"
-            "value"
-          ]
-          co: {
-            id: "PATCH /repos/{owner}/{repo}/actions/variables/{name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "name"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PATCH"
-          o: "/repos/{owner}/{repo}/actions/variables/{name}"
-          q: {
-            exist: [
-              "name"
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "variables"
-            }
-            {
-              var: "name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "name"
-            "selected_repository_ids"
-            "value"
-            "visibility"
-          ]
-          co: {
-            id: "PATCH /orgs/{org}/actions/variables/{name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "name"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PATCH"
-          o: "/orgs/{org}/actions/variables/{name}"
-          q: {
-            exist: [
-              "name"
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "variables"
-            }
-            {
-              var: "name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
     remove: {
       name: "remove"
       points: [
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "environment_name"
-                or: "environment_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "name"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/environments/{environment_name}/variables/{name}"
-          q: {
-            exist: [
-              "environment_name"
-              "name"
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "environments"
-            }
-            {
-              var: "environment_name"
-            }
-            {
-              lit: "variables"
-            }
-            {
-              var: "name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "environment_name"
-                or: "environment_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "secret_name"
-                or: "secret_name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}"
-          q: {
-            exist: [
-              "environment_name"
-              "owner"
-              "repo"
-              "secret_name"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "environments"
-            }
-            {
-              var: "environment_name"
-            }
-            {
-              lit: "secrets"
-            }
-            {
-              var: "secret_name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           co: {
             id: "DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels/{name}"
@@ -5408,71 +4953,6 @@ main: kit: entity: action: {
             }
             {
               var: "name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "artifact_id"
-                or: "artifact_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/actions/artifacts/{artifact_id}"
-          q: {
-            exist: [
-              "artifact_id"
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "artifacts"
-            }
-            {
-              var: "artifact_id"
             }
           ]
           t: {
@@ -5685,71 +5165,6 @@ main: kit: entity: action: {
             }
             {
               lit: "labels"
-            }
-            {
-              var: "name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/actions/variables/{name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "name"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/actions/variables/{name}"
-          q: {
-            exist: [
-              "name"
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "variables"
             }
             {
               var: "name"
@@ -5981,71 +5396,6 @@ main: kit: entity: action: {
         }
         {
           co: {
-            id: "DELETE /repos/{owner}/{repo}/actions/runs/{run_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "run_id"
-                or: "run_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/actions/runs/{run_id}"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-              "run_id"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runs"
-            }
-            {
-              var: "run_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "DELETE /repos/{owner}/{repo}/actions/runs/{run_id}/logs"
             source: "openapi3"
             version: 2
@@ -6105,71 +5455,6 @@ main: kit: entity: action: {
             }
             {
               lit: "logs"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "runner_id"
-                or: "runner_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/actions/runners/{runner_id}"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-              "runner_id"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runners"
-            }
-            {
-              var: "runner_id"
             }
           ]
           t: {
@@ -6242,193 +5527,6 @@ main: kit: entity: action: {
             }
             {
               lit: "labels"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "secret_name"
-                or: "secret_name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/actions/secrets/{secret_name}"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-              "secret_name"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "secrets"
-            }
-            {
-              var: "secret_name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /orgs/{org}/actions/hosted-runners/{hosted_runner_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "hosted_runner_id"
-                or: "hosted_runner_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/orgs/{org}/actions/hosted-runners/{hosted_runner_id}"
-          q: {
-            exist: [
-              "hosted_runner_id"
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "hosted-runners"
-            }
-            {
-              var: "hosted_runner_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /orgs/{org}/actions/variables/{name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "name"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/orgs/{org}/actions/variables/{name}"
-          q: {
-            exist: [
-              "name"
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "variables"
-            }
-            {
-              var: "name"
             }
           ]
           t: {
@@ -6565,124 +5663,6 @@ main: kit: entity: action: {
         }
         {
           co: {
-            id: "DELETE /orgs/{org}/actions/runner-groups/{runner_group_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "runner_group_id"
-                or: "runner_group_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}"
-          q: {
-            exist: [
-              "org_id"
-              "runner_group_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runner-groups"
-            }
-            {
-              var: "runner_group_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /orgs/{org}/actions/runners/{runner_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "runner_id"
-                or: "runner_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/orgs/{org}/actions/runners/{runner_id}"
-          q: {
-            exist: [
-              "org_id"
-              "runner_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runners"
-            }
-            {
-              var: "runner_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "DELETE /orgs/{org}/actions/runners/{runner_id}/labels"
             source: "openapi3"
             version: 2
@@ -6740,65 +5720,6 @@ main: kit: entity: action: {
             }
             {
               lit: "labels"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /orgs/{org}/actions/secrets/{secret_name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "secret_name"
-                or: "secret_name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/orgs/{org}/actions/secrets/{secret_name}"
-          q: {
-            exist: [
-              "org_id"
-              "secret_name"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "secrets"
-            }
-            {
-              var: "secret_name"
             }
           ]
           t: {
@@ -7636,651 +6557,6 @@ main: kit: entity: action: {
         }
         {
           bf: [
-            "allowed_actions"
-            "enabled"
-            "sha_pinning_required"
-          ]
-          co: {
-            id: "PUT /repos/{owner}/{repo}/actions/permissions"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/repos/{owner}/{repo}/actions/permissions"
-          q: {
-            "$action": "permission"
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "access_level"
-          ]
-          co: {
-            id: "PUT /repos/{owner}/{repo}/actions/permissions/access"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/repos/{owner}/{repo}/actions/permissions/access"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "access"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "days"
-          ]
-          co: {
-            id: "PUT /repos/{owner}/{repo}/actions/permissions/artifact-and-log-retention"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/repos/{owner}/{repo}/actions/permissions/artifact-and-log-retention"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "artifact-and-log-retention"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "approval_policy"
-          ]
-          co: {
-            id: "PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "fork-pr-contributor-approval"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "require_approval_for_fork_pr_workflows"
-            "run_workflows_from_fork_pull_requests"
-            "send_secrets_and_variables"
-            "send_write_tokens_to_workflows"
-          ]
-          co: {
-            id: "PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "fork-pr-workflows-private-repos"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "github_owned_allowed"
-            "patterns_allowed"
-            "verified_allowed"
-          ]
-          co: {
-            id: "PUT /repos/{owner}/{repo}/actions/permissions/selected-actions"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/repos/{owner}/{repo}/actions/permissions/selected-actions"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "selected-actions"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "can_approve_pull_request_reviews"
-            "default_workflow_permissions"
-          ]
-          co: {
-            id: "PUT /repos/{owner}/{repo}/actions/permissions/workflow"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/repos/{owner}/{repo}/actions/permissions/workflow"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "workflow"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "allowed_actions"
-            "enabled_repositories"
-            "sha_pinning_required"
-          ]
-          co: {
-            id: "PUT /orgs/{org}/actions/permissions"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/orgs/{org}/actions/permissions"
-          q: {
-            "$action": "permission"
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "days"
-          ]
-          co: {
-            id: "PUT /orgs/{org}/actions/permissions/artifact-and-log-retention"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/orgs/{org}/actions/permissions/artifact-and-log-retention"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "artifact-and-log-retention"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "approval_policy"
-          ]
-          co: {
-            id: "PUT /orgs/{org}/actions/permissions/fork-pr-contributor-approval"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/orgs/{org}/actions/permissions/fork-pr-contributor-approval"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "fork-pr-contributor-approval"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "require_approval_for_fork_pr_workflows"
-            "run_workflows_from_fork_pull_requests"
-            "send_secrets_and_variables"
-            "send_write_tokens_to_workflows"
-          ]
-          co: {
-            id: "PUT /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/orgs/{org}/actions/permissions/fork-pr-workflows-private-repos"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "fork-pr-workflows-private-repos"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
             "selected_repository_ids"
           ]
           co: {
@@ -8326,116 +6602,6 @@ main: kit: entity: action: {
             }
             {
               lit: "repositories"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "github_owned_allowed"
-            "patterns_allowed"
-            "verified_allowed"
-          ]
-          co: {
-            id: "PUT /orgs/{org}/actions/permissions/selected-actions"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/orgs/{org}/actions/permissions/selected-actions"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "selected-actions"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "enabled_repositories"
-          ]
-          co: {
-            id: "PUT /orgs/{org}/actions/permissions/self-hosted-runners"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/orgs/{org}/actions/permissions/self-hosted-runners"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "self-hosted-runners"
             }
           ]
           t: {
@@ -8500,61 +6666,6 @@ main: kit: entity: action: {
             res: "`body`"
           }
         }
-        {
-          bf: [
-            "can_approve_pull_request_reviews"
-            "default_workflow_permissions"
-          ]
-          co: {
-            id: "PUT /orgs/{org}/actions/permissions/workflow"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/orgs/{org}/actions/permissions/workflow"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "workflow"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
       ]
     }
   }
@@ -8565,7 +6676,6 @@ main: kit: entity: action: {
     [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.user")]
     [path("$.main.kit.entity.org")]
-    [path("$.main.kit.entity.org")]
     [path("$.main.kit.entity.org") path("$.main.kit.entity.runner_group")]
     [path("$.main.kit.entity.org") path("$.main.kit.entity.runner")]
     [path("$.main.kit.entity.org")]
@@ -8575,8 +6685,6 @@ main: kit: entity: action: {
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.job")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.runner")]
     [path("$.main.kit.entity.repo")]
-    [path("$.main.kit.entity.repo")]
-    [path("$.main.kit.entity.repo") path("$.main.kit.entity.variable")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.workflow")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.environment")]
     [path("$.main.kit.entity.org") path("$.main.kit.entity.runner_group")]
@@ -8586,8 +6694,6 @@ main: kit: entity: action: {
     [path("$.main.kit.entity.org") path("$.main.kit.entity.variable")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.runner") path("$.main.kit.entity.label")]
     [path("$.main.kit.entity.repo")]
-    [path("$.main.kit.entity.repo") path("$.main.kit.entity.environment")]
-    [path("$.main.kit.entity.repo") path("$.main.kit.entity.environment") path("$.main.kit.entity.variable")]
   ]
 
 }
