@@ -6,7 +6,7 @@ require github.com/voxgig/apidef/go v0.21.3
 
 require (
 	github.com/aontu-lang/aontu/go v0.75.0 // indirect
-	github.com/jostraca/jostraca/go v0.39.0 // indirect
+	github.com/jostraca/jostraca/go v0.41.0 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/rjrodger/shape/go v0.5.3 // indirect
