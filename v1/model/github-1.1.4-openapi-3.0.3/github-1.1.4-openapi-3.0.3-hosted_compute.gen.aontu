@@ -18,7 +18,13 @@ main: kit: entity: hosted_compute: {
       n: "created_on"
       r: true
       sh: "The time at which the network configuration was created, in ISO 8601 format."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     id: {
       h: "Id"
@@ -72,18 +78,22 @@ main: kit: entity: hosted_compute: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -119,6 +129,9 @@ main: kit: entity: hosted_compute: {
             }
           ]
           t: {
+            page: {
+              total: "`body.total_count`"
+            }
             req: "`reqdata`"
             res: "`body.network_configurations`"
           }

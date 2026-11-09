@@ -125,17 +125,12 @@ main: kit: entity: user_group: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
@@ -144,7 +139,6 @@ main: kit: entity: user_group: {
           o: "/v2/user_groups"
           q: {
             exist: [
-              "authorization"
               "lw_client"
             ]
           }
@@ -179,26 +173,23 @@ main: kit: entity: user_group: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             query: [
               {
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -207,7 +198,6 @@ main: kit: entity: user_group: {
           o: "/v2/user_groups"
           q: {
             exist: [
-              "authorization"
               "lw_client"
             ]
           }
@@ -224,6 +214,9 @@ main: kit: entity: user_group: {
             }
           ]
           t: {
+            page: {
+              total: "`body.meta.totalItems`"
+            }
             req: "`reqdata`"
             res: "`body.data`"
           }
@@ -237,24 +230,19 @@ main: kit: entity: user_group: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: false
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: false
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "user_id"
                 or: "id"
                 r: true
                 t: "`$STRING`"
@@ -265,8 +253,13 @@ main: kit: entity: user_group: {
           o: "/v2/users/{id}/user-groups"
           q: {
             exist: [
-              "id"
+              "user_id"
             ]
+          }
+          r: {
+            param: {
+              id: "user_id"
+            }
           }
           rs: {
             kind: "json"
@@ -280,7 +273,7 @@ main: kit: entity: user_group: {
               lit: "users"
             }
             {
-              var: "id"
+              var: "user_id"
             }
             {
               lit: "user-groups"
@@ -305,17 +298,12 @@ main: kit: entity: user_group: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
@@ -333,7 +321,6 @@ main: kit: entity: user_group: {
           o: "/v2/user_groups/{id}"
           q: {
             exist: [
-              "authorization"
               "id"
               "lw_client"
             ]
@@ -381,17 +368,12 @@ main: kit: entity: user_group: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
@@ -409,7 +391,6 @@ main: kit: entity: user_group: {
           o: "/v2/user_groups/{id}"
           q: {
             exist: [
-              "authorization"
               "id"
               "lw_client"
             ]
@@ -450,17 +431,12 @@ main: kit: entity: user_group: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
@@ -479,7 +455,6 @@ main: kit: entity: user_group: {
           q: {
             "$action": "user-role"
             exist: [
-              "authorization"
               "id"
               "lw_client"
             ]
@@ -512,5 +487,8 @@ main: kit: entity: user_group: {
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.user")]
+  ]
 
 }

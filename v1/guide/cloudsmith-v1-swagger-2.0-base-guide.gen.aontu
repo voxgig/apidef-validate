@@ -251,8 +251,7 @@ guide: {
 
   entity: namespace_audit_log: {
     path: "/audit-log/{owner}/": {  # ent=namespace_audit_log;orig=NamespaceAuditLog;cmp/resolve=namespace_audit_log;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "owner": *"id"  # end-id;GET;parent=true/audit_log
-      op: load: method: *GET  # end-param
+      op: list: method: *GET  # end-param-page
     }
   }
 
@@ -298,6 +297,7 @@ guide: {
       rename: param: "org": *"id"  # id-parent-ent
       op: list: method: *GET  # array-prop:results
       op: list: transform: res: *("`body.results`")|top
+      op: list: transform: page: next: *("`body.next`")|top
     }
     path: "/orgs/{org}/members/{member}/refresh/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=orgs
       rename: param: "member": *"member_id"  # parent:member
@@ -326,6 +326,7 @@ guide: {
       rename: param: "org": *"id"  # id-parent-ent
       op: list: method: *GET  # array-prop:results
       op: list: transform: res: *("`body.results`")|top
+      op: list: transform: page: next: *("`body.next`")|top
     }
   }
 
@@ -764,10 +765,12 @@ guide: {
 
   entity: quota: {
     path: "/quota/history/{owner}/": {  # ent=quota;tag/path=quota;cmp/resolve=quota;path=t/p/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # end-param
+      op: list: method: *GET  # end-param-page
+      op: list: transform: res: *("`body.history`")|top
     }
     path: "/quota/oss/history/{owner}/": {  # ent=quota;tag/path=quota;cmp/resolve=quota;path=t/p/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # end-param
+      op: list: method: *GET  # end-param-page
+      op: list: transform: res: *("`body.history`")|top
     }
     path: "/quota/oss/{owner}/": {  # ent=quota;envelope=quota;tag/path=quota;cmp/resolve=quota;path=t/p/;cmp-primary;cmp-infreq
       op: load: method: *GET  # end-param
@@ -785,9 +788,8 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/repos/{owner}/": {  # ent=repo;orig=Repository;cmp/resolve=repository_create;path=t/p/;path-primary
-      rename: param: "owner": *"id"  # end-id;GET;parent=true/repo
       op: create: method: *POST  # not-load
-      op: load: method: *GET  # end-param
+      op: list: method: *GET  # end-param-page
     }
     path: "/repos/{owner}/{identifier}/": {  # ent=repo;orig=Repository;tag=repo;cmp/resolve=repo;path=t/p/p;path-primary
       op: load: method: *GET  # end-param
@@ -1045,8 +1047,7 @@ guide: {
 
   entity: vulnerability: {
     path: "/vulnerabilities/{owner}/": {  # ent=vulnerability;orig=vulnerabilities;tag/path=vulnerability;cmp/resolve=vulnerability;path=t/p/;path-primary
-      rename: param: "owner": *"id"  # end-id;GET;parent=true/vulnerability
-      op: load: method: *GET  # end-param
+      op: list: method: *GET  # end-param-page
     }
     path: "/vulnerabilities/{owner}/{repo}/": {  # ent=vulnerability;orig=vulnerabilities;tag/path=vulnerability;cmp/resolve=vulnerability;path=t/p/p;path-primary
       op: list: method: *GET  # array

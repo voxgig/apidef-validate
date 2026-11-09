@@ -5,25 +5,26 @@ main: kit: entity: region: {
   alias: field: {}
 
   fields: {
-    ErrorCodes: {
-      h: "Error Codes"
-      n: "ErrorCodes"
+    CountryIso: {
+      h: "Country Iso"
+      n: "CountryIso"
       r: true
-      t: "`$ARRAY`"
+      sh: "The country ISO code of the region"
+      t: "`$STRING`"
     }
-    Items: {
-      h: "Items"
-      n: "Items"
+    RegionCode: {
+      h: "Region Code"
+      n: "RegionCode"
       r: true
-      sh: "The list of regions that the system uses."
-      t: "`$ARRAY`"
+      sh: "The region code"
+      t: "`$STRING`"
     }
-    ResultCode: {
-      fo: "int32"
-      h: "Result Code"
-      n: "ResultCode"
+    RegionName: {
+      h: "Region Name"
+      n: "RegionName"
       r: true
-      t: "`$INTEGER`"
+      sh: "The region name"
+      t: "`$STRING`"
     }
   }
 
@@ -41,19 +42,23 @@ main: kit: entity: region: {
           g: {
             header: [
               {
+                explode: false
                 k: "header"
                 n: "x_correlation_id"
                 or: "X-Correlation-Id"
                 r: false
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             query: [
               {
+                explode: true
                 k: "query"
                 n: "country_iso"
                 or: "countryIsos"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
             ]
@@ -83,7 +88,7 @@ main: kit: entity: region: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.Items`"
           }
         }
       ]

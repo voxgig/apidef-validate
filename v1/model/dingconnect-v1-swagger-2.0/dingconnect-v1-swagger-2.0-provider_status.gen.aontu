@@ -5,24 +5,26 @@ main: kit: entity: provider_status: {
   alias: field: {}
 
   fields: {
-    ErrorCodes: {
-      h: "Error Codes"
-      n: "ErrorCodes"
+    IsProcessingTransfers: {
+      h: "Is Processing Transfers"
+      n: "IsProcessingTransfers"
       r: true
-      t: "`$ARRAY`"
+      sh: "Indicates if the provider is processing transfers"
+      t: "`$BOOLEAN`"
     }
-    Items: {
-      h: "Items"
-      n: "Items"
-      r: true
-      t: "`$ARRAY`"
+    Message: {
+      h: "Message"
+      n: "Message"
+      r: false
+      sh: "Details of operator status"
+      t: "`$STRING`"
     }
-    ResultCode: {
-      fo: "int32"
-      h: "Result Code"
-      n: "ResultCode"
+    ProviderCode: {
+      h: "Provider Code"
+      n: "ProviderCode"
       r: true
-      t: "`$INTEGER`"
+      sh: "The unique provider code"
+      t: "`$STRING`"
     }
   }
 
@@ -40,19 +42,23 @@ main: kit: entity: provider_status: {
           g: {
             header: [
               {
+                explode: false
                 k: "header"
                 n: "x_correlation_id"
                 or: "X-Correlation-Id"
                 r: false
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             query: [
               {
+                explode: true
                 k: "query"
                 n: "provider_code"
                 or: "providerCodes"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
             ]
@@ -82,7 +88,7 @@ main: kit: entity: provider_status: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.Items`"
           }
         }
       ]

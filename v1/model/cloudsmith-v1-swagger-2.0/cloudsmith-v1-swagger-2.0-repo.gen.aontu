@@ -132,6 +132,7 @@ main: kit: entity: repo: {
       h: "Id"
       n: "id"
       r: false
+      syn: true
       t: "`$STRING`"
     }
     index_files: {
@@ -500,6 +501,11 @@ main: kit: entity: repo: {
   id: {
     field: "id"
     name: "id"
+    parts: [
+      "owner"
+      "identifier"
+    ]
+    sep: "/"
   }
 
   name: "repo"
@@ -728,7 +734,7 @@ main: kit: entity: repo: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "owner"
                 or: "owner"
                 r: true
                 t: "`$STRING`"
@@ -739,13 +745,8 @@ main: kit: entity: repo: {
           o: "/repos/{owner}/"
           q: {
             exist: [
-              "id"
+              "owner"
             ]
-          }
-          r: {
-            param: {
-              owner: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -756,7 +757,7 @@ main: kit: entity: repo: {
               lit: "repos"
             }
             {
-              var: "id"
+              var: "owner"
             }
           ]
           t: {
@@ -771,6 +772,67 @@ main: kit: entity: repo: {
       points: [
         {
           co: {
+            id: "GET /repos/{owner}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "page_size"
+                or: "page_size"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/"
+          q: {
+            exist: [
+              "owner"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /repos/"
             source: "swagger2"
             version: 2
@@ -778,17 +840,21 @@ main: kit: entity: repo: {
           g: {
             query: [
               {
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
+                explode: true
                 k: "query"
                 n: "page_size"
                 or: "page_size"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -859,68 +925,6 @@ main: kit: entity: repo: {
             }
             {
               var: "identifier"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                k: "query"
-                n: "page_size"
-                or: "page_size"
-                r: false
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          r: {
-            param: {
-              owner: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "id"
             }
           ]
           t: {

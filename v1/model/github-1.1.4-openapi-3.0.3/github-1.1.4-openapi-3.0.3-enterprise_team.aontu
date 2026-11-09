@@ -25,23 +25,47 @@ main: kit: entity: enterprise_team: {
       op: {
         create: {
           req: false
-          type: "`$STRING`"
+          type: [
+            "`$ONE`"
+            [
+              "`$STRING`"
+              "`$NULL`"
+            ]
+          ]
         }
         update: {
           req: false
-          type: "`$STRING`"
+          type: [
+            "`$ONE`"
+            [
+              "`$STRING`"
+              "`$NULL`"
+            ]
+          ]
         }
       }
       r: true
       sh: "The ID of the IdP group to assign team membership with."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     group_name: {
       h: "Group Name"
       n: "group_name"
       r: false
       sh: "Retired: this field will not be returned with GHEC enterprise teams."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     html_url: {
       fo: "uri"
@@ -69,7 +93,13 @@ main: kit: entity: enterprise_team: {
       op: {
         update: {
           req: false
-          type: "`$STRING`"
+          type: [
+            "`$ONE`"
+            [
+              "`$STRING`"
+              "`$NULL`"
+            ]
+          ]
         }
       }
       r: true
@@ -137,7 +167,7 @@ main: kit: entity: enterprise_team: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "enterprise_id"
                 or: "enterprise"
                 r: true
                 t: "`$STRING`"
@@ -148,12 +178,12 @@ main: kit: entity: enterprise_team: {
           o: "/enterprises/{enterprise}/teams"
           q: {
             exist: [
-              "id"
+              "enterprise_id"
             ]
           }
           r: {
             param: {
-              enterprise: "id"
+              enterprise: "enterprise_id"
             }
           }
           rs: {
@@ -165,7 +195,7 @@ main: kit: entity: enterprise_team: {
               lit: "enterprises"
             }
             {
-              var: "id"
+              var: "enterprise_id"
             }
             {
               lit: "teams"
@@ -191,7 +221,7 @@ main: kit: entity: enterprise_team: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "enterprise_id"
                 or: "enterprise"
                 r: true
                 t: "`$STRING`"
@@ -200,18 +230,22 @@ main: kit: entity: enterprise_team: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -220,12 +254,12 @@ main: kit: entity: enterprise_team: {
           o: "/enterprises/{enterprise}/teams"
           q: {
             exist: [
-              "id"
+              "enterprise_id"
             ]
           }
           r: {
             param: {
-              enterprise: "id"
+              enterprise: "enterprise_id"
             }
           }
           rs: {
@@ -237,7 +271,7 @@ main: kit: entity: enterprise_team: {
               lit: "enterprises"
             }
             {
-              var: "id"
+              var: "enterprise_id"
             }
             {
               lit: "teams"

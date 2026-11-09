@@ -5,29 +5,31 @@ main: kit: entity: attestation: {
   alias: field: {}
 
   fields: {
-    attestations: {
-      h: "Attestations"
-      n: "attestations"
+    bundle: {
+      h: "Bundle"
+      n: "bundle"
       r: false
-      t: "`$ARRAY`"
+      sh: "The attestation's Sigstore Bundle."
+      t: "`$OBJECT`"
     }
-    id: {
-      h: "Id"
-      n: "id"
+    bundle_url: {
+      h: "Bundle Url"
+      n: "bundle_url"
       r: false
       t: "`$STRING`"
     }
-  }
-
-  id: {
-    field: "id"
-    name: "id"
+    repository_id: {
+      h: "Repository Id"
+      n: "repository_id"
+      r: false
+      t: "`$INTEGER`"
+    }
   }
 
   name: "attestation"
   op: {
-    load: {
-      name: "load"
+    list: {
+      name: "list"
       points: [
         {
           co: {
@@ -39,7 +41,7 @@ main: kit: entity: attestation: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "subject_digest"
                 or: "subject_digest"
                 r: true
                 t: "`$STRING`"
@@ -54,32 +56,40 @@ main: kit: entity: attestation: {
             ]
             query: [
               {
+                explode: true
                 k: "query"
                 n: "after"
                 or: "after"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "before"
                 or: "before"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
+                explode: true
                 k: "query"
                 n: "predicate_type"
                 or: "predicate_type"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
             ]
@@ -88,14 +98,9 @@ main: kit: entity: attestation: {
           o: "/users/{username}/attestations/{subject_digest}"
           q: {
             exist: [
-              "id"
+              "subject_digest"
               "username"
             ]
-          }
-          r: {
-            param: {
-              subject_digest: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -112,12 +117,12 @@ main: kit: entity: attestation: {
               lit: "attestations"
             }
             {
-              var: "id"
+              var: "subject_digest"
             }
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.attestations`"
           }
         }
       ]

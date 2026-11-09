@@ -16,6 +16,7 @@ main: kit: entity: git_ref: {
       h: "Id"
       n: "id"
       r: false
+      syn: true
       t: "`$STRING`"
     }
     node_id: {
@@ -127,6 +128,81 @@ main: kit: entity: git_ref: {
         }
       ]
     }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/git/matching-refs/{ref}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "heads/feature-a"
+                k: "param"
+                n: "ref"
+                or: "ref"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/git/matching-refs/{ref}"
+          q: {
+            exist: [
+              "owner"
+              "ref"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "matching-refs"
+            }
+            {
+              var: "ref"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [
@@ -198,76 +274,6 @@ main: kit: entity: git_ref: {
             }
             {
               var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/git/matching-refs/{ref}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                ex: "heads/feature-a"
-                k: "param"
-                n: "ref"
-                or: "ref"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/git/matching-refs/{ref}"
-          q: {
-            exist: [
-              "owner"
-              "ref"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "git"
-            }
-            {
-              lit: "matching-refs"
-            }
-            {
-              var: "ref"
             }
           ]
           t: {

@@ -97,41 +97,42 @@ main: kit: entity: user_subscription: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
+                explode: true
                 k: "query"
                 n: "status"
                 or: "status"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "user_id"
                 or: "user_id"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
             ]
@@ -140,7 +141,6 @@ main: kit: entity: user_subscription: {
           o: "/v2/user-subscriptions"
           q: {
             exist: [
-              "authorization"
               "lw_client"
             ]
           }
@@ -157,6 +157,9 @@ main: kit: entity: user_subscription: {
             }
           ]
           t: {
+            page: {
+              total: "`body.meta.totalItems`"
+            }
             req: "`reqdata`"
             res: "`body.data`"
           }

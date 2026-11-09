@@ -5,25 +5,59 @@ main: kit: entity: promotion_description: {
   alias: field: {}
 
   fields: {
-    ErrorCodes: {
-      h: "Error Codes"
-      n: "ErrorCodes"
+    BonusValidity: {
+      h: "Bonus Validity"
+      n: "BonusValidity"
       r: true
+      sh: "Different from ValidityPeriodIso as it has a non Iso value"
+      t: "`$STRING`"
+    }
+    Dates: {
+      h: "Dates"
+      n: "Dates"
+      r: true
+      sh: "Dates where the promotion is available within the ValidityPeriod"
+      t: "`$STRING`"
+    }
+    Headline: {
+      h: "Headline"
+      n: "Headline"
+      r: true
+      sh: "Short description of the promotion"
+      t: "`$STRING`"
+    }
+    LanguageCode: {
+      h: "Language Code"
+      n: "LanguageCode"
+      r: true
+      t: "`$STRING`"
+    }
+    LocalizationKey: {
+      h: "Localization Key"
+      n: "LocalizationKey"
+      r: true
+      t: "`$STRING`"
+    }
+    PromotionType: {
+      h: "Promotion Type"
+      n: "PromotionType"
+      r: true
+      sh: "Short description of the type of promotion"
+      t: "`$STRING`"
+    }
+    SendAmounts: {
+      h: "Send Amounts"
+      n: "SendAmounts"
+      r: true
+      sh: "Amount ranges in distributor's currency where bonus are applicable"
       t: "`$ARRAY`"
     }
-    Items: {
-      h: "Items"
-      n: "Items"
+    TermsAndConditionsMarkDown: {
+      h: "Terms And Conditions Mark Down"
+      n: "TermsAndConditionsMarkDown"
       r: true
-      sh: "A localized list of promotions."
-      t: "`$ARRAY`"
-    }
-    ResultCode: {
-      fo: "int32"
-      h: "Result Code"
-      n: "ResultCode"
-      r: true
-      t: "`$INTEGER`"
+      sh: "Terms and conditions of the promotion"
+      t: "`$STRING`"
     }
   }
 
@@ -41,19 +75,23 @@ main: kit: entity: promotion_description: {
           g: {
             header: [
               {
+                explode: false
                 k: "header"
                 n: "x_correlation_id"
                 or: "X-Correlation-Id"
                 r: false
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             query: [
               {
+                explode: true
                 k: "query"
                 n: "language_code"
                 or: "languageCodes"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
             ]
@@ -83,7 +121,7 @@ main: kit: entity: promotion_description: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.Items`"
           }
         }
       ]

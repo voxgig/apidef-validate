@@ -5,25 +5,123 @@ main: kit: entity: product: {
   alias: field: {}
 
   fields: {
-    ErrorCodes: {
-      h: "Error Codes"
-      n: "ErrorCodes"
+    AdditionalInformation: {
+      h: "Additional Information"
+      n: "AdditionalInformation"
+      r: false
+      sh: "Any distributor specific information/caveats about this particular product"
+      t: "`$STRING`"
+    }
+    Benefits: {
+      h: "Benefits"
+      n: "Benefits"
       r: true
+      sh: "What type of benefits will the transfer give to the target account"
       t: "`$ARRAY`"
     }
-    Items: {
-      h: "Items"
-      n: "Items"
+    CommissionRate: {
+      fo: "decimal"
+      h: "Commission Rate"
+      n: "CommissionRate"
       r: true
-      sh: "A list of products that fulfil the submitted criteria."
+      sh: "The rate of commission that will be applied for selling this product"
+      t: "`$NUMBER`"
+    }
+    DefaultDisplayText: {
+      h: "Default Display Text"
+      n: "DefaultDisplayText"
+      r: true
+      sh: "The Display text from the `LocalizedProductDescription` in the default language (usually \"en\")."
+      t: "`$STRING`"
+    }
+    LocalizationKey: {
+      h: "Localization Key"
+      n: "LocalizationKey"
+      r: true
+      sh: "Key to be used in conjunction with `GetProductDescriptions`"
+      t: "`$STRING`"
+    }
+    LookupBillsRequired: {
+      h: "Lookup Bills Required"
+      n: "LookupBillsRequired"
+      r: false
+      sh: "If true, it indicates to consume this product you must call LookupBills first and send the BillRef during the SendTransfer"
+      t: "`$BOOLEAN`"
+    }
+    Maximum: {
+      h: "Maximum"
+      n: "Maximum"
+      r: true
+      t: "`$OBJECT`"
+    }
+    Minimum: {
+      h: "Minimum"
+      n: "Minimum"
+      r: true
+      t: "`$OBJECT`"
+    }
+    PaymentTypes: {
+      h: "Payment Types"
+      n: "PaymentTypes"
+      r: true
+      sh: "Indicates the supported payment types for this product."
       t: "`$ARRAY`"
     }
-    ResultCode: {
-      fo: "int32"
-      h: "Result Code"
-      n: "ResultCode"
+    ProcessingMode: {
+      h: "Processing Mode"
+      n: "ProcessingMode"
       r: true
-      t: "`$INTEGER`"
+      sh: "Transaction processing mode for this product"
+      t: "`$STRING`"
+    }
+    ProviderCode: {
+      h: "Provider Code"
+      n: "ProviderCode"
+      r: true
+      sh: "The provider of the product"
+      t: "`$STRING`"
+    }
+    RedemptionMechanism: {
+      h: "Redemption Mechanism"
+      n: "RedemptionMechanism"
+      r: true
+      sh: "Indicates if the customer is required to take further action in order to redeem the transfer"
+      t: "`$STRING`"
+    }
+    RegionCode: {
+      h: "Region Code"
+      n: "RegionCode"
+      r: true
+      sh: "Region for this product"
+      t: "`$STRING`"
+    }
+    SettingDefinitions: {
+      h: "Setting Definitions"
+      n: "SettingDefinitions"
+      r: true
+      sh: "Name/Value pairs that should be submitted during `SendTransfer`"
+      t: "`$ARRAY`"
+    }
+    SkuCode: {
+      h: "Sku Code"
+      n: "SkuCode"
+      r: true
+      sh: "Unique code to be used in conjunction with `SendTransfer` (SKU: \"Stock Keeping Unit\")."
+      t: "`$STRING`"
+    }
+    UatNumber: {
+      h: "Uat Number"
+      n: "UatNumber"
+      r: true
+      sh: "User Acceptance Test Number"
+      t: "`$STRING`"
+    }
+    ValidityPeriodIso: {
+      h: "Validity Period Iso"
+      n: "ValidityPeriodIso"
+      r: false
+      sh: "How long is the product valid for after purchase"
+      t: "`$STRING`"
     }
   }
 
@@ -41,55 +139,69 @@ main: kit: entity: product: {
           g: {
             header: [
               {
+                explode: false
                 k: "header"
                 n: "x_correlation_id"
                 or: "X-Correlation-Id"
                 r: false
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             query: [
               {
                 ex: ""
+                explode: true
                 k: "query"
                 n: "account_number"
                 or: "accountNumber"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "benefit"
                 or: "benefits"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
               {
+                explode: true
                 k: "query"
                 n: "country_iso"
                 or: "countryIsos"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
               {
+                explode: true
                 k: "query"
                 n: "provider_code"
                 or: "providerCodes"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
               {
+                explode: true
                 k: "query"
                 n: "region_code"
                 or: "regionCodes"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
               {
+                explode: true
                 k: "query"
                 n: "sku_code"
                 or: "skuCodes"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
             ]
@@ -119,7 +231,7 @@ main: kit: entity: product: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.Items`"
           }
         }
       ]

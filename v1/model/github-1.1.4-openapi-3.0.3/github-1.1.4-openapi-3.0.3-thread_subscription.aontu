@@ -10,13 +10,13 @@ main: kit: entity: thread_subscription: {
       h: "Created At"
       n: "created_at"
       r: true
-      t: "`$STRING`"
-    }
-    id: {
-      h: "Id"
-      n: "id"
-      r: false
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     ignored: {
       h: "Ignored"
@@ -35,7 +35,13 @@ main: kit: entity: thread_subscription: {
       h: "Reason"
       n: "reason"
       r: true
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     repository_url: {
       fo: "uri"
@@ -66,11 +72,6 @@ main: kit: entity: thread_subscription: {
     }
   }
 
-  id: {
-    field: "id"
-    name: "id"
-  }
-
   name: "thread_subscription"
   op: {
     load: {
@@ -86,7 +87,7 @@ main: kit: entity: thread_subscription: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "thread_id"
                 or: "thread_id"
                 r: true
                 t: "`$INTEGER`"
@@ -97,13 +98,8 @@ main: kit: entity: thread_subscription: {
           o: "/notifications/threads/{thread_id}/subscription"
           q: {
             exist: [
-              "id"
+              "thread_id"
             ]
-          }
-          r: {
-            param: {
-              thread_id: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -117,7 +113,7 @@ main: kit: entity: thread_subscription: {
               lit: "threads"
             }
             {
-              var: "id"
+              var: "thread_id"
             }
             {
               lit: "subscription"
@@ -143,7 +139,7 @@ main: kit: entity: thread_subscription: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "thread_id"
                 or: "thread_id"
                 r: true
                 t: "`$INTEGER`"
@@ -154,13 +150,8 @@ main: kit: entity: thread_subscription: {
           o: "/notifications/threads/{thread_id}/subscription"
           q: {
             exist: [
-              "id"
+              "thread_id"
             ]
-          }
-          r: {
-            param: {
-              thread_id: "id"
-            }
           }
           s: [
             {
@@ -170,7 +161,7 @@ main: kit: entity: thread_subscription: {
               lit: "threads"
             }
             {
-              var: "id"
+              var: "thread_id"
             }
             {
               lit: "subscription"
@@ -199,7 +190,7 @@ main: kit: entity: thread_subscription: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "thread_id"
                 or: "thread_id"
                 r: true
                 t: "`$INTEGER`"
@@ -210,13 +201,8 @@ main: kit: entity: thread_subscription: {
           o: "/notifications/threads/{thread_id}/subscription"
           q: {
             exist: [
-              "id"
+              "thread_id"
             ]
-          }
-          r: {
-            param: {
-              thread_id: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -230,7 +216,7 @@ main: kit: entity: thread_subscription: {
               lit: "threads"
             }
             {
-              var: "id"
+              var: "thread_id"
             }
             {
               lit: "subscription"
@@ -246,5 +232,8 @@ main: kit: entity: thread_subscription: {
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.thread")]
+  ]
 
 }

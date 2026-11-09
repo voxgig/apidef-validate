@@ -24,7 +24,13 @@ main: kit: entity: deployment_status: {
       n: "creator"
       r: true
       sh: "A GitHub user."
-      t: "`$OBJECT`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
     deployment_url: {
       fo: "uri"
@@ -87,7 +93,13 @@ main: kit: entity: deployment_status: {
       n: "performed_via_github_app"
       r: true
       sh: "GitHub apps are a new way to extend GitHub."
-      t: "`$OBJECT`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
       union: {
         branches: 2
         count: 1
@@ -167,7 +179,7 @@ main: kit: entity: deployment_status: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "deployment_id"
                 or: "deployment_id"
                 r: true
                 t: "`$INTEGER`"
@@ -192,15 +204,10 @@ main: kit: entity: deployment_status: {
           o: "/repos/{owner}/{repo}/deployments/{deployment_id}/statuses"
           q: {
             exist: [
-              "id"
+              "deployment_id"
               "owner"
               "repo"
             ]
-          }
-          r: {
-            param: {
-              deployment_id: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -220,7 +227,7 @@ main: kit: entity: deployment_status: {
               lit: "deployments"
             }
             {
-              var: "id"
+              var: "deployment_id"
             }
             {
               lit: "statuses"
@@ -246,7 +253,7 @@ main: kit: entity: deployment_status: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "deployment_id"
                 or: "deployment_id"
                 r: true
                 t: "`$INTEGER`"
@@ -269,18 +276,22 @@ main: kit: entity: deployment_status: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -289,15 +300,10 @@ main: kit: entity: deployment_status: {
           o: "/repos/{owner}/{repo}/deployments/{deployment_id}/statuses"
           q: {
             exist: [
-              "id"
+              "deployment_id"
               "owner"
               "repo"
             ]
-          }
-          r: {
-            param: {
-              deployment_id: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -317,7 +323,7 @@ main: kit: entity: deployment_status: {
               lit: "deployments"
             }
             {
-              var: "id"
+              var: "deployment_id"
             }
             {
               lit: "statuses"
@@ -424,7 +430,6 @@ main: kit: entity: deployment_status: {
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.deployment")]
   ]
 

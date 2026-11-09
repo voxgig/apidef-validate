@@ -34,8 +34,8 @@ main: kit: entity: coupon: {
       t: [
         "`$ONE`"
         [
-          "`$NULL`"
           "`$STRING`"
+          "`$NULL`"
         ]
       ]
     }
@@ -44,38 +44,32 @@ main: kit: entity: coupon: {
       n: "prefix"
       op: {
         create: {
-          req: true
-          type: "`$STRING`"
+          req: false
+          type: [
+            "`$ONE`"
+            [
+              "`$STRING`"
+              "`$NULL`"
+            ]
+          ]
         }
       }
-      r: false
+      r: true
       sh: "Coupon prefix"
-      t: [
-        "`$ONE`"
-        [
-          "`$STRING`"
-          "`$NULL`"
-        ]
-      ]
+      t: "`$STRING`"
     }
     quantity: {
       h: "Quantity"
       n: "quantity"
       op: {
         create: {
-          req: true
-          type: "`$NUMBER`"
+          req: false
+          type: "`$INTEGER`"
         }
       }
-      r: false
-      sh: "Number of redemptions that are allowed for this coupon (null as a value means that there is no limit in how many times a coupon can be redeemed)"
-      t: [
-        "`$ONE`"
-        [
-          "`$NUMBER`"
-          "`$NULL`"
-        ]
-      ]
+      r: true
+      sh: "Coupon quantity greater than 0"
+      t: "`$NUMBER`"
     }
     times_used: {
       h: "Times Used"
@@ -93,90 +87,6 @@ main: kit: entity: coupon: {
       points: [
         {
           bf: [
-            "code"
-            "expires"
-            "quantity"
-          ]
-          co: {
-            id: "POST /v2/promotions/{pid}/coupons"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            header: [
-              {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                ex: "application/json"
-                k: "header"
-                n: "content_type"
-                or: "Content-Type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "header"
-                n: "lw_client"
-                or: "Lw-Client"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            params: [
-              {
-                k: "param"
-                n: "promotion_id"
-                or: "pid"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/v2/promotions/{pid}/coupons"
-          q: {
-            exist: [
-              "authorization"
-              "content_type"
-              "lw_client"
-              "promotion_id"
-            ]
-          }
-          r: {
-            param: {
-              pid: "promotion_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "v2"
-            }
-            {
-              lit: "promotions"
-            }
-            {
-              var: "promotion_id"
-            }
-            {
-              lit: "coupons"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
             "expires"
             "prefix"
             "quantity"
@@ -189,17 +99,12 @@ main: kit: entity: coupon: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
@@ -217,7 +122,6 @@ main: kit: entity: coupon: {
           o: "/v2/promotions/{id}/coupons-bulk"
           q: {
             exist: [
-              "authorization"
               "lw_client"
               "promotion_id"
             ]
@@ -243,6 +147,75 @@ main: kit: entity: coupon: {
             }
             {
               lit: "coupons-bulk"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "code"
+            "expires"
+            "quantity"
+          ]
+          co: {
+            id: "POST /v2/promotions/{pid}/coupons"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "promotion_id"
+                or: "pid"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/v2/promotions/{pid}/coupons"
+          q: {
+            exist: [
+              "lw_client"
+              "promotion_id"
+            ]
+          }
+          r: {
+            param: {
+              pid: "promotion_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "promotions"
+            }
+            {
+              var: "promotion_id"
+            }
+            {
+              lit: "coupons"
             }
           ]
           t: {

@@ -24,24 +24,30 @@ main: kit: entity: api_insights_user_stat: {
       r: false
       t: "`$STRING`"
     }
-    id: {
-      h: "Id"
-      n: "id"
-      r: false
-      t: "`$STRING`"
-    }
     integration_id: {
       fo: "int64"
       h: "Integration Id"
       n: "integration_id"
       r: false
-      t: "`$INTEGER`"
+      t: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
     }
     last_rate_limited_timestamp: {
       h: "Last Rate Limited Timestamp"
       n: "last_rate_limited_timestamp"
       r: false
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     last_request_timestamp: {
       h: "Last Request Timestamp"
@@ -54,7 +60,13 @@ main: kit: entity: api_insights_user_stat: {
       h: "Oauth Application Id"
       n: "oauth_application_id"
       r: false
-      t: "`$INTEGER`"
+      t: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
     }
     rate_limited_request_count: {
       h: "Rate Limited Request Count"
@@ -70,15 +82,10 @@ main: kit: entity: api_insights_user_stat: {
     }
   }
 
-  id: {
-    field: "id"
-    name: "id"
-  }
-
   name: "api_insights_user_stat"
   op: {
-    load: {
-      name: "load"
+    list: {
+      name: "list"
       points: [
         {
           co: {
@@ -90,70 +97,84 @@ main: kit: entity: api_insights_user_stat: {
             params: [
               {
                 k: "param"
-                n: "id"
-                or: "user_id"
+                n: "org_id"
+                or: "org"
                 r: true
                 t: "`$STRING`"
               }
               {
                 k: "param"
-                n: "org_id"
-                or: "org"
+                n: "user_id"
+                or: "user_id"
                 r: true
                 t: "`$STRING`"
               }
             ]
             query: [
               {
+                explode: true
                 k: "query"
                 n: "actor_name_substring"
                 or: "actor_name_substring"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: "desc"
+                explode: true
                 k: "query"
                 n: "direction"
                 or: "direction"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "max_timestamp"
                 or: "max_timestamp"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "min_timestamp"
                 or: "min_timestamp"
                 r: true
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
+                explode: true
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
             ]
@@ -162,15 +183,14 @@ main: kit: entity: api_insights_user_stat: {
           o: "/orgs/{org}/insights/api/user-stats/{user_id}"
           q: {
             exist: [
-              "id"
               "min_timestamp"
               "org_id"
+              "user_id"
             ]
           }
           r: {
             param: {
               org: "org_id"
-              user_id: "id"
             }
           }
           rs: {
@@ -194,7 +214,7 @@ main: kit: entity: api_insights_user_stat: {
               lit: "user-stats"
             }
             {
-              var: "id"
+              var: "user_id"
             }
           ]
           t: {

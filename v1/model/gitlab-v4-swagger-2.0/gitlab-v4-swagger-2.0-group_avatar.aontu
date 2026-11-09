@@ -4,20 +4,6 @@ main: kit: entity: group_avatar: {
 
   alias: field: {}
 
-  fields: {
-    id: {
-      h: "Id"
-      n: "id"
-      r: false
-      t: "`$STRING`"
-    }
-  }
-
-  id: {
-    field: "id"
-    name: "id"
-  }
-
   name: "group_avatar"
   op: {
     load: {
@@ -33,7 +19,7 @@ main: kit: entity: group_avatar: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "group_id"
                 or: "id"
                 r: true
                 t: "`$STRING`"
@@ -44,8 +30,13 @@ main: kit: entity: group_avatar: {
           o: "/api/v4/groups/{id}/avatar"
           q: {
             exist: [
-              "id"
+              "group_id"
             ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+            }
           }
           s: [
             {
@@ -58,7 +49,7 @@ main: kit: entity: group_avatar: {
               lit: "groups"
             }
             {
-              var: "id"
+              var: "group_id"
             }
             {
               lit: "avatar"
@@ -73,6 +64,12 @@ main: kit: entity: group_avatar: {
     }
   }
 
+  fields: {
+  }
 
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.group")]
+  ]
 
 }

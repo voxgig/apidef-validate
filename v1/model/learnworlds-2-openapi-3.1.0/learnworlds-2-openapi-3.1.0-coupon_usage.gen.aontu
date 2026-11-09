@@ -248,24 +248,19 @@ main: kit: entity: coupon_usage: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "coupon_id"
                 or: "cid"
                 r: true
                 t: "`$STRING`"
@@ -281,10 +276,12 @@ main: kit: entity: coupon_usage: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -293,15 +290,14 @@ main: kit: entity: coupon_usage: {
           o: "/v2/promotions/{pid}/coupons/{cid}/usage"
           q: {
             exist: [
-              "authorization"
-              "id"
+              "coupon_id"
               "lw_client"
               "promotion_id"
             ]
           }
           r: {
             param: {
-              cid: "id"
+              cid: "coupon_id"
               pid: "promotion_id"
             }
           }
@@ -323,13 +319,16 @@ main: kit: entity: coupon_usage: {
               lit: "coupons"
             }
             {
-              var: "id"
+              var: "coupon_id"
             }
             {
               lit: "usage"
             }
           ]
           t: {
+            page: {
+              total: "`body.meta.totalItems`"
+            }
             req: "`reqdata`"
             res: "`body.payments`"
           }
@@ -340,7 +339,7 @@ main: kit: entity: coupon_usage: {
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.promotion")]
+    [path("$.main.kit.entity.promotion") path("$.main.kit.entity.coupon")]
   ]
 
 }

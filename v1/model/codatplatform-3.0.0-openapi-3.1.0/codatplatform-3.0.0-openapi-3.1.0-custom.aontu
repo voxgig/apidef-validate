@@ -5,6 +5,13 @@ main: kit: entity: custom: {
   alias: field: {}
 
   fields: {
+    content: {
+      h: "Content"
+      n: "content"
+      r: false
+      sh: "Values from the source system for the properties defined in the custom data type configuration."
+      t: "`$OBJECT`"
+    }
     dataSource: {
       h: "Data Source"
       n: "dataSource"
@@ -16,6 +23,7 @@ main: kit: entity: custom: {
       h: "Id"
       n: "id"
       r: false
+      sh: "Unique identifier of the record."
       t: "`$STRING`"
     }
     keyBy: {
@@ -25,19 +33,11 @@ main: kit: entity: custom: {
       sh: "An array of properties from the source system that can be used to uniquely identify the records returned for the custom data type."
       t: "`$ARRAY`"
     }
-    pageNumber: {
-      h: "Page Number"
-      n: "pageNumber"
+    modifiedDate: {
+      h: "Modified Date"
+      n: "modifiedDate"
       r: false
-      sh: "Current page number."
-      t: "`$INTEGER`"
-    }
-    pageSize: {
-      h: "Page Size"
-      n: "pageSize"
-      r: false
-      sh: "Number of items to return in results array."
-      t: "`$INTEGER`"
+      t: "`$OBJECT`"
     }
     requiredData: {
       h: "Required Data"
@@ -46,25 +46,18 @@ main: kit: entity: custom: {
       sh: "Properties required to be fetched from the underlying platform for the custom data type that is being configured."
       t: "`$OBJECT`"
     }
-    results: {
-      h: "Results"
-      n: "results"
-      r: false
-      t: "`$ARRAY`"
-    }
     sourceModifiedDate: {
       h: "Source Modified Date"
       n: "sourceModifiedDate"
       r: false
       sh: "Property in the source platform nominated by the client that defines the date when a record was last modified there."
-      t: "`$ARRAY`"
-    }
-    totalResults: {
-      h: "Total Results"
-      n: "totalResults"
-      r: false
-      sh: "Total number of items."
-      t: "`$INTEGER`"
+      t: [
+        "`$ONE`"
+        [
+          "`$ARRAY`"
+          "`$NULL`"
+        ]
+      ]
     }
   }
 
@@ -75,8 +68,8 @@ main: kit: entity: custom: {
 
   name: "custom"
   op: {
-    load: {
-      name: "load"
+    list: {
+      name: "list"
       points: [
         {
           co: {
@@ -105,7 +98,7 @@ main: kit: entity: custom: {
               {
                 ex: "DynamicsPurchaseOrders"
                 k: "param"
-                n: "id"
+                n: "custom_data_identifier"
                 or: "customDataIdentifier"
                 r: true
                 t: "`$STRING`"
@@ -114,18 +107,22 @@ main: kit: entity: custom: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 100
+                explode: true
                 k: "query"
                 n: "page_size"
                 or: "pageSize"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -136,14 +133,14 @@ main: kit: entity: custom: {
             exist: [
               "company_id"
               "connection_id"
-              "id"
+              "custom_data_identifier"
             ]
           }
           r: {
             param: {
               companyId: "company_id"
               connectionId: "connection_id"
-              customDataIdentifier: "id"
+              customDataIdentifier: "custom_data_identifier"
             }
           }
           rs: {
@@ -170,12 +167,15 @@ main: kit: entity: custom: {
               lit: "custom"
             }
             {
-              var: "id"
+              var: "custom_data_identifier"
             }
           ]
           t: {
+            page: {
+              total: "`body.totalResults`"
+            }
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.results`"
           }
         }
         {
@@ -189,7 +189,7 @@ main: kit: entity: custom: {
               {
                 ex: "DynamicsPurchaseOrders"
                 k: "param"
-                n: "id"
+                n: "custom_data_identifier"
                 or: "customDataIdentifier"
                 r: true
                 t: "`$STRING`"
@@ -208,13 +208,13 @@ main: kit: entity: custom: {
           o: "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}"
           q: {
             exist: [
-              "id"
+              "custom_data_identifier"
               "platform_key"
             ]
           }
           r: {
             param: {
-              customDataIdentifier: "id"
+              customDataIdentifier: "custom_data_identifier"
               platformKey: "platform_key"
             }
           }
@@ -236,12 +236,15 @@ main: kit: entity: custom: {
               lit: "custom"
             }
             {
-              var: "id"
+              var: "custom_data_identifier"
             }
           ]
           t: {
+            page: {
+              total: "`body.totalResults`"
+            }
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.results`"
           }
         }
       ]
@@ -266,7 +269,7 @@ main: kit: entity: custom: {
               {
                 ex: "DynamicsPurchaseOrders"
                 k: "param"
-                n: "id"
+                n: "custom_data_identifier"
                 or: "customDataIdentifier"
                 r: true
                 t: "`$STRING`"
@@ -285,13 +288,13 @@ main: kit: entity: custom: {
           o: "/integrations/{platformKey}/dataTypes/custom/{customDataIdentifier}"
           q: {
             exist: [
-              "id"
+              "custom_data_identifier"
               "platform_key"
             ]
           }
           r: {
             param: {
-              customDataIdentifier: "id"
+              customDataIdentifier: "custom_data_identifier"
               platformKey: "platform_key"
             }
           }
@@ -313,7 +316,7 @@ main: kit: entity: custom: {
               lit: "custom"
             }
             {
-              var: "id"
+              var: "custom_data_identifier"
             }
           ]
           t: {

@@ -43,12 +43,6 @@ main: kit: entity: branch_protection: {
       sh: "Protected Branch Admin Enforced"
       t: "`$OBJECT`"
     }
-    id: {
-      h: "Id"
-      n: "id"
-      r: false
-      t: "`$STRING`"
-    }
     lock_branch: {
       h: "Lock Branch"
       n: "lock_branch"
@@ -120,11 +114,6 @@ main: kit: entity: branch_protection: {
     }
   }
 
-  id: {
-    field: "id"
-    name: "id"
-  }
-
   name: "branch_protection"
   op: {
     load: {
@@ -140,7 +129,7 @@ main: kit: entity: branch_protection: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "branch_id"
                 or: "branch"
                 r: true
                 t: "`$STRING`"
@@ -165,14 +154,14 @@ main: kit: entity: branch_protection: {
           o: "/repos/{owner}/{repo}/branches/{branch}/protection"
           q: {
             exist: [
-              "id"
+              "branch_id"
               "owner"
               "repo"
             ]
           }
           r: {
             param: {
-              branch: "id"
+              branch: "branch_id"
             }
           }
           rs: {
@@ -193,7 +182,7 @@ main: kit: entity: branch_protection: {
               lit: "branches"
             }
             {
-              var: "id"
+              var: "branch_id"
             }
             {
               lit: "protection"
@@ -219,7 +208,7 @@ main: kit: entity: branch_protection: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "branch_id"
                 or: "branch"
                 r: true
                 t: "`$STRING`"
@@ -244,14 +233,14 @@ main: kit: entity: branch_protection: {
           o: "/repos/{owner}/{repo}/branches/{branch}/protection"
           q: {
             exist: [
-              "id"
+              "branch_id"
               "owner"
               "repo"
             ]
           }
           r: {
             param: {
-              branch: "id"
+              branch: "branch_id"
             }
           }
           s: [
@@ -268,7 +257,7 @@ main: kit: entity: branch_protection: {
               lit: "branches"
             }
             {
-              var: "id"
+              var: "branch_id"
             }
             {
               lit: "protection"
@@ -285,7 +274,7 @@ main: kit: entity: branch_protection: {
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.repo")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.branch")]
   ]
 
 }

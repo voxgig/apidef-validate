@@ -17,7 +17,13 @@ main: kit: entity: company: {
       n: "createdByUserName"
       r: false
       sh: "Name of user that created the company in Codat."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     dataConnections: {
       h: "Data Connections"
@@ -30,7 +36,13 @@ main: kit: entity: company: {
       n: "description"
       r: false
       sh: "Additional information about the company."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     id: {
       fo: "uuid"
@@ -45,7 +57,13 @@ main: kit: entity: company: {
       n: "lastSync"
       r: false
       sh: "In Codat's data model, dates and times are represented using the <a class=\"external\" href=\"https://en.wikipedia.org/wiki/ISO_8601\" target=\"_blank\">ISO 8601 standard</a>."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     name: {
       h: "Name"
@@ -80,7 +98,13 @@ main: kit: entity: company: {
       n: "referenceParentCompany"
       r: false
       sh: "The parent entity or controlling organization of this company."
-      t: "`$OBJECT`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
     referenceSubsidiaryCompanies: {
       h: "Reference Subsidiary Companies"
@@ -171,6 +195,56 @@ main: kit: entity: company: {
           }
         }
         {
+          co: {
+            id: "POST /companies/{companyId}/data/all"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                k: "param"
+                n: "id"
+                or: "companyId"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/companies/{companyId}/data/all"
+          q: {
+            "$action": "data_all"
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              companyId: "id"
+            }
+          }
+          s: [
+            {
+              lit: "companies"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "data"
+            }
+            {
+              lit: "all"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
           bf: [
             "description"
             "name"
@@ -212,42 +286,52 @@ main: kit: entity: company: {
             query: [
               {
                 ex: "-modifiedDate"
+                explode: true
                 k: "query"
                 n: "order_by"
                 or: "orderBy"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 100
+                explode: true
                 k: "query"
                 n: "page_size"
                 or: "pageSize"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: "id=e3334455-1aed-4e71-ab43-6bccf12092ee"
+                explode: true
                 k: "query"
                 n: "query"
                 or: "query"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: "region=uk && team=invoice-finance"
+                explode: true
                 k: "query"
                 n: "tag"
                 or: "tags"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
             ]
@@ -264,6 +348,9 @@ main: kit: entity: company: {
             }
           ]
           t: {
+            page: {
+              total: "`body.totalResults`"
+            }
             req: "`reqdata`"
             res: "`body.results`"
           }

@@ -55,7 +55,25 @@ main: kit: entity: pull_request_review: {
       }
       r: true
       sh: "A commit SHA for the review."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    description: {
+      h: "Description"
+      n: "description"
+      r: true
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     event: {
       h: "Event"
@@ -95,11 +113,23 @@ main: kit: entity: pull_request_review: {
       r: true
       t: "`$OBJECT`"
     }
+    members_url: {
+      h: "Members Url"
+      n: "members_url"
+      r: true
+      t: "`$STRING`"
+    }
     message: {
       h: "Message"
       n: "message"
       r: true
       sh: "The message for the pull request review dismissal"
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
       t: "`$STRING`"
     }
     node_id: {
@@ -108,10 +138,60 @@ main: kit: entity: pull_request_review: {
       r: true
       t: "`$STRING`"
     }
+    notification_setting: {
+      h: "Notification Setting"
+      n: "notification_setting"
+      r: false
+      t: "`$STRING`"
+    }
+    parent: {
+      h: "Parent"
+      n: "parent"
+      r: true
+      sh: "Groups of organization members that gives permissions on specified repositories."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    permission: {
+      h: "Permission"
+      n: "permission"
+      r: true
+      t: "`$STRING`"
+    }
+    permissions: {
+      h: "Permissions"
+      n: "permissions"
+      r: true
+      t: "`$OBJECT`"
+    }
+    privacy: {
+      h: "Privacy"
+      n: "privacy"
+      r: false
+      t: "`$STRING`"
+    }
     pull_request_url: {
       fo: "uri"
       h: "Pull Request Url"
       n: "pull_request_url"
+      r: true
+      t: "`$STRING`"
+    }
+    repositories_url: {
+      fo: "uri"
+      h: "Repositories Url"
+      n: "repositories_url"
+      r: true
+      t: "`$STRING`"
+    }
+    slug: {
+      h: "Slug"
+      n: "slug"
       r: true
       t: "`$STRING`"
     }
@@ -128,24 +208,25 @@ main: kit: entity: pull_request_review: {
       r: false
       t: "`$STRING`"
     }
-    teams: {
-      h: "Teams"
-      n: "teams"
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
       r: true
-      t: "`$ARRAY`"
+      t: "`$STRING`"
     }
     user: {
       h: "User"
       n: "user"
       r: true
       sh: "A GitHub user."
-      t: "`$OBJECT`"
-    }
-    users: {
-      h: "Users"
-      n: "users"
-      r: true
-      t: "`$ARRAY`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
   }
 
@@ -392,7 +473,7 @@ main: kit: entity: pull_request_review: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.teams`"
           }
         }
         {
@@ -428,18 +509,22 @@ main: kit: entity: pull_request_review: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]

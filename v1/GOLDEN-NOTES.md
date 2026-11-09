@@ -583,3 +583,96 @@ in the models of those six entities and in guide comments, nothing else.
   `ts/test/model-ref`, which 8.25.5 refreshes for petstore's order DELETE.
 - `make comments`, `make deps`, the root `npm test` and the prose gate are
   clean.
+
+## 2026-11-09 — apidef 8.32.0 and go/v0.28.0
+
+The pins move from 8.25.5 to 8.32.0, and from go/v0.21.3 to go/v0.28.0. In
+between lie nine npm releases, 8.26.0 to 8.32.0, and ten Go releases, 0.22.0
+to 0.28.0. Each release's Go side shipped with its npm side, so both pins
+move together.
+
+### What moves
+
+597 goldens change, 1 is added and 3 are removed, each with its twin: 1202
+files. The routes hold still. No case gains or loses an operation. 18
+operations become lists, 4 change entity, and 2 entities go.
+
+| Releases | Goldens changed | Cases |
+|---|---|---|
+| 8.26.0 to 8.29.0 | 228 | 13 |
+| 8.30.0 and 8.30.1 | 74, 1 added, 3 removed | 5 |
+| 8.31.0 | 161 | 3 |
+| 8.32.0 | 452 | 12 |
+
+A golden that more than one release touched counts once per release, so the
+column sums past 597.
+
+**8.26.0 to 8.29.0.** The 18 operations that become lists are routes whose
+trailing parameter filters a page of records, which 8.28.0 reads as a
+filtered list rather than a keyed load (voxgig/apidef#190): 9 in github, 5
+in cloudsmith, 2 in codatplatform, and 1 each in foo and gitlab. Around
+them, identities come from the record field the item route takes (#167,
+#192, #193), a single item reads past an `info` or `meta` object (#184,
+#200), a map of records or a random route keys no record (#199, #201),
+and the update flow step never marks the record's identity (#202). 8.29.0
+also marks every field apidef adds with no schema property declaring it
+with `syn: true`, which 183 fields gain.
+
+**8.30.0 and 8.30.1.** These are the releases that move routes.
+
+- **Entity names:** an entity is named without its operation verb (#182),
+  so dingconnect's `list_transfer_record` becomes `transfer_record`.
+- **Verb routes:** a verb route named only from its tag joins the entity
+  that owns its collection (#183). That takes codatplatform's
+  `refresh_data` and learnworlds' `reporting`, whose only routes join
+  `company` and `user`. GitHub's `GET /users/{username}/starred` moves from
+  `activity` to `user` the same way.
+- **Request transforms:** the base guide writes no request transform
+  (#154), so 1380 guide lines go and the model takes its request transform
+  from the operation step.
+- **Ignored headers:** the `Accept`, `Content-Type` and `Authorization`
+  header parameters that OpenAPI 3 says to ignore drop out of every point
+  (#186).
+
+8.30.1 fixed two regressions of 8.30.0 that this corpus showed. One was #183
+reaching past the verb routes it was meant for. The other was #187 and #188
+reading a list from a record's own lists.
+
+**8.31.0.** An OpenAPI 3.0 field declared `nullable: true` keeps its null
+(#153, by Hüseyin Tunay Çelik). 831 types become
+`` [`$ONE`, [X, `$NULL`]] ``, in github, shortcut and codatplatform, and
+nothing else moves.
+
+**8.32.0.** Two additions, and nothing else.
+
+- **Argument serialization:** every query, header and cookie argument
+  records its `style` and `explode`, resolved against its location's
+  defaults (#148). That is 6098 arguments, 5798 `form` and 300 `simple`.
+  484 have `explode: false`, among them 184 GitLab Swagger 2 arrays that
+  declare no `collectionFormat` and so are `csv`.
+- **Page metadata:** a list names where its page keeps its total, cursor,
+  has-more flag and next link (#204). That is 130 roles on the lists of
+  seven cases: 122 totals and 8 next links. GitHub's `total_count` is 71 of
+  them, and learnworlds' `meta.totalItems` 30.
+
+The other fixes of 8.32.0 move no golden. A classifier or lookup route keys
+no record (#201), but every such route in the corpus is either a
+collection of its classifier, written to, or already a list. #206 and #180
+change no output.
+
+### Verification
+
+- v1 `npm test` on 8.32.0 passes 23/23, strictly.
+- On go/v0.28.0, `go vet ./...` is clean and `go test -count=1 ./...`
+  passes its 36 tests, comparing 838 distinct goldens strictly with none
+  skipped. That is two fewer than before, one added and three removed.
+  `goldenSkips` stays empty.
+- `make port-diff` compares 15 cases and finds no difference. The three
+  GraphQL cases are dumped by the TypeScript port only, as expected.
+- apidef's own Go golden tests, `TestValidateGuide`, `TestValidateModel`
+  and `TestValidateModelData`, pass against this corpus.
+- `make comments`, `make deps` and the root `npm test` are clean.
+- The lockfile keeps `shape` at 11.4.1. A fresh install of 8.32.0 outside a
+  lockfile currently resolves `shape` 12.0.0, which jostraca 0.41.0 cannot
+  load, so `npm ci` reproduces these goldens and a fresh `npm install` does
+  not.

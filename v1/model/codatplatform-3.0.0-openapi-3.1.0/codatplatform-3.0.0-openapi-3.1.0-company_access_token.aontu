@@ -19,12 +19,6 @@ main: kit: entity: company_access_token: {
       sh: "The number of seconds until the access token expires."
       t: "`$INTEGER`"
     }
-    id: {
-      h: "Id"
-      n: "id"
-      r: false
-      t: "`$STRING`"
-    }
     tokenType: {
       h: "Token Type"
       n: "tokenType"
@@ -32,11 +26,6 @@ main: kit: entity: company_access_token: {
       sh: "The type of token."
       t: "`$STRING`"
     }
-  }
-
-  id: {
-    field: "id"
-    name: "id"
   }
 
   name: "company_access_token"
@@ -55,7 +44,7 @@ main: kit: entity: company_access_token: {
               {
                 ex: "8a210b68-6988-11ed-a1eb-0242ac120002"
                 k: "param"
-                n: "id"
+                n: "company_id"
                 or: "companyId"
                 r: true
                 t: "`$STRING`"
@@ -66,12 +55,12 @@ main: kit: entity: company_access_token: {
           o: "/companies/{companyId}/accessToken"
           q: {
             exist: [
-              "id"
+              "company_id"
             ]
           }
           r: {
             param: {
-              companyId: "id"
+              companyId: "company_id"
             }
           }
           rs: {
@@ -83,7 +72,7 @@ main: kit: entity: company_access_token: {
               lit: "companies"
             }
             {
-              var: "id"
+              var: "company_id"
             }
             {
               lit: "accessToken"
@@ -99,5 +88,8 @@ main: kit: entity: company_access_token: {
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.company")]
+  ]
 
 }
