@@ -584,12 +584,12 @@ in the models of those six entities and in guide comments, nothing else.
 - `make comments`, `make deps`, the root `npm test` and the prose gate are
   clean.
 
-## 2026-11-09 — apidef 8.32.0 and go/v0.28.0
+## 2026-11-09 — apidef 8.32.1 and go/v0.28.1
 
-The pins move from 8.25.5 to 8.32.0, and from go/v0.21.3 to go/v0.28.0. In
-between lie nine npm releases, 8.26.0 to 8.32.0, and ten Go releases, 0.22.0
-to 0.28.0. Each release's Go side shipped with its npm side, so both pins
-move together.
+The pins move from 8.25.5 to 8.32.1, and from go/v0.21.3 to go/v0.28.1. In
+between lie ten npm releases, 8.26.0 to 8.32.1, and eleven Go releases,
+0.22.0 to 0.28.1. Each release's Go side shipped with its npm side, so both
+pins move together.
 
 ### What moves
 
@@ -603,6 +603,7 @@ operations become lists, 4 change entity, and 2 entities go.
 | 8.30.0 and 8.30.1 | 74, 1 added, 3 removed | 5 |
 | 8.31.0 | 161 | 3 |
 | 8.32.0 | 452 | 12 |
+| 8.32.1 | 3 | 1 |
 
 A golden that more than one release touched counts once per release, so the
 column sums past 597.
@@ -636,7 +637,8 @@ with `syn: true`, which 183 fields gain.
 
 8.30.1 fixed two regressions of 8.30.0 that this corpus showed. One was #183
 reaching past the verb routes it was meant for. The other was #187 and #188
-reading a list from a record's own lists.
+reading a list from a record's own lists. A third went unseen until a review
+of this refresh found it, and 8.32.1 fixes it.
 
 **8.31.0.** An OpenAPI 3.0 field declared `nullable: true` keeps its null
 (#153, by Hüseyin Tunay Çelik). 831 types become
@@ -660,10 +662,18 @@ no record (#201), but every such route in the corpus is either a
 collection of its classifier, written to, or already a list. #206 and #180
 change no output.
 
+**8.32.1.** One fix (#214). #187 made a list read its records past an object
+named for its entity, which is right for a page that echoes its parent. It
+also took learnworlds' `GET /v2/users/{id}/user-role`, whose route ends in
+the object's name, to `body.assigned_courses` in place of the role. A list
+whose route ends in the name of an object in its response now reads that
+object, so the route reads `body.user_role` again. That is what it read on
+8.25.5, so across this refresh its `res` holds still.
+
 ### Verification
 
-- v1 `npm test` on 8.32.0 passes 23/23, strictly.
-- On go/v0.28.0, `go vet ./...` is clean and `go test -count=1 ./...`
+- v1 `npm test` on 8.32.1 passes 23/23, strictly.
+- On go/v0.28.1, `go vet ./...` is clean and `go test -count=1 ./...`
   passes its 36 tests, comparing 838 distinct goldens strictly with none
   skipped. That is two fewer than before, one added and three removed.
   `goldenSkips` stays empty.
@@ -672,7 +682,7 @@ change no output.
 - apidef's own Go golden tests, `TestValidateGuide`, `TestValidateModel`
   and `TestValidateModelData`, pass against this corpus.
 - `make comments`, `make deps` and the root `npm test` are clean.
-- The lockfile keeps `shape` at 11.4.1. A fresh install of 8.32.0 outside a
+- The lockfile keeps `shape` at 11.4.1. A fresh install of 8.32.1 outside a
   lockfile currently resolves `shape` 12.0.0, which jostraca 0.41.0 cannot
   load, so `npm ci` reproduces these goldens and a fresh `npm install` does
   not.

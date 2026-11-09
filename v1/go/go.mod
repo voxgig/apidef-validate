@@ -2,7 +2,7 @@ module github.com/voxgig/apidef-validate/v1/go
 
 go 1.25.0
 
-require github.com/voxgig/apidef/go v0.28.0
+require github.com/voxgig/apidef/go v0.28.1
 
 require (
 	github.com/aontu-lang/aontu/go v0.76.1 // indirect
