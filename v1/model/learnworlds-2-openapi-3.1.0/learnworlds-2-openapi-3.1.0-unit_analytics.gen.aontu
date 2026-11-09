@@ -21,12 +21,6 @@ main: kit: entity: unit_analytics: {
       sh: "Average study time in seconds"
       t: "`$NUMBER`"
     }
-    id: {
-      h: "Id"
-      n: "id"
-      r: false
-      t: "`$STRING`"
-    }
     name: {
       h: "Name"
       n: "name"
@@ -65,11 +59,6 @@ main: kit: entity: unit_analytics: {
     }
   }
 
-  id: {
-    field: "id"
-    name: "id"
-  }
-
   name: "unit_analytics"
   op: {
     load: {
@@ -84,17 +73,12 @@ main: kit: entity: unit_analytics: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
@@ -108,7 +92,7 @@ main: kit: entity: unit_analytics: {
               }
               {
                 k: "param"
-                n: "id"
+                n: "unit_id"
                 or: "uid"
                 r: true
                 t: "`$STRING`"
@@ -119,16 +103,15 @@ main: kit: entity: unit_analytics: {
           o: "/v2/courses/{id}/units/{uid}/analytics"
           q: {
             exist: [
-              "authorization"
               "course_id"
-              "id"
               "lw_client"
+              "unit_id"
             ]
           }
           r: {
             param: {
               id: "course_id"
-              uid: "id"
+              uid: "unit_id"
             }
           }
           rs: {
@@ -149,7 +132,7 @@ main: kit: entity: unit_analytics: {
               lit: "units"
             }
             {
-              var: "id"
+              var: "unit_id"
             }
             {
               lit: "analytics"

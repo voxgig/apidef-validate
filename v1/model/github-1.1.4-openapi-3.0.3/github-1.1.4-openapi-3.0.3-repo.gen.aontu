@@ -80,12 +80,6 @@ main: kit: entity: repo: {
       r: true
       t: "`$STRING`"
     }
-    attestations: {
-      h: "Attestations"
-      n: "attestations"
-      r: false
-      t: "`$ARRAY`"
-    }
     blobs_url: {
       h: "Blobs Url"
       n: "blobs_url"
@@ -96,6 +90,19 @@ main: kit: entity: repo: {
       h: "Branches Url"
       n: "branches_url"
       r: true
+      t: "`$STRING`"
+    }
+    bundle: {
+      h: "Bundle"
+      n: "bundle"
+      r: false
+      sh: "The attestation's Sigstore Bundle."
+      t: "`$OBJECT`"
+    }
+    bundle_url: {
+      h: "Bundle Url"
+      n: "bundle_url"
+      r: false
       t: "`$STRING`"
     }
     clone_url: {
@@ -159,7 +166,13 @@ main: kit: entity: repo: {
       h: "Created At"
       n: "created_at"
       r: true
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     default_branch: {
       h: "Default Branch"
@@ -186,7 +199,13 @@ main: kit: entity: repo: {
       h: "Description"
       n: "description"
       r: true
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     disabled: {
       h: "Disabled"
@@ -336,7 +355,13 @@ main: kit: entity: repo: {
       h: "Homepage"
       n: "homepage"
       r: true
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     hooks_url: {
       fo: "uri"
@@ -420,7 +445,13 @@ main: kit: entity: repo: {
       h: "Language"
       n: "language"
       r: true
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     languages_url: {
       fo: "uri"
@@ -434,7 +465,13 @@ main: kit: entity: repo: {
       n: "license"
       r: true
       sh: "License Simple"
-      t: "`$OBJECT`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
     links: {
       h: "Links"
@@ -480,7 +517,13 @@ main: kit: entity: repo: {
       h: "Mirror Url"
       n: "mirror_url"
       r: true
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     name: {
       h: "Name"
@@ -563,13 +606,25 @@ main: kit: entity: repo: {
       h: "Pushed At"
       n: "pushed_at"
       r: true
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     releases_url: {
       h: "Releases Url"
       n: "releases_url"
       r: true
       t: "`$STRING`"
+    }
+    repository_id: {
+      h: "Repository Id"
+      n: "repository_id"
+      r: false
+      t: "`$INTEGER`"
     }
     sha: {
       h: "Sha"
@@ -707,7 +762,13 @@ main: kit: entity: repo: {
       h: "Updated At"
       n: "updated_at"
       r: true
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     url: {
       fo: "uri"
@@ -1358,18 +1419,22 @@ main: kit: entity: repo: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -1408,6 +1473,9 @@ main: kit: entity: repo: {
             }
           ]
           t: {
+            page: {
+              total: "`body.total_count`"
+            }
             req: "`reqdata`"
             res: "`body.branch_policies`"
           }
@@ -1477,6 +1545,9 @@ main: kit: entity: repo: {
             }
           ]
           t: {
+            page: {
+              total: "`body.total_count`"
+            }
             req: "`reqdata`"
             res: "`body.custom_deployment_protection_rules`"
           }
@@ -1514,18 +1585,22 @@ main: kit: entity: repo: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -1567,8 +1642,116 @@ main: kit: entity: repo: {
             }
           ]
           t: {
+            page: {
+              total: "`body.total_count`"
+            }
             req: "`reqdata`"
             res: "`body.available_custom_deployment_protection_rule_integrations`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/attestations/{subject_digest}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "subject_digest"
+                or: "subject_digest"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "after"
+                or: "after"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "predicate_type"
+                or: "predicate_type"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/attestations/{subject_digest}"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "subject_digest"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "attestations"
+            }
+            {
+              var: "subject_digest"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.attestations`"
           }
         }
         {
@@ -1597,18 +1780,22 @@ main: kit: entity: repo: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -1641,6 +1828,9 @@ main: kit: entity: repo: {
             }
           ]
           t: {
+            page: {
+              total: "`body.total_count`"
+            }
             req: "`reqdata`"
             res: "`body.environments`"
           }
@@ -1655,71 +1845,89 @@ main: kit: entity: repo: {
             query: [
               {
                 ex: "owner,collaborator,organization_member"
+                explode: true
                 k: "query"
                 n: "affiliation"
                 or: "affiliation"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "before"
                 or: "before"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "direction"
                 or: "direction"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
+                explode: true
                 k: "query"
                 n: "since"
                 or: "since"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: "full_name"
+                explode: true
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: "all"
+                explode: true
                 k: "query"
                 n: "type"
                 or: "type"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: "all"
+                explode: true
                 k: "query"
                 n: "visibility"
                 or: "visibility"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
             ]
@@ -1780,10 +1988,12 @@ main: kit: entity: repo: {
             ]
             query: [
               {
+                explode: true
                 k: "query"
                 n: "ref"
                 or: "ref"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
             ]
@@ -1947,103 +2157,6 @@ main: kit: entity: repo: {
             }
             {
               var: "ref"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/attestations/{subject_digest}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "subject_digest"
-                or: "subject_digest"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                k: "query"
-                n: "after"
-                or: "after"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                k: "query"
-                n: "before"
-                or: "before"
-                r: false
-                t: "`$STRING`"
-              }
-              {
-                ex: 30
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                t: "`$INTEGER`"
-              }
-              {
-                k: "query"
-                n: "predicate_type"
-                or: "predicate_type"
-                r: false
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/attestations/{subject_digest}"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-              "subject_digest"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "attestations"
-            }
-            {
-              var: "subject_digest"
             }
           ]
           t: {

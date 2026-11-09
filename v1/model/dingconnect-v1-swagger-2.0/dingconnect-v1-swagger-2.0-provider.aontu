@@ -5,25 +5,68 @@ main: kit: entity: provider: {
   alias: field: {}
 
   fields: {
-    ErrorCodes: {
-      h: "Error Codes"
-      n: "ErrorCodes"
+    CountryIso: {
+      h: "Country Iso"
+      n: "CountryIso"
       r: true
+      sh: "The country within which the provider operates"
+      t: "`$STRING`"
+    }
+    CustomerCareNumber: {
+      h: "Customer Care Number"
+      n: "CustomerCareNumber"
+      r: false
+      sh: "Customer care number of the provider"
+      t: "`$STRING`"
+    }
+    LogoUrl: {
+      h: "Logo Url"
+      n: "LogoUrl"
+      r: false
+      sh: "Link to image of the provider logo"
+      t: "`$STRING`"
+    }
+    Name: {
+      h: "Name"
+      n: "Name"
+      r: true
+      sh: "The English trading name of the provider."
+      t: "`$STRING`"
+    }
+    PaymentTypes: {
+      h: "Payment Types"
+      n: "PaymentTypes"
+      r: true
+      sh: "Indicates the supported payment types for all the products in this provider."
       t: "`$ARRAY`"
     }
-    Items: {
-      h: "Items"
-      n: "Items"
+    ProviderCode: {
+      h: "Provider Code"
+      n: "ProviderCode"
       r: true
-      sh: "A list of providers that the distributor has Products for."
+      sh: "Uniquely identifies a provider"
+      t: "`$STRING`"
+    }
+    RegionCodes: {
+      h: "Region Codes"
+      n: "RegionCodes"
+      r: true
+      sh: "Regions supported by the provider within the country"
       t: "`$ARRAY`"
     }
-    ResultCode: {
-      fo: "int32"
-      h: "Result Code"
-      n: "ResultCode"
+    ShortName: {
+      h: "Short Name"
+      n: "ShortName"
+      r: false
+      sh: "A shorter version of the Name suitable for use in space restricted UI elements"
+      t: "`$STRING`"
+    }
+    ValidationRegex: {
+      h: "Validation Regex"
+      n: "ValidationRegex"
       r: true
-      t: "`$INTEGER`"
+      sh: "Account numbers must match the ValidationRegex"
+      t: "`$STRING`"
     }
   }
 
@@ -41,41 +84,51 @@ main: kit: entity: provider: {
           g: {
             header: [
               {
+                explode: false
                 k: "header"
                 n: "x_correlation_id"
                 or: "X-Correlation-Id"
                 r: false
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             query: [
               {
                 ex: ""
+                explode: true
                 k: "query"
                 n: "account_number"
                 or: "accountNumber"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "country_iso"
                 or: "countryIsos"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
               {
+                explode: true
                 k: "query"
                 n: "provider_code"
                 or: "providerCodes"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
               {
+                explode: true
                 k: "query"
                 n: "region_code"
                 or: "regionCodes"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
             ]
@@ -105,7 +158,7 @@ main: kit: entity: provider: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.Items`"
           }
         }
       ]

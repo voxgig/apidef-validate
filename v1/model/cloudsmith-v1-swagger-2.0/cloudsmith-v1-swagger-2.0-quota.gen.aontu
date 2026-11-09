@@ -5,22 +5,36 @@ main: kit: entity: quota: {
   alias: field: {}
 
   fields: {
+    days: {
+      h: "Days"
+      n: "days"
+      r: false
+      t: "`$INTEGER`"
+    }
     display: {
       h: "Display"
       n: "display"
       r: true
       t: "`$OBJECT`"
     }
-    history: {
-      h: "History"
-      n: "history"
+    end: {
+      fo: "date-time"
+      h: "End"
+      n: "end"
       r: true
-      t: "`$ARRAY`"
+      t: "`$STRING`"
     }
     id: {
       h: "Id"
       n: "id"
       r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    plan: {
+      h: "Plan"
+      n: "plan"
+      r: true
       t: "`$STRING`"
     }
     raw: {
@@ -28,6 +42,13 @@ main: kit: entity: quota: {
       n: "raw"
       r: true
       t: "`$OBJECT`"
+    }
+    start: {
+      fo: "date-time"
+      h: "Start"
+      n: "start"
+      r: true
+      t: "`$STRING`"
     }
   }
 
@@ -38,6 +59,102 @@ main: kit: entity: quota: {
 
   name: "quota"
   op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /quota/history/{owner}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/quota/history/{owner}/"
+          q: {
+            exist: [
+              "owner"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "quota"
+            }
+            {
+              lit: "history"
+            }
+            {
+              var: "owner"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.history`"
+          }
+        }
+        {
+          co: {
+            id: "GET /quota/oss/history/{owner}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/quota/oss/history/{owner}/"
+          q: {
+            exist: [
+              "owner"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "quota"
+            }
+            {
+              lit: "oss"
+            }
+            {
+              lit: "history"
+            }
+            {
+              var: "owner"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.history`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [
@@ -85,97 +202,6 @@ main: kit: entity: quota: {
           t: {
             req: "`reqdata`"
             res: "`body.usage`"
-          }
-        }
-        {
-          co: {
-            id: "GET /quota/history/{owner}/"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/quota/history/{owner}/"
-          q: {
-            exist: [
-              "owner"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "quota"
-            }
-            {
-              lit: "history"
-            }
-            {
-              var: "owner"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /quota/oss/history/{owner}/"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/quota/oss/history/{owner}/"
-          q: {
-            exist: [
-              "owner"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "quota"
-            }
-            {
-              lit: "oss"
-            }
-            {
-              lit: "history"
-            }
-            {
-              var: "owner"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
           }
         }
         {

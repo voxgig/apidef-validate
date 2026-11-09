@@ -75,24 +75,19 @@ main: kit: entity: user_role: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "user_id"
                 or: "id"
                 r: true
                 t: "`$STRING`"
@@ -103,10 +98,14 @@ main: kit: entity: user_role: {
           o: "/v2/users/{id}/user-role"
           q: {
             exist: [
-              "authorization"
-              "id"
               "lw_client"
+              "user_id"
             ]
+          }
+          r: {
+            param: {
+              id: "user_id"
+            }
           }
           rs: {
             kind: "json"
@@ -120,7 +119,7 @@ main: kit: entity: user_role: {
               lit: "users"
             }
             {
-              var: "id"
+              var: "user_id"
             }
             {
               lit: "user-role"
@@ -140,35 +139,34 @@ main: kit: entity: user_role: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             query: [
               {
                 ex: "admin"
+                explode: true
                 k: "query"
                 n: "access_level"
                 or: "access_level"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: "623337c2e7c2d86f9f17a9a3"
+                explode: true
                 k: "query"
                 n: "role_id"
                 or: "role_id"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
             ]
@@ -177,7 +175,6 @@ main: kit: entity: user_role: {
           o: "/v2/user-roles"
           q: {
             exist: [
-              "authorization"
               "lw_client"
             ]
           }
@@ -203,5 +200,8 @@ main: kit: entity: user_role: {
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.user")]
+  ]
 
 }

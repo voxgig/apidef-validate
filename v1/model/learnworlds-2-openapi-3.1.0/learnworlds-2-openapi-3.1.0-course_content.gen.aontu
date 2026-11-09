@@ -81,17 +81,12 @@ main: kit: entity: course_content: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
@@ -111,7 +106,6 @@ main: kit: entity: course_content: {
           q: {
             "$action": "sections"
             exist: [
-              "authorization"
               "id"
               "lw_client"
             ]
@@ -153,24 +147,19 @@ main: kit: entity: course_content: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "course_id"
                 or: "id"
                 r: true
                 t: "`$STRING`"
@@ -181,10 +170,14 @@ main: kit: entity: course_content: {
           o: "/v2/courses/{id}/contents"
           q: {
             exist: [
-              "authorization"
-              "id"
+              "course_id"
               "lw_client"
             ]
+          }
+          r: {
+            param: {
+              id: "course_id"
+            }
           }
           rs: {
             kind: "json"
@@ -198,7 +191,7 @@ main: kit: entity: course_content: {
               lit: "courses"
             }
             {
-              var: "id"
+              var: "course_id"
             }
             {
               lit: "contents"
@@ -214,5 +207,8 @@ main: kit: entity: course_content: {
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.course")]
+  ]
 
 }

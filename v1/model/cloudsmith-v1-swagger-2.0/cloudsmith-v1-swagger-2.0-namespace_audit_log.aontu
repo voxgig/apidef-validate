@@ -63,12 +63,6 @@ main: kit: entity: namespace_audit_log: {
       r: true
       t: "`$STRING`"
     }
-    id: {
-      h: "Id"
-      n: "id"
-      r: false
-      t: "`$STRING`"
-    }
     object: {
       h: "Object"
       n: "object"
@@ -116,15 +110,10 @@ main: kit: entity: namespace_audit_log: {
     }
   }
 
-  id: {
-    field: "id"
-    name: "id"
-  }
-
   name: "namespace_audit_log"
   op: {
-    load: {
-      name: "load"
+    list: {
+      name: "list"
       points: [
         {
           co: {
@@ -136,7 +125,7 @@ main: kit: entity: namespace_audit_log: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "owner"
                 or: "owner"
                 r: true
                 t: "`$STRING`"
@@ -144,24 +133,30 @@ main: kit: entity: namespace_audit_log: {
             ]
             query: [
               {
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
+                explode: true
                 k: "query"
                 n: "page_size"
                 or: "page_size"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
+                explode: true
                 k: "query"
                 n: "query"
                 or: "query"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
             ]
@@ -170,13 +165,8 @@ main: kit: entity: namespace_audit_log: {
           o: "/audit-log/{owner}/"
           q: {
             exist: [
-              "id"
+              "owner"
             ]
-          }
-          r: {
-            param: {
-              owner: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -187,7 +177,7 @@ main: kit: entity: namespace_audit_log: {
               lit: "audit-log"
             }
             {
-              var: "id"
+              var: "owner"
             }
           ]
           t: {

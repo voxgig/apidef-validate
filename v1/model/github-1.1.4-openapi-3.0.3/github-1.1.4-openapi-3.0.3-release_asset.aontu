@@ -53,7 +53,13 @@ main: kit: entity: release_asset: {
         }
       }
       r: true
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     download_count: {
       h: "Download Count"
@@ -94,7 +100,13 @@ main: kit: entity: release_asset: {
       }
       r: true
       sh: "An alternate short description of the asset."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     name: {
       h: "Name"
@@ -178,7 +190,13 @@ main: kit: entity: release_asset: {
       }
       r: true
       sh: "A GitHub user."
-      t: "`$OBJECT`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
     url: {
       fo: "uri"
@@ -215,17 +233,17 @@ main: kit: entity: release_asset: {
             params: [
               {
                 k: "param"
-                n: "id"
-                or: "release_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
                 n: "owner"
                 or: "owner"
                 r: true
                 t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "release_id"
+                or: "release_id"
+                r: true
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -237,17 +255,21 @@ main: kit: entity: release_asset: {
             ]
             query: [
               {
+                explode: true
                 k: "query"
                 n: "label"
                 or: "label"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "name"
                 or: "name"
                 r: true
+                style: "form"
                 t: "`$STRING`"
               }
             ]
@@ -256,16 +278,11 @@ main: kit: entity: release_asset: {
           o: "/repos/{owner}/{repo}/releases/{release_id}/assets"
           q: {
             exist: [
-              "id"
               "name"
               "owner"
+              "release_id"
               "repo"
             ]
-          }
-          r: {
-            param: {
-              release_id: "id"
-            }
           }
           rb: {
             binary: true
@@ -290,7 +307,7 @@ main: kit: entity: release_asset: {
               lit: "releases"
             }
             {
-              var: "id"
+              var: "release_id"
             }
             {
               lit: "assets"
@@ -316,17 +333,17 @@ main: kit: entity: release_asset: {
             params: [
               {
                 k: "param"
-                n: "id"
-                or: "release_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
                 n: "owner"
                 or: "owner"
                 r: true
                 t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "release_id"
+                or: "release_id"
+                r: true
+                t: "`$INTEGER`"
               }
               {
                 k: "param"
@@ -339,18 +356,22 @@ main: kit: entity: release_asset: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -359,15 +380,10 @@ main: kit: entity: release_asset: {
           o: "/repos/{owner}/{repo}/releases/{release_id}/assets"
           q: {
             exist: [
-              "id"
               "owner"
+              "release_id"
               "repo"
             ]
-          }
-          r: {
-            param: {
-              release_id: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -387,7 +403,7 @@ main: kit: entity: release_asset: {
               lit: "releases"
             }
             {
-              var: "id"
+              var: "release_id"
             }
             {
               lit: "assets"
@@ -643,6 +659,7 @@ main: kit: entity: release_asset: {
 
   relations: ancestors: [
     [path("$.main.kit.entity.repo")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.release")]
   ]
 
 }

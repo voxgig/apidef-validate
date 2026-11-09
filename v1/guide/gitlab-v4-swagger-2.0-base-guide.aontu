@@ -1123,9 +1123,9 @@ guide: {
   }
 
   entity: api_entities_go_module_version: {
-    path: "/api/v4/projects/{id}/packages/go/*module_name/@v/{module_version}.info": {  # ent=api_entities_go_module_version;orig=API_Entities_GoModuleVersion;cmp/resolve=api_entities_go_module_version;path=t/;cmp-primary;cmp-infreq
+    path: "/api/v4/projects/{id}/packages/go/*module_name/@v/{module_version}.info": {  # ent=api_entities_go_module_version;orig=API_Entities_GoModuleVersion;cmp/resolve=api_entities_go_module_version;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      op: load: method: *GET  # not-list
+      op: load: method: *GET  # end-param
     }
   }
 
@@ -2292,11 +2292,13 @@ guide: {
       rename: param: "id": *"group_id"  # parent:group
       op: list: method: *GET  # array-prop:data
       op: list: transform: res: *("`body.data`")|top
+      op: list: transform: page: total: *("`body.totalHits`")|top
     }
     path: "/api/v4/projects/{id}/packages/nuget/query": {  # ent=api_entities_nuget_search_result;orig=API_Entities_Nuget_SearchResult;envelope=api_entities_nuget_search_result;cmp/resolve=api_entities_nuget_search_result;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
       op: list: method: *GET  # array-prop:data
       op: list: transform: res: *("`body.data`")|top
+      op: list: transform: page: total: *("`body.totalHits`")|top
     }
   }
 
@@ -3038,7 +3040,7 @@ guide: {
   entity: api_entities_templates_list: {
     path: "/api/v4/projects/{id}/templates/{type}": {  # ent=api_entities_templates_list;orig=API_Entities_TemplatesList;cmp/resolve=api_entities_templates_list;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      op: load: method: *GET  # end-param
+      op: list: method: *GET  # end-param-page
     }
   }
 
@@ -3651,13 +3653,13 @@ guide: {
       rename: param: "id": *"project_id"  # parent:project
       op: load: method: *GET  # no-schema
     }
-    path: "/api/v4/projects/{id}/packages/go/*module_name/@v/{module_version}.mod": {  # ent=go_proxy;tag=go_proxy;cmp/resolve=go_proxy;path=t/;cmp-primary;cmp-infreq
+    path: "/api/v4/projects/{id}/packages/go/*module_name/@v/{module_version}.mod": {  # ent=go_proxy;tag=go_proxy;cmp/resolve=go_proxy;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      op: load: method: *GET  # no-schema
+      op: load: method: *GET  # end-param
     }
-    path: "/api/v4/projects/{id}/packages/go/*module_name/@v/{module_version}.zip": {  # ent=go_proxy;tag=go_proxy;cmp/resolve=go_proxy;path=t/;cmp-primary;cmp-infreq
+    path: "/api/v4/projects/{id}/packages/go/*module_name/@v/{module_version}.zip": {  # ent=go_proxy;tag=go_proxy;cmp/resolve=go_proxy;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      op: load: method: *GET  # no-schema
+      op: load: method: *GET  # end-param
     }
   }
 
@@ -3712,12 +3714,14 @@ guide: {
 
   entity: group_avatar: {
     path: "/api/v4/groups/{id}/avatar": {  # ent=group_avatar;tag=group_avatar;cmp/resolve=group_avatar;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=group_avatar
+      rename: param: "id": *"group_id"  # parent-resource:group
       op: load: method: *GET  # no-schema
     }
   }
 
   entity: group_export: {
     path: "/api/v4/groups/{id}/export": {  # ent=group_export;tag=group_export;cmp/resolve=group_export;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=group_export
+      rename: param: "id": *"group_id"  # parent-resource:group
       op: create: method: *POST  # not-load
     }
     path: "/api/v4/groups/{id}/export/download": {  # ent=group_export;tag=group_export;cmp/resolve=group_export;path=t/;cmp-primary;cmp-infreq
@@ -3752,9 +3756,9 @@ guide: {
       rename: param: "id": *"project_id"  # parent:project
       op: create: method: *POST  # not-load
     }
-    path: "/api/v4/projects/{id}/packages/helm/{channel}/charts/{file_name}.tgz": {  # ent=helm_package;orig=helm_packages;tag=helm_package;cmp/resolve=helm_package;path=t/;cmp-primary;cmp-infreq
+    path: "/api/v4/projects/{id}/packages/helm/{channel}/charts/{file_name}.tgz": {  # ent=helm_package;orig=helm_packages;tag=helm_package;cmp/resolve=helm_package;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
-      op: load: method: *GET  # no-schema
+      op: load: method: *GET  # end-param
     }
     path: "/api/v4/projects/{id}/packages/helm/{channel}/index.yaml": {  # ent=helm_package;orig=helm_packages;tag=helm_package;cmp/resolve=helm_package;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=helm_packages
       rename: param: "id": *"project_id"  # parent:project
@@ -4006,6 +4010,7 @@ guide: {
       rename: param: "id": *"group_id"  # parent:group
       op: list: method: *GET  # array-prop:items
       op: list: transform: res: *("`body.items`")|top
+      op: list: transform: page: total: *("`body.count`")|top
     }
     path: "/api/v4/groups/{id}/-/packages/nuget/symbolfiles/*file_name/*signature/*same_file_name": {  # ent=nuget_package;orig=nuget_packages;tag=nuget_package;cmp/resolve=nuget_package;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"group_id"  # parent:group
@@ -4039,6 +4044,7 @@ guide: {
       rename: param: "id": *"project_id"  # parent:project
       op: list: method: *GET  # array-prop:items
       op: list: transform: res: *("`body.items`")|top
+      op: list: transform: page: total: *("`body.count`")|top
     }
     path: "/api/v4/projects/{id}/packages/nuget/symbolfiles/*file_name/*signature/*same_file_name": {  # ent=nuget_package;orig=nuget_packages;tag=nuget_package;cmp/resolve=nuget_package;path=t/;cmp-primary;cmp-infreq
       rename: param: "id": *"project_id"  # parent:project
@@ -4244,6 +4250,7 @@ guide: {
 
   entity: project_avatar: {
     path: "/api/v4/projects/{id}/avatar": {  # ent=project_avatar;tag=project_avatar;cmp/resolve=project_avatar;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=project_avatar
+      rename: param: "id": *"project_id"  # parent-resource:project
       op: load: method: *GET  # no-schema
     }
   }
@@ -4525,6 +4532,7 @@ guide: {
       rename: param: "id": *"project_id"  # parent:project
       op: list: method: *GET  # array-prop:test_suites
       op: list: transform: res: *("`body.test_suites`")|top
+      op: list: transform: page: total: *("`body.total_count`")|top
     }
   }
 

@@ -11,7 +11,13 @@ main: kit: entity: global_advisory: {
       r: true
       ro: true
       sh: "The users who contributed to the advisory."
-      t: "`$ARRAY`"
+      t: [
+        "`$ONE`"
+        [
+          "`$ARRAY`"
+          "`$NULL`"
+        ]
+      ]
     }
     cve_id: {
       h: "Cve Id"
@@ -19,32 +25,62 @@ main: kit: entity: global_advisory: {
       r: true
       ro: true
       sh: "The Common Vulnerabilities and Exposures (CVE) ID."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     cvss: {
       h: "Cvss"
       n: "cvss"
       r: true
-      t: "`$OBJECT`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
     cvss_severities: {
       h: "Cvss Severities"
       n: "cvss_severities"
       r: false
-      t: "`$OBJECT`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
     cwes: {
       h: "Cwes"
       n: "cwes"
       r: true
-      t: "`$ARRAY`"
+      t: [
+        "`$ONE`"
+        [
+          "`$ARRAY`"
+          "`$NULL`"
+        ]
+      ]
     }
     description: {
       h: "Description"
       n: "description"
       r: true
       sh: "A detailed description of what the advisory entails."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     epss: {
       h: "Epss"
@@ -52,7 +88,13 @@ main: kit: entity: global_advisory: {
       r: false
       ro: true
       sh: "The EPSS scores as calculated by the [Exploit Prediction Scoring System](https://www.first.org/epss)."
-      t: "`$OBJECT`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
     ghsa_id: {
       h: "Ghsa Id"
@@ -69,7 +111,13 @@ main: kit: entity: global_advisory: {
       r: true
       ro: true
       sh: "The date and time of when the advisory was reviewed by GitHub, in ISO 8601 format."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     html_url: {
       fo: "uri"
@@ -80,18 +128,18 @@ main: kit: entity: global_advisory: {
       sh: "The URL for the advisory."
       t: "`$STRING`"
     }
-    id: {
-      h: "Id"
-      n: "id"
-      r: false
-      t: "`$STRING`"
-    }
     identifiers: {
       h: "Identifiers"
       n: "identifiers"
       r: true
       ro: true
-      t: "`$ARRAY`"
+      t: [
+        "`$ONE`"
+        [
+          "`$ARRAY`"
+          "`$NULL`"
+        ]
+      ]
     }
     nvd_published_at: {
       fo: "date-time"
@@ -100,7 +148,13 @@ main: kit: entity: global_advisory: {
       r: true
       ro: true
       sh: "The date and time when the advisory was published in the National Vulnerability Database, in ISO 8601 format."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     published_at: {
       fo: "date-time"
@@ -115,7 +169,13 @@ main: kit: entity: global_advisory: {
       h: "References"
       n: "references"
       r: true
-      t: "`$ARRAY`"
+      t: [
+        "`$ONE`"
+        [
+          "`$ARRAY`"
+          "`$NULL`"
+        ]
+      ]
     }
     repository_advisory_url: {
       fo: "uri"
@@ -124,7 +184,13 @@ main: kit: entity: global_advisory: {
       r: true
       ro: true
       sh: "The API URL for the repository advisory."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     severity: {
       h: "Severity"
@@ -139,7 +205,13 @@ main: kit: entity: global_advisory: {
       n: "source_code_location"
       r: true
       sh: "The URL of the advisory's source code."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     summary: {
       h: "Summary"
@@ -178,7 +250,13 @@ main: kit: entity: global_advisory: {
       n: "vulnerabilities"
       r: true
       sh: "The products and respective version ranges affected by the advisory."
-      t: "`$ARRAY`"
+      t: [
+        "`$ONE`"
+        [
+          "`$ARRAY`"
+          "`$NULL`"
+        ]
+      ]
     }
     withdrawn_at: {
       fo: "date-time"
@@ -187,12 +265,18 @@ main: kit: entity: global_advisory: {
       r: true
       ro: true
       sh: "The date and time of when the advisory was withdrawn, in ISO 8601 format."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
   }
 
   id: {
-    field: "id"
+    field: "ghsa_id"
     name: "id"
   }
 
@@ -210,133 +294,169 @@ main: kit: entity: global_advisory: {
           g: {
             query: [
               {
+                explode: true
                 k: "query"
                 n: "affect"
                 or: "affects"
                 r: false
+                style: "form"
                 t: "`$ANY`"
               }
               {
+                explode: true
                 k: "query"
                 n: "after"
                 or: "after"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "before"
                 or: "before"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "cve_id"
                 or: "cve_id"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "cwe"
                 or: "cwes"
                 r: false
+                style: "form"
                 t: "`$ANY`"
               }
               {
                 ex: "desc"
+                explode: true
                 k: "query"
                 n: "direction"
                 or: "direction"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "ecosystem"
                 or: "ecosystem"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "epss_percentage"
                 or: "epss_percentage"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "epss_percentile"
                 or: "epss_percentile"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "ghsa_id"
                 or: "ghsa_id"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "is_withdrawn"
                 or: "is_withdrawn"
                 r: false
+                style: "form"
                 t: "`$BOOLEAN`"
               }
               {
+                explode: true
                 k: "query"
                 n: "modified"
                 or: "modified"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
+                explode: true
                 k: "query"
                 n: "published"
                 or: "published"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "severity"
                 or: "severity"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: "published"
+                explode: true
                 k: "query"
                 n: "sort"
                 or: "sort"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: "reviewed"
+                explode: true
                 k: "query"
                 n: "type"
                 or: "type"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "updated"
                 or: "updated"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
             ]

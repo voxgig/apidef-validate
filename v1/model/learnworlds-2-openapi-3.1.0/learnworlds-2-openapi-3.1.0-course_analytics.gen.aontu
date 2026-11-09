@@ -27,12 +27,6 @@ main: kit: entity: course_analytics: {
       sh: "Number of issued certifications"
       t: "`$INTEGER`"
     }
-    id: {
-      h: "Id"
-      n: "id"
-      r: false
-      t: "`$STRING`"
-    }
     learning_units: {
       h: "Learning Units"
       n: "learning_units"
@@ -92,11 +86,6 @@ main: kit: entity: course_analytics: {
     }
   }
 
-  id: {
-    field: "id"
-    name: "id"
-  }
-
   name: "course_analytics"
   op: {
     load: {
@@ -111,24 +100,19 @@ main: kit: entity: course_analytics: {
           g: {
             header: [
               {
-                k: "header"
-                n: "authorization"
-                or: "Authorization"
-                r: true
-                t: "`$STRING`"
-              }
-              {
+                explode: false
                 k: "header"
                 n: "lw_client"
                 or: "Lw-Client"
                 r: true
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "course_id"
                 or: "id"
                 r: true
                 t: "`$STRING`"
@@ -139,10 +123,14 @@ main: kit: entity: course_analytics: {
           o: "/v2/courses/{id}/analytics"
           q: {
             exist: [
-              "authorization"
-              "id"
+              "course_id"
               "lw_client"
             ]
+          }
+          r: {
+            param: {
+              id: "course_id"
+            }
           }
           rs: {
             kind: "json"
@@ -156,7 +144,7 @@ main: kit: entity: course_analytics: {
               lit: "courses"
             }
             {
-              var: "id"
+              var: "course_id"
             }
             {
               lit: "analytics"
@@ -172,5 +160,8 @@ main: kit: entity: course_analytics: {
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.course")]
+  ]
 
 }

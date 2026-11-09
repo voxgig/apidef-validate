@@ -10,7 +10,13 @@ main: kit: entity: push: {
       n: "changes"
       r: false
       sh: "Contains a single entry that communicates which record has changed and the manner in which it changed."
-      t: "`$ARRAY`"
+      t: [
+        "`$ONE`"
+        [
+          "`$ARRAY`"
+          "`$NULL`"
+        ]
+      ]
     }
     companyId: {
       fo: "uuid"
@@ -47,12 +53,19 @@ main: kit: entity: push: {
       n: "errorMessage"
       r: false
       sh: "A message about the error."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     id: {
       h: "Id"
       n: "id"
       r: false
+      syn: true
       t: "`$STRING`"
     }
     pushOperationKey: {
@@ -90,7 +103,13 @@ main: kit: entity: push: {
       n: "timeoutInMinutes"
       r: false
       sh: "Number of minutes the push operation must complete within before it times out."
-      t: "`$INTEGER`"
+      t: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
     }
     timeoutInSeconds: {
       de: true
@@ -99,7 +118,13 @@ main: kit: entity: push: {
       n: "timeoutInSeconds"
       r: false
       sh: "Number of seconds the push operation must complete within before it times out."
-      t: "`$INTEGER`"
+      t: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
     }
     validation: {
       h: "Validation"
@@ -140,34 +165,42 @@ main: kit: entity: push: {
             query: [
               {
                 ex: "-modifiedDate"
+                explode: true
                 k: "query"
                 n: "order_by"
                 or: "orderBy"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 100
+                explode: true
                 k: "query"
                 n: "page_size"
                 or: "pageSize"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: "id=e3334455-1aed-4e71-ab43-6bccf12092ee"
+                explode: true
                 k: "query"
                 n: "query"
                 or: "query"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
             ]
@@ -200,6 +233,9 @@ main: kit: entity: push: {
             }
           ]
           t: {
+            page: {
+              total: "`body.totalResults`"
+            }
             req: "`reqdata`"
             res: "`body.results`"
           }

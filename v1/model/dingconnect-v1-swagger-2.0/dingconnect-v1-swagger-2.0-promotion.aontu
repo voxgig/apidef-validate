@@ -5,25 +5,57 @@ main: kit: entity: promotion: {
   alias: field: {}
 
   fields: {
-    ErrorCodes: {
-      h: "Error Codes"
-      n: "ErrorCodes"
+    CurrencyIso: {
+      h: "Currency Iso"
+      n: "CurrencyIso"
       r: true
-      t: "`$ARRAY`"
+      sh: "Currency promotion - usually the same as the Provider"
+      t: "`$STRING`"
     }
-    Items: {
-      h: "Items"
-      n: "Items"
+    EndUtc: {
+      fo: "date-time"
+      h: "End Utc"
+      n: "EndUtc"
       r: true
-      sh: "List of available promotions"
-      t: "`$ARRAY`"
+      sh: "End date and time in UTC of the promotion."
+      t: "`$STRING`"
     }
-    ResultCode: {
-      fo: "int32"
-      h: "Result Code"
-      n: "ResultCode"
+    LocalizationKey: {
+      h: "Localization Key"
+      n: "LocalizationKey"
       r: true
-      t: "`$INTEGER`"
+      sh: "Key to be used in conjunction with `GetPromotionDescriptions`"
+      t: "`$STRING`"
+    }
+    MinimumSendAmount: {
+      fo: "decimal"
+      h: "Minimum Send Amount"
+      n: "MinimumSendAmount"
+      r: true
+      sh: "Minimum amount to be sent to apply for this promotion, specified in the distributor's currency"
+      t: "`$NUMBER`"
+    }
+    ProviderCode: {
+      h: "Provider Code"
+      n: "ProviderCode"
+      r: true
+      sh: "The code of the provider that the promotion applies to"
+      t: "`$STRING`"
+    }
+    StartUtc: {
+      fo: "date-time"
+      h: "Start Utc"
+      n: "StartUtc"
+      r: true
+      sh: "Start date and time in UTC of the promotion"
+      t: "`$STRING`"
+    }
+    ValidityPeriodIso: {
+      h: "Validity Period Iso"
+      n: "ValidityPeriodIso"
+      r: false
+      sh: "Validity of the promotion"
+      t: "`$STRING`"
     }
   }
 
@@ -41,34 +73,42 @@ main: kit: entity: promotion: {
           g: {
             header: [
               {
+                explode: false
                 k: "header"
                 n: "x_correlation_id"
                 or: "X-Correlation-Id"
                 r: false
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
             query: [
               {
                 ex: ""
+                explode: true
                 k: "query"
                 n: "account_number"
                 or: "accountNumber"
                 r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
                 k: "query"
                 n: "country_iso"
                 or: "countryIsos"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
               {
+                explode: true
                 k: "query"
                 n: "provider_code"
                 or: "providerCodes"
                 r: false
+                style: "form"
                 t: "`$ARRAY`"
               }
             ]
@@ -98,7 +138,7 @@ main: kit: entity: promotion: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.Items`"
           }
         }
       ]

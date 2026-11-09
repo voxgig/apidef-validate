@@ -5,25 +5,19 @@ main: kit: entity: error_code_description: {
   alias: field: {}
 
   fields: {
-    ErrorCodes: {
-      h: "Error Codes"
-      n: "ErrorCodes"
+    Code: {
+      h: "Code"
+      n: "Code"
       r: true
-      t: "`$ARRAY`"
+      sh: "The identifying error code that was returned in the response"
+      t: "`$STRING`"
     }
-    Items: {
-      h: "Items"
-      n: "Items"
+    Message: {
+      h: "Message"
+      n: "Message"
       r: true
-      sh: "A list of ErrorCodes and their localized descriptions"
-      t: "`$ARRAY`"
-    }
-    ResultCode: {
-      fo: "int32"
-      h: "Result Code"
-      n: "ResultCode"
-      r: true
-      t: "`$INTEGER`"
+      sh: "Error description"
+      t: "`$STRING`"
     }
   }
 
@@ -41,10 +35,12 @@ main: kit: entity: error_code_description: {
           g: {
             header: [
               {
+                explode: false
                 k: "header"
                 n: "x_correlation_id"
                 or: "X-Correlation-Id"
                 r: false
+                style: "simple"
                 t: "`$STRING`"
               }
             ]
@@ -74,7 +70,7 @@ main: kit: entity: error_code_description: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.Items`"
           }
         }
       ]

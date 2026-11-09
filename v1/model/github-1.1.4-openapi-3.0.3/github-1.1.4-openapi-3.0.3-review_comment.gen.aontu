@@ -112,7 +112,13 @@ main: kit: entity: review_comment: {
       n: "original_start_line"
       r: false
       sh: "The original first line of the range for a multi-line comment."
-      t: "`$INTEGER`"
+      t: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
     }
     path: {
       h: "Path"
@@ -124,14 +130,26 @@ main: kit: entity: review_comment: {
       h: "Position"
       n: "position"
       r: true
-      t: "`$INTEGER`"
+      t: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
     }
     pull_request_review_id: {
       fo: "int64"
       h: "Pull Request Review Id"
       n: "pull_request_review_id"
       r: true
-      t: "`$INTEGER`"
+      t: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
     }
     pull_request_url: {
       fo: "uri"
@@ -158,14 +176,26 @@ main: kit: entity: review_comment: {
       n: "start_line"
       r: false
       sh: "The first line of the range for a multi-line comment."
-      t: "`$INTEGER`"
+      t: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
     }
     start_side: {
       h: "Start Side"
       n: "start_side"
       r: false
       sh: "The side of the first line of the range for a multi-line comment."
-      t: "`$STRING`"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     subject_type: {
       h: "Subject Type"
@@ -193,7 +223,13 @@ main: kit: entity: review_comment: {
       n: "user"
       r: true
       sh: "A GitHub user."
-      t: "`$OBJECT`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
   }
 
@@ -217,13 +253,6 @@ main: kit: entity: review_comment: {
             params: [
               {
                 k: "param"
-                n: "id"
-                or: "review_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
                 n: "owner"
                 or: "owner"
                 r: true
@@ -243,22 +272,33 @@ main: kit: entity: review_comment: {
                 r: true
                 t: "`$STRING`"
               }
+              {
+                k: "param"
+                n: "review_id"
+                or: "review_id"
+                r: true
+                t: "`$INTEGER`"
+              }
             ]
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -267,16 +307,15 @@ main: kit: entity: review_comment: {
           o: "/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments"
           q: {
             exist: [
-              "id"
               "owner"
               "pull_id"
               "repo"
+              "review_id"
             ]
           }
           r: {
             param: {
               pull_number: "pull_id"
-              review_id: "id"
             }
           }
           rs: {
@@ -303,7 +342,7 @@ main: kit: entity: review_comment: {
               lit: "reviews"
             }
             {
-              var: "id"
+              var: "review_id"
             }
             {
               lit: "comments"

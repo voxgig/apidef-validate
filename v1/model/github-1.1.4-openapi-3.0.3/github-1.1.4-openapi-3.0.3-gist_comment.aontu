@@ -57,7 +57,13 @@ main: kit: entity: gist_comment: {
       n: "user"
       r: true
       sh: "A GitHub user."
-      t: "`$OBJECT`"
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
   }
 
@@ -84,7 +90,7 @@ main: kit: entity: gist_comment: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "gist_id"
                 or: "gist_id"
                 r: true
                 t: "`$STRING`"
@@ -95,13 +101,8 @@ main: kit: entity: gist_comment: {
           o: "/gists/{gist_id}/comments"
           q: {
             exist: [
-              "id"
+              "gist_id"
             ]
-          }
-          r: {
-            param: {
-              gist_id: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -112,7 +113,7 @@ main: kit: entity: gist_comment: {
               lit: "gists"
             }
             {
-              var: "id"
+              var: "gist_id"
             }
             {
               lit: "comments"
@@ -138,7 +139,7 @@ main: kit: entity: gist_comment: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "gist_id"
                 or: "gist_id"
                 r: true
                 t: "`$STRING`"
@@ -147,18 +148,22 @@ main: kit: entity: gist_comment: {
             query: [
               {
                 ex: 1
+                explode: true
                 k: "query"
                 n: "page"
                 or: "page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
               {
                 ex: 30
+                explode: true
                 k: "query"
                 n: "per_page"
                 or: "per_page"
                 r: false
+                style: "form"
                 t: "`$INTEGER`"
               }
             ]
@@ -167,13 +172,8 @@ main: kit: entity: gist_comment: {
           o: "/gists/{gist_id}/comments"
           q: {
             exist: [
-              "id"
+              "gist_id"
             ]
-          }
-          r: {
-            param: {
-              gist_id: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -184,7 +184,7 @@ main: kit: entity: gist_comment: {
               lit: "gists"
             }
             {
-              var: "id"
+              var: "gist_id"
             }
             {
               lit: "comments"
