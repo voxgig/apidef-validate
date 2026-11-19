@@ -686,3 +686,43 @@ object, so the route reads `body.user_role` again. That is what it read on
   lockfile currently resolves `shape` 12.0.0, which jostraca 0.41.0 cannot
   load, so `npm ci` reproduces these goldens and a fresh `npm install` does
   not.
+
+## 2026-11-19 — apidef 8.32.2 and go/v0.28.2
+
+The pins move from 8.32.1 to 8.32.2, and from go/v0.28.1 to go/v0.28.2. The
+fix in both releases touched both ports, so both pins move together.
+
+### What moves
+
+One golden changes, with its twin: taxonomy's `domain` model. No other case
+moves, no route changes, and no entity is added or removed.
+
+**8.32.2.** A create made only of actions on the record joins the entity's
+`update` (voxgig/apidef#218). Taxonomy's `domain` has no create route, only
+`POST /{year}/domain/{did}/revoke`, and 8.32.1 emitted that action as
+`domain`'s `create`, so a plain create sent a revoke. `domain` now has no
+`create`, and its `update` carries the `revoke` point after
+`PATCH /{year}/domain/{id}`. The point moves byte for byte, and the verb is
+still reached through `update` with `$action: revoke`.
+
+The release's other changes move no golden:
+- A moved point keeps its guide op's `live` setting, which no case here sets.
+- The dependency refresh raises apidef's Go module to `go 1.26.0`, so
+  `v1/go/go.mod` declares it too, and its indirect requirements follow
+  apidef's.
+
+### Verification
+
+- v1 `npm test` on 8.32.2 passes 23/23, strictly. On 8.32.1, before the move,
+  it passed 23/23 too.
+- On go/v0.28.2, `go vet ./...` is clean and `go test -count=1 ./...` passes
+  its 36 tests, comparing 838 distinct goldens strictly with none skipped.
+  `goldenSkips` stays empty.
+- `make port-diff` compares 15 cases and finds no difference. The three
+  GraphQL cases are dumped by the TypeScript port only, as expected.
+- apidef's own Go golden tests, `TestValidateGuide`, `TestValidateModel` and
+  `TestValidateModelData`, pass against this corpus at the release commit.
+- `make comments`, `make deps` and the root `npm test` are clean.
+- The lockfile moves only apidef and the two logging packages 8.32.2 pins
+  exactly, `pino` 10.4.0 and `pino-pretty` 13.2.0. It keeps `shape` at 11.4.1
+  and `jostraca` at 0.41.0.
