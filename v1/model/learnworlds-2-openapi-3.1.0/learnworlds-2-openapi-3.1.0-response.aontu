@@ -1,0 +1,214 @@
+# Entity: response
+
+main: kit: entity: response: {
+
+  alias: field: {}
+
+  fields: {
+    answers: {
+      h: "Answers"
+      n: "answers"
+      r: false
+      sh: "Related answers data"
+      t: "`$ARRAY`"
+    }
+    created: {
+      fo: "float"
+      h: "Created"
+      n: "created"
+      r: false
+      sh: "Date the submission was created (started), in UNIX timestamp format"
+      t: "`$NUMBER`"
+    }
+    email: {
+      h: "Email"
+      n: "email"
+      r: false
+      sh: "Email account of the user who submitted the responses"
+      t: "`$STRING`"
+    }
+    generalFeedback: {
+      h: "General Feedback"
+      n: "generalFeedback"
+      r: false
+      sh: "General feedback for a submission"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    grade: {
+      h: "Grade"
+      n: "grade"
+      r: false
+      sh: "The grade that corresponds to the responses provided by the user"
+      t: [
+        "`$ONE`"
+        [
+          "`$NUMBER`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      sh: "Unique identifier of the submission of responses by the user specified by the user id"
+      t: "`$STRING`"
+    }
+    modified: {
+      fo: "float"
+      h: "Modified"
+      n: "modified"
+      r: false
+      sh: "Date the submission was modified for the last time, in UNIX timestamp format"
+      t: "`$NUMBER`"
+    }
+    passed: {
+      h: "Passed"
+      n: "passed"
+      r: false
+      sh: "Indication about whether or not the assessment result was passed or failed"
+      t: [
+        "`$ONE`"
+        [
+          "`$BOOLEAN`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    submittedTimestamp: {
+      fo: "float"
+      h: "Submitted Timestamp"
+      n: "submittedTimestamp"
+      r: false
+      sh: "Date the submission was finished (submitted), in UNIX timestamp format"
+      t: "`$NUMBER`"
+    }
+    user_id: {
+      h: "User Id"
+      n: "user_id"
+      r: false
+      sh: "Unique identifier of the user who submitted the responses"
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "response"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /v2/forms/{id}/responses"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "form_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "items_per_page"
+                or: "items_per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "user"
+                or: "users"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/forms/{id}/responses"
+          q: {
+            exist: [
+              "form_id"
+              "lw_client"
+            ]
+          }
+          r: {
+            param: {
+              id: "form_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "forms"
+            }
+            {
+              var: "form_id"
+            }
+            {
+              lit: "responses"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.meta.totalItems`"
+            }
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

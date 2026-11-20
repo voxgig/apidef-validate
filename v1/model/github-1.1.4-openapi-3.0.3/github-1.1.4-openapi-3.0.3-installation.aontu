@@ -180,8 +180,199 @@ main: kit: entity: installation: {
 
   name: "installation"
   op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "permissions"
+            "repositories"
+            "repository_ids"
+          ]
+          co: {
+            id: "POST /app/installations/{installation_id}/access_tokens"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 1
+                k: "param"
+                n: "id"
+                or: "installation_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/app/installations/{installation_id}/access_tokens"
+          q: {
+            "$action": "access_tokens"
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              installation_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "app"
+            }
+            {
+              lit: "installations"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "access_tokens"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     list: {
       name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /app/installations"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "outdated"
+                or: "outdated"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "since"
+                or: "since"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/app/installations"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "app"
+            }
+            {
+              lit: "installations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /user/installations"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/user/installations"
+          q: {
+            "$action": "user"
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "installations"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.installations`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
       points: [
         {
           co: {
@@ -231,6 +422,56 @@ main: kit: entity: installation: {
             }
             {
               lit: "installation"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /app/installations/{installation_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 1
+                k: "param"
+                n: "id"
+                or: "installation_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/app/installations/{installation_id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              installation_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "app"
+            }
+            {
+              lit: "installations"
+            }
+            {
+              var: "id"
             }
           ]
           t: {
@@ -324,128 +565,6 @@ main: kit: entity: installation: {
             }
             {
               lit: "installation"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /app/installations"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            query: [
-              {
-                explode: true
-                k: "query"
-                n: "outdated"
-                or: "outdated"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "since"
-                or: "since"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/app/installations"
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "app"
-            }
-            {
-              lit: "installations"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    load: {
-      name: "load"
-      points: [
-        {
-          co: {
-            id: "GET /app/installations/{installation_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 1
-                k: "param"
-                n: "id"
-                or: "installation_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/app/installations/{installation_id}"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          r: {
-            param: {
-              installation_id: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "app"
-            }
-            {
-              lit: "installations"
-            }
-            {
-              var: "id"
             }
           ]
           t: {

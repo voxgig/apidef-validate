@@ -5,6 +5,13 @@ main: kit: entity: user: {
   alias: field: {}
 
   fields: {
+    add_to_active_seat: {
+      h: "Add To Active Seat"
+      n: "add_to_active_seat"
+      r: false
+      sh: "Indication about whether the user is assigned a seat in the seat offering; true if she is, or false if she is not."
+      t: "`$BOOLEAN`"
+    }
     answers: {
       h: "Answers"
       n: "answers"
@@ -98,6 +105,13 @@ main: kit: entity: user: {
       r: false
       sh: "Unique identifier of the user"
       t: "`$STRING`"
+    }
+    invitation: {
+      h: "Invitation"
+      n: "invitation"
+      r: false
+      sh: "Indication whether the user was sent an invitation."
+      t: "`$BOOLEAN`"
     }
     is_admin: {
       h: "Is Admin"
@@ -255,6 +269,13 @@ main: kit: entity: user: {
       sh: "Indication about whether validation rules should be applied; default value equals to false, which means that validation rules should not be applied."
       t: "`$BOOLEAN`"
     }
+    status: {
+      h: "Status"
+      n: "status"
+      r: false
+      sh: "The status of the user - `joined`, the user has joined the space - `invited`, the user has been sent an invitation to gain access to the space - `deleted`, the user has been removed from the space - `left`, the user has left the space"
+      t: "`$ANY`"
+    }
     submittedTimestamp: {
       fo: "float"
       h: "Submitted Timestamp"
@@ -289,6 +310,13 @@ main: kit: entity: user: {
       sh: "Array of the tags of the user"
       t: "`$ARRAY`"
     }
+    uids: {
+      h: "Uids"
+      n: "uids"
+      r: false
+      sh: "Unique identifiers or emails of the users to be invited/added"
+      t: "`$ARRAY`"
+    }
     user_id: {
       h: "User Id"
       n: "user_id"
@@ -309,6 +337,13 @@ main: kit: entity: user: {
       sh: "Username of the user"
       t: "`$STRING`"
     }
+    users: {
+      h: "Users"
+      n: "users"
+      r: false
+      sh: "List of users that were added or invited to space"
+      t: "`$OBJECT`"
+    }
     utms: {
       h: "Utms"
       n: "utms"
@@ -328,6 +363,85 @@ main: kit: entity: user: {
     create: {
       name: "create"
       points: [
+        {
+          bf: [
+            "add_to_active_seat"
+          ]
+          co: {
+            id: "POST /v2/seats/{id}/users/{uid}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "uid"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "seat_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/v2/seats/{id}/users/{uid}"
+          q: {
+            exist: [
+              "id"
+              "lw_client"
+              "seat_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "seat_id"
+              uid: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "seats"
+            }
+            {
+              var: "seat_id"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "POST /v2/user_groups/{id}/users/{uid}"
@@ -546,6 +660,76 @@ main: kit: entity: user: {
         }
         {
           bf: [
+            "uids"
+          ]
+          co: {
+            id: "POST /v2/community/spaces/{id}/users"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "space_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/v2/community/spaces/{id}/users"
+          q: {
+            exist: [
+              "lw_client"
+              "space_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "space_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "community"
+            }
+            {
+              lit: "spaces"
+            }
+            {
+              var: "space_id"
+            }
+            {
+              lit: "users"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+        {
+          bf: [
             "email"
             "fields"
             "is_admin"
@@ -760,81 +944,6 @@ main: kit: entity: user: {
         }
         {
           co: {
-            id: "GET /v2/users/{id}/courses"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            header: [
-              {
-                explode: false
-                k: "header"
-                n: "lw_client"
-                or: "Lw-Client"
-                r: true
-                style: "simple"
-                t: "`$STRING`"
-              }
-            ]
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/v2/users/{id}/courses"
-          q: {
-            "$action": "course"
-            exist: [
-              "id"
-              "lw_client"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "v2"
-            }
-            {
-              lit: "users"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "courses"
-            }
-          ]
-          t: {
-            page: {
-              total: "`body.meta.totalItems`"
-            }
-            req: "`reqdata`"
-            res: "`body.data`"
-          }
-        }
-        {
-          co: {
             id: "GET /v2/users/{id}/products"
             source: "openapi3"
             version: 2
@@ -895,7 +1004,7 @@ main: kit: entity: user: {
         }
         {
           co: {
-            id: "GET /v2/users/{id}/progress"
+            id: "GET /v2/community/spaces/{id}/users"
             source: "openapi3"
             version: 2
           }
@@ -914,7 +1023,7 @@ main: kit: entity: user: {
             params: [
               {
                 k: "param"
-                n: "id"
+                n: "space_id"
                 or: "id"
                 r: true
                 t: "`$STRING`"
@@ -931,7 +1040,7 @@ main: kit: entity: user: {
                 t: "`$INTEGER`"
               }
               {
-                ex: "1"
+                ex: 1
                 explode: true
                 k: "query"
                 n: "page"
@@ -943,13 +1052,17 @@ main: kit: entity: user: {
             ]
           }
           m: "GET"
-          o: "/v2/users/{id}/progress"
+          o: "/v2/community/spaces/{id}/users"
           q: {
-            "$action": "progress"
             exist: [
-              "id"
               "lw_client"
+              "space_id"
             ]
+          }
+          r: {
+            param: {
+              id: "space_id"
+            }
           }
           rs: {
             kind: "json"
@@ -960,13 +1073,16 @@ main: kit: entity: user: {
               lit: "v2"
             }
             {
+              lit: "community"
+            }
+            {
+              lit: "spaces"
+            }
+            {
+              var: "space_id"
+            }
+            {
               lit: "users"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "progress"
             }
           ]
           t: {
@@ -1110,53 +1226,6 @@ main: kit: entity: user: {
             page: {
               total: "`body.meta.totalItems`"
             }
-            req: "`reqdata`"
-            res: "`body.data`"
-          }
-        }
-        {
-          co: {
-            id: "GET /v2/users/segments"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            header: [
-              {
-                explode: false
-                k: "header"
-                n: "lw_client"
-                or: "Lw-Client"
-                r: true
-                style: "simple"
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/v2/users/segments"
-          q: {
-            "$action": "segment"
-            exist: [
-              "lw_client"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "v2"
-            }
-            {
-              lit: "users"
-            }
-            {
-              lit: "segments"
-            }
-          ]
-          t: {
             req: "`reqdata`"
             res: "`body.data`"
           }
@@ -1384,6 +1453,87 @@ main: kit: entity: user: {
         }
         {
           co: {
+            id: "GET /v2/users/{id}/progress"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "items_per_page"
+                or: "items_per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "1"
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/users/{id}/progress"
+          q: {
+            "$action": "progress"
+            exist: [
+              "id"
+              "lw_client"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "progress"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /v2/users/{id}/seats"
             source: "openapi3"
             version: 2
@@ -1446,6 +1596,156 @@ main: kit: entity: user: {
     remove: {
       name: "remove"
       points: [
+        {
+          bf: [
+            "remove_from_seat_offering"
+          ]
+          co: {
+            id: "DELETE /v2/seats/{id}/users/{uid}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "uid"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "seat_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/v2/seats/{id}/users/{uid}"
+          q: {
+            exist: [
+              "id"
+              "lw_client"
+              "seat_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "seat_id"
+              uid: "id"
+            }
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "seats"
+            }
+            {
+              var: "seat_id"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /v2/community/spaces/{id}/users/{uid}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "uid"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "space_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/v2/community/spaces/{id}/users/{uid}"
+          q: {
+            exist: [
+              "id"
+              "lw_client"
+              "space_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "space_id"
+              uid: "id"
+            }
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "community"
+            }
+            {
+              lit: "spaces"
+            }
+            {
+              var: "space_id"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "DELETE /v2/user_groups/{id}/users/{uid}"

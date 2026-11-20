@@ -1,0 +1,95 @@
+# Entity: completed
+
+main: kit: entity: completed: {
+
+  alias: field: {}
+
+  name: "completed"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /v2/affiliates/{id}/payouts/completed"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "affiliate_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/affiliates/{id}/payouts/completed"
+          q: {
+            "$action": "payout_completed"
+            exist: [
+              "affiliate_id"
+              "lw_client"
+            ]
+          }
+          r: {
+            param: {
+              id: "affiliate_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "affiliates"
+            }
+            {
+              var: "affiliate_id"
+            }
+            {
+              lit: "payouts"
+            }
+            {
+              lit: "completed"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.meta.totalItems`"
+            }
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+  fields: {
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.affiliate")]
+  ]
+
+}

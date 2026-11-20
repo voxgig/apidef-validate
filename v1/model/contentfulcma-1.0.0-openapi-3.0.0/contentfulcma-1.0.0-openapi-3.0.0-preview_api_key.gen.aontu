@@ -1,0 +1,140 @@
+# Entity: preview_api_key
+
+main: kit: entity: preview_api_key: {
+
+  alias: field: {}
+
+  fields: {
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "preview_api_key"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /spaces/{space_id}/preview_api_keys/{preview_api_key_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "preview_api_key_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "space_id"
+                or: "space_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/spaces/{space_id}/preview_api_keys/{preview_api_key_id}"
+          q: {
+            exist: [
+              "id"
+              "space_id"
+            ]
+          }
+          r: {
+            param: {
+              preview_api_key_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "spaces"
+            }
+            {
+              var: "space_id"
+            }
+            {
+              lit: "preview_api_keys"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /spaces/{space_id}/preview_api_keys"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "space_id"
+                or: "space_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/spaces/{space_id}/preview_api_keys"
+          q: {
+            exist: [
+              "space_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "spaces"
+            }
+            {
+              var: "space_id"
+            }
+            {
+              lit: "preview_api_keys"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.space")]
+  ]
+
+}

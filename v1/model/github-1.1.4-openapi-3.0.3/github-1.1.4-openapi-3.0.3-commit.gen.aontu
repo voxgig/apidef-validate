@@ -81,6 +81,13 @@ main: kit: entity: commit: {
       syn: true
       t: "`$STRING`"
     }
+    message: {
+      h: "Message"
+      n: "message"
+      r: false
+      sh: "Commit message to be used."
+      t: "`$STRING`"
+    }
     node_id: {
       h: "Node Id"
       n: "node_id"
@@ -105,6 +112,13 @@ main: kit: entity: commit: {
       r: false
       t: "`$OBJECT`"
     }
+    target_ref: {
+      h: "Target Ref"
+      n: "target_ref"
+      r: false
+      sh: "The Git reference of target branch for the commit."
+      t: "`$STRING`"
+    }
     url: {
       fo: "uri"
       h: "Url"
@@ -124,6 +138,90 @@ main: kit: entity: commit: {
     create: {
       name: "create"
       points: [
+        {
+          bf: [
+            "message"
+            "target_ref"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix/commits"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "alert_id"
+                or: "alert_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix/commits"
+          q: {
+            exist: [
+              "alert_id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              alert_number: "alert_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "alerts"
+            }
+            {
+              var: "alert_id"
+            }
+            {
+              lit: "autofix"
+            }
+            {
+              lit: "commits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           bf: [
             "base"
@@ -181,7 +279,7 @@ main: kit: entity: commit: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.commit`"
           }
         }
       ]
@@ -418,6 +516,76 @@ main: kit: entity: commit: {
       points: [
         {
           co: {
+            id: "GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "commit_sha"
+                or: "commit_sha"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head"
+          q: {
+            "$action": "branches_where_head"
+            exist: [
+              "commit_sha"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "commit_sha"
+            }
+            {
+              lit: "branches-where-head"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /repos/{owner}/{repo}/commits/{ref}"
             source: "openapi3"
             version: 2
@@ -506,6 +674,246 @@ main: kit: entity: commit: {
           ]
           t: {
             req: "`reqdata`"
+            res: "`body.commit`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/commits/{ref}/check-runs"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "ref"
+                or: "ref"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "app_id"
+                or: "app_id"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "check_name"
+                or: "check_name"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "latest"
+                explode: true
+                k: "query"
+                n: "filter"
+                or: "filter"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "status"
+                or: "status"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/commits/{ref}/check-runs"
+          q: {
+            "$action": "check_runs"
+            exist: [
+              "owner"
+              "ref"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "ref"
+            }
+            {
+              lit: "check-runs"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/commits/{ref}/check-suites"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "ref"
+                or: "ref"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "app_id"
+                or: "app_id"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "check_name"
+                or: "check_name"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/commits/{ref}/check-suites"
+          q: {
+            "$action": "check_suites"
+            exist: [
+              "owner"
+              "ref"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "ref"
+            }
+            {
+              lit: "check-suites"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
             res: "`body`"
           }
         }
@@ -515,6 +923,8 @@ main: kit: entity: commit: {
 
 
   relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.alert")]
     [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.pull")]
   ]

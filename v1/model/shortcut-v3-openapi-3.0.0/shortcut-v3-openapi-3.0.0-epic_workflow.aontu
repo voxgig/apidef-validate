@@ -5,28 +5,21 @@ main: kit: entity: epic_workflow: {
   alias: field: {}
 
   fields: {
-    color: {
-      fo: "css-color"
-      h: "Color"
-      n: "color"
-      r: false
-      sh: "The hex color for this Epic State."
-      t: "`$STRING`"
-    }
     created_at: {
       fo: "date-time"
       h: "Created At"
       n: "created_at"
       r: true
-      sh: "The time/date the Epic State was created."
+      sh: "The date the Epic Workflow was created."
       t: "`$STRING`"
     }
-    description: {
-      h: "Description"
-      n: "description"
+    default_epic_state_id: {
+      fo: "int64"
+      h: "Default Epic State Id"
+      n: "default_epic_state_id"
       r: true
-      sh: "The description of what sort of Epics belong in that Epic State."
-      t: "`$STRING`"
+      sh: "The unique ID of the default Epic State that new Epics are assigned by default."
+      t: "`$INTEGER`"
     }
     entity_type: {
       h: "Entity Type"
@@ -35,48 +28,27 @@ main: kit: entity: epic_workflow: {
       sh: "A string description of this resource."
       t: "`$STRING`"
     }
-    global_id: {
-      h: "Global Id"
-      n: "global_id"
+    epic_states: {
+      h: "Epic States"
+      n: "epic_states"
       r: true
-      t: "`$STRING`"
+      sh: "A map of the Epic States in this Epic Workflow."
+      t: "`$ARRAY`"
     }
     id: {
       fo: "int64"
       h: "Id"
       n: "id"
       r: true
-      sh: "The unique ID of the Epic State."
+      sh: "The unique ID of the Epic Workflow."
       t: "`$INTEGER`"
-    }
-    name: {
-      h: "Name"
-      n: "name"
-      r: true
-      sh: "The Epic State's name."
-      t: "`$STRING`"
-    }
-    position: {
-      fo: "int64"
-      h: "Position"
-      n: "position"
-      r: true
-      sh: "The position that the Epic State is in, starting with 0 at the left."
-      t: "`$INTEGER`"
-    }
-    type: {
-      h: "Type"
-      n: "type"
-      r: true
-      sh: "The type of Epic State (Unstarted, Started, or Done)"
-      t: "`$STRING`"
     }
     updated_at: {
       fo: "date-time"
       h: "Updated At"
       n: "updated_at"
       r: true
-      sh: "When the Epic State was last updated."
+      sh: "The date the Epic Workflow was updated."
       t: "`$STRING`"
     }
   }
@@ -88,8 +60,8 @@ main: kit: entity: epic_workflow: {
 
   name: "epic_workflow"
   op: {
-    list: {
-      name: "list"
+    load: {
+      name: "load"
       points: [
         {
           co: {
@@ -116,7 +88,7 @@ main: kit: entity: epic_workflow: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.epic_states`"
+            res: "`body`"
           }
         }
       ]

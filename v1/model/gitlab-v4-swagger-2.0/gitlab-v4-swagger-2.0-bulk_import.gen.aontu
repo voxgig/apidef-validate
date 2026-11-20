@@ -1,0 +1,382 @@
+# Entity: bulk_import
+
+main: kit: entity: bulk_import: {
+
+  alias: field: {}
+
+  fields: {
+    configuration_access_token: {
+      h: "Configuration Access Token"
+      n: "configuration_access_token"
+      r: true
+      t: "`$STRING`"
+    }
+    configuration_url: {
+      h: "Configuration Url"
+      n: "configuration_url"
+      r: true
+      t: "`$STRING`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    entities_destination_name: {
+      h: "Entities Destination Name"
+      n: "entities_destination_name"
+      r: false
+      t: "`$ARRAY`"
+    }
+    entities_destination_namespace: {
+      h: "Entities Destination Namespace"
+      n: "entities_destination_namespace"
+      r: true
+      t: "`$ARRAY`"
+    }
+    entities_destination_slug: {
+      h: "Entities Destination Slug"
+      n: "entities_destination_slug"
+      r: false
+      t: "`$ARRAY`"
+    }
+    entities_migrate_memberships: {
+      h: "Entities Migrate Memberships"
+      n: "entities_migrate_memberships"
+      r: false
+      t: "`$ARRAY`"
+    }
+    entities_migrate_projects: {
+      h: "Entities Migrate Projects"
+      n: "entities_migrate_projects"
+      r: false
+      t: "`$ARRAY`"
+    }
+    entities_source_full_path: {
+      h: "Entities Source Full Path"
+      n: "entities_source_full_path"
+      r: true
+      t: "`$ARRAY`"
+    }
+    entities_source_type: {
+      h: "Entities Source Type"
+      n: "entities_source_type"
+      r: true
+      t: "`$ARRAY`"
+    }
+    has_failures: {
+      h: "Has Failures"
+      n: "has_failures"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    id: {
+      fo: "int32"
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    source_type: {
+      h: "Source Type"
+      n: "source_type"
+      r: false
+      t: "`$STRING`"
+    }
+    source_url: {
+      h: "Source Url"
+      n: "source_url"
+      r: false
+      t: "`$STRING`"
+    }
+    status: {
+      h: "Status"
+      n: "status"
+      r: false
+      t: "`$STRING`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "bulk_import"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /api/v4/bulk_imports/{import_id}/cancel"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "import_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/bulk_imports/{import_id}/cancel"
+          q: {
+            "$action": "cancel"
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              import_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "bulk_imports"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "cancel"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /api/v4/bulk_imports"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/api/v4/bulk_imports"
+          rb: {
+            fields: [
+              {
+                name: "configuration[access_token]"
+              }
+              {
+                name: "configuration[url]"
+              }
+              {
+                join: ","
+                name: "entities[destination_name]"
+              }
+              {
+                join: ","
+                name: "entities[destination_namespace]"
+              }
+              {
+                join: ","
+                name: "entities[destination_slug]"
+              }
+              {
+                join: ","
+                name: "entities[migrate_memberships]"
+              }
+              {
+                join: ","
+                name: "entities[migrate_projects]"
+              }
+              {
+                join: ","
+                name: "entities[source_full_path]"
+              }
+              {
+                join: ","
+                name: "entities[source_type]"
+              }
+            ]
+            kind: "form"
+            media: "application/x-www-form-urlencoded"
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "bulk_imports"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/bulk_imports"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "desc"
+                explode: true
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "status"
+                or: "status"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/bulk_imports"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "bulk_imports"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/bulk_imports/{import_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "import_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/bulk_imports/{import_id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              import_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "bulk_imports"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

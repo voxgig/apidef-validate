@@ -5,25 +5,16 @@ main: kit: entity: api_entities_commit_detail: {
   alias: field: {}
 
   fields: {
-    actions: {
-      h: "Actions"
-      n: "actions"
-      r: true
-      sh: "Actions to perform in commit"
-      t: "`$ARRAY`"
-    }
     author_email: {
       h: "Author Email"
       n: "author_email"
       r: false
-      sh: "Author email for commit"
       t: "`$STRING`"
     }
     author_name: {
       h: "Author Name"
       n: "author_name"
       r: false
-      sh: "Author name for commit"
       t: "`$STRING`"
     }
     authored_date: {
@@ -43,14 +34,8 @@ main: kit: entity: api_entities_commit_detail: {
     commit_message: {
       h: "Commit Message"
       n: "commit_message"
-      op: {
-        update: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
-      r: true
-      sh: "Commit message"
+      r: false
+      sh: "Commit message."
       t: "`$STRING`"
     }
     commit_sha: {
@@ -92,13 +77,6 @@ main: kit: entity: api_entities_commit_detail: {
       r: false
       t: "`$OBJECT`"
     }
-    force: {
-      h: "Force"
-      n: "force"
-      r: false
-      sh: "When `true` overwrites the target branch with a new commit based on the `start_branch` or `start_sha`"
-      t: "`$BOOLEAN`"
-    }
     id: {
       h: "Id"
       n: "id"
@@ -137,33 +115,10 @@ main: kit: entity: api_entities_commit_detail: {
       r: false
       t: "`$STRING`"
     }
-    start_branch: {
-      h: "Start Branch"
-      n: "start_branch"
-      r: false
-      sh: "Name of the branch to start the new branch from"
-      t: "`$STRING`"
-    }
-    start_project: {
-      fo: "int32"
-      h: "Start Project"
-      n: "start_project"
-      r: false
-      sh: "The ID or path of the project to start the new branch from"
-      t: "`$INTEGER`"
-    }
-    start_sha: {
-      h: "Start Sha"
-      n: "start_sha"
-      r: false
-      sh: "SHA of the commit to start the new branch from"
-      t: "`$STRING`"
-    }
     stats: {
       h: "Stats"
       n: "stats"
       r: false
-      sh: "Include commit stats"
       t: "`$OBJECT`"
     }
     status: {
@@ -199,167 +154,6 @@ main: kit: entity: api_entities_commit_detail: {
 
   name: "api_entities_commit_detail"
   op: {
-    create: {
-      name: "create"
-      points: [
-        {
-          bf: [
-            "actions"
-            "author_email"
-            "author_name"
-            "branch"
-            "commit_message"
-            "force"
-            "start_branch"
-            "start_project"
-            "start_sha"
-            "stats"
-          ]
-          co: {
-            id: "POST /api/v4/projects/{id}/repository/commits"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/repository/commits"
-          q: {
-            exist: [
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "repository"
-            }
-            {
-              lit: "commits"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    load: {
-      name: "load"
-      points: [
-        {
-          co: {
-            id: "GET /api/v4/projects/{id}/repository/commits/{sha}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "sha"
-                or: "sha"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: true
-                explode: true
-                k: "query"
-                n: "stat"
-                or: "stats"
-                r: false
-                style: "form"
-                t: "`$BOOLEAN`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/projects/{id}/repository/commits/{sha}"
-          q: {
-            exist: [
-              "project_id"
-              "sha"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "repository"
-            }
-            {
-              lit: "commits"
-            }
-            {
-              var: "sha"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
     update: {
       name: "update"
       points: [
@@ -445,8 +239,6 @@ main: kit: entity: api_entities_commit_detail: {
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.project")]
-    [path("$.main.kit.entity.project")]
     [path("$.main.kit.entity.project")]
   ]
 

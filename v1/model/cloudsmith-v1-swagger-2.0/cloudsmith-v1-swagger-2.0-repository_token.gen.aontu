@@ -339,6 +339,101 @@ main: kit: entity: repository_token: {
             "limit_package_query"
             "limit_path_query"
             "metadata"
+            "scheduled_reset_at"
+            "scheduled_reset_period"
+            "token"
+          ]
+          co: {
+            id: "POST /entitlements/{owner}/{repo}/{identifier}/refresh/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "identifier"
+                or: "identifier"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: false
+                explode: true
+                k: "query"
+                n: "show_token"
+                or: "show_tokens"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/entitlements/{owner}/{repo}/{identifier}/refresh/"
+          q: {
+            "$action": "refresh"
+            exist: [
+              "identifier"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "entitlements"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              var: "identifier"
+            }
+            {
+              lit: "refresh"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "eula_required"
+            "is_active"
+            "limit_bandwidth"
+            "limit_bandwidth_unit"
+            "limit_date_range_from"
+            "limit_date_range_to"
+            "limit_num_clients"
+            "limit_num_downloads"
+            "limit_package_query"
+            "limit_path_query"
+            "metadata"
             "name"
             "scheduled_reset_at"
             "scheduled_reset_period"
@@ -400,6 +495,77 @@ main: kit: entity: repository_token: {
             }
             {
               var: "repo"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "source"
+          ]
+          co: {
+            id: "POST /entitlements/{owner}/{repo}/sync/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: false
+                explode: true
+                k: "query"
+                n: "show_token"
+                or: "show_tokens"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/entitlements/{owner}/{repo}/sync/"
+          q: {
+            "$action": "sync"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "entitlements"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "sync"
             }
           ]
           t: {

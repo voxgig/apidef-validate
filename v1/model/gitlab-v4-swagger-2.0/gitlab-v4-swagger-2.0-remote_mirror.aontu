@@ -5,11 +5,99 @@ main: kit: entity: remote_mirror: {
   alias: field: {}
 
   fields: {
+    auth_method: {
+      h: "Auth Method"
+      n: "auth_method"
+      r: false
+      sh: "Determines the mirror authentication method"
+      t: "`$STRING`"
+    }
+    enabled: {
+      h: "Enabled"
+      n: "enabled"
+      r: false
+      sh: "Determines if the mirror is enabled"
+      t: "`$BOOLEAN`"
+    }
+    host_keys: {
+      h: "Host Keys"
+      n: "host_keys"
+      r: false
+      t: "`$ARRAY`"
+    }
     id: {
+      fo: "int32"
       h: "Id"
       n: "id"
       r: false
-      syn: true
+      t: "`$INTEGER`"
+    }
+    keep_divergent_refs: {
+      h: "Keep Divergent Refs"
+      n: "keep_divergent_refs"
+      r: false
+      sh: "Determines if divergent refs are kept on the target"
+      t: "`$BOOLEAN`"
+    }
+    last_error: {
+      fo: "int32"
+      h: "Last Error"
+      n: "last_error"
+      r: false
+      t: "`$INTEGER`"
+    }
+    last_successful_update_at: {
+      fo: "date-time"
+      h: "Last Successful Update At"
+      n: "last_successful_update_at"
+      r: false
+      t: "`$STRING`"
+    }
+    last_update_at: {
+      fo: "date-time"
+      h: "Last Update At"
+      n: "last_update_at"
+      r: false
+      t: "`$STRING`"
+    }
+    last_update_started_at: {
+      fo: "date-time"
+      h: "Last Update Started At"
+      n: "last_update_started_at"
+      r: false
+      t: "`$STRING`"
+    }
+    mirror_branch_regex: {
+      h: "Mirror Branch Regex"
+      n: "mirror_branch_regex"
+      r: false
+      sh: "Determines if only matched branches are mirrored"
+      t: "`$STRING`"
+    }
+    only_protected_branches: {
+      h: "Only Protected Branches"
+      n: "only_protected_branches"
+      r: false
+      sh: "Determines if only protected branches are mirrored"
+      t: "`$BOOLEAN`"
+    }
+    update_status: {
+      h: "Update Status"
+      n: "update_status"
+      r: false
+      t: "`$STRING`"
+    }
+    url: {
+      h: "Url"
+      n: "url"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The URL for a remote mirror"
       t: "`$STRING`"
     }
   }
@@ -21,9 +109,293 @@ main: kit: entity: remote_mirror: {
 
   name: "remote_mirror"
   op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /api/v4/projects/{id}/remote_mirrors/{mirror_id}/sync"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "mirror_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/remote_mirrors/{mirror_id}/sync"
+          q: {
+            "$action": "sync"
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              mirror_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "remote_mirrors"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "sync"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "auth_method"
+            "enabled"
+            "keep_divergent_refs"
+            "mirror_branch_regex"
+            "only_protected_branches"
+            "url"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/remote_mirrors"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/remote_mirrors"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "remote_mirrors"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/remote_mirrors"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/remote_mirrors"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "remote_mirrors"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/remote_mirrors/{mirror_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "mirror_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/remote_mirrors/{mirror_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              mirror_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "remote_mirrors"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "GET /api/v4/projects/{id}/remote_mirrors/{mirror_id}/public_key"
@@ -84,6 +456,153 @@ main: kit: entity: remote_mirror: {
             }
             {
               lit: "public_key"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/remote_mirrors/{mirror_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "mirror_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/remote_mirrors/{mirror_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              mirror_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "remote_mirrors"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "auth_method"
+            "enabled"
+            "keep_divergent_refs"
+            "mirror_branch_regex"
+            "only_protected_branches"
+          ]
+          co: {
+            id: "PUT /api/v4/projects/{id}/remote_mirrors/{mirror_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "mirror_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/remote_mirrors/{mirror_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              mirror_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "remote_mirrors"
+            }
+            {
+              var: "id"
             }
           ]
           t: {

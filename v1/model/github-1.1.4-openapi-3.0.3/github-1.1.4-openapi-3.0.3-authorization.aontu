@@ -106,27 +106,6 @@ main: kit: entity: authorization: {
         ]
       ]
     }
-    permissions: {
-      h: "Permissions"
-      n: "permissions"
-      r: false
-      sh: "The permissions granted to the user access token."
-      t: "`$OBJECT`"
-    }
-    repositories: {
-      h: "Repositories"
-      n: "repositories"
-      r: false
-      sh: "The list of repository names to scope the user access token to."
-      t: "`$ARRAY`"
-    }
-    repository_ids: {
-      h: "Repository Ids"
-      n: "repository_ids"
-      r: false
-      sh: "The list of repository IDs to scope the user access token to."
-      t: "`$ARRAY`"
-    }
     scopes: {
       h: "Scopes"
       n: "scopes"
@@ -139,20 +118,6 @@ main: kit: entity: authorization: {
           "`$NULL`"
         ]
       ]
-    }
-    target: {
-      h: "Target"
-      n: "target"
-      r: false
-      sh: "The name of the user or organization to scope the user access token to."
-      t: "`$STRING`"
-    }
-    target_id: {
-      h: "Target Id"
-      n: "target_id"
-      r: false
-      sh: "The ID of the user or organization to scope the user access token to."
-      t: "`$INTEGER`"
     }
     token: {
       h: "Token"
@@ -293,6 +258,7 @@ main: kit: entity: authorization: {
           m: "POST"
           o: "/applications/{client_id}/token/scoped"
           q: {
+            "$action": "scoped"
             exist: [
               "application_id"
             ]
@@ -442,5 +408,8 @@ main: kit: entity: authorization: {
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.application")]
+  ]
 
 }

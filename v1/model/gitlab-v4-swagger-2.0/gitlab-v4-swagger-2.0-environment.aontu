@@ -4,11 +4,282 @@ main: kit: entity: environment: {
 
   alias: field: {}
 
+  fields: {
+    auto_stop_at: {
+      fo: "date-time"
+      h: "Auto Stop At"
+      n: "auto_stop_at"
+      r: false
+      t: "`$STRING`"
+    }
+    auto_stop_setting: {
+      h: "Auto Stop Setting"
+      n: "auto_stop_setting"
+      r: false
+      sh: "The auto stop setting for the environment."
+      t: "`$STRING`"
+    }
+    cluster_agent: {
+      h: "Cluster Agent"
+      n: "cluster_agent"
+      r: false
+      sh: "API_Entities_Clusters_Agent model"
+      t: "`$OBJECT`"
+    }
+    cluster_agent_id: {
+      fo: "int32"
+      h: "Cluster Agent Id"
+      n: "cluster_agent_id"
+      r: false
+      sh: "The ID of the Cluster Agent to associate with this environment"
+      t: "`$INTEGER`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      sh: "The description of the environment"
+      t: "`$STRING`"
+    }
+    external_url: {
+      h: "External Url"
+      n: "external_url"
+      r: false
+      sh: "Place to link to for this environment"
+      t: "`$STRING`"
+    }
+    flux_resource_path: {
+      h: "Flux Resource Path"
+      n: "flux_resource_path"
+      r: false
+      sh: "The Flux resource path to associate with this environment"
+      t: "`$STRING`"
+    }
+    id: {
+      fo: "int32"
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    kubernetes_namespace: {
+      h: "Kubernetes Namespace"
+      n: "kubernetes_namespace"
+      r: false
+      sh: "The Kubernetes namespace to associate with this environment"
+      t: "`$STRING`"
+    }
+    last_deployment: {
+      h: "Last Deployment"
+      n: "last_deployment"
+      r: false
+      sh: "API_Entities_Deployment model"
+      t: "`$OBJECT`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The name of the environment"
+      t: "`$STRING`"
+    }
+    project: {
+      h: "Project"
+      n: "project"
+      r: false
+      sh: "API_Entities_BasicProjectDetails model"
+      t: "`$OBJECT`"
+    }
+    slug: {
+      h: "Slug"
+      n: "slug"
+      r: false
+      t: "`$STRING`"
+    }
+    state: {
+      h: "State"
+      n: "state"
+      r: false
+      t: "`$STRING`"
+    }
+    tier: {
+      h: "Tier"
+      n: "tier"
+      r: false
+      sh: "The tier of the new environment."
+      t: "`$STRING`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "environment"
   op: {
     create: {
       name: "create"
       points: [
+        {
+          bf: [
+            "force"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/environments/{environment_id}/stop"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "environment_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/environments/{environment_id}/stop"
+          q: {
+            "$action": "stop"
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              environment_id: "id"
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "environments"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "stop"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "auto_stop_setting"
+            "cluster_agent_id"
+            "description"
+            "external_url"
+            "flux_resource_path"
+            "kubernetes_namespace"
+            "name"
+            "tier"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/environments"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/environments"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "environments"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           bf: [
             "before"
@@ -69,9 +340,257 @@ main: kit: entity: environment: {
         }
       ]
     }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/environments"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "name"
+                or: "name"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "search"
+                or: "search"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "state"
+                or: "states"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/environments"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "environments"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/environments/{environment_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "environment_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/environments/{environment_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              environment_id: "id"
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "environments"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     remove: {
       name: "remove"
       points: [
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/environments/{environment_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "environment_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/environments/{environment_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              environment_id: "id"
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "environments"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "DELETE /api/v4/projects/{id}/environments/review_apps"
@@ -164,9 +683,87 @@ main: kit: entity: environment: {
         }
       ]
     }
-  }
-
-  fields: {
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "auto_stop_setting"
+            "cluster_agent_id"
+            "description"
+            "external_url"
+            "flux_resource_path"
+            "kubernetes_namespace"
+            "tier"
+          ]
+          co: {
+            id: "PUT /api/v4/projects/{id}/environments/{environment_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "environment_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/environments/{environment_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              environment_id: "id"
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "environments"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
   }
 
 

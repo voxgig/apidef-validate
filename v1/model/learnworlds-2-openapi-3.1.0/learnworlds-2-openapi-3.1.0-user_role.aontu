@@ -12,12 +12,33 @@ main: kit: entity: user_role: {
       sh: "Access level of the user role"
       t: "`$ANY`"
     }
-    course_id: {
-      h: "Course Id"
-      n: "course_id"
+    assigned_courses: {
+      h: "Assigned Courses"
+      n: "assigned_courses"
       r: false
-      sh: "Unique identifier of the course assigned to the instructor."
+      sh: "Courses to be assigned to the instructor; empty if the user is not an instructor or if no courses should be assigned to the user."
+      t: "`$ARRAY`"
+    }
+    assigned_seat_offering_ids: {
+      h: "Assigned Seat Offering Ids"
+      n: "assigned_seat_offering_ids"
+      r: false
+      sh: "Unique identifier of the seat offerings to be assigned to the seat manager; empty if the user is not a seat manager or if no offerings should be assigned to the user."
+      t: "`$ARRAY`"
+    }
+    assigned_segment_id: {
+      h: "Assigned Segment Id"
+      n: "assigned_segment_id"
+      r: false
+      sh: "Unique identifier of the segment to be assigned to the reporter; empty if the user is not a reporter or if no segment should be assigned to the user."
       t: "`$STRING`"
+    }
+    assigned_user_group_ids: {
+      h: "Assigned User Group Ids"
+      n: "assigned_user_group_ids"
+      r: false
+      sh: "Unique identifier of the user groups to be assigned to the user group manager; empty if the user is not a group manager or if no groups should be assigned to the user."
+      t: "`$ARRAY`"
     }
     custom_role: {
       h: "Custom Role"
@@ -33,25 +54,46 @@ main: kit: entity: user_role: {
       sh: "Description of the user role"
       t: "`$STRING`"
     }
+    email: {
+      h: "Email"
+      n: "email"
+      r: false
+      sh: "Email account of the user"
+      t: "`$STRING`"
+    }
     id: {
       h: "Id"
       n: "id"
       r: false
-      sh: "Unique identifier of the role"
+      sh: "User Id or email (encoded string)"
       t: "`$STRING`"
     }
-    revenue_share_percentage: {
-      h: "Revenue Share Percentage"
-      n: "revenue_share_percentage"
+    role_id: {
+      h: "Role Id"
+      n: "role_id"
       r: false
-      sh: "Instructor's revenue share (% ) from the assigned course e.g."
-      t: "`$NUMBER`"
+      sh: "User Id or email"
+      t: "`$STRING`"
     }
     title: {
       h: "Title"
       n: "title"
       r: false
       sh: "Title of the role"
+      t: "`$STRING`"
+    }
+    user_role: {
+      h: "User Role"
+      n: "user_role"
+      r: false
+      sh: "Values of the role fields for this user"
+      t: "`$OBJECT`"
+    }
+    username: {
+      h: "Username"
+      n: "username"
+      r: false
+      sh: "Username of the user"
       t: "`$STRING`"
     }
   }
@@ -66,70 +108,6 @@ main: kit: entity: user_role: {
     list: {
       name: "list"
       points: [
-        {
-          co: {
-            id: "GET /v2/users/{id}/user-role"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            header: [
-              {
-                explode: false
-                k: "header"
-                n: "lw_client"
-                or: "Lw-Client"
-                r: true
-                style: "simple"
-                t: "`$STRING`"
-              }
-            ]
-            params: [
-              {
-                k: "param"
-                n: "user_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/v2/users/{id}/user-role"
-          q: {
-            exist: [
-              "lw_client"
-              "user_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "user_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "v2"
-            }
-            {
-              lit: "users"
-            }
-            {
-              var: "user_id"
-            }
-            {
-              lit: "user-role"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.user_role`"
-          }
-        }
         {
           co: {
             id: "GET /v2/user-roles"
@@ -193,6 +171,75 @@ main: kit: entity: user_role: {
           t: {
             req: "`reqdata`"
             res: "`body.data`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /v2/users/{id}/user-role"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "user_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/users/{id}/user-role"
+          q: {
+            exist: [
+              "lw_client"
+              "user_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "user_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "user_id"
+            }
+            {
+              lit: "user-role"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.user_role`"
           }
         }
       ]

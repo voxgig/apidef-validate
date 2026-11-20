@@ -1,0 +1,1002 @@
+# Entity: commit
+
+main: kit: entity: commit: {
+
+  alias: field: {}
+
+  fields: {
+    actions: {
+      h: "Actions"
+      n: "actions"
+      r: true
+      sh: "Actions to perform in commit"
+      t: "`$ARRAY`"
+    }
+    author_email: {
+      h: "Author Email"
+      n: "author_email"
+      r: false
+      sh: "Author email for commit"
+      t: "`$STRING`"
+    }
+    author_name: {
+      h: "Author Name"
+      n: "author_name"
+      r: false
+      sh: "Author name for commit"
+      t: "`$STRING`"
+    }
+    authored_date: {
+      fo: "date-time"
+      h: "Authored Date"
+      n: "authored_date"
+      r: false
+      t: "`$STRING`"
+    }
+    branch: {
+      h: "Branch"
+      n: "branch"
+      r: true
+      sh: "Name of the branch to commit into."
+      t: "`$STRING`"
+    }
+    commit_message: {
+      h: "Commit Message"
+      n: "commit_message"
+      r: true
+      sh: "Commit message"
+      t: "`$STRING`"
+    }
+    committed_date: {
+      fo: "date-time"
+      h: "Committed Date"
+      n: "committed_date"
+      r: false
+      t: "`$STRING`"
+    }
+    committer_email: {
+      h: "Committer Email"
+      n: "committer_email"
+      r: false
+      t: "`$STRING`"
+    }
+    committer_name: {
+      h: "Committer Name"
+      n: "committer_name"
+      r: false
+      t: "`$STRING`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    extended_trailers: {
+      h: "Extended Trailers"
+      n: "extended_trailers"
+      r: false
+      t: "`$OBJECT`"
+    }
+    force: {
+      h: "Force"
+      n: "force"
+      r: false
+      sh: "When `true` overwrites the target branch with a new commit based on the `start_branch` or `start_sha`"
+      t: "`$BOOLEAN`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
+    }
+    last_pipeline: {
+      h: "Last Pipeline"
+      n: "last_pipeline"
+      r: false
+      sh: "API_Entities_Ci_PipelineBasic model"
+      t: "`$OBJECT`"
+    }
+    message: {
+      h: "Message"
+      n: "message"
+      r: false
+      t: "`$STRING`"
+    }
+    parent_ids: {
+      h: "Parent Ids"
+      n: "parent_ids"
+      r: false
+      t: "`$ARRAY`"
+    }
+    project_id: {
+      fo: "int32"
+      h: "Project Id"
+      n: "project_id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    short_id: {
+      h: "Short Id"
+      n: "short_id"
+      r: false
+      t: "`$STRING`"
+    }
+    start_branch: {
+      h: "Start Branch"
+      n: "start_branch"
+      r: false
+      sh: "Name of the branch to start the new branch from"
+      t: "`$STRING`"
+    }
+    start_project: {
+      fo: "int32"
+      h: "Start Project"
+      n: "start_project"
+      r: false
+      sh: "The ID or path of the project to start the new branch from"
+      t: "`$INTEGER`"
+    }
+    start_sha: {
+      h: "Start Sha"
+      n: "start_sha"
+      r: false
+      sh: "SHA of the commit to start the new branch from"
+      t: "`$STRING`"
+    }
+    stats: {
+      h: "Stats"
+      n: "stats"
+      r: false
+      sh: "Include commit stats"
+      t: "`$OBJECT`"
+    }
+    status: {
+      h: "Status"
+      n: "status"
+      r: false
+      t: "`$STRING`"
+    }
+    title: {
+      h: "Title"
+      n: "title"
+      r: false
+      t: "`$STRING`"
+    }
+    trailers: {
+      h: "Trailers"
+      n: "trailers"
+      r: false
+      t: "`$OBJECT`"
+    }
+    web_url: {
+      h: "Web Url"
+      n: "web_url"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "commit"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "actions"
+            "author_email"
+            "author_name"
+            "branch"
+            "commit_message"
+            "force"
+            "start_branch"
+            "start_project"
+            "start_sha"
+            "stats"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/repository/commits"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/repository/commits"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "commits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/commits"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "merge_request_id"
+                or: "merge_request_iid"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/commits"
+          q: {
+            exist: [
+              "merge_request_id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              merge_request_iid: "merge_request_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "merge_requests"
+            }
+            {
+              var: "merge_request_id"
+            }
+            {
+              lit: "commits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/repository/commits"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "all"
+                or: "all"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+              {
+                ex: "John Smith"
+                explode: true
+                k: "query"
+                n: "author"
+                or: "author"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "first_parent"
+                or: "first_parent"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+              {
+                ex: "default"
+                explode: true
+                k: "query"
+                n: "order"
+                or: "order"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "README.md"
+                explode: true
+                k: "query"
+                n: "path"
+                or: "path"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "v1.1.0"
+                explode: true
+                k: "query"
+                n: "ref_name"
+                or: "ref_name"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "2021-09-20T11:50:22.001"
+                explode: true
+                k: "query"
+                n: "since"
+                or: "since"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: false
+                explode: true
+                k: "query"
+                n: "trailer"
+                or: "trailers"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+              {
+                ex: "2021-09-20T11:50:22.001"
+                explode: true
+                k: "query"
+                n: "until"
+                or: "until"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "with_stat"
+                or: "with_stats"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/repository/commits"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "commits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/repository/commits/{sha}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "sha"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: true
+                explode: true
+                k: "query"
+                n: "stat"
+                or: "stats"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/repository/commits/{sha}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              sha: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/repository/commits/{sha}/diff"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "sha"
+                or: "sha"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: false
+                explode: true
+                k: "query"
+                n: "unidiff"
+                or: "unidiff"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/repository/commits/{sha}/diff"
+          q: {
+            "$action": "diff"
+            exist: [
+              "project_id"
+              "sha"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "sha"
+            }
+            {
+              lit: "diff"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/repository/commits/{sha}/merge_requests"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "sha"
+                or: "sha"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "merged"
+                explode: true
+                k: "query"
+                n: "state"
+                or: "state"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/repository/commits/{sha}/merge_requests"
+          q: {
+            "$action": "merge_requests"
+            exist: [
+              "project_id"
+              "sha"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "sha"
+            }
+            {
+              lit: "merge_requests"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/repository/commits/{sha}/sequence"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "sha"
+                or: "sha"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: false
+                explode: true
+                k: "query"
+                n: "first_parent"
+                or: "first_parent"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/repository/commits/{sha}/sequence"
+          q: {
+            "$action": "sequence"
+            exist: [
+              "project_id"
+              "sha"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "sha"
+            }
+            {
+              lit: "sequence"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/repository/commits/{sha}/signature"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "sha"
+                or: "sha"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/repository/commits/{sha}/signature"
+          q: {
+            "$action": "signature"
+            exist: [
+              "project_id"
+              "sha"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "sha"
+            }
+            {
+              lit: "signature"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+    [path("$.main.kit.entity.project") path("$.main.kit.entity.merge_request")]
+    [path("$.main.kit.entity.project")]
+  ]
+
+}

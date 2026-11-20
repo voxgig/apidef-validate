@@ -1,0 +1,204 @@
+# Entity: deb_package_upload
+
+main: kit: entity: deb_package_upload: {
+
+  alias: field: {}
+
+  fields: {
+    changes_file: {
+      h: "Changes File"
+      n: "changes_file"
+      r: false
+      sh: "The changes archive containing the changes made to the source and debian packaging files"
+      t: "`$STRING`"
+    }
+    component: {
+      h: "Component"
+      n: "component"
+      r: false
+      sh: "The component (channel) for the package (e.g."
+      t: "`$STRING`"
+    }
+    distribution: {
+      h: "Distribution"
+      n: "distribution"
+      r: true
+      sh: "The distribution to store the package for."
+      t: "`$STRING`"
+    }
+    package_file: {
+      h: "Package File"
+      n: "package_file"
+      r: true
+      sh: "The primary file for the package."
+      t: "`$STRING`"
+    }
+    republish: {
+      h: "Republish"
+      n: "republish"
+      r: false
+      sh: "If true, the uploaded package will overwrite any others with the same attributes (e.g."
+      t: "`$BOOLEAN`"
+    }
+    sources_file: {
+      h: "Sources File"
+      n: "sources_file"
+      r: false
+      sh: "The sources archive containing the source code for the binary"
+      t: "`$STRING`"
+    }
+    tags: {
+      h: "Tags"
+      n: "tags"
+      r: false
+      sh: "A comma-separated values list of tags to add to the package."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "deb_package_upload"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "changes_file"
+            "component"
+            "distribution"
+            "package_file"
+            "republish"
+            "sources_file"
+            "tags"
+          ]
+          co: {
+            id: "POST /packages/{owner}/{repo}/upload/deb/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/packages/{owner}/{repo}/upload/deb/"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "packages"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "upload"
+            }
+            {
+              lit: "deb"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "changes_file"
+            "component"
+            "distribution"
+            "package_file"
+            "republish"
+            "sources_file"
+            "tags"
+          ]
+          co: {
+            id: "POST /packages/{owner}/{repo}/validate-upload/deb/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/packages/{owner}/{repo}/validate-upload/deb/"
+          q: {
+            "$action": "validate_upload"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "packages"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "validate-upload"
+            }
+            {
+              lit: "deb"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.package")]
+  ]
+
+}

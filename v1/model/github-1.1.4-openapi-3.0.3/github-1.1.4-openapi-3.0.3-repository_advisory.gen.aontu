@@ -444,16 +444,6 @@ main: kit: entity: repository_advisory: {
       h: "Vulnerabilities"
       n: "vulnerabilities"
       op: {
-        create: {
-          req: false
-          type: [
-            "`$ONE`"
-            [
-              "`$ARRAY`"
-              "`$NULL`"
-            ]
-          ]
-        }
         update: {
           req: false
           type: "`$ARRAY`"
@@ -554,6 +544,76 @@ main: kit: entity: repository_advisory: {
             }
             {
               lit: "cve"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "ghsa_id"
+                or: "ghsa_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"
+          q: {
+            "$action": "fork"
+            exist: [
+              "ghsa_id"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "security-advisories"
+            }
+            {
+              var: "ghsa_id"
+            }
+            {
+              lit: "forks"
             }
           ]
           t: {
@@ -673,6 +733,7 @@ main: kit: entity: repository_advisory: {
           m: "POST"
           o: "/repos/{owner}/{repo}/security-advisories/reports"
           q: {
+            "$action": "reports"
             exist: [
               "owner"
               "repo"
@@ -1114,7 +1175,7 @@ main: kit: entity: repository_advisory: {
   relations: ancestors: [
     [path("$.main.kit.entity.org")]
     [path("$.main.kit.entity.repo")]
-    [path("$.main.kit.entity.repo") path("$.main.kit.entity.security_advisory")]
+    [path("$.main.kit.entity.repo")]
   ]
 
 }

@@ -151,105 +151,13 @@ main: kit: entity: ee_api_entities_billable_membership: {
             res: "`body`"
           }
         }
-        {
-          co: {
-            id: "GET /api/v4/groups/{id}/billable_members/{user_id}/memberships"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "billable_member_id"
-                or: "user_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "group_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 20
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/groups/{id}/billable_members/{user_id}/memberships"
-          q: {
-            exist: [
-              "billable_member_id"
-              "group_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "group_id"
-              user_id: "billable_member_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "groups"
-            }
-            {
-              var: "group_id"
-            }
-            {
-              lit: "billable_members"
-            }
-            {
-              var: "billable_member_id"
-            }
-            {
-              lit: "memberships"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
       ]
     }
   }
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.group")]
+    [path("$.main.kit.entity.group") path("$.main.kit.entity.billable_member")]
   ]
 
 }

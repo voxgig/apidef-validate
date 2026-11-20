@@ -1,0 +1,658 @@
+# Entity: simple_user
+
+main: kit: entity: simple_user: {
+
+  alias: field: {}
+
+  fields: {
+    avatar_url: {
+      fo: "uri"
+      h: "Avatar Url"
+      n: "avatar_url"
+      r: true
+      t: "`$STRING`"
+    }
+    email: {
+      h: "Email"
+      n: "email"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    events_url: {
+      h: "Events Url"
+      n: "events_url"
+      r: true
+      t: "`$STRING`"
+    }
+    followers_url: {
+      fo: "uri"
+      h: "Followers Url"
+      n: "followers_url"
+      r: true
+      t: "`$STRING`"
+    }
+    following_url: {
+      h: "Following Url"
+      n: "following_url"
+      r: true
+      t: "`$STRING`"
+    }
+    gists_url: {
+      h: "Gists Url"
+      n: "gists_url"
+      r: true
+      t: "`$STRING`"
+    }
+    gravatar_id: {
+      h: "Gravatar Id"
+      n: "gravatar_id"
+      r: true
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    html_url: {
+      fo: "uri"
+      h: "Html Url"
+      n: "html_url"
+      r: true
+      t: "`$STRING`"
+    }
+    id: {
+      fo: "int64"
+      h: "Id"
+      n: "id"
+      r: true
+      t: "`$INTEGER`"
+    }
+    login: {
+      h: "Login"
+      n: "login"
+      r: true
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    node_id: {
+      h: "Node Id"
+      n: "node_id"
+      r: true
+      t: "`$STRING`"
+    }
+    organizations_url: {
+      fo: "uri"
+      h: "Organizations Url"
+      n: "organizations_url"
+      r: true
+      t: "`$STRING`"
+    }
+    received_events_url: {
+      fo: "uri"
+      h: "Received Events Url"
+      n: "received_events_url"
+      r: true
+      t: "`$STRING`"
+    }
+    repos_url: {
+      fo: "uri"
+      h: "Repos Url"
+      n: "repos_url"
+      r: true
+      t: "`$STRING`"
+    }
+    site_admin: {
+      h: "Site Admin"
+      n: "site_admin"
+      r: true
+      t: "`$BOOLEAN`"
+    }
+    starred_at: {
+      h: "Starred At"
+      n: "starred_at"
+      r: false
+      t: "`$STRING`"
+    }
+    starred_url: {
+      h: "Starred Url"
+      n: "starred_url"
+      r: true
+      t: "`$STRING`"
+    }
+    subscriptions_url: {
+      fo: "uri"
+      h: "Subscriptions Url"
+      n: "subscriptions_url"
+      r: true
+      t: "`$STRING`"
+    }
+    type: {
+      h: "Type"
+      n: "type"
+      r: true
+      t: "`$STRING`"
+    }
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
+    }
+    user_view_type: {
+      h: "User View Type"
+      n: "user_view_type"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "simple_user"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "usernames"
+          ]
+          co: {
+            id: "POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/add"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "enterprise_id"
+                or: "enterprise"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "enterprise_team"
+                or: "enterprise-team"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/add"
+          q: {
+            "$action": "add"
+            exist: [
+              "enterprise_id"
+              "enterprise_team"
+            ]
+          }
+          r: {
+            param: {
+              enterprise: "enterprise_id"
+              "enterprise-team": "enterprise_team"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "enterprises"
+            }
+            {
+              var: "enterprise_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "enterprise_team"
+            }
+            {
+              lit: "memberships"
+            }
+            {
+              lit: "add"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "usernames"
+          ]
+          co: {
+            id: "POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "enterprise_id"
+                or: "enterprise"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "enterprise_team"
+                or: "enterprise-team"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove"
+          q: {
+            "$action": "remove"
+            exist: [
+              "enterprise_id"
+              "enterprise_team"
+            ]
+          }
+          r: {
+            param: {
+              enterprise: "enterprise_id"
+              "enterprise-team": "enterprise_team"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "enterprises"
+            }
+            {
+              var: "enterprise_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "enterprise_team"
+            }
+            {
+              lit: "memberships"
+            }
+            {
+              lit: "remove"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "enterprise_id"
+                or: "enterprise"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "enterprise_team"
+                or: "enterprise-team"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships"
+          q: {
+            exist: [
+              "enterprise_id"
+              "enterprise_team"
+            ]
+          }
+          r: {
+            param: {
+              enterprise: "enterprise_id"
+              "enterprise-team": "enterprise_team"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "enterprises"
+            }
+            {
+              var: "enterprise_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "enterprise_team"
+            }
+            {
+              lit: "memberships"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "enterprise_id"
+                or: "enterprise"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "enterprise_team"
+                or: "enterprise-team"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"
+          q: {
+            exist: [
+              "enterprise_id"
+              "enterprise_team"
+              "username"
+            ]
+          }
+          r: {
+            param: {
+              enterprise: "enterprise_id"
+              "enterprise-team": "enterprise_team"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "enterprises"
+            }
+            {
+              var: "enterprise_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "enterprise_team"
+            }
+            {
+              lit: "memberships"
+            }
+            {
+              var: "username"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "enterprise_id"
+                or: "enterprise"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "enterprise_team"
+                or: "enterprise-team"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"
+          q: {
+            exist: [
+              "enterprise_id"
+              "enterprise_team"
+              "username"
+            ]
+          }
+          r: {
+            param: {
+              enterprise: "enterprise_id"
+              "enterprise-team": "enterprise_team"
+            }
+          }
+          s: [
+            {
+              lit: "enterprises"
+            }
+            {
+              var: "enterprise_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "enterprise_team"
+            }
+            {
+              lit: "memberships"
+            }
+            {
+              var: "username"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          co: {
+            id: "PUT /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "enterprise_id"
+                or: "enterprise"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "enterprise_team"
+                or: "enterprise-team"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"
+          q: {
+            exist: [
+              "enterprise_id"
+              "enterprise_team"
+              "username"
+            ]
+          }
+          r: {
+            param: {
+              enterprise: "enterprise_id"
+              "enterprise-team": "enterprise_team"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "enterprises"
+            }
+            {
+              var: "enterprise_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "enterprise_team"
+            }
+            {
+              lit: "memberships"
+            }
+            {
+              var: "username"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.team")]
+    [path("$.main.kit.entity.team") path("$.main.kit.entity.membership")]
+  ]
+
+}

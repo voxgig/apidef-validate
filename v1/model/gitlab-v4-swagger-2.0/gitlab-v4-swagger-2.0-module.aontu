@@ -1,0 +1,125 @@
+# Entity: module
+
+main: kit: entity: module: {
+
+  alias: field: {}
+
+  fields: {
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+    parts: [
+      "module_name"
+      "module_system"
+    ]
+    sep: "/"
+  }
+
+  name: "module"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "infra-registry"
+                k: "param"
+                n: "module_name"
+                or: "module_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "aws"
+                k: "param"
+                n: "module_system"
+                or: "module_system"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "terraform_get"
+                or: "terraform-get"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}"
+          q: {
+            exist: [
+              "id"
+              "module_name"
+              "module_system"
+            ]
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "packages"
+            }
+            {
+              lit: "terraform"
+            }
+            {
+              lit: "modules"
+            }
+            {
+              var: "module_name"
+            }
+            {
+              var: "module_system"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,318 @@
+# Entity: code_scanning_variant_analysis
+
+main: kit: entity: code_scanning_variant_analysis: {
+
+  alias: field: {}
+
+  fields: {
+    actions_workflow_run_id: {
+      h: "Actions Workflow Run Id"
+      n: "actions_workflow_run_id"
+      r: false
+      sh: "The GitHub Actions workflow run used to execute this variant analysis."
+      t: "`$INTEGER`"
+    }
+    actor: {
+      h: "Actor"
+      n: "actor"
+      r: true
+      sh: "A GitHub user."
+      t: "`$OBJECT`"
+    }
+    completed_at: {
+      fo: "date-time"
+      h: "Completed At"
+      n: "completed_at"
+      r: false
+      sh: "The date and time at which the variant analysis was completed, in ISO 8601 format':' YYYY-MM-DDTHH:MM:SSZ."
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    controller_repo: {
+      h: "Controller Repo"
+      n: "controller_repo"
+      r: true
+      sh: "A GitHub repository."
+      t: "`$OBJECT`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      sh: "The date and time at which the variant analysis was created, in ISO 8601 format':' YYYY-MM-DDTHH:MM:SSZ."
+      t: "`$STRING`"
+    }
+    failure_reason: {
+      h: "Failure Reason"
+      n: "failure_reason"
+      r: false
+      sh: "The reason for a failure of the variant analysis."
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "The ID of the variant analysis."
+      t: "`$INTEGER`"
+    }
+    language: {
+      h: "Language"
+      n: "language"
+      r: true
+      sh: "The language targeted by the CodeQL query"
+      t: "`$STRING`"
+    }
+    query_language: {
+      h: "Query Language"
+      n: "query_language"
+      r: true
+      sh: "The language targeted by the CodeQL query"
+      t: "`$STRING`"
+    }
+    query_pack: {
+      h: "Query Pack"
+      n: "query_pack"
+      r: true
+      sh: "A Base64-encoded tarball containing a CodeQL query and all its dependencies"
+      t: "`$STRING`"
+    }
+    query_pack_url: {
+      h: "Query Pack Url"
+      n: "query_pack_url"
+      r: true
+      sh: "The download url for the query pack."
+      t: "`$STRING`"
+    }
+    repositories: {
+      h: "Repositories"
+      n: "repositories"
+      r: false
+      sh: "List of repository names (in the form `owner/repo-name`) to run the query against."
+      t: "`$ARRAY`"
+    }
+    repository_lists: {
+      h: "Repository Lists"
+      n: "repository_lists"
+      r: false
+      sh: "List of repository lists to run the query against."
+      t: "`$ARRAY`"
+    }
+    repository_owners: {
+      h: "Repository Owners"
+      n: "repository_owners"
+      r: false
+      sh: "List of organization or user names whose repositories the query should be run against."
+      t: "`$ARRAY`"
+    }
+    scanned_repositories: {
+      h: "Scanned Repositories"
+      n: "scanned_repositories"
+      r: false
+      t: "`$ARRAY`"
+    }
+    skipped_repositories: {
+      h: "Skipped Repositories"
+      n: "skipped_repositories"
+      r: true
+      sh: "Information about repositories that were skipped from processing."
+      t: "`$OBJECT`"
+    }
+    status: {
+      h: "Status"
+      n: "status"
+      r: true
+      t: "`$STRING`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      sh: "The date and time at which the variant analysis was last updated, in ISO 8601 format':' YYYY-MM-DDTHH:MM:SSZ."
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_scanning_variant_analysis"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "language"
+            "query_pack"
+            "repositories"
+            "repository_lists"
+            "repository_owners"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/code-scanning/codeql/variant-analyses"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/code-scanning/codeql/variant-analyses"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "codeql"
+            }
+            {
+              lit: "variant-analyses"
+            }
+          ]
+          t: {
+            req: {
+              language: "`reqdata.language`"
+              query_pack: "`reqdata.query_pack`"
+              repositories: "`reqdata.repository`"
+              repository_lists: "`reqdata.repository_list`"
+              repository_owners: "`reqdata.repository_owner`"
+            }
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/code-scanning/codeql/variant-analyses/{codeql_variant_analysis_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "codeql_variant_analysis_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/code-scanning/codeql/variant-analyses/{codeql_variant_analysis_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              codeql_variant_analysis_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "codeql"
+            }
+            {
+              lit: "variant-analyses"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
+  ]
+
+}

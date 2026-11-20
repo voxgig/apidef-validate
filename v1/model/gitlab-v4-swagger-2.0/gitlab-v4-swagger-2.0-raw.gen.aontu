@@ -1,0 +1,101 @@
+# Entity: raw
+
+main: kit: entity: raw: {
+
+  alias: field: {}
+
+  name: "raw"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/snippets/{id}/files/{ref}/{file_path}/raw"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "file_id"
+                or: "ref"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "file_path"
+                or: "file_path"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "snippet_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/snippets/{id}/files/{ref}/{file_path}/raw"
+          q: {
+            exist: [
+              "file_id"
+              "file_path"
+              "snippet_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "snippet_id"
+              ref: "file_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "snippet_id"
+            }
+            {
+              lit: "files"
+            }
+            {
+              var: "file_id"
+            }
+            {
+              var: "file_path"
+            }
+            {
+              lit: "raw"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  fields: {
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.snippet") path("$.main.kit.entity.file")]
+  ]
+
+}

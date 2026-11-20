@@ -319,81 +319,6 @@ main: kit: entity: base_gist: {
       points: [
         {
           co: {
-            id: "GET /users/{username}/gists"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "since"
-                or: "since"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/users/{username}/gists"
-          q: {
-            exist: [
-              "username"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "users"
-            }
-            {
-              var: "username"
-            }
-            {
-              lit: "gists"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "GET /gists/public"
             source: "openapi3"
             version: 2
@@ -491,6 +416,9 @@ main: kit: entity: base_gist: {
           }
           m: "GET"
           o: "/gists/starred"
+          q: {
+            "$action": "starred"
+          }
           rs: {
             kind: "json"
             media: "application/json"
@@ -515,7 +443,6 @@ main: kit: entity: base_gist: {
 
   relations: ancestors: [
     [path("$.main.kit.entity.gist")]
-    [path("$.main.kit.entity.user")]
   ]
 
 }

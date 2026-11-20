@@ -1,0 +1,457 @@
+# Entity: code_scanning_analysis
+
+main: kit: entity: code_scanning_analysis: {
+
+  alias: field: {}
+
+  fields: {
+    analysis_key: {
+      h: "Analysis Key"
+      n: "analysis_key"
+      r: true
+      sh: "Identifies the configuration under which the analysis was executed."
+      t: "`$STRING`"
+    }
+    category: {
+      h: "Category"
+      n: "category"
+      r: false
+      sh: "Identifies the configuration under which the analysis was executed."
+      t: "`$STRING`"
+    }
+    commit_sha: {
+      h: "Commit Sha"
+      n: "commit_sha"
+      r: true
+      sh: "The SHA of the commit to which the analysis you are uploading relates."
+      t: "`$STRING`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      ro: true
+      sh: "The time that the analysis was created in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`."
+      t: "`$STRING`"
+    }
+    deletable: {
+      h: "Deletable"
+      n: "deletable"
+      r: true
+      t: "`$BOOLEAN`"
+    }
+    environment: {
+      h: "Environment"
+      n: "environment"
+      r: true
+      sh: "Identifies the variable values associated with the environment in which this analysis was performed."
+      t: "`$STRING`"
+    }
+    error: {
+      h: "Error"
+      n: "error"
+      r: true
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "Unique identifier for this analysis."
+      t: "`$INTEGER`"
+    }
+    ref: {
+      h: "Ref"
+      n: "ref"
+      r: true
+      sh: "The Git reference, formatted as `refs/pull/<number>/merge`, `refs/pull/<number>/head`, `refs/heads/<branch name>` or simply `<branch name>`."
+      t: "`$STRING`"
+    }
+    results_count: {
+      h: "Results Count"
+      n: "results_count"
+      r: true
+      sh: "The total number of results in the analysis."
+      t: "`$INTEGER`"
+    }
+    rules_count: {
+      h: "Rules Count"
+      n: "rules_count"
+      r: true
+      sh: "The total number of rules used in the analysis."
+      t: "`$INTEGER`"
+    }
+    sarif_id: {
+      h: "Sarif Id"
+      n: "sarif_id"
+      r: true
+      sh: "An identifier for the upload."
+      t: "`$STRING`"
+    }
+    tool: {
+      h: "Tool"
+      n: "tool"
+      r: true
+      t: "`$OBJECT`"
+    }
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      ro: true
+      sh: "The REST API URL of the analysis resource."
+      t: "`$STRING`"
+    }
+    warning: {
+      h: "Warning"
+      n: "warning"
+      r: true
+      sh: "Warning generated when processing the analysis"
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "code_scanning_analysis"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/code-scanning/analyses"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "desc"
+                explode: true
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "pr"
+                or: "pr"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "ref"
+                or: "ref"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "6c81cd8e-b078-4ac3-a3be-1dad7dbd0b53"
+                explode: true
+                k: "query"
+                n: "sarif_id"
+                or: "sarif_id"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "created"
+                explode: true
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "tool_guid"
+                or: "tool_guid"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "tool_name"
+                or: "tool_name"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/code-scanning/analyses"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "analyses"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "analysis_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              analysis_id: "id"
+            }
+          }
+          rs: {
+            alternatives: [
+              {
+                binary: true
+                kind: "raw"
+                media: "application/json+sarif"
+              }
+            ]
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "analyses"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "analysis_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "confirm_delete"
+                or: "confirm_delete"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              analysis_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "analyses"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
+  ]
+
+}

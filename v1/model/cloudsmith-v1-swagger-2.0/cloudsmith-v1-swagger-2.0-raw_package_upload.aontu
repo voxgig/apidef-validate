@@ -1,0 +1,213 @@
+# Entity: raw_package_upload
+
+main: kit: entity: raw_package_upload: {
+
+  alias: field: {}
+
+  fields: {
+    content_type: {
+      h: "Content Type"
+      n: "content_type"
+      r: false
+      sh: "A custom content/media (also known as MIME) type to be sent when downloading this file."
+      t: "`$STRING`"
+    }
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      sh: "A textual description of this package."
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      sh: "The name of this package."
+      t: "`$STRING`"
+    }
+    package_file: {
+      h: "Package File"
+      n: "package_file"
+      r: true
+      sh: "The primary file for the package."
+      t: "`$STRING`"
+    }
+    republish: {
+      h: "Republish"
+      n: "republish"
+      r: false
+      sh: "If true, the uploaded package will overwrite any others with the same attributes (e.g."
+      t: "`$BOOLEAN`"
+    }
+    summary: {
+      h: "Summary"
+      n: "summary"
+      r: false
+      sh: "A one-liner synopsis of this package."
+      t: "`$STRING`"
+    }
+    tags: {
+      h: "Tags"
+      n: "tags"
+      r: false
+      sh: "A comma-separated values list of tags to add to the package."
+      t: "`$STRING`"
+    }
+    version: {
+      h: "Version"
+      n: "version"
+      r: false
+      sh: "The raw version for this package."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "raw_package_upload"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "content_type"
+            "description"
+            "name"
+            "package_file"
+            "republish"
+            "summary"
+            "tags"
+            "version"
+          ]
+          co: {
+            id: "POST /packages/{owner}/{repo}/upload/raw/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/packages/{owner}/{repo}/upload/raw/"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "packages"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "upload"
+            }
+            {
+              lit: "raw"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "content_type"
+            "description"
+            "name"
+            "package_file"
+            "republish"
+            "summary"
+            "tags"
+            "version"
+          ]
+          co: {
+            id: "POST /packages/{owner}/{repo}/validate-upload/raw/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/packages/{owner}/{repo}/validate-upload/raw/"
+          q: {
+            "$action": "validate_upload"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "packages"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "validate-upload"
+            }
+            {
+              lit: "raw"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.package")]
+  ]
+
+}

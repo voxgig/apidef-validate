@@ -4,14 +4,102 @@ main: kit: entity: branch: {
 
   alias: field: {}
 
+  fields: {
+    branch: {
+      h: "Branch"
+      n: "branch"
+      r: true
+      sh: "The name of the branch"
+      t: "`$STRING`"
+    }
+    can_push: {
+      h: "Can Push"
+      n: "can_push"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    commit: {
+      h: "Commit"
+      n: "commit"
+      r: false
+      sh: "API_Entities_Commit model"
+      t: "`$OBJECT`"
+    }
+    default: {
+      h: "Default"
+      n: "default"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    developers_can_merge: {
+      h: "Developers Can Merge"
+      n: "developers_can_merge"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    developers_can_push: {
+      h: "Developers Can Push"
+      n: "developers_can_push"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    merged: {
+      h: "Merged"
+      n: "merged"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      t: "`$STRING`"
+    }
+    protected: {
+      h: "Protected"
+      n: "protected"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    ref: {
+      h: "Ref"
+      n: "ref"
+      r: true
+      sh: "Create branch from commit sha or existing branch"
+      t: "`$STRING`"
+    }
+    web_url: {
+      h: "Web Url"
+      n: "web_url"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "branch"
   op: {
-    remove: {
-      name: "remove"
+    create: {
+      name: "create"
       points: [
         {
+          bf: [
+            "branch"
+            "ref"
+          ]
           co: {
-            id: "DELETE /api/v4/projects/{id}/repository/merged_branches"
+            id: "POST /api/v4/projects/{id}/repository/branches"
             source: "swagger2"
             version: 2
           }
@@ -26,8 +114,8 @@ main: kit: entity: branch: {
               }
             ]
           }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/repository/merged_branches"
+          m: "POST"
+          o: "/api/v4/projects/{id}/repository/branches"
           q: {
             exist: [
               "project_id"
@@ -35,6 +123,274 @@ main: kit: entity: branch: {
           }
           r: {
             param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "branches"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/repository/branches"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "page_token"
+                or: "page_token"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "regex"
+                or: "regex"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "search"
+                or: "search"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/repository/branches"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "branches"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/repository/branches/{branch}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "branch"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/repository/branches/{branch}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              branch: "id"
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "branches"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/repository/branches/{branch}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "branch"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/repository/branches/{branch}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              branch: "id"
               id: "project_id"
             }
           }
@@ -55,7 +411,10 @@ main: kit: entity: branch: {
               lit: "repository"
             }
             {
-              lit: "merged_branches"
+              lit: "branches"
+            }
+            {
+              var: "id"
             }
           ]
           t: {
@@ -65,9 +424,163 @@ main: kit: entity: branch: {
         }
       ]
     }
-  }
-
-  fields: {
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "developers_can_merge"
+            "developers_can_push"
+          ]
+          co: {
+            id: "PUT /api/v4/projects/{id}/repository/branches/{branch}/protect"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "branch"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/repository/branches/{branch}/protect"
+          q: {
+            "$action": "protect"
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              branch: "id"
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "branches"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "protect"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "PUT /api/v4/projects/{id}/repository/branches/{branch}/unprotect"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "branch"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/repository/branches/{branch}/unprotect"
+          q: {
+            "$action": "unprotect"
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              branch: "id"
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "branches"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "unprotect"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
   }
 
 

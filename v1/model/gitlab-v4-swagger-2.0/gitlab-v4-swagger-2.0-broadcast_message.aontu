@@ -1,0 +1,376 @@
+# Entity: broadcast_message
+
+main: kit: entity: broadcast_message: {
+
+  alias: field: {}
+
+  fields: {
+    active: {
+      h: "Active"
+      n: "active"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    broadcast_type: {
+      h: "Broadcast Type"
+      n: "broadcast_type"
+      r: false
+      sh: "Broadcast type."
+      t: "`$STRING`"
+    }
+    color: {
+      h: "Color"
+      n: "color"
+      r: false
+      sh: "Background color (Deprecated."
+      t: "`$STRING`"
+    }
+    dismissable: {
+      h: "Dismissable"
+      n: "dismissable"
+      r: false
+      sh: "Is dismissable"
+      t: "`$STRING`"
+    }
+    ends_at: {
+      fo: "date-time"
+      h: "Ends At"
+      n: "ends_at"
+      r: false
+      sh: "Ending time"
+      t: "`$STRING`"
+    }
+    font: {
+      h: "Font"
+      n: "font"
+      r: false
+      sh: "Foreground color (Deprecated."
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
+    }
+    message: {
+      h: "Message"
+      n: "message"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "Message to display"
+      t: "`$STRING`"
+    }
+    starts_at: {
+      fo: "date-time"
+      h: "Starts At"
+      n: "starts_at"
+      r: false
+      sh: "Starting time"
+      t: "`$STRING`"
+    }
+    target_access_levels: {
+      h: "Target Access Levels"
+      n: "target_access_levels"
+      r: false
+      sh: "Target user roles"
+      t: "`$STRING`"
+    }
+    target_path: {
+      h: "Target Path"
+      n: "target_path"
+      r: false
+      sh: "Target path"
+      t: "`$STRING`"
+    }
+    theme: {
+      h: "Theme"
+      n: "theme"
+      r: false
+      sh: "The theme for the message"
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "broadcast_message"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "broadcast_type"
+            "color"
+            "dismissable"
+            "ends_at"
+            "font"
+            "message"
+            "starts_at"
+            "target_access_levels"
+            "target_path"
+            "theme"
+          ]
+          co: {
+            id: "POST /api/v4/broadcast_messages"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/api/v4/broadcast_messages"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "broadcast_messages"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/broadcast_messages/{id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/broadcast_messages/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "broadcast_messages"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/broadcast_messages"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/broadcast_messages"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "broadcast_messages"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/broadcast_messages/{id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/broadcast_messages/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "broadcast_messages"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "broadcast_type"
+            "color"
+            "dismissable"
+            "ends_at"
+            "font"
+            "message"
+            "starts_at"
+            "target_access_levels"
+            "target_path"
+            "theme"
+          ]
+          co: {
+            id: "PUT /api/v4/broadcast_messages/{id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/broadcast_messages/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "broadcast_messages"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

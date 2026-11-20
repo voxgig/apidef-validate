@@ -12,12 +12,6 @@ main: kit: entity: api_entities_terraform_module_version: {
       syn: true
       t: "`$STRING`"
     }
-    modules: {
-      h: "Modules"
-      n: "modules"
-      r: false
-      t: "`$STRING`"
-    }
     name: {
       h: "Name"
       n: "name"
@@ -81,98 +75,12 @@ main: kit: entity: api_entities_terraform_module_version: {
 
   name: "api_entities_terraform_module_version"
   op: {
-    list: {
-      name: "list"
-      points: [
-        {
-          co: {
-            id: "GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/versions"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "module_name"
-                or: "module_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "module_namespace"
-                or: "module_namespace"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "module_system"
-                or: "module_system"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/versions"
-          q: {
-            exist: [
-              "module_name"
-              "module_namespace"
-              "module_system"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              lit: "terraform"
-            }
-            {
-              lit: "modules"
-            }
-            {
-              lit: "v1"
-            }
-            {
-              var: "module_namespace"
-            }
-            {
-              var: "module_name"
-            }
-            {
-              var: "module_system"
-            }
-            {
-              lit: "versions"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
     load: {
       name: "load"
       points: [
         {
           co: {
-            id: "GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/*module_version"
+            id: "GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/*module_version/download"
             source: "swagger2"
             version: 2
           }
@@ -213,8 +121,102 @@ main: kit: entity: api_entities_terraform_module_version: {
             ]
           }
           m: "GET"
-          o: "/api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/*module_version"
+          o: "/api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/*module_version/download"
           q: {
+            "$action": "module_version_download"
+            exist: [
+              "module_name"
+              "module_namespace"
+              "module_system"
+              "module_version"
+            ]
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "packages"
+            }
+            {
+              lit: "terraform"
+            }
+            {
+              lit: "modules"
+            }
+            {
+              lit: "v1"
+            }
+            {
+              var: "module_namespace"
+            }
+            {
+              var: "module_name"
+            }
+            {
+              var: "module_system"
+            }
+            {
+              lit: "*module_version"
+            }
+            {
+              lit: "download"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/*module_version/file"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "module_name"
+                or: "module_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "module_namespace"
+                or: "module_namespace"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "module_system"
+                or: "module_system"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "module_version"
+                or: "module_version"
+                r: true
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/*module_version/file"
+          q: {
+            "$action": "module_version_file"
             exist: [
               "module_name"
               "module_namespace"
@@ -256,6 +258,9 @@ main: kit: entity: api_entities_terraform_module_version: {
             }
             {
               lit: "*module_version"
+            }
+            {
+              lit: "file"
             }
           ]
           t: {
@@ -334,6 +339,84 @@ main: kit: entity: api_entities_terraform_module_version: {
             }
             {
               var: "module_system"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/download"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "module_name"
+                or: "module_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "module_namespace"
+                or: "module_namespace"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "module_system"
+                or: "module_system"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/download"
+          q: {
+            "$action": "download"
+            exist: [
+              "module_name"
+              "module_namespace"
+              "module_system"
+            ]
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "packages"
+            }
+            {
+              lit: "terraform"
+            }
+            {
+              lit: "modules"
+            }
+            {
+              lit: "v1"
+            }
+            {
+              var: "module_namespace"
+            }
+            {
+              var: "module_name"
+            }
+            {
+              var: "module_system"
+            }
+            {
+              lit: "download"
             }
           ]
           t: {

@@ -1,0 +1,286 @@
+# Entity: sarif
+
+main: kit: entity: sarif: {
+
+  alias: field: {}
+
+  fields: {
+    analyses_url: {
+      fo: "uri"
+      h: "Analyses Url"
+      n: "analyses_url"
+      r: false
+      ro: true
+      sh: "The REST API URL for getting the analyses associated with the upload."
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    checkout_uri: {
+      fo: "uri"
+      h: "Checkout Uri"
+      n: "checkout_uri"
+      r: false
+      sh: "The base directory used in the analysis, as it appears in the SARIF file."
+      t: "`$STRING`"
+    }
+    commit_sha: {
+      h: "Commit Sha"
+      n: "commit_sha"
+      r: true
+      sh: "The SHA of the commit to which the analysis you are uploading relates."
+      t: "`$STRING`"
+    }
+    errors: {
+      h: "Errors"
+      n: "errors"
+      r: false
+      ro: true
+      sh: "Any errors that ocurred during processing of the delivery."
+      t: [
+        "`$ONE`"
+        [
+          "`$ARRAY`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      sh: "An identifier for the upload."
+      t: "`$STRING`"
+    }
+    processing_status: {
+      h: "Processing Status"
+      n: "processing_status"
+      r: false
+      sh: "`pending` files have not yet been processed, while `complete` means results from the SARIF have been stored."
+      t: "`$STRING`"
+    }
+    ref: {
+      h: "Ref"
+      n: "ref"
+      r: true
+      sh: "The full Git reference, formatted as `refs/heads/<branch name>`, `refs/tags/<tag>`, `refs/pull/<number>/merge`, or `refs/pull/<number>/head`."
+      t: "`$STRING`"
+    }
+    sarif: {
+      h: "Sarif"
+      n: "sarif"
+      r: true
+      sh: "A Base64 string representing the SARIF file to upload."
+      t: "`$STRING`"
+    }
+    started_at: {
+      fo: "date-time"
+      h: "Started At"
+      n: "started_at"
+      r: false
+      sh: "The time that the analysis run began."
+      t: "`$STRING`"
+    }
+    tool_name: {
+      h: "Tool Name"
+      n: "tool_name"
+      r: false
+      sh: "The name of the tool used to generate the code scanning analysis."
+      t: "`$STRING`"
+    }
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: false
+      ro: true
+      sh: "The REST API URL for checking the status of the upload."
+      t: "`$STRING`"
+    }
+    validate: {
+      h: "Validate"
+      n: "validate"
+      r: false
+      sh: "Whether the SARIF file will be validated according to the code scanning specifications."
+      t: "`$BOOLEAN`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "sarif"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "checkout_uri"
+            "commit_sha"
+            "ref"
+            "sarif"
+            "started_at"
+            "tool_name"
+            "validate"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/code-scanning/sarifs"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/code-scanning/sarifs"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "sarifs"
+            }
+          ]
+          t: {
+            req: {
+              checkout_uri: "`reqdata.checkout_uri`"
+              commit_sha: "`reqdata.commit_sha`"
+              ref: "`reqdata.ref`"
+              sarif: "`reqdata.sarif`"
+              started_at: "`reqdata.started_at`"
+              tool_name: "`reqdata.tool_name`"
+              validate: "`reqdata.validate`"
+            }
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "sarif_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              sarif_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "sarifs"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
+  ]
+
+}

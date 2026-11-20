@@ -1,0 +1,274 @@
+# Entity: maven_package_upload
+
+main: kit: entity: maven_package_upload: {
+
+  alias: field: {}
+
+  fields: {
+    artifact_id: {
+      h: "Artifact Id"
+      n: "artifact_id"
+      r: false
+      sh: "The ID of the artifact."
+      t: "`$STRING`"
+    }
+    extra_files: {
+      h: "Extra Files"
+      n: "extra_files"
+      r: false
+      sh: "Extra files to include in the package."
+      t: "`$ARRAY`"
+    }
+    group_id: {
+      h: "Group Id"
+      n: "group_id"
+      r: false
+      sh: "Artifact's group ID."
+      t: "`$STRING`"
+    }
+    ivy_file: {
+      h: "Ivy File"
+      n: "ivy_file"
+      r: false
+      sh: "The ivy file is an XML file describing the dependencies of the project."
+      t: "`$STRING`"
+    }
+    javadoc_file: {
+      h: "Javadoc File"
+      n: "javadoc_file"
+      r: false
+      sh: "Adds bundled Java documentation to the Maven package"
+      t: "`$STRING`"
+    }
+    package_file: {
+      h: "Package File"
+      n: "package_file"
+      r: true
+      sh: "The primary file for the package."
+      t: "`$STRING`"
+    }
+    packaging: {
+      h: "Packaging"
+      n: "packaging"
+      r: false
+      sh: "Artifact's Maven packaging type."
+      t: "`$STRING`"
+    }
+    pom_file: {
+      h: "Pom File"
+      n: "pom_file"
+      r: false
+      sh: "The POM file is an XML file containing the Maven coordinates."
+      t: "`$STRING`"
+    }
+    republish: {
+      h: "Republish"
+      n: "republish"
+      r: false
+      sh: "If true, the uploaded package will overwrite any others with the same attributes (e.g."
+      t: "`$BOOLEAN`"
+    }
+    sbt_version: {
+      h: "Sbt Version"
+      n: "sbt_version"
+      r: false
+      t: "`$STRING`"
+    }
+    scala_version: {
+      h: "Scala Version"
+      n: "scala_version"
+      r: false
+      t: "`$STRING`"
+    }
+    sources_file: {
+      h: "Sources File"
+      n: "sources_file"
+      r: false
+      sh: "Adds bundled Java source code to the Maven package."
+      t: "`$STRING`"
+    }
+    tags: {
+      h: "Tags"
+      n: "tags"
+      r: false
+      sh: "A comma-separated values list of tags to add to the package."
+      t: "`$STRING`"
+    }
+    tests_file: {
+      h: "Tests File"
+      n: "tests_file"
+      r: false
+      sh: "Adds bundled Java tests to the Maven package."
+      t: "`$STRING`"
+    }
+    version: {
+      h: "Version"
+      n: "version"
+      r: false
+      sh: "The raw version for this package."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "maven_package_upload"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "artifact_id"
+            "extra_files"
+            "group_id"
+            "ivy_file"
+            "javadoc_file"
+            "package_file"
+            "packaging"
+            "pom_file"
+            "republish"
+            "sbt_version"
+            "scala_version"
+            "sources_file"
+            "tags"
+            "tests_file"
+            "version"
+          ]
+          co: {
+            id: "POST /packages/{owner}/{repo}/upload/maven/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/packages/{owner}/{repo}/upload/maven/"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "packages"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "upload"
+            }
+            {
+              lit: "maven"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "artifact_id"
+            "extra_files"
+            "group_id"
+            "ivy_file"
+            "javadoc_file"
+            "package_file"
+            "packaging"
+            "pom_file"
+            "republish"
+            "sbt_version"
+            "scala_version"
+            "sources_file"
+            "tags"
+            "tests_file"
+            "version"
+          ]
+          co: {
+            id: "POST /packages/{owner}/{repo}/validate-upload/maven/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/packages/{owner}/{repo}/validate-upload/maven/"
+          q: {
+            "$action": "validate_upload"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "packages"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "validate-upload"
+            }
+            {
+              lit: "maven"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.package")]
+  ]
+
+}

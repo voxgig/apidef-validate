@@ -5,11 +5,203 @@ main: kit: entity: runner: {
   alias: field: {}
 
   fields: {
+    access_level: {
+      h: "Access Level"
+      n: "access_level"
+      r: false
+      sh: "The access level of the runner"
+      t: "`$STRING`"
+    }
+    active: {
+      h: "Active"
+      n: "active"
+      r: false
+      sh: "Deprecated: Use `paused` instead."
+      t: "`$BOOLEAN`"
+    }
+    architecture: {
+      h: "Architecture"
+      n: "architecture"
+      r: false
+      t: "`$STRING`"
+    }
+    contacted_at: {
+      h: "Contacted At"
+      n: "contacted_at"
+      r: false
+      t: "`$STRING`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    created_by: {
+      h: "Created By"
+      n: "created_by"
+      r: false
+      sh: "API_Entities_UserBasic model"
+      t: "`$OBJECT`"
+    }
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      sh: "Description of the runner"
+      t: "`$STRING`"
+    }
+    groups: {
+      h: "Groups"
+      n: "groups"
+      r: false
+      sh: "API_Entities_BasicGroupDetails model"
+      t: "`$OBJECT`"
+    }
     id: {
+      fo: "int32"
       h: "Id"
       n: "id"
       r: false
-      syn: true
+      t: "`$INTEGER`"
+    }
+    info: {
+      h: "Info"
+      n: "info"
+      r: false
+      sh: "Runner's metadata"
+      t: "`$OBJECT`"
+    }
+    ip_address: {
+      h: "Ip Address"
+      n: "ip_address"
+      r: false
+      t: "`$STRING`"
+    }
+    is_shared: {
+      h: "Is Shared"
+      n: "is_shared"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    job_execution_status: {
+      h: "Job Execution Status"
+      n: "job_execution_status"
+      r: false
+      t: "`$STRING`"
+    }
+    locked: {
+      h: "Locked"
+      n: "locked"
+      r: false
+      sh: "Specifies if the runner should be locked for the current project"
+      t: "`$BOOLEAN`"
+    }
+    maintainer_note: {
+      h: "Maintainer Note"
+      n: "maintainer_note"
+      r: false
+      sh: "Deprecated: see `maintenance_note`"
+      t: "`$STRING`"
+    }
+    maintenance_note: {
+      h: "Maintenance Note"
+      n: "maintenance_note"
+      r: false
+      sh: "Free-form maintenance notes for the runner (1024 characters)"
+      t: "`$STRING`"
+    }
+    maximum_timeout: {
+      h: "Maximum Timeout"
+      n: "maximum_timeout"
+      r: false
+      sh: "Maximum timeout that limits the amount of time (in seconds) that runners can run jobs"
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      t: "`$STRING`"
+    }
+    online: {
+      h: "Online"
+      n: "online"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    paused: {
+      h: "Paused"
+      n: "paused"
+      r: false
+      sh: "Specifies if the runner should ignore new jobs"
+      t: "`$BOOLEAN`"
+    }
+    platform: {
+      h: "Platform"
+      n: "platform"
+      r: false
+      t: "`$STRING`"
+    }
+    projects: {
+      h: "Projects"
+      n: "projects"
+      r: false
+      sh: "API_Entities_BasicProjectDetails model"
+      t: "`$OBJECT`"
+    }
+    revision: {
+      h: "Revision"
+      n: "revision"
+      r: false
+      t: "`$STRING`"
+    }
+    run_untagged: {
+      h: "Run Untagged"
+      n: "run_untagged"
+      r: false
+      sh: "Specifies if the runner should handle untagged jobs"
+      t: "`$STRING`"
+    }
+    runner_id: {
+      fo: "int32"
+      h: "Runner Id"
+      n: "runner_id"
+      r: true
+      sh: "The ID of a runner"
+      t: "`$INTEGER`"
+    }
+    runner_type: {
+      h: "Runner Type"
+      n: "runner_type"
+      r: false
+      t: "`$STRING`"
+    }
+    status: {
+      h: "Status"
+      n: "status"
+      r: false
+      t: "`$STRING`"
+    }
+    tag_list: {
+      h: "Tag List"
+      n: "tag_list"
+      r: false
+      sh: "A list of runner tags"
+      t: "`$STRING`"
+    }
+    token: {
+      h: "Token"
+      n: "token"
+      r: true
+      sh: "Registration token"
+      t: "`$STRING`"
+    }
+    version: {
+      h: "Version"
+      n: "version"
+      r: false
       t: "`$STRING`"
     }
   }
@@ -24,6 +216,393 @@ main: kit: entity: runner: {
     create: {
       name: "create"
       points: [
+        {
+          co: {
+            id: "POST /api/v4/runners/{id}/reset_authentication_token"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/runners/{id}/reset_authentication_token"
+          q: {
+            "$action": "reset_authentication_token"
+            exist: [
+              "id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "reset_authentication_token"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /api/v4/groups/{id}/runners/reset_registration_token"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/groups/{id}/runners/reset_registration_token"
+          q: {
+            "$action": "reset_registration_token"
+            exist: [
+              "group_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              lit: "reset_registration_token"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "runner_id"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/runners"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/runners"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /api/v4/projects/{id}/runners/reset_registration_token"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/runners/reset_registration_token"
+          q: {
+            "$action": "reset_registration_token"
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              lit: "reset_registration_token"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "access_level"
+            "active"
+            "description"
+            "info"
+            "locked"
+            "maintainer_note"
+            "maintenance_note"
+            "maximum_timeout"
+            "paused"
+            "run_untagged"
+            "tag_list"
+            "token"
+          ]
+          co: {
+            id: "POST /api/v4/runners"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/api/v4/runners"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "token"
+          ]
+          co: {
+            id: "POST /api/v4/runners/reset_authentication_token"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/api/v4/runners/reset_authentication_token"
+          q: {
+            "$action": "reset_authentication_token"
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              lit: "reset_authentication_token"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /api/v4/runners/reset_registration_token"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/api/v4/runners/reset_registration_token"
+          q: {
+            "$action": "reset_registration_token"
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              lit: "reset_registration_token"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "access_level"
+            "description"
+            "group_id"
+            "locked"
+            "maintenance_note"
+            "maximum_timeout"
+            "paused"
+            "project_id"
+            "run_untagged"
+            "runner_type"
+            "tag_list"
+          ]
+          co: {
+            id: "POST /api/v4/user/runners"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/api/v4/user/runners"
+          q: {
+            "$action": "user"
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "user"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           bf: [
             "system_id"
@@ -51,6 +630,423 @@ main: kit: entity: runner: {
             }
             {
               lit: "verify"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/groups/{id}/runners"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "paused"
+                or: "paused"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "status"
+                or: "status"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "['macos', 'shell']"
+                explode: false
+                k: "query"
+                n: "tag_list"
+                or: "tag_list"
+                r: false
+                style: "form"
+                t: "`$ARRAY`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "type"
+                or: "type"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "'15.1.' or '16.'"
+                explode: true
+                k: "query"
+                n: "version_prefix"
+                or: "version_prefix"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/groups/{id}/runners"
+          q: {
+            exist: [
+              "group_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/runners/{id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/runners/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/runners"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "paused"
+                or: "paused"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "scope"
+                or: "scope"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "status"
+                or: "status"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "['macos', 'shell']"
+                explode: false
+                k: "query"
+                n: "tag_list"
+                or: "tag_list"
+                r: false
+                style: "form"
+                t: "`$ARRAY`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "type"
+                or: "type"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "'15.1.' or '16.'"
+                explode: true
+                k: "query"
+                n: "version_prefix"
+                or: "version_prefix"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/runners"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/runners"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "paused"
+                or: "paused"
+                r: false
+                style: "form"
+                t: "`$BOOLEAN`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "scope"
+                or: "scope"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "status"
+                or: "status"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "['macos', 'shell']"
+                explode: false
+                k: "query"
+                n: "tag_list"
+                or: "tag_list"
+                r: false
+                style: "form"
+                t: "`$ARRAY`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "type"
+                or: "type"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "'15.1.' or '16.'"
+                explode: true
+                k: "query"
+                n: "version_prefix"
+                or: "version_prefix"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/runners"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "runners"
             }
           ]
           t: {
@@ -132,21 +1128,59 @@ main: kit: entity: runner: {
         }
         {
           co: {
-            id: "DELETE /api/v4/runners/managers"
+            id: "DELETE /api/v4/runners/{id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/runners/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /api/v4/runners"
             source: "swagger2"
             version: 2
           }
           g: {
             query: [
-              {
-                explode: true
-                k: "query"
-                n: "system_id"
-                or: "system_id"
-                r: true
-                style: "form"
-                t: "`$STRING`"
-              }
               {
                 explode: true
                 k: "query"
@@ -159,11 +1193,9 @@ main: kit: entity: runner: {
             ]
           }
           m: "DELETE"
-          o: "/api/v4/runners/managers"
+          o: "/api/v4/runners"
           q: {
-            "$action": "manager"
             exist: [
-              "system_id"
               "token"
             ]
           }
@@ -177,8 +1209,68 @@ main: kit: entity: runner: {
             {
               lit: "runners"
             }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "access_level"
+            "active"
+            "description"
+            "locked"
+            "maintenance_note"
+            "maximum_timeout"
+            "paused"
+            "run_untagged"
+            "tag_list"
+          ]
+          co: {
+            id: "PUT /api/v4/runners/{id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/runners/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
             {
-              lit: "managers"
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "id"
             }
           ]
           t: {
@@ -192,6 +1284,7 @@ main: kit: entity: runner: {
 
 
   relations: ancestors: [
+    [path("$.main.kit.entity.group")]
     [path("$.main.kit.entity.project")]
   ]
 

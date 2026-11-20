@@ -541,6 +541,7 @@ main: kit: entity: repo: {
           m: "POST"
           o: "/repos/{owner}/{identifier}/geoip/disable/"
           q: {
+            "$action": "geoip_disable"
             exist: [
               "identifier"
               "owner"
@@ -596,6 +597,7 @@ main: kit: entity: repo: {
           m: "POST"
           o: "/repos/{owner}/{identifier}/geoip/enable/"
           q: {
+            "$action": "geoip_enable"
             exist: [
               "identifier"
               "owner"
@@ -625,10 +627,10 @@ main: kit: entity: repo: {
         }
         {
           bf: [
-            "storage_region"
+            "addresses"
           ]
           co: {
-            id: "POST /repos/{owner}/{repo}/transfer-region/"
+            id: "POST /repos/{owner}/{identifier}/geoip/test/"
             source: "swagger2"
             version: 2
           }
@@ -636,28 +638,32 @@ main: kit: entity: repo: {
             params: [
               {
                 k: "param"
-                n: "owner"
-                or: "owner"
+                n: "identifier"
+                or: "identifier"
                 r: true
                 t: "`$STRING`"
               }
               {
                 k: "param"
-                n: "repo"
-                or: "repo"
+                n: "owner"
+                or: "owner"
                 r: true
                 t: "`$STRING`"
               }
             ]
           }
           m: "POST"
-          o: "/repos/{owner}/{repo}/transfer-region/"
+          o: "/repos/{owner}/{identifier}/geoip/test/"
           q: {
-            "$action": "transfer_region"
+            "$action": "geoip_test"
             exist: [
+              "identifier"
               "owner"
-              "repo"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -667,10 +673,13 @@ main: kit: entity: repo: {
               var: "owner"
             }
             {
-              var: "repo"
+              var: "identifier"
             }
             {
-              lit: "transfer-region"
+              lit: "geoip"
+            }
+            {
+              lit: "test"
             }
           ]
           t: {
@@ -925,6 +934,177 @@ main: kit: entity: repo: {
             }
             {
               var: "identifier"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{identifier}/geoip/status/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "identifier"
+                or: "identifier"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{identifier}/geoip/status/"
+          q: {
+            "$action": "geoip_status"
+            exist: [
+              "identifier"
+              "owner"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "identifier"
+            }
+            {
+              lit: "geoip"
+            }
+            {
+              lit: "status"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{identifier}/x509-ecdsa/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "identifier"
+                or: "identifier"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{identifier}/x509-ecdsa/"
+          q: {
+            "$action": "x509_ecdsa"
+            exist: [
+              "identifier"
+              "owner"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "identifier"
+            }
+            {
+              lit: "x509-ecdsa"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{identifier}/x509-rsa/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "identifier"
+                or: "identifier"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{identifier}/x509-rsa/"
+          q: {
+            "$action": "x509_rsa"
+            exist: [
+              "identifier"
+              "owner"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "identifier"
+            }
+            {
+              lit: "x509-rsa"
             }
           ]
           t: {

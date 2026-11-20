@@ -5,6 +5,18 @@ main: kit: entity: key: {
   alias: field: {}
 
   fields: {
+    added_by: {
+      h: "Added By"
+      n: "added_by"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
     created_at: {
       fo: "date-time"
       h: "Created At"
@@ -18,6 +30,12 @@ main: kit: entity: key: {
       r: true
       t: "`$STRING`"
     }
+    enabled: {
+      h: "Enabled"
+      n: "enabled"
+      r: false
+      t: "`$BOOLEAN`"
+    }
     id: {
       fo: "int64"
       h: "Id"
@@ -29,7 +47,7 @@ main: kit: entity: key: {
       h: "Key"
       n: "key"
       r: true
-      sh: "The public SSH key to add to your GitHub account."
+      sh: "The contents of the key."
       t: "`$STRING`"
     }
     last_used: {
@@ -48,7 +66,14 @@ main: kit: entity: key: {
     read_only: {
       h: "Read Only"
       n: "read_only"
+      op: {
+        create: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
       r: true
+      sh: "If `true`, the key will only be able to read repository contents."
       t: "`$BOOLEAN`"
     }
     title: {
@@ -61,7 +86,7 @@ main: kit: entity: key: {
         }
       }
       r: true
-      sh: "A descriptive name for the new key."
+      sh: "A name for the key."
       t: "`$STRING`"
     }
     url: {
@@ -88,6 +113,66 @@ main: kit: entity: key: {
     create: {
       name: "create"
       points: [
+        {
+          bf: [
+            "key"
+            "read_only"
+            "title"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/keys"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/keys"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "keys"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           bf: [
             "key"
@@ -122,6 +207,83 @@ main: kit: entity: key: {
     list: {
       name: "list"
       points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/keys"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/keys"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "keys"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "GET /users/{username}/keys"
@@ -244,6 +406,77 @@ main: kit: entity: key: {
       points: [
         {
           co: {
+            id: "GET /repos/{owner}/{repo}/keys/{key_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "key_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/keys/{key_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              key_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "keys"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /user/keys/{key_id}"
             source: "openapi3"
             version: 2
@@ -298,6 +531,73 @@ main: kit: entity: key: {
       points: [
         {
           co: {
+            id: "DELETE /repos/{owner}/{repo}/keys/{key_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "key_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/keys/{key_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              key_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "keys"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "DELETE /user/keys/{key_id}"
             source: "openapi3"
             version: 2
@@ -347,6 +647,7 @@ main: kit: entity: key: {
 
 
   relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.user")]
   ]
 

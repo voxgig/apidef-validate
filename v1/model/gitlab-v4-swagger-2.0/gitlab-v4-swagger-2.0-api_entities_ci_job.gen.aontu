@@ -103,13 +103,6 @@ main: kit: entity: api_entities_ci_job: {
       r: false
       t: "`$STRING`"
     }
-    force: {
-      h: "Force"
-      n: "force"
-      r: false
-      sh: "Force cancellation for a job with a state of `canceling`"
-      t: "`$BOOLEAN`"
-    }
     id: {
       fo: "int32"
       h: "Id"
@@ -253,6 +246,7 @@ main: kit: entity: api_entities_ci_job: {
           m: "POST"
           o: "/api/v4/projects/{id}/jobs/{job_id}/artifacts/keep"
           q: {
+            "$action": "artifacts_keep"
             exist: [
               "job_id"
               "project_id"
@@ -291,79 +285,6 @@ main: kit: entity: api_entities_ci_job: {
             }
             {
               lit: "keep"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "force"
-          ]
-          co: {
-            id: "POST /api/v4/projects/{id}/jobs/{job_id}/cancel"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 88
-                k: "param"
-                n: "job_id"
-                or: "job_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/jobs/{job_id}/cancel"
-          q: {
-            exist: [
-              "job_id"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "jobs"
-            }
-            {
-              var: "job_id"
-            }
-            {
-              lit: "cancel"
             }
           ]
           t: {
@@ -441,44 +362,19 @@ main: kit: entity: api_entities_ci_job: {
             res: "`body`"
           }
         }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
         {
           co: {
-            id: "POST /api/v4/projects/{id}/jobs/{job_id}/retry"
+            id: "GET /api/v4/job/allowed_agents"
             source: "swagger2"
             version: 2
           }
-          g: {
-            params: [
-              {
-                ex: 88
-                k: "param"
-                n: "job_id"
-                or: "job_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/jobs/{job_id}/retry"
-          q: {
-            exist: [
-              "job_id"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
+          m: "GET"
+          o: "/api/v4/job/allowed_agents"
           rs: {
             kind: "json"
             media: "application/json"
@@ -491,19 +387,10 @@ main: kit: entity: api_entities_ci_job: {
               lit: "v4"
             }
             {
-              lit: "projects"
+              lit: "job"
             }
             {
-              var: "project_id"
-            }
-            {
-              lit: "jobs"
-            }
-            {
-              var: "job_id"
-            }
-            {
-              lit: "retry"
+              lit: "allowed_agents"
             }
           ]
           t: {
@@ -513,8 +400,8 @@ main: kit: entity: api_entities_ci_job: {
         }
       ]
     }
-    list: {
-      name: "list"
+    load: {
+      name: "load"
       points: [
         {
           co: {
@@ -586,353 +473,13 @@ main: kit: entity: api_entities_ci_job: {
             res: "`body`"
           }
         }
-        {
-          co: {
-            id: "GET /api/v4/projects/{id}/pipelines/{pipeline_id}/jobs"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 18
-                k: "param"
-                n: "pipeline_id"
-                or: "pipeline_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 11
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: false
-                explode: true
-                k: "query"
-                n: "include_retried"
-                or: "include_retried"
-                r: false
-                style: "form"
-                t: "`$BOOLEAN`"
-              }
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 20
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: [
-                  "pending"
-                  "running"
-                ]
-                explode: true
-                k: "query"
-                n: "scope"
-                or: "scope"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/projects/{id}/pipelines/{pipeline_id}/jobs"
-          q: {
-            exist: [
-              "pipeline_id"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "pipelines"
-            }
-            {
-              var: "pipeline_id"
-            }
-            {
-              lit: "jobs"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /api/v4/projects/{id}/jobs"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 20
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: [
-                  "pending"
-                  "running"
-                ]
-                explode: false
-                k: "query"
-                n: "scope"
-                or: "scope"
-                r: false
-                style: "form"
-                t: "`$ARRAY`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/projects/{id}/jobs"
-          q: {
-            exist: [
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "jobs"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /api/v4/job"
-            source: "swagger2"
-            version: 2
-          }
-          m: "GET"
-          o: "/api/v4/job"
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "job"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /api/v4/job/allowed_agents"
-            source: "swagger2"
-            version: 2
-          }
-          m: "GET"
-          o: "/api/v4/job/allowed_agents"
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "job"
-            }
-            {
-              lit: "allowed_agents"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    load: {
-      name: "load"
-      points: [
-        {
-          co: {
-            id: "GET /api/v4/projects/{id}/jobs/{job_id}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 88
-                k: "param"
-                n: "id"
-                or: "job_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/projects/{id}/jobs/{job_id}"
-          q: {
-            exist: [
-              "id"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-              job_id: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "jobs"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
       ]
     }
   }
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.project")]
     [path("$.main.kit.entity.project") path("$.main.kit.entity.job")]
-    [path("$.main.kit.entity.project")]
   ]
 
 }

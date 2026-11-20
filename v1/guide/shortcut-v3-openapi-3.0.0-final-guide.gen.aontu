@@ -1,17 +1,5 @@
 {
   entity: {
-    bulk: {
-      name: "bulk"
-      path: {
-        "/api/v3/stories/bulk": {
-          op: {
-            remove: {
-              method: "DELETE"
-            }
-          }
-        }
-      }
-    }
     category: {
       name: "category"
       path: {
@@ -48,16 +36,40 @@
     comment: {
       name: "comment"
       path: {
-        "/api/v3/stories/{story-public-id}/comments/{comment-public-id}": {
+        "/api/v3/epics/{epic-public-id}/comments": {
           op: {
+            create: {
+              method: "POST"
+            }
+            list: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              "epic-public-id": "epic_id"
+            }
+          }
+        }
+        "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            load: {
+              method: "GET"
+            }
             remove: {
               method: "DELETE"
+            }
+            update: {
+              method: "PUT"
             }
           }
           rename: {
             param: {
               "comment-public-id": "id"
-              "story-public-id": "story_id"
+              "epic-public-id": "epic_id"
             }
           }
         }
@@ -93,25 +105,6 @@
         }
       }
     }
-    disable: {
-      name: "disable"
-      path: {
-        "/api/v3/entity-templates/disable": {
-          op: {
-            update: {
-              method: "PUT"
-            }
-          }
-        }
-        "/api/v3/iterations/disable": {
-          op: {
-            update: {
-              method: "PUT"
-            }
-          }
-        }
-      }
-    }
     doc_slim: {
       name: "doc_slim"
       path: {
@@ -127,25 +120,6 @@
         }
       }
     }
-    enable: {
-      name: "enable"
-      path: {
-        "/api/v3/entity-templates/enable": {
-          op: {
-            update: {
-              method: "PUT"
-            }
-          }
-        }
-        "/api/v3/iterations/enable": {
-          op: {
-            update: {
-              method: "PUT"
-            }
-          }
-        }
-      }
-    }
     entity_template: {
       name: "entity_template"
       path: {
@@ -156,6 +130,28 @@
             }
             list: {
               method: "GET"
+            }
+          }
+        }
+        "/api/v3/entity-templates/disable": {
+          action: {
+            disable: {
+            }
+          }
+          op: {
+            update: {
+              method: "PUT"
+            }
+          }
+        }
+        "/api/v3/entity-templates/enable": {
+          action: {
+            enable: {
+            }
+          }
+          op: {
+            update: {
+              method: "PUT"
             }
           }
         }
@@ -202,6 +198,22 @@
             }
             update: {
               method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              "epic-public-id": "id"
+            }
+          }
+        }
+        "/api/v3/epics/{epic-public-id}/unlink-productboard": {
+          action: {
+            unlink_productboard: {
+            }
+          }
+          op: {
+            create: {
+              method: "POST"
             }
           }
           rename: {
@@ -281,33 +293,46 @@
         }
       }
     }
-    epic_unlink_productboard: {
-      name: "epic_unlink_productboard"
-      path: {
-        "/api/v3/epics/{epic-public-id}/unlink-productboard": {
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-          rename: {
-            param: {
-              "epic-public-id": "epic_id"
-            }
-          }
-        }
-      }
-    }
     epic_workflow: {
       name: "epic_workflow"
       path: {
         "/api/v3/epic-workflow": {
           op: {
+            load: {
+              method: "GET"
+            }
+          }
+        }
+      }
+    }
+    file: {
+      name: "file"
+      path: {
+        "/api/v3/files": {
+          op: {
+            create: {
+              method: "POST"
+            }
             list: {
               method: "GET"
-              transform: {
-                res: "`body.epic_states`"
-              }
+            }
+          }
+        }
+        "/api/v3/files/{file-public-id}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+            remove: {
+              method: "DELETE"
+            }
+            update: {
+              method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              "file-public-id": "id"
             }
           }
         }
@@ -414,6 +439,28 @@
             }
             list: {
               method: "GET"
+            }
+          }
+        }
+        "/api/v3/iterations/disable": {
+          action: {
+            disable: {
+            }
+          }
+          op: {
+            update: {
+              method: "PUT"
+            }
+          }
+        }
+        "/api/v3/iterations/enable": {
+          action: {
+            enable: {
+            }
+          }
+          op: {
+            update: {
+              method: "PUT"
             }
           }
         }
@@ -584,6 +631,10 @@
           }
         }
         "/api/v3/categories/{category-public-id}/objectives": {
+          action: {
+            objectives: {
+            }
+          }
           op: {
             list: {
               method: "GET"
@@ -657,6 +708,10 @@
           }
         }
         "/api/v3/search/milestones": {
+          action: {
+            milestones: {
+            }
+          }
           op: {
             list: {
               method: "GET"
@@ -738,18 +793,6 @@
           rename: {
             param: {
               "repo-public-id": "id"
-            }
-          }
-        }
-      }
-    }
-    search: {
-      name: "search"
-      path: {
-        "/api/v3/search": {
-          op: {
-            load: {
-              method: "GET"
             }
           }
         }
@@ -846,6 +889,23 @@
             }
           }
         }
+        "/api/v3/stories/bulk": {
+          action: {
+            bulk: {
+            }
+          }
+          op: {
+            create: {
+              method: "POST"
+            }
+            remove: {
+              method: "DELETE"
+            }
+            update: {
+              method: "PUT"
+            }
+          }
+        }
         "/api/v3/stories/from-template": {
           action: {
             from_template: {
@@ -853,6 +913,17 @@
           }
           op: {
             create: {
+              method: "POST"
+            }
+          }
+        }
+        "/api/v3/stories/search": {
+          action: {
+            search: {
+            }
+          }
+          op: {
+            list: {
               method: "POST"
             }
           }
@@ -900,8 +971,31 @@
             load: {
               method: "GET"
             }
+            remove: {
+              method: "DELETE"
+            }
             update: {
               method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              "comment-public-id": "id"
+              "story-public-id": "story_id"
+            }
+          }
+        }
+        "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions": {
+          action: {
+            reactions: {
+            }
+          }
+          op: {
+            create: {
+              method: "POST"
+            }
+            remove: {
+              method: "DELETE"
             }
           }
           rename: {
@@ -956,49 +1050,6 @@
         }
       }
     }
-    story_reaction: {
-      name: "story_reaction"
-      path: {
-        "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            remove: {
-              method: "DELETE"
-            }
-          }
-          rename: {
-            param: {
-              "comment-public-id": "comment_id"
-              "story-public-id": "story_id"
-            }
-          }
-        }
-      }
-    }
-    story_slim: {
-      name: "story_slim"
-      path: {
-        "/api/v3/stories/bulk": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            update: {
-              method: "PUT"
-            }
-          }
-        }
-        "/api/v3/stories/search": {
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-        }
-      }
-    }
     task: {
       name: "task"
       path: {
@@ -1035,76 +1086,13 @@
         }
       }
     }
-    threaded_comment: {
-      name: "threaded_comment"
+    v3n: {
+      name: "v3n"
       path: {
-        "/api/v3/epics/{epic-public-id}/comments": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            list: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              "epic-public-id": "epic_id"
-            }
-          }
-        }
-        "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            load: {
-              method: "GET"
-            }
-            remove: {
-              method: "DELETE"
-            }
-            update: {
-              method: "PUT"
-            }
-          }
-          rename: {
-            param: {
-              "comment-public-id": "id"
-              "epic-public-id": "epic_id"
-            }
-          }
-        }
-      }
-    }
-    uploaded_file: {
-      name: "uploaded_file"
-      path: {
-        "/api/v3/files": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            list: {
-              method: "GET"
-            }
-          }
-        }
-        "/api/v3/files/{file-public-id}": {
+        "/api/v3/search": {
           op: {
             load: {
               method: "GET"
-            }
-            remove: {
-              method: "DELETE"
-            }
-            update: {
-              method: "PUT"
-            }
-          }
-          rename: {
-            param: {
-              "file-public-id": "id"
             }
           }
         }
@@ -1165,7 +1153,7 @@
 
   metrics: {
     count: {
-      entity: 35
+      entity: 28
       method: 132
       path: 78
     }

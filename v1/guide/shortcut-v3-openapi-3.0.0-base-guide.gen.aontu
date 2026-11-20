@@ -4,15 +4,9 @@
 #   shortcut-v3-openapi-3.0.0-guide.aontu
 
 guide: {
-  metrics: count: entity: 35
+  metrics: count: entity: 28
   metrics: count: path: 78
   metrics: count: method: 132
-
-  entity: bulk: {
-    path: "/api/v3/stories/bulk": {  # ent=bulk;no-desc;path=t/;entres=true/204,400,404,422/nores;path-primary-delete
-      op: remove: method: *DELETE  # not-load
-    }
-  }
 
   entity: category: {
     path: "/api/v3/categories": {  # ent=category;orig=Category;cmp/resolve=category;path=t/;path-primary
@@ -28,10 +22,18 @@ guide: {
   }
 
   entity: comment: {
-    path: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}": {  # ent=comment;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
-      rename: param: "comment-public-id": *"id"  # end-id;DELETE;parent=true/comment
-      rename: param: "story-public-id": *"story_id"  # parent:story
+    path: "/api/v3/epics/{epic-public-id}/comments": {  # ent=comment;orig=ThreadedComment;cmp/resolve=threaded_comment;path=t/p/t/;path-over-wrapper=ThreadedComment;has-cmp=ThreadedComment
+      rename: param: "epic-public-id": *"epic_id"  # parent:epic
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}": {  # ent=comment;orig=ThreadedComment;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary
+      rename: param: "comment-public-id": *"id"  # end-id;GET;parent=true/comment
+      rename: param: "epic-public-id": *"epic_id"  # parent:epic
+      op: create: method: *POST  # not-load
+      op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
     }
   }
 
@@ -47,15 +49,6 @@ guide: {
     }
   }
 
-  entity: disable: {
-    path: "/api/v3/entity-templates/disable": {  # ent=disable;no-desc;path=t/;entres=true/204,400,404,422/nores;path-primary
-      op: update: method: *PUT  # not-load
-    }
-    path: "/api/v3/iterations/disable": {  # ent=disable;no-desc;path=t/;entres=true/204,400,404,422/nores;path-primary
-      op: update: method: *PUT  # not-load
-    }
-  }
-
   entity: doc_slim: {
     path: "/api/v3/documents": {  # ent=doc_slim;orig=DocSlim;cmp/resolve=doc_slim;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
@@ -63,19 +56,18 @@ guide: {
     }
   }
 
-  entity: enable: {
-    path: "/api/v3/entity-templates/enable": {  # ent=enable;no-desc;path=t/;entres=true/204,400,404,422/nores;path-primary
-      op: update: method: *PUT  # not-load
-    }
-    path: "/api/v3/iterations/enable": {  # ent=enable;no-desc;path=t/;entres=true/204,400,404,422/nores;path-primary
-      op: update: method: *PUT  # not-load
-    }
-  }
-
   entity: entity_template: {
     path: "/api/v3/entity-templates": {  # ent=entity_template;orig=EntityTemplate;cmp/resolve=entity_template;path=t/;path-primary
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
+    }
+    path: "/api/v3/entity-templates/disable": {  # ent=entity_template;orig=EntityTemplate;no-desc;path=t/;noun-before-verb=entity-templates;verb-noun=entity_template
+      action: "disable": {}  # ent;entity_template;no-param;disable;PUT
+      op: update: method: *PUT  # not-load
+    }
+    path: "/api/v3/entity-templates/enable": {  # ent=entity_template;orig=EntityTemplate;no-desc;path=t/;noun-before-verb=entity-templates;verb-noun=entity_template
+      action: "enable": {}  # ent;entity_template;no-param;enable;PUT
+      op: update: method: *PUT  # not-load
     }
     path: "/api/v3/entity-templates/{entity-template-public-id}": {  # ent=entity_template;orig=EntityTemplate;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
       rename: param: "entity-template-public-id": *"id"  # end-id;GET;parent=true/entity_template
@@ -95,6 +87,11 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+    }
+    path: "/api/v3/epics/{epic-public-id}/unlink-productboard": {  # ent=epic;orig=EpicSlim;no-desc;path=t/p/t/;entres=true/204,400,404,422/nores;path-primary;prob-ent-part
+      action: "unlink_productboard": {}  # ent;epic;command;epic_unlink_productboard
+      rename: param: "epic-public-id": *"id"  # end-id;GET;parent=true/epic
+      op: create: method: *POST  # not-load
     }
     path: "/api/v3/labels/{label-public-id}/epics": {  # ent=epic;orig=EpicSlim;cmp/resolve=epic_slim;path=t/p/t/;path-primary;has-cmp=EpicSlim;resplit-from-cmp=epic
       rename: param: "label-public-id": *"label_id"  # parent:label
@@ -125,17 +122,22 @@ guide: {
     }
   }
 
-  entity: epic_unlink_productboard: {
-    path: "/api/v3/epics/{epic-public-id}/unlink-productboard": {  # ent=epic_unlink_productboard;no-desc;path=t/p/t/;entres=true/204,400,404,422/nores;path-primary;prob-ent-part
-      rename: param: "epic-public-id": *"epic_id"  # parent-resource:epic
-      op: create: method: *POST  # not-load
+  entity: epic_workflow: {
+    path: "/api/v3/epic-workflow": {  # ent=epic_workflow;orig=EpicWorkflow;cmp/resolve=epic_workflow;path=t/;path-primary
+      op: load: method: *GET  # not-list
     }
   }
 
-  entity: epic_workflow: {
-    path: "/api/v3/epic-workflow": {  # ent=epic_workflow;orig=EpicWorkflow;cmp/resolve=epic_workflow;path=t/;path-primary
-      op: list: method: *GET  # array-prop:epic_states
-      op: list: transform: res: *("`body.epic_states`")|top
+  entity: file: {
+    path: "/api/v3/files": {  # ent=file;orig=UploadedFile;cmp/resolve=uploaded_file;path=t/;path-over-wrapper=UploadedFile
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/api/v3/files/{file-public-id}": {  # ent=file;orig=UploadedFile;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary
+      rename: param: "file-public-id": *"id"  # end-id;GET;parent=true/file
+      op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
     }
   }
 
@@ -168,7 +170,7 @@ guide: {
   }
 
   entity: history: {
-    path: "/api/v3/stories/{story-public-id}/history": {  # ent=history;orig=History;cmp/resolve=history;path=t/p/t/;path-primary;has-cmp=History
+    path: "/api/v3/stories/{story-public-id}/history": {  # ent=history;orig=History;cmp/resolve=history;nounless;answers=history
       rename: param: "story-public-id": *"story_id"  # parent:story
       op: list: method: *GET  # array
     }
@@ -178,6 +180,14 @@ guide: {
     path: "/api/v3/iterations": {  # ent=iteration;orig=IterationSlim;cmp/resolve=iteration;path=t/;path-primary
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
+    }
+    path: "/api/v3/iterations/disable": {  # ent=iteration;orig=IterationSlim;no-desc;path=t/;noun-before-verb=iterations;verb-noun=iteration
+      action: "disable": {}  # ent;iteration;no-param;disable;PUT
+      op: update: method: *PUT  # not-load
+    }
+    path: "/api/v3/iterations/enable": {  # ent=iteration;orig=IterationSlim;no-desc;path=t/;noun-before-verb=iterations;verb-noun=iteration
+      action: "enable": {}  # ent;iteration;no-param;enable;PUT
+      op: update: method: *PUT  # not-load
     }
     path: "/api/v3/iterations/{iteration-public-id}": {  # ent=iteration;orig=IterationSlim;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
       rename: param: "iteration-public-id": *"id"  # end-id;GET;parent=true/iteration
@@ -246,6 +256,7 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/api/v3/categories/{category-public-id}/objectives": {  # ent=milestone;orig=Milestone;cmp/resolve=milestone;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Milestone
+      action: "objectives": {}  # ent;milestone;shared-selector;/api/v3/categories/{category-public-id}/milestones
       rename: param: "category-public-id": *"category_id"  # parent:category
       op: list: method: *GET  # array
     }
@@ -273,6 +284,7 @@ guide: {
       op: update: method: *PUT  # not-load
     }
     path: "/api/v3/search/milestones": {  # ent=objective;orig=Objective;envelope=objective_search_result;cmp/resolve=objective;path=t/;cmp-primary;cmp-infreq
+      action: "milestones": {}  # ent;objective;shared-selector;/api/v3/search/objectives
       op: list: method: *GET  # array-prop:data
       op: list: transform: res: *("`body.data`")|top
       op: list: transform: page: total: *("`body.total`")|top
@@ -309,12 +321,6 @@ guide: {
     }
   }
 
-  entity: search: {
-    path: "/api/v3/search": {  # ent=search;orig=SearchResults;cmp/resolve=search_result;path=t/;path-primary;resplit-from-cmp=search
-      op: load: method: *GET  # not-list
-    }
-  }
-
   entity: story: {
     path: "/api/v3/epics/{epic-public-id}/stories": {  # ent=story;orig=StorySlim;cmp/resolve=story_slim;path=t/p/t/;path-primary;has-cmp=StorySlim;resplit-from-cmp=story
       rename: param: "epic-public-id": *"epic_id"  # parent:epic
@@ -348,9 +354,19 @@ guide: {
     path: "/api/v3/stories": {  # ent=story;orig=StorySlim;cmp/resolve=story;path=t/;path-primary
       op: create: method: *POST  # not-load
     }
-    path: "/api/v3/stories/from-template": {  # ent=story;orig=StorySlim;cmp/resolve=story;path=t/;cmp-primary;cmp-infreq
-      action: "from_template": {}  # ent;story;no-param;from-template;POST
+    path: "/api/v3/stories/bulk": {  # ent=story;orig=StorySlim;no-desc;path=t/;entres=true/204,400,404,422/nores;path-primary-delete
+      action: "bulk": {}  # ent;story;command;bulk
       op: create: method: *POST  # not-load
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+    path: "/api/v3/stories/from-template": {  # ent=story;orig=StorySlim;cmp/resolve=story;path=t/;cmp-primary;cmp-infreq;command=create_story_from_template_param
+      action: "from_template": {}  # ent;create_story_from_template_param;no-param;from-template;POST
+      op: create: method: *POST  # not-load
+    }
+    path: "/api/v3/stories/search": {  # ent=story;orig=StorySlim;cmp/resolve=story_slim;path=t/;noun-before-verb=stories;verb-noun=story;post-read=search;resplit-from-cmp=story
+      action: "search": {}  # ent;story;no-param;search;POST
+      op: list: method: *POST  # post-read
     }
     path: "/api/v3/stories/{story-public-id}": {  # ent=story;orig=StorySlim;no-desc;path=t/p/;entres=true/204,400,404,422/nores;path-primary-delete
       rename: param: "story-public-id": *"id"  # end-id;GET;parent=true/story
@@ -361,16 +377,24 @@ guide: {
   }
 
   entity: story_comment: {
-    path: "/api/v3/stories/{story-public-id}/comments": {  # ent=story_comment;orig=StoryComment;cmp/resolve=story_comment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=StoryComment
+    path: "/api/v3/stories/{story-public-id}/comments": {  # ent=story_comment;orig=StoryComment;cmp/resolve=story_comment;path=t/p/t/;cmp-record=StoryComment;has-cmp=StoryComment
       rename: param: "story-public-id": *"story_id"  # parent-resource:story
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}": {  # ent=story_comment;orig=StoryComment;cmp/resolve=story_comment;path=t/p/;cmp-primary;cmp-infreq
+    path: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}": {  # ent=story_comment;orig=StoryComment;no-desc;path=t/p/;entres=true/204,400,404,422/nores;cmp-record=StoryComment
       rename: param: "comment-public-id": *"id"  # end-id;GET;parent=true/comment
       rename: param: "story-public-id": *"story_id"  # parent:story
       op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+    }
+    path: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions": {  # ent=story_comment;orig=StoryComment;no-desc;path=t/p/t/;entres=true/204,400,404,422/nores;cmp-found-delete;prob-ent=StoryReaction
+      action: "reactions": {}  # ent;story_comment;command;story_reaction
+      rename: param: "comment-public-id": *"id"  # end-id;GET;parent=true/comment
+      rename: param: "story-public-id": *"story_id"  # parent:story
+      op: create: method: *POST  # not-load
+      op: remove: method: *DELETE  # not-load
     }
     path: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/unlink-from-slack": {  # ent=story_comment;orig=StoryComment;cmp/resolve=story_comment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=StoryComment
       rename: param: "comment-public-id": *"comment_id"  # parent:comment
@@ -391,25 +415,6 @@ guide: {
     }
   }
 
-  entity: story_reaction: {
-    path: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}/reactions": {  # ent=story_reaction;orig=StoryReaction;no-desc;path=t/p/t/;entres=true/204,400,404,422/nores;cmp-found-delete;prob-ent=StoryReaction
-      rename: param: "comment-public-id": *"comment_id"  # parent:comment
-      rename: param: "story-public-id": *"story_id"  # parent:story
-      op: create: method: *POST  # not-load
-      op: remove: method: *DELETE  # not-load
-    }
-  }
-
-  entity: story_slim: {
-    path: "/api/v3/stories/bulk": {  # ent=story_slim;orig=StorySlim;cmp/resolve=story_slim;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-      op: update: method: *PUT  # not-load
-    }
-    path: "/api/v3/stories/search": {  # ent=story_slim;orig=StorySlim;cmp/resolve=story_slim;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-  }
-
   entity: task: {
     path: "/api/v3/stories/{story-public-id}/tasks": {  # ent=task;orig=Task;cmp/resolve=task;path=t/p/t/;path-primary;has-cmp=Task
       rename: param: "story-public-id": *"story_id"  # parent:story
@@ -424,32 +429,9 @@ guide: {
     }
   }
 
-  entity: threaded_comment: {
-    path: "/api/v3/epics/{epic-public-id}/comments": {  # ent=threaded_comment;orig=ThreadedComment;cmp/resolve=threaded_comment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=ThreadedComment
-      rename: param: "epic-public-id": *"epic_id"  # parent:epic
-      op: create: method: *POST  # not-load
-      op: list: method: *GET  # array
-    }
-    path: "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}": {  # ent=threaded_comment;orig=ThreadedComment;no-desc;path=t/p/;entres=true/204,400,404,422/nores;cmp-found-delete
-      rename: param: "comment-public-id": *"id"  # end-id;GET;parent=true/comment
-      rename: param: "epic-public-id": *"epic_id"  # parent:epic
-      op: create: method: *POST  # not-load
-      op: load: method: *GET  # end-param
-      op: remove: method: *DELETE  # not-load
-      op: update: method: *PUT  # not-load
-    }
-  }
-
-  entity: uploaded_file: {
-    path: "/api/v3/files": {  # ent=uploaded_file;orig=UploadedFile;cmp/resolve=uploaded_file;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-      op: list: method: *GET  # array
-    }
-    path: "/api/v3/files/{file-public-id}": {  # ent=uploaded_file;orig=UploadedFile;no-desc;path=t/p/;entres=true/204,400,404,422/nores;cmp-found-delete
-      rename: param: "file-public-id": *"id"  # end-id;GET;parent=true/file
-      op: load: method: *GET  # end-param
-      op: remove: method: *DELETE  # not-load
-      op: update: method: *PUT  # not-load
+  entity: v3n: {
+    path: "/api/v3/search": {  # ent=v3n;orig=SearchResults;cmp/resolve=search_result;path=t/;noun-before-verb=v3;verb-noun=v3
+      op: load: method: *GET  # not-list
     }
   }
 

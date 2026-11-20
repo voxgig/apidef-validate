@@ -1,0 +1,123 @@
+# Entity: collection
+
+main: kit: entity: collection: {
+
+  alias: field: {}
+
+  fields: {
+    created: {
+      fo: "float"
+      h: "Created"
+      n: "created"
+      r: false
+      sh: "Date the collection was created, in UNIX timestamp format"
+      t: "`$NUMBER`"
+    }
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      sh: "Description of the collection"
+      t: "`$STRING`"
+    }
+    display_order: {
+      h: "Display Order"
+      n: "display_order"
+      r: false
+      sh: "Display order of the collection as it appears in the community sidebar"
+      t: "`$INTEGER`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      sh: "Unique identifier of the collection"
+      t: "`$STRING`"
+    }
+    modified: {
+      fo: "float"
+      h: "Modified"
+      n: "modified"
+      r: false
+      sh: "Date the collection was modified for the last time, in UNIX timestamp format"
+      t: "`$NUMBER`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      sh: "Name of the collection"
+      t: "`$STRING`"
+    }
+    space_ids: {
+      h: "Space Ids"
+      n: "space_ids"
+      r: false
+      sh: "List of spaces in this collection"
+      t: "`$ARRAY`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "collection"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /v2/community/collections"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/community/collections"
+          q: {
+            exist: [
+              "lw_client"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "community"
+            }
+            {
+              lit: "collections"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

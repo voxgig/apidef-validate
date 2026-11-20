@@ -52,13 +52,6 @@ main: kit: entity: code_security_configuration: {
         ]
       ]
     }
-    code_security: {
-      h: "Code Security"
-      n: "code_security"
-      r: false
-      sh: "The enablement status of GitHub Code Security features."
-      t: "`$STRING`"
-    }
     created_at: {
       fo: "date-time"
       h: "Created At"
@@ -104,12 +97,6 @@ main: kit: entity: code_security_configuration: {
     description: {
       h: "Description"
       n: "description"
-      op: {
-        create: {
-          req: true
-          type: "`$STRING`"
-        }
-      }
       r: false
       sh: "A description of the code security configuration"
       t: "`$STRING`"
@@ -139,12 +126,6 @@ main: kit: entity: code_security_configuration: {
     name: {
       h: "Name"
       n: "name"
-      op: {
-        create: {
-          req: true
-          type: "`$STRING`"
-        }
-      }
       r: false
       sh: "The name of the code security configuration."
       t: "`$STRING`"
@@ -154,13 +135,6 @@ main: kit: entity: code_security_configuration: {
       n: "private_vulnerability_reporting"
       r: false
       sh: "The enablement status of private vulnerability reporting"
-      t: "`$STRING`"
-    }
-    secret_protection: {
-      h: "Secret Protection"
-      n: "secret_protection"
-      r: false
-      sh: "The enablement status of GitHub Secret Protection features."
       t: "`$STRING`"
     }
     secret_scanning: {
@@ -443,6 +417,7 @@ main: kit: entity: code_security_configuration: {
           m: "POST"
           o: "/enterprises/{enterprise}/code-security/configurations"
           q: {
+            "$action": "configuration"
             exist: [
               "enterprise_id"
             ]
@@ -544,6 +519,7 @@ main: kit: entity: code_security_configuration: {
           m: "POST"
           o: "/orgs/{org}/code-security/configurations"
           q: {
+            "$action": "configuration"
             exist: [
               "org_id"
             ]
@@ -656,6 +632,7 @@ main: kit: entity: code_security_configuration: {
           m: "GET"
           o: "/enterprises/{enterprise}/code-security/configurations"
           q: {
+            "$action": "configuration"
             exist: [
               "enterprise_id"
             ]
@@ -748,6 +725,7 @@ main: kit: entity: code_security_configuration: {
           m: "GET"
           o: "/orgs/{org}/code-security/configurations"
           q: {
+            "$action": "configuration"
             exist: [
               "org_id"
             ]
@@ -812,6 +790,7 @@ main: kit: entity: code_security_configuration: {
           m: "GET"
           o: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}"
           q: {
+            "$action": "configuration"
             exist: [
               "enterprise_id"
               "id"
@@ -876,6 +855,7 @@ main: kit: entity: code_security_configuration: {
           m: "GET"
           o: "/orgs/{org}/code-security/configurations/{configuration_id}"
           q: {
+            "$action": "configuration"
             exist: [
               "id"
               "org_id"
@@ -913,61 +893,6 @@ main: kit: entity: code_security_configuration: {
             res: "`body`"
           }
         }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/code-security-configuration"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/code-security-configuration"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "code-security-configuration"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.configuration`"
-          }
-        }
       ]
     }
     remove: {
@@ -1000,6 +925,7 @@ main: kit: entity: code_security_configuration: {
           m: "DELETE"
           o: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}"
           q: {
+            "$action": "configuration"
             exist: [
               "enterprise_id"
               "id"
@@ -1060,6 +986,7 @@ main: kit: entity: code_security_configuration: {
           m: "DELETE"
           o: "/orgs/{org}/code-security/configurations/{configuration_id}"
           q: {
+            "$action": "configuration"
             exist: [
               "id"
               "org_id"
@@ -1090,6 +1017,63 @@ main: kit: entity: code_security_configuration: {
           ]
           t: {
             req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "selected_repository_ids"
+          ]
+          co: {
+            id: "DELETE /orgs/{org}/code-security/configurations/detach"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/code-security/configurations/detach"
+          q: {
+            "$action": "detach"
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "code-security"
+            }
+            {
+              lit: "configurations"
+            }
+            {
+              lit: "detach"
+            }
+          ]
+          t: {
+            req: {
+              selected_repository_ids: "`reqdata.selected_repository_id`"
+            }
             res: "`body`"
           }
         }
@@ -1148,6 +1132,7 @@ main: kit: entity: code_security_configuration: {
           m: "PATCH"
           o: "/enterprises/{enterprise}/code-security/configurations/{configuration_id}"
           q: {
+            "$action": "configuration"
             exist: [
               "enterprise_id"
               "id"
@@ -1259,6 +1244,7 @@ main: kit: entity: code_security_configuration: {
           m: "PATCH"
           o: "/orgs/{org}/code-security/configurations/{configuration_id}"
           q: {
+            "$action": "configuration"
             exist: [
               "id"
               "org_id"
@@ -1327,7 +1313,6 @@ main: kit: entity: code_security_configuration: {
 
   relations: ancestors: [
     [path("$.main.kit.entity.org")]
-    [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.org")]
   ]
 

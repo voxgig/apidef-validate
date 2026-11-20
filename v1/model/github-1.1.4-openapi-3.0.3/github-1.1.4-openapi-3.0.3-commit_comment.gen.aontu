@@ -49,20 +49,20 @@ main: kit: entity: commit_comment: {
       h: "Line"
       n: "line"
       op: {
-        create: {
-          req: false
-          type: "`$INTEGER`"
+        list: {
+          req: true
+          type: [
+            "`$ONE`"
+            [
+              "`$INTEGER`"
+              "`$NULL`"
+            ]
+          ]
         }
       }
-      r: true
+      r: false
       sh: "**Closing down notice**."
-      t: [
-        "`$ONE`"
-        [
-          "`$INTEGER`"
-          "`$NULL`"
-        ]
-      ]
+      t: "`$INTEGER`"
     }
     node_id: {
       h: "Node Id"
@@ -74,39 +74,39 @@ main: kit: entity: commit_comment: {
       h: "Path"
       n: "path"
       op: {
-        create: {
-          req: false
-          type: "`$STRING`"
+        list: {
+          req: true
+          type: [
+            "`$ONE`"
+            [
+              "`$STRING`"
+              "`$NULL`"
+            ]
+          ]
         }
       }
-      r: true
+      r: false
       sh: "Relative path of the file to comment on."
-      t: [
-        "`$ONE`"
-        [
-          "`$STRING`"
-          "`$NULL`"
-        ]
-      ]
+      t: "`$STRING`"
     }
     position: {
       h: "Position"
       n: "position"
       op: {
-        create: {
-          req: false
-          type: "`$INTEGER`"
+        list: {
+          req: true
+          type: [
+            "`$ONE`"
+            [
+              "`$INTEGER`"
+              "`$NULL`"
+            ]
+          ]
         }
       }
-      r: true
+      r: false
       sh: "Line index in the diff to comment on."
-      t: [
-        "`$ONE`"
-        [
-          "`$INTEGER`"
-          "`$NULL`"
-        ]
-      ]
+      t: "`$INTEGER`"
     }
     reactions: {
       h: "Reactions"
@@ -324,317 +324,12 @@ main: kit: entity: commit_comment: {
             res: "`body`"
           }
         }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/comments"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/comments"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "comments"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    load: {
-      name: "load"
-      points: [
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/comments/{comment_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "comment_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/comments/{comment_id}"
-          q: {
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              comment_id: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "comments"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    remove: {
-      name: "remove"
-      points: [
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/comments/{comment_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "comment_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/comments/{comment_id}"
-          q: {
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              comment_id: "id"
-            }
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "comments"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    update: {
-      name: "update"
-      points: [
-        {
-          bf: [
-            "body"
-          ]
-          co: {
-            id: "PATCH /repos/{owner}/{repo}/comments/{comment_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "comment_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PATCH"
-          o: "/repos/{owner}/{repo}/comments/{comment_id}"
-          q: {
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              comment_id: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "comments"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
       ]
     }
   }
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.commit")]
   ]
 

@@ -120,13 +120,6 @@ main: kit: entity: copilot: {
       sh: "List of team names within the organization to which to grant access to GitHub Copilot."
       t: "`$ARRAY`"
     }
-    selected_usernames: {
-      h: "Selected Usernames"
-      n: "selected_usernames"
-      r: true
-      sh: "The usernames of the organization members to be granted access to GitHub Copilot."
-      t: "`$ARRAY`"
-    }
     updated_at: {
       de: true
       fo: "date-time"
@@ -224,6 +217,7 @@ main: kit: entity: copilot: {
           m: "POST"
           o: "/orgs/{org}/copilot/billing/selected_users"
           q: {
+            "$action": "selected_users"
             exist: [
               "org_id"
             ]
@@ -343,74 +337,6 @@ main: kit: entity: copilot: {
         }
       ]
     }
-    load: {
-      name: "load"
-      points: [
-        {
-          co: {
-            id: "GET /orgs/{org}/members/{username}/copilot"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/members/{username}/copilot"
-          q: {
-            exist: [
-              "org_id"
-              "username"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "members"
-            }
-            {
-              var: "username"
-            }
-            {
-              lit: "copilot"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
     remove: {
       name: "remove"
       points: [
@@ -495,6 +421,7 @@ main: kit: entity: copilot: {
           m: "DELETE"
           o: "/orgs/{org}/copilot/billing/selected_users"
           q: {
+            "$action": "selected_users"
             exist: [
               "org_id"
             ]
@@ -537,7 +464,6 @@ main: kit: entity: copilot: {
 
   relations: ancestors: [
     [path("$.main.kit.entity.org")]
-    [path("$.main.kit.entity.org") path("$.main.kit.entity.member")]
   ]
 
 }

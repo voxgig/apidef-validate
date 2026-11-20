@@ -15,12 +15,6 @@ main: kit: entity: empty_object: {
     encrypted_value: {
       h: "Encrypted Value"
       n: "encrypted_value"
-      op: {
-        update: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
       r: true
       sh: "Value for your secret, encrypted with [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages) using the public key retrieved from the [Get an environment public…"
       t: "`$STRING`"
@@ -28,12 +22,6 @@ main: kit: entity: empty_object: {
     include_claim_keys: {
       h: "Include Claim Keys"
       n: "include_claim_keys"
-      op: {
-        update: {
-          req: true
-          type: "`$ARRAY`"
-        }
-      }
       r: false
       sh: "Array of unique strings."
       t: "`$ARRAY`"
@@ -41,12 +29,6 @@ main: kit: entity: empty_object: {
     key_id: {
       h: "Key Id"
       n: "key_id"
-      op: {
-        update: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
       r: true
       sh: "ID of the key you used to encrypt the secret."
       t: "`$STRING`"
@@ -333,78 +315,6 @@ main: kit: entity: empty_object: {
             }
             {
               lit: "rerun"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /repos/{owner}/{repo}/actions/runs/{run_id}/approve"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "run_id"
-                or: "run_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/repos/{owner}/{repo}/actions/runs/{run_id}/approve"
-          q: {
-            exist: [
-              "owner"
-              "repo"
-              "run_id"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "runs"
-            }
-            {
-              var: "run_id"
-            }
-            {
-              lit: "approve"
             }
           ]
           t: {
@@ -765,6 +675,7 @@ main: kit: entity: empty_object: {
           m: "PUT"
           o: "/repos/{owner}/{repo}/dependabot/secrets/{secret_name}"
           q: {
+            "$action": "dependabot"
             exist: [
               "owner"
               "repo"
@@ -902,6 +813,7 @@ main: kit: entity: empty_object: {
           m: "PUT"
           o: "/orgs/{org}/dependabot/secrets/{secret_name}"
           q: {
+            "$action": "dependabot"
             exist: [
               "org_id"
               "secret_name"
@@ -1006,82 +918,20 @@ main: kit: entity: empty_object: {
             res: "`body`"
           }
         }
-        {
-          bf: [
-            "include_claim_keys"
-          ]
-          co: {
-            id: "PUT /orgs/{org}/actions/oidc/customization/sub"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/orgs/{org}/actions/oidc/customization/sub"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "oidc"
-            }
-            {
-              lit: "customization"
-            }
-            {
-              lit: "sub"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
       ]
     }
   }
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.org")]
     [path("$.main.kit.entity.repo")]
-    [path("$.main.kit.entity.org")]
+    [path("$.main.kit.entity.org") path("$.main.kit.entity.secret")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.job")]
-    [path("$.main.kit.entity.repo")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.run")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.check_run")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.check_suite")]
-    [path("$.main.kit.entity.repo")]
-    [path("$.main.kit.entity.repo") path("$.main.kit.entity.environment")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.secret")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.environment") path("$.main.kit.entity.secret")]
   ]
 
 }

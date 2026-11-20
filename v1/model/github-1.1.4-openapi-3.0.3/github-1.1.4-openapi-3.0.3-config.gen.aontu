@@ -1,0 +1,121 @@
+# Entity: config
+
+main: kit: entity: config: {
+
+  alias: field: {}
+
+  fields: {
+    content_type: {
+      h: "Content Type"
+      n: "content_type"
+      r: false
+      sh: "The media type used to serialize the payloads."
+      t: "`$STRING`"
+    }
+    insecure_ssl: {
+      h: "Insecure Ssl"
+      n: "insecure_ssl"
+      r: false
+      t: "`$ANY`"
+      union: {
+        branches: 2
+        count: 1
+        depth: 0
+      }
+    }
+    secret: {
+      h: "Secret"
+      n: "secret"
+      r: false
+      sh: "If provided, the `secret` will be used as the `key` to generate the HMAC hex digest value for [delivery signature headers](https://docs.github.com/webhooks/event-payloads/#delivery-headers)."
+      t: "`$STRING`"
+    }
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: false
+      sh: "The URL to which the payloads will be delivered."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "config"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /app/hook/config"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/app/hook/config"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "app"
+            }
+            {
+              lit: "hook"
+            }
+            {
+              lit: "config"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "content_type"
+            "insecure_ssl"
+            "secret"
+            "url"
+          ]
+          co: {
+            id: "PATCH /app/hook/config"
+            source: "openapi3"
+            version: 2
+          }
+          m: "PATCH"
+          o: "/app/hook/config"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "app"
+            }
+            {
+              lit: "hook"
+            }
+            {
+              lit: "config"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

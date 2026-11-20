@@ -18,47 +18,24 @@ main: kit: entity: package: {
       r: true
       t: "`$STRING`"
     }
-    deleted_at: {
-      fo: "date-time"
-      h: "Deleted At"
-      n: "deleted_at"
-      r: false
-      t: "`$STRING`"
-    }
-    description: {
-      h: "Description"
-      n: "description"
-      r: false
-      t: "`$STRING`"
-    }
     github_id: {
       h: "Github Id"
       n: "github_id"
       r: true
-      sh: "Unique identifier of the package version."
+      sh: "Unique identifier of the package."
       t: "`$INTEGER`"
     }
     html_url: {
       h: "Html Url"
       n: "html_url"
-      op: {
-        list: {
-          req: true
-          type: "`$STRING`"
-        }
-        load: {
-          req: true
-          type: "`$STRING`"
-        }
-      }
-      r: false
+      r: true
       t: "`$STRING`"
     }
     id: {
       h: "Id"
       n: "id"
       r: true
-      sh: "Unique identifier of the package version."
+      sh: "Unique identifier of the package."
       t: "`$STRING`"
     }
     included_gigabytes_bandwidth: {
@@ -68,23 +45,11 @@ main: kit: entity: package: {
       sh: "Free storage space (GB) for GitHub Packages."
       t: "`$INTEGER`"
     }
-    license: {
-      h: "License"
-      n: "license"
-      r: false
-      t: "`$STRING`"
-    }
-    metadata: {
-      h: "Metadata"
-      n: "metadata"
-      r: true
-      t: "`$OBJECT`"
-    }
     name: {
       h: "Name"
       n: "name"
       r: true
-      sh: "The name of the package version."
+      sh: "The name of the package."
       t: "`$STRING`"
     }
     owner: {
@@ -99,12 +64,6 @@ main: kit: entity: package: {
           "`$NULL`"
         ]
       ]
-    }
-    package_html_url: {
-      h: "Package Html Url"
-      n: "package_html_url"
-      r: true
-      t: "`$STRING`"
     }
     package_type: {
       h: "Package Type"
@@ -187,166 +146,6 @@ main: kit: entity: package: {
       points: [
         {
           co: {
-            id: "POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_version_id"
-                or: "package_version_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"
-          q: {
-            "$action": "restore"
-            exist: [
-              "org"
-              "package_name"
-              "package_type"
-              "package_version_id"
-            ]
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-            {
-              var: "package_version_id"
-            }
-            {
-              lit: "restore"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_version_id"
-                or: "package_version_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"
-          q: {
-            "$action": "restore"
-            exist: [
-              "package_name"
-              "package_type"
-              "package_version_id"
-              "username"
-            ]
-          }
-          s: [
-            {
-              lit: "users"
-            }
-            {
-              var: "username"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-            {
-              var: "package_version_id"
-            }
-            {
-              lit: "restore"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "POST /orgs/{org}/packages/{package_type}/{package_name}/restore"
             source: "openapi3"
             version: 2
@@ -390,6 +189,7 @@ main: kit: entity: package: {
           m: "POST"
           o: "/orgs/{org}/packages/{package_type}/{package_name}/restore"
           q: {
+            "$action": "restore"
             exist: [
               "org"
               "package_name"
@@ -411,75 +211,6 @@ main: kit: entity: package: {
             }
             {
               var: "package_name"
-            }
-            {
-              lit: "restore"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /user/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_version_id"
-                or: "package_version_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/user/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"
-          q: {
-            "$action": "restore"
-            exist: [
-              "package_name"
-              "package_type"
-              "package_version_id"
-            ]
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-            {
-              var: "package_version_id"
             }
             {
               lit: "restore"
@@ -535,6 +266,7 @@ main: kit: entity: package: {
           m: "POST"
           o: "/users/{username}/packages/{package_type}/{package_name}/restore"
           q: {
+            "$action": "restore"
             exist: [
               "package_name"
               "package_type"
@@ -604,6 +336,7 @@ main: kit: entity: package: {
           m: "POST"
           o: "/user/packages/{package_type}/{package_name}/restore"
           q: {
+            "$action": "restore"
             exist: [
               "package_name"
               "package_type"
@@ -636,176 +369,6 @@ main: kit: entity: package: {
     list: {
       name: "list"
       points: [
-        {
-          co: {
-            id: "GET /orgs/{org}/packages/{package_type}/{package_name}/versions"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: "active"
-                explode: true
-                k: "query"
-                n: "state"
-                or: "state"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/packages/{package_type}/{package_name}/versions"
-          q: {
-            exist: [
-              "org"
-              "package_name"
-              "package_type"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /users/{username}/packages/{package_type}/{package_name}/versions"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/users/{username}/packages/{package_type}/{package_name}/versions"
-          q: {
-            exist: [
-              "package_name"
-              "package_type"
-              "username"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "users"
-            }
-            {
-              var: "username"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           co: {
             id: "GET /orgs/{org}/packages"
@@ -884,96 +447,6 @@ main: kit: entity: package: {
             }
             {
               lit: "packages"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /user/packages/{package_type}/{package_name}/versions"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: "active"
-                explode: true
-                k: "query"
-                n: "state"
-                or: "state"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/user/packages/{package_type}/{package_name}/versions"
-          q: {
-            exist: [
-              "package_name"
-              "package_type"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
             }
           ]
           t: {
@@ -1267,166 +740,6 @@ main: kit: entity: package: {
       points: [
         {
           co: {
-            id: "GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_version_id"
-                or: "package_version_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"
-          q: {
-            exist: [
-              "org"
-              "package_name"
-              "package_type"
-              "package_version_id"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-            {
-              var: "package_version_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_version_id"
-                or: "package_version_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"
-          q: {
-            exist: [
-              "package_name"
-              "package_type"
-              "package_version_id"
-              "username"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "users"
-            }
-            {
-              var: "username"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-            {
-              var: "package_version_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "GET /orgs/{org}/packages/{package_type}/{package_name}"
             source: "openapi3"
             version: 2
@@ -1484,75 +797,6 @@ main: kit: entity: package: {
             }
             {
               var: "package_name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /user/packages/{package_type}/{package_name}/versions/{package_version_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_version_id"
-                or: "package_version_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/user/packages/{package_type}/{package_name}/versions/{package_version_id}"
-          q: {
-            exist: [
-              "package_name"
-              "package_type"
-              "package_version_id"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-            {
-              var: "package_version_id"
             }
           ]
           t: {
@@ -1788,158 +1032,6 @@ main: kit: entity: package: {
       points: [
         {
           co: {
-            id: "DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_version_id"
-                or: "package_version_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"
-          q: {
-            exist: [
-              "org"
-              "package_name"
-              "package_type"
-              "package_version_id"
-            ]
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-            {
-              var: "package_version_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_version_id"
-                or: "package_version_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"
-          q: {
-            exist: [
-              "package_name"
-              "package_type"
-              "package_version_id"
-              "username"
-            ]
-          }
-          s: [
-            {
-              lit: "users"
-            }
-            {
-              var: "username"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-            {
-              var: "package_version_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "DELETE /orgs/{org}/packages/{package_type}/{package_name}"
             source: "openapi3"
             version: 2
@@ -1993,71 +1085,6 @@ main: kit: entity: package: {
             }
             {
               var: "package_name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /user/packages/{package_type}/{package_name}/versions/{package_version_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "package_name"
-                or: "package_name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_type"
-                or: "package_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "package_version_id"
-                or: "package_version_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/user/packages/{package_type}/{package_name}/versions/{package_version_id}"
-          q: {
-            exist: [
-              "package_name"
-              "package_type"
-              "package_version_id"
-            ]
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "packages"
-            }
-            {
-              var: "package_type"
-            }
-            {
-              var: "package_name"
-            }
-            {
-              lit: "versions"
-            }
-            {
-              var: "package_version_id"
             }
           ]
           t: {
@@ -2184,8 +1211,6 @@ main: kit: entity: package: {
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.org")]
-    [path("$.main.kit.entity.user")]
     [path("$.main.kit.entity.org")]
     [path("$.main.kit.entity.user")]
     [path("$.main.kit.entity.org")]

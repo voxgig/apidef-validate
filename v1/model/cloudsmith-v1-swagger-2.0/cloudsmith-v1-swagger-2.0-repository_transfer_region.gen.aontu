@@ -1,0 +1,85 @@
+# Entity: repository_transfer_region
+
+main: kit: entity: repository_transfer_region: {
+
+  alias: field: {}
+
+  fields: {
+    storage_region: {
+      h: "Storage Region"
+      n: "storage_region"
+      r: false
+      sh: "The Cloudsmith region in which package files are stored."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "repository_transfer_region"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "storage_region"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/transfer-region/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/transfer-region/"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "transfer-region"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
+  ]
+
+}

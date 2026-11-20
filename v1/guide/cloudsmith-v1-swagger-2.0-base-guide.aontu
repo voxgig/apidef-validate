@@ -4,16 +4,35 @@
 #   cloudsmith-v1-swagger-2.0-guide.aontu
 
 guide: {
-  metrics: count: entity: 73
+  metrics: count: entity: 84
   metrics: count: path: 201
   metrics: count: method: 325
+
+  entity: alpine_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/alpine/": {  # ent=alpine_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=alpine_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/alpine/": {  # ent=alpine_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=alpine_package_upload
+      action: "validate_upload": {}  # ent;alpine_package_upload;shared-selector;/packages/{owner}/{repo}/upload/alpine
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: audit_log: {
+    path: "/audit-log/{owner}/": {  # ent=audit_log;orig=NamespaceAuditLog;cmp/resolve=namespace_audit_log;path=t/p/;path-over-wrapper=NamespaceAuditLog
+      op: list: method: *GET  # end-param-page
+    }
+    path: "/audit-log/{owner}/{repo}/": {  # ent=audit_log;orig=NamespaceAuditLog;cmp/resolve=repository_audit_log;path=t/p/p;path-over-wrapper=RepositoryAuditLog
+      op: list: method: *GET  # array
+    }
+  }
 
   entity: cargo: {
     path: "/repos/{owner}/{identifier}/upstream/cargo/": {  # ent=cargo;orig=CargoUpstream;cmp/resolve=cargo_upstream;path=t/;path-primary;resplit-from-cmp=cargo
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/cargo/{slug_perm}/": {  # ent=cargo;orig=CargoUpstream;tag=repo;cmp/resolve=repo;same-path-tag=cargo/GET
+    path: "/repos/{owner}/{identifier}/upstream/cargo/{slug_perm}/": {  # ent=cargo;orig=CargoUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=CargoUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/cargo
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -22,12 +41,22 @@ guide: {
     }
   }
 
+  entity: cargo_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/cargo/": {  # ent=cargo_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=cargo_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/cargo/": {  # ent=cargo_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=cargo_package_upload
+      action: "validate_upload": {}  # ent;cargo_package_upload;shared-selector;/packages/{owner}/{repo}/upload/cargo
+      op: create: method: *POST  # not-load
+    }
+  }
+
   entity: composer: {
     path: "/repos/{owner}/{identifier}/upstream/composer/": {  # ent=composer;orig=ComposerUpstream;cmp/resolve=composer_upstream;path=t/;path-primary;resplit-from-cmp=composer
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/composer/{slug_perm}/": {  # ent=composer;orig=ComposerUpstream;tag=repo;cmp/resolve=repo;same-path-tag=composer/GET
+    path: "/repos/{owner}/{identifier}/upstream/composer/{slug_perm}/": {  # ent=composer;orig=ComposerUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=ComposerUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/composer
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -36,12 +65,32 @@ guide: {
     }
   }
 
+  entity: composer_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/composer/": {  # ent=composer_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=composer_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/composer/": {  # ent=composer_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=composer_package_upload
+      action: "validate_upload": {}  # ent;composer_package_upload;shared-selector;/packages/{owner}/{repo}/upload/composer
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: conan_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/conan/": {  # ent=conan_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=conan_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/conan/": {  # ent=conan_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=conan_package_upload
+      action: "validate_upload": {}  # ent;conan_package_upload;shared-selector;/packages/{owner}/{repo}/upload/conan
+      op: create: method: *POST  # not-load
+    }
+  }
+
   entity: conda: {
     path: "/repos/{owner}/{identifier}/upstream/conda/": {  # ent=conda;orig=CondaUpstream;cmp/resolve=conda_upstream;path=t/;path-primary;resplit-from-cmp=conda
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/conda/{slug_perm}/": {  # ent=conda;orig=CondaUpstream;tag=repo;cmp/resolve=repo;same-path-tag=conda/GET
+    path: "/repos/{owner}/{identifier}/upstream/conda/{slug_perm}/": {  # ent=conda;orig=CondaUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=CondaUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/conda
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -50,12 +99,22 @@ guide: {
     }
   }
 
+  entity: conda_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/conda/": {  # ent=conda_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=conda_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/conda/": {  # ent=conda_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=conda_package_upload
+      action: "validate_upload": {}  # ent;conda_package_upload;shared-selector;/packages/{owner}/{repo}/upload/conda
+      op: create: method: *POST  # not-load
+    }
+  }
+
   entity: cran: {
     path: "/repos/{owner}/{identifier}/upstream/cran/": {  # ent=cran;orig=CranUpstream;cmp/resolve=cran_upstream;path=t/;path-primary;resplit-from-cmp=cran
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/cran/{slug_perm}/": {  # ent=cran;orig=CranUpstream;tag=repo;cmp/resolve=repo;same-path-tag=cran/GET
+    path: "/repos/{owner}/{identifier}/upstream/cran/{slug_perm}/": {  # ent=cran;orig=CranUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=CranUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/cran
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -64,12 +123,22 @@ guide: {
     }
   }
 
+  entity: cran_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/cran/": {  # ent=cran_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=cran_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/cran/": {  # ent=cran_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=cran_package_upload
+      action: "validate_upload": {}  # ent;cran_package_upload;shared-selector;/packages/{owner}/{repo}/upload/cran
+      op: create: method: *POST  # not-load
+    }
+  }
+
   entity: dart: {
     path: "/repos/{owner}/{identifier}/upstream/dart/": {  # ent=dart;orig=DartUpstream;cmp/resolve=dart_upstream;path=t/;path-primary;resplit-from-cmp=dart
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/dart/{slug_perm}/": {  # ent=dart;orig=DartUpstream;tag=repo;cmp/resolve=repo;same-path-tag=dart/GET
+    path: "/repos/{owner}/{identifier}/upstream/dart/{slug_perm}/": {  # ent=dart;orig=DartUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=DartUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/dart
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -78,12 +147,22 @@ guide: {
     }
   }
 
+  entity: dart_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/dart/": {  # ent=dart_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=dart_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/dart/": {  # ent=dart_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=dart_package_upload
+      action: "validate_upload": {}  # ent;dart_package_upload;shared-selector;/packages/{owner}/{repo}/upload/dart
+      op: create: method: *POST  # not-load
+    }
+  }
+
   entity: deb: {
     path: "/repos/{owner}/{identifier}/upstream/deb/": {  # ent=deb;orig=DebUpstream;cmp/resolve=deb_upstream;path=t/;path-primary;resplit-from-cmp=deb
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/deb/{slug_perm}/": {  # ent=deb;orig=DebUpstream;tag=repo;cmp/resolve=repo;same-path-tag=deb/GET
+    path: "/repos/{owner}/{identifier}/upstream/deb/{slug_perm}/": {  # ent=deb;orig=DebUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=DebUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/deb
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -92,11 +171,37 @@ guide: {
     }
   }
 
-  entity: distribution_full: {
-    path: "/distros/": {  # ent=distribution_full;orig=DistributionFull;cmp/resolve=distribution_full;path=t/;cmp-primary;cmp-infreq
+  entity: deb_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/deb/": {  # ent=deb_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=deb_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/deb/": {  # ent=deb_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=deb_package_upload
+      action: "validate_upload": {}  # ent;deb_package_upload;shared-selector;/packages/{owner}/{repo}/upload/deb
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: deny_policy: {
+    path: "/orgs/{org}/deny-policy/": {  # ent=deny_policy;orig=PackageDenyPolicy;cmp/resolve=package_deny_policy;path=t/p/t/;path-over-wrapper=PackageDenyPolicy;has-cmp=PackageDenyPolicy
+      rename: param: "org": *"org_id"  # parent:org
+      op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/distros/{slug}/": {  # ent=distribution_full;orig=DistributionFull;cmp/resolve=distribution_full;path=t/p/;cmp-primary;cmp-infreq
+    path: "/orgs/{org}/deny-policy/{slug_perm}/": {  # ent=deny_policy;orig=PackageDenyPolicy;tag=org;cmp/resolve=org;path=t/p/;path-over-wrapper=PackageDenyPolicy
+      rename: param: "org": *"org_id"  # parent:org
+      rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/deny_policy
+      op: load: method: *GET  # end-param
+      op: patch: method: *PATCH  # not-load
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: distribution_full: {
+    path: "/distros/": {  # ent=distribution_full;orig=DistributionFull;cmp/resolve=distribution_full;path=t/;cmp-record=DistributionFull
+      op: list: method: *GET  # array
+    }
+    path: "/distros/{slug}/": {  # ent=distribution_full;orig=DistributionFull;cmp/resolve=distribution_full;path=t/p/;cmp-record=DistributionFull
       op: load: method: *GET  # end-param
     }
   }
@@ -106,12 +211,22 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/docker/{slug_perm}/": {  # ent=docker;orig=DockerUpstream;tag=repo;cmp/resolve=repo;same-path-tag=docker/GET
+    path: "/repos/{owner}/{identifier}/upstream/docker/{slug_perm}/": {  # ent=docker;orig=DockerUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=DockerUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/docker
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: docker_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/docker/": {  # ent=docker_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=docker_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/docker/": {  # ent=docker_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=docker_package_upload
+      action: "validate_upload": {}  # ent;docker_package_upload;shared-selector;/packages/{owner}/{repo}/upload/docker
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -128,13 +243,16 @@ guide: {
   }
 
   entity: entitlement: {
-    path: "/entitlements/{owner}/{repo}/{identifier}/disable/": {  # ent=entitlement;orig=entitlements;tag=entitlement;cmp/resolve=entitlement;path=p/t/;cmp-primary;cmp-infreq
+    path: "/entitlements/{owner}/{repo}/{identifier}/disable/": {  # ent=entitlement;orig=entitlements;tag=entitlement;cmp/resolve=entitlement;path=p/t/;noun-before-verb=entitlements;path-primary
+      action: "disable": {}  # ent;entitlement;ent-keys-before-last;disable;POST
       op: create: method: *POST  # not-load
     }
-    path: "/entitlements/{owner}/{repo}/{identifier}/enable/": {  # ent=entitlement;orig=entitlements;tag=entitlement;cmp/resolve=entitlement;path=p/t/;cmp-primary;cmp-infreq
+    path: "/entitlements/{owner}/{repo}/{identifier}/enable/": {  # ent=entitlement;orig=entitlements;tag=entitlement;cmp/resolve=entitlement;path=p/t/;noun-before-verb=entitlements;path-primary
+      action: "enable": {}  # ent;entitlement;ent-keys-before-last;enable;POST
       op: create: method: *POST  # not-load
     }
-    path: "/entitlements/{owner}/{repo}/{identifier}/reset/": {  # ent=entitlement;orig=entitlements;tag=entitlement;cmp/resolve=entitlement;path=p/t/;cmp-primary;cmp-infreq
+    path: "/entitlements/{owner}/{repo}/{identifier}/reset/": {  # ent=entitlement;orig=entitlements;tag=entitlement;cmp/resolve=entitlement;path=p/t/;noun-before-verb=entitlements;path-primary
+      action: "reset": {}  # ent;entitlement;ent-keys-before-last;reset;POST
       op: create: method: *POST  # not-load
     }
     path: "/metrics/entitlements/{owner}/": {  # ent=entitlement;orig=entitlements;cmp/resolve=entitlement_usage_metric;path=t/p/;path-primary;resplit-from-cmp=entitlement
@@ -148,14 +266,37 @@ guide: {
     }
   }
 
+  entity: evaluation: {
+    path: "/orgs/{org}/license-policy/{policy_slug_perm}/evaluation/": {  # ent=evaluation;orig=PackageLicensePolicyEvaluationRequest;cmp/resolve=package_license_policy_evaluation;path=t/p/t/;path-over-wrapper=PackageLicensePolicyEvaluationRequest;has-cmp=PackageLicensePolicyEvaluationRequest
+      rename: param: "org": *"org_id"  # parent:org
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/orgs/{org}/license-policy/{policy_slug_perm}/evaluation/{slug_perm}/": {  # ent=evaluation;orig=PackageLicensePolicyEvaluationRequest;cmp/resolve=package_license_policy_evaluation;path=t/p/;path-over-wrapper=PackageLicensePolicyEvaluationRequest
+      rename: param: "org": *"org_id"  # parent:org
+      rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/evaluation
+      op: load: method: *GET  # end-param
+    }
+    path: "/orgs/{org}/vulnerability-policy/{policy_slug_perm}/evaluation/": {  # ent=evaluation;orig=PackageLicensePolicyEvaluationRequest;cmp/resolve=package_vulnerability_policy_evaluation;path=t/p/t/;path-over-wrapper=PackageVulnerabilityPolicyEvaluationRequest;has-cmp=PackageVulnerabilityPolicyEvaluationRequest
+      action: "vulnerability_policy": {}  # ent;evaluation;shared-selector;/orgs/{org}/license-policy/{policy_slug_perm}/evaluation
+      rename: param: "org": *"org_id"  # parent:org
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/orgs/{org}/vulnerability-policy/{policy_slug_perm}/evaluation/{slug_perm}/": {  # ent=evaluation;orig=PackageLicensePolicyEvaluationRequest;cmp/resolve=package_vulnerability_policy_evaluation;path=t/p/;path-over-wrapper=PackageVulnerabilityPolicyEvaluationRequest
+      action: "vulnerability_policy": {}  # ent;evaluation;shared-selector;/orgs/{org}/license-policy/{policy_slug_perm}/evaluation/{slug_perm}
+      rename: param: "org": *"org_id"  # parent:org
+      rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/evaluation
+      op: load: method: *GET  # end-param
+    }
+  }
+
   entity: file: {
     path: "/files/{owner}/{repo}/": {  # ent=file;orig=files;tag=file;cmp/resolve=file;path=t/p/p;path-primary
       op: create: method: *POST  # not-load
     }
-    path: "/files/{owner}/{repo}/validate/": {  # ent=file;orig=files;tag=file;cmp/resolve=file;path=p/t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/files/{owner}/{repo}/{identifier}/abort/": {  # ent=file;orig=files;tag=file;cmp/resolve=file;path=p/t/;cmp-primary;cmp-infreq
+    path: "/files/{owner}/{repo}/validate/": {  # ent=file;orig=files;tag=file;cmp/resolve=file;path=p/t/;noun-before-verb=files;path-primary
+      action: "validate": {}  # ent;file;ent-keys-2nd-last;validate;POST
       op: create: method: *POST  # not-load
     }
   }
@@ -170,12 +311,12 @@ guide: {
     }
   }
 
-  entity: gon: {
-    path: "/repos/{owner}/{identifier}/upstream/go/": {  # ent=gon;orig=GoUpstream;cmp/resolve=go_upstream;path=t/;path-primary;resplit-from-cmp=go
+  entity: go_upstream: {
+    path: "/repos/{owner}/{identifier}/upstream/go/": {  # ent=go_upstream;orig=GoUpstream;cmp/resolve=go_upstream;short-literal;answers=go_upstream
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/go/{slug_perm}/": {  # ent=gon;orig=GoUpstream;tag=repo;cmp/resolve=repo;same-path-tag=gon/GET
+    path: "/repos/{owner}/{identifier}/upstream/go/{slug_perm}/": {  # ent=go_upstream;orig=GoUpstream;tag=repo;cmp/resolve=repo;same-path-tag=go_upstream/GET
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
@@ -188,7 +329,7 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/helm/{slug_perm}/": {  # ent=helm;orig=HelmUpstream;tag=repo;cmp/resolve=repo;same-path-tag=helm/GET
+    path: "/repos/{owner}/{identifier}/upstream/helm/{slug_perm}/": {  # ent=helm;orig=HelmUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=HelmUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/helm
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -197,12 +338,22 @@ guide: {
     }
   }
 
+  entity: helm_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/helm/": {  # ent=helm_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=helm_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/helm/": {  # ent=helm_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=helm_package_upload
+      action: "validate_upload": {}  # ent;helm_package_upload;shared-selector;/packages/{owner}/{repo}/upload/helm
+      op: create: method: *POST  # not-load
+    }
+  }
+
   entity: hex: {
     path: "/repos/{owner}/{identifier}/upstream/hex/": {  # ent=hex;orig=HexUpstream;cmp/resolve=hex_upstream;path=t/;path-primary;resplit-from-cmp=hex
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/hex/{slug_perm}/": {  # ent=hex;orig=HexUpstream;tag=repo;cmp/resolve=repo;same-path-tag=hex/GET
+    path: "/repos/{owner}/{identifier}/upstream/hex/{slug_perm}/": {  # ent=hex;orig=HexUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=HexUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/hex
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -211,13 +362,74 @@ guide: {
     }
   }
 
+  entity: hex_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/hex/": {  # ent=hex_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=hex_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/hex/": {  # ent=hex_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=hex_package_upload
+      action: "validate_upload": {}  # ent;hex_package_upload;shared-selector;/packages/{owner}/{repo}/upload/hex
+      op: create: method: *POST  # not-load
+    }
+  }
+
   entity: huggingface: {
     path: "/repos/{owner}/{identifier}/upstream/huggingface/": {  # ent=huggingface;orig=HuggingfaceUpstream;cmp/resolve=huggingface_upstream;path=t/;path-primary;resplit-from-cmp=huggingface
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/huggingface/{slug_perm}/": {  # ent=huggingface;orig=HuggingfaceUpstream;tag=repo;cmp/resolve=repo;same-path-tag=huggingface/GET
+    path: "/repos/{owner}/{identifier}/upstream/huggingface/{slug_perm}/": {  # ent=huggingface;orig=HuggingfaceUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=HuggingfaceUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/huggingface
+      op: load: method: *GET  # end-param
+      op: patch: method: *PATCH  # not-load
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: huggingface_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/huggingface/": {  # ent=huggingface_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=huggingface_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/huggingface/": {  # ent=huggingface_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=huggingface_package_upload
+      action: "validate_upload": {}  # ent;huggingface_package_upload;shared-selector;/packages/{owner}/{repo}/upload/huggingface
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: invite: {
+    path: "/orgs/{org}/invites/": {  # ent=invite;orig=OrganizationInvite;cmp/resolve=organization_invite;path=t/p/t/;path-over-wrapper=OrganizationInvite;has-cmp=OrganizationInvite
+      rename: param: "org": *"org_id"  # parent:org
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/orgs/{org}/invites/{slug_perm}/": {  # ent=invite;orig=OrganizationInvite;tag=org;cmp/resolve=org;path=t/p/;path-over-tag
+      rename: param: "org": *"org_id"  # parent:org
+      rename: param: "slug_perm": *"id"  # end-id;PATCH;parent=true/invite
+      op: patch: method: *PATCH  # not-load
+      op: remove: method: *DELETE  # not-load
+    }
+    path: "/orgs/{org}/invites/{slug_perm}/extend/": {  # ent=invite;orig=OrganizationInvite;cmp/resolve=organization_invite_extend;path=t/p/t/;path-over-wrapper=OrganizationInviteExtend;has-cmp=OrganizationInviteExtend
+      action: "extend": {}  # ent;invite;command;extend
+      rename: param: "org": *"org_id"  # parent:org
+      rename: param: "slug_perm": *"id"  # end-id;PATCH;parent=true/invite
+      op: create: method: *POST  # not-load
+    }
+    path: "/orgs/{org}/invites/{slug_perm}/resend/": {  # ent=invite;orig=OrganizationInvite;cmp/resolve=organization_invite_extend;path=t/p/t/;noun-before-verb=invites;verb-noun=invite
+      action: "resend": {}  # ent;invite;verb-on-parent;resend;POST
+      rename: param: "org": *"org_id"  # parent:org
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: license_policy: {
+    path: "/orgs/{org}/license-policy/": {  # ent=license_policy;orig=OrganizationPackageLicensePolicy;cmp/resolve=organization_package_license_policy;path=t/p/t/;path-over-wrapper=OrganizationPackageLicensePolicy;has-cmp=OrganizationPackageLicensePolicy
+      rename: param: "org": *"org_id"  # parent:org
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/orgs/{org}/license-policy/{slug_perm}/": {  # ent=license_policy;orig=OrganizationPackageLicensePolicy;tag=org;cmp/resolve=org;path=t/p/;path-over-wrapper=OrganizationPackageLicensePolicy
+      rename: param: "org": *"org_id"  # parent:org
+      rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/license_policy
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
@@ -230,12 +442,22 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/maven/{slug_perm}/": {  # ent=maven;orig=MavenUpstream;tag=repo;cmp/resolve=repo;same-path-tag=maven/GET
+    path: "/repos/{owner}/{identifier}/upstream/maven/{slug_perm}/": {  # ent=maven;orig=MavenUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=MavenUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/maven
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: maven_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/maven/": {  # ent=maven_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=maven_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/maven/": {  # ent=maven_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=maven_package_upload
+      action: "validate_upload": {}  # ent;maven_package_upload;shared-selector;/packages/{owner}/{repo}/upload/maven
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -249,18 +471,12 @@ guide: {
     }
   }
 
-  entity: namespace_audit_log: {
-    path: "/audit-log/{owner}/": {  # ent=namespace_audit_log;orig=NamespaceAuditLog;cmp/resolve=namespace_audit_log;path=t/p/;cmp-primary;cmp-infreq
-      op: list: method: *GET  # end-param-page
-    }
-  }
-
   entity: npm: {
     path: "/repos/{owner}/{identifier}/upstream/npm/": {  # ent=npm;orig=NpmUpstream;cmp/resolve=npm_upstream;path=t/;path-primary;resplit-from-cmp=npm
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/npm/{slug_perm}/": {  # ent=npm;orig=NpmUpstream;tag=repo;cmp/resolve=repo;same-path-tag=npm/GET
+    path: "/repos/{owner}/{identifier}/upstream/npm/{slug_perm}/": {  # ent=npm;orig=NpmUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=NpmUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/npm
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -269,17 +485,37 @@ guide: {
     }
   }
 
+  entity: npm_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/npm/": {  # ent=npm_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=npm_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/npm/": {  # ent=npm_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=npm_package_upload
+      action: "validate_upload": {}  # ent;npm_package_upload;shared-selector;/packages/{owner}/{repo}/upload/npm
+      op: create: method: *POST  # not-load
+    }
+  }
+
   entity: nuget: {
     path: "/repos/{owner}/{identifier}/upstream/nuget/": {  # ent=nuget;orig=NugetUpstream;cmp/resolve=nuget_upstream;path=t/;path-primary;resplit-from-cmp=nuget
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/nuget/{slug_perm}/": {  # ent=nuget;orig=NugetUpstream;tag=repo;cmp/resolve=repo;same-path-tag=nuget/GET
+    path: "/repos/{owner}/{identifier}/upstream/nuget/{slug_perm}/": {  # ent=nuget;orig=NugetUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=NugetUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/nuget
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: nuget_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/nuget/": {  # ent=nuget_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=nuget_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/nuget/": {  # ent=nuget_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=nuget_package_upload
+      action: "validate_upload": {}  # ent;nuget_package_upload;shared-selector;/packages/{owner}/{repo}/upload/nuget
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -292,41 +528,34 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
     }
-    path: "/orgs/{org}/license-policy-violation/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=orgs
-      action: "license_policy_violation": {}  # ent;org;no-param;license-policy-violation;GET
+    path: "/orgs/{org}/license-policy-violation/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;view-of-item=org
+      action: "license_policy_violation": {}  # ent;org;verb-on-parent;license-policy-violation;GET
       rename: param: "org": *"id"  # id-parent-ent
-      op: list: method: *GET  # array-prop:results
-      op: list: transform: res: *("`body.results`")|top
-      op: list: transform: page: next: *("`body.next`")|top
+      op: load: method: *GET  # view
     }
-    path: "/orgs/{org}/members/{member}/refresh/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=orgs
-      rename: param: "member": *"member_id"  # parent:member
+    path: "/orgs/{org}/saml-group-sync/disable/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;verb-of-item=org
+      action: "saml_group_sync_disable": {}  # ent;org;verb-on-parent;disable;POST
       rename: param: "org": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
     }
-    path: "/orgs/{org}/members/{member}/remove/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=orgs
-      rename: param: "member": *"member_id"  # parent:member
-      rename: param: "org": *"id"  # id-parent-ent
-      op: load: method: *GET  # no-schema
-    }
-    path: "/orgs/{org}/saml-group-sync/disable/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;path=t/;cmp-primary;cmp-infreq
+    path: "/orgs/{org}/saml-group-sync/enable/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;verb-of-item=org
+      action: "saml_group_sync_enable": {}  # ent;org;verb-on-parent;enable;POST
       rename: param: "org": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
     }
-    path: "/orgs/{org}/saml-group-sync/enable/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;path=t/;cmp-primary;cmp-infreq
+    path: "/orgs/{org}/saml-group-sync/status/": {  # ent=org;orig=Organization;cmp/resolve=organization_group_sync_status;view-of-item=org
+      action: "saml_group_sync_status": {}  # ent;org;verb-on-parent;status;GET
       rename: param: "org": *"id"  # id-parent-ent
-      op: create: method: *POST  # not-load
+      op: load: method: *GET  # view
     }
     path: "/orgs/{org}/saml-group-sync/{slug_perm}/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;path=t/p/;cmp-primary;cmp-infreq
       rename: param: "org": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
     }
-    path: "/orgs/{org}/vulnerability-policy-violation/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=orgs
-      action: "vulnerability_policy_violation": {}  # ent;org;no-param;vulnerability-policy-violation;GET
+    path: "/orgs/{org}/vulnerability-policy-violation/": {  # ent=org;orig=Organization;tag=org;cmp/resolve=org;view-of-item=org
+      action: "vulnerability_policy_violation": {}  # ent;org;verb-on-parent;vulnerability-policy-violation;GET
       rename: param: "org": *"id"  # id-parent-ent
-      op: list: method: *GET  # array-prop:results
-      op: list: transform: res: *("`body.results`")|top
-      op: list: transform: page: next: *("`body.next`")|top
+      op: load: method: *GET  # view
     }
   }
 
@@ -335,38 +564,6 @@ guide: {
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
-    }
-  }
-
-  entity: organization_group_sync_status: {
-    path: "/orgs/{org}/saml-group-sync/status/": {  # ent=organization_group_sync_status;orig=OrganizationGroupSyncStatus;cmp/resolve=organization_group_sync_status;path=t/;cmp-primary;cmp-infreq
-      rename: param: "org": *"org_id"  # parent:org
-      op: load: method: *GET  # not-list
-    }
-  }
-
-  entity: organization_invite: {
-    path: "/orgs/{org}/invites/": {  # ent=organization_invite;orig=OrganizationInvite;cmp/resolve=organization_invite;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=OrganizationInvite
-      rename: param: "org": *"org_id"  # parent:org
-      op: create: method: *POST  # not-load
-      op: list: method: *GET  # array
-    }
-    path: "/orgs/{org}/invites/{slug_perm}/": {  # ent=organization_invite;orig=OrganizationInvite;tag=org;cmp/resolve=org;same-path-tag=organization_invite/PATCH
-      rename: param: "org": *"org_id"  # parent:org
-      rename: param: "slug_perm": *"id"  # end-id;PATCH;parent=true/invite
-      op: patch: method: *PATCH  # not-load
-      op: remove: method: *DELETE  # not-load
-    }
-  }
-
-  entity: organization_invite_extend: {
-    path: "/orgs/{org}/invites/{slug_perm}/extend/": {  # ent=organization_invite_extend;orig=OrganizationInviteExtend;cmp/resolve=organization_invite_extend;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=OrganizationInviteExtend
-      rename: param: "org": *"org_id"  # parent:org
-      op: create: method: *POST  # not-load
-    }
-    path: "/orgs/{org}/invites/{slug_perm}/resend/": {  # ent=organization_invite_extend;orig=OrganizationInviteExtend;cmp/resolve=organization_invite_extend;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=OrganizationInviteExtend
-      rename: param: "org": *"org_id"  # parent:org
-      op: create: method: *POST  # not-load
     }
   }
 
@@ -381,87 +578,61 @@ guide: {
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
     }
-  }
-
-  entity: organization_membership_role_update: {
-    path: "/orgs/{org}/members/{member}/update-role/": {  # ent=organization_membership_role_update;orig=OrganizationMembershipRoleUpdate;cmp/resolve=organization_membership_role_update;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=OrganizationMembershipRoleUpdate
-      rename: param: "member": *"member_id"  # parent:member
-      rename: param: "org": *"org_id"  # parent:org
-      op: patch: method: *PATCH  # not-load
-    }
-  }
-
-  entity: organization_membership_visibility_update: {
-    path: "/orgs/{org}/members/{member}/update-visibility/": {  # ent=organization_membership_visibility_update;orig=OrganizationMembershipVisibilityUpdate;cmp/resolve=organization_membership_visibility_update;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=OrganizationMembershipVisibilityUpdate
-      rename: param: "member": *"member_id"  # parent:member
-      rename: param: "org": *"org_id"  # parent:org
-      op: patch: method: *PATCH  # not-load
-    }
-  }
-
-  entity: organization_package_license_policy: {
-    path: "/orgs/{org}/license-policy/": {  # ent=organization_package_license_policy;orig=OrganizationPackageLicensePolicy;cmp/resolve=organization_package_license_policy;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=OrganizationPackageLicensePolicy
+    path: "/orgs/{org}/members/{member}/refresh/": {  # ent=organization_membership;orig=OrganizationMembership;tag=org;cmp/resolve=org;path=t/p/t/;noun-before-verb=members;path-over-tag;has-cmp=orgs
+      action: "refresh": {}  # ent;member;ent-param-2nd-last;refresh;POST
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
-      op: list: method: *GET  # array
     }
-    path: "/orgs/{org}/license-policy/{slug_perm}/": {  # ent=organization_package_license_policy;orig=OrganizationPackageLicensePolicy;tag=org;cmp/resolve=org;same-path-tag=organization_package_license_policy/GET
+    path: "/orgs/{org}/members/{member}/remove/": {  # ent=organization_membership;orig=OrganizationMembership;tag=org;cmp/resolve=org;view-of-item=organization_membership
+      action: "remove": {}  # ent;organization_membership;verb-on-parent;remove;GET
       rename: param: "org": *"org_id"  # parent:org
-      rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/license_policy
-      op: load: method: *GET  # end-param
+      op: load: method: *GET  # view
+    }
+    path: "/orgs/{org}/members/{member}/update-role/": {  # ent=organization_membership;orig=OrganizationMembership;cmp/resolve=organization_membership_role_update;verb-of-item=organization_membership
+      action: "update_role": {}  # ent;organization_membership;verb-on-parent;update-role;PATCH
+      rename: param: "org": *"org_id"  # parent:org
       op: patch: method: *PATCH  # not-load
-      op: remove: method: *DELETE  # not-load
-      op: update: method: *PUT  # not-load
     }
-  }
-
-  entity: organization_package_vulnerability_policy: {
-    path: "/orgs/{org}/vulnerability-policy/": {  # ent=organization_package_vulnerability_policy;orig=OrganizationPackageVulnerabilityPolicy;cmp/resolve=organization_package_vulnerability_policy;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=OrganizationPackageVulnerabilityPolicy
+    path: "/orgs/{org}/members/{member}/update-visibility/": {  # ent=organization_membership;orig=OrganizationMembership;cmp/resolve=organization_membership_visibility_update;verb-of-item=organization_membership
+      action: "update_visibility": {}  # ent;organization_membership;verb-on-parent;update-visibility;PATCH
       rename: param: "org": *"org_id"  # parent:org
-      op: create: method: *POST  # not-load
-      op: list: method: *GET  # array
-    }
-    path: "/orgs/{org}/vulnerability-policy/{slug_perm}/": {  # ent=organization_package_vulnerability_policy;orig=OrganizationPackageVulnerabilityPolicy;tag=org;cmp/resolve=org;same-path-tag=organization_package_vulnerability_policy/GET
-      rename: param: "org": *"org_id"  # parent:org
-      rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/vulnerability_policy
-      op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
-      op: remove: method: *DELETE  # not-load
-      op: update: method: *PUT  # not-load
     }
   }
 
   entity: organization_saml_auth: {
-    path: "/orgs/{org}/saml-authentication": {  # ent=organization_saml_auth;orig=OrganizationSAMLAuth;cmp/resolve=organization_saml_auth;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=OrganizationSAMLAuth
+    path: "/orgs/{org}/saml-authentication": {  # ent=organization_saml_auth;orig=OrganizationSAMLAuth;cmp/resolve=organization_saml_auth;singleton=organization_saml_auth
       rename: param: "org": *"org_id"  # parent:org
-      op: load: method: *GET  # not-list
+      op: load: method: *GET
       op: patch: method: *PATCH  # not-load
-    }
-  }
-
-  entity: organization_team: {
-    path: "/orgs/{org}/teams/": {  # ent=organization_team;orig=OrganizationTeam;cmp/resolve=organization_team;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=OrganizationTeam
-      rename: param: "org": *"org_id"  # parent:org
-      op: create: method: *POST  # not-load
-      op: list: method: *GET  # array
-    }
-    path: "/orgs/{org}/teams/{team}/": {  # ent=organization_team;orig=OrganizationTeam;tag=org;cmp/resolve=org;same-path-tag=organization_team/GET
-      rename: param: "org": *"org_id"  # parent:org
-      rename: param: "team": *"id"  # end-id;GET;parent=true/team
-      op: load: method: *GET  # end-param
-      op: patch: method: *PATCH  # not-load
-      op: remove: method: *DELETE  # not-load
     }
   }
 
   entity: organization_team_member: {
-    path: "/orgs/{org}/teams/{team}/members": {  # ent=organization_team_member;orig=OrganizationTeamMembers;tag=org;cmp/resolve=org;same-path-tag=organization_team_member/GET
+    path: "/orgs/{org}/teams/{team}/members": {  # ent=organization_team_member;orig=OrganizationTeamMembers;tag=org;cmp/resolve=org;singleton=organization_team_member
       rename: param: "org": *"org_id"  # parent:org
       rename: param: "team": *"team_id"  # parent:team
       op: create: method: *POST  # not-load
-      op: list: method: *GET  # array-prop:members
-      op: list: transform: res: *("`body.members`")|top
+      op: load: method: *GET
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: owner: {
+    path: "/packages/{owner}/{repo}/upload/go/": {  # ent=owner;orig=packages;tag/path=package;cmp/resolve=package;short-literal;infer-param
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/upload/p2/": {  # ent=owner;orig=packages;tag/path=package;cmp/resolve=package;short-literal;infer-param
+      action: "p2": {}  # ent;owner;shared-selector;/packages/{owner}/{repo}/upload/go
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/go/": {  # ent=owner;orig=packages;tag=package;cmp/resolve=package;short-literal;infer-param
+      action: "validate_upload": {}  # ent;owner;shared-selector;/packages/{owner}/{repo}/upload/go
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/p2/": {  # ent=owner;orig=packages;tag=package;cmp/resolve=package;short-literal;infer-param
+      action: "validate_upload_p2": {}  # ent;owner;shared-selector;/packages/{owner}/{repo}/upload/go
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -474,209 +645,61 @@ guide: {
       op: list: method: *GET  # array
     }
     path: "/packages/{owner}/{repo}/groups/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
+      action: "group": {}  # ent;package;ent-keys-2nd-last;groups;GET
       op: list: method: *GET  # array-prop:results
       op: list: transform: res: *("`body.results`")|top
     }
-    path: "/packages/{owner}/{repo}/upload/alpine/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/cargo/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
     path: "/packages/{owner}/{repo}/upload/cocoapods/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/composer/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/conan/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/conda/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/cran/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/dart/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/deb/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/docker/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/go/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/helm/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/hex/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/huggingface/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
+      action: "cocoapods": {}  # ent;package;shared-selector;/packages/{owner}/{repo}/upload/luarocks
       op: create: method: *POST  # not-load
     }
     path: "/packages/{owner}/{repo}/upload/luarocks/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
       op: create: method: *POST  # not-load
     }
-    path: "/packages/{owner}/{repo}/upload/maven/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/npm/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/nuget/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/p2/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/python/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/raw/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/rpm/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/ruby/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/swift/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/terraform/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/upload/vagrant/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/alpine/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/cargo/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
     path: "/packages/{owner}/{repo}/validate-upload/cocoapods/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/composer/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/conan/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/conda/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/cran/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/dart/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/deb/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/docker/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/go/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/helm/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/hex/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/huggingface/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
+      action: "validate_upload_cocoapods": {}  # ent;package;shared-selector;/packages/{owner}/{repo}/upload/luarocks
       op: create: method: *POST  # not-load
     }
     path: "/packages/{owner}/{repo}/validate-upload/luarocks/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/maven/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/npm/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/nuget/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/p2/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/python/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/raw/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/rpm/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/ruby/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/swift/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/terraform/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-    path: "/packages/{owner}/{repo}/validate-upload/vagrant/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq
+      action: "validate_upload": {}  # ent;package;shared-selector;/packages/{owner}/{repo}/upload/luarocks
       op: create: method: *POST  # not-load
     }
     path: "/packages/{owner}/{repo}/{identifier}/": {  # ent=package;orig=PackageUsageMetrics;tag=package;cmp/resolve=package;path=t/p/p;path-primary
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
     }
-    path: "/packages/{owner}/{repo}/{identifier}/copy/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
+    path: "/packages/{owner}/{repo}/{identifier}/copy/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=p/t/;noun-before-verb=packages;path-primary
+      action: "copy": {}  # ent;package;ent-keys-before-last;copy;POST
       op: create: method: *POST  # not-load
     }
     path: "/packages/{owner}/{repo}/{identifier}/dependencies/": {  # ent=package;orig=PackageUsageMetrics;envelope=package_dependency;tag/path=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
+      action: "dependency": {}  # ent;package;ent-keys-before-last;dependencies;GET
       op: list: method: *GET  # array-prop:dependencies
       op: list: transform: res: *("`body.dependencies`")|top
     }
-    path: "/packages/{owner}/{repo}/{identifier}/move/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
+    path: "/packages/{owner}/{repo}/{identifier}/move/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=p/t/;noun-before-verb=packages;path-primary
+      action: "move": {}  # ent;package;ent-keys-before-last;move;POST
       op: create: method: *POST  # not-load
     }
-    path: "/packages/{owner}/{repo}/{identifier}/quarantine/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
+    path: "/packages/{owner}/{repo}/{identifier}/quarantine/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq;command=package_quarantine
+      action: "quarantine": {}  # ent;package;command;package_quarantine
       op: create: method: *POST  # not-load
     }
     path: "/packages/{owner}/{repo}/{identifier}/resync/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
+      action: "resync": {}  # ent;package;ent-keys-before-last;resync;POST
       op: create: method: *POST  # not-load
     }
     path: "/packages/{owner}/{repo}/{identifier}/scan/": {  # ent=package;orig=PackageUsageMetrics;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
+      action: "scan": {}  # ent;package;ent-keys-before-last;scan;POST
       op: create: method: *POST  # not-load
     }
-    path: "/packages/{owner}/{repo}/{identifier}/status/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # not-list
+    path: "/packages/{owner}/{repo}/{identifier}/status/": {  # ent=package;orig=PackageUsageMetrics;tag/path=package;cmp/resolve=package;view-of-item=package
+      action: "status": {}  # ent;package;verb-on-parent;status;GET
+      op: load: method: *GET  # view
     }
     path: "/packages/{owner}/{repo}/{identifier}/tag/": {  # ent=package;orig=PackageUsageMetrics;cmp/resolve=package;path=p/t/;cmp-primary;cmp-infreq
+      action: "tag": {}  # ent;package;ent-keys-before-last;tag;POST
       op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: package_deny_policy: {
-    path: "/orgs/{org}/deny-policy/": {  # ent=package_deny_policy;orig=PackageDenyPolicy;cmp/resolve=package_deny_policy;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=PackageDenyPolicy
-      rename: param: "org": *"org_id"  # parent:org
-      op: create: method: *POST  # not-load
-      op: list: method: *GET  # array
-    }
-    path: "/orgs/{org}/deny-policy/{slug_perm}/": {  # ent=package_deny_policy;orig=PackageDenyPolicy;tag=org;cmp/resolve=org;same-path-tag=package_deny_policy/GET
-      rename: param: "org": *"org_id"  # parent:org
-      rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/deny_policy
-      op: load: method: *GET  # end-param
-      op: patch: method: *PATCH  # not-load
-      op: remove: method: *DELETE  # not-load
-      op: update: method: *PUT  # not-load
     }
   }
 
@@ -687,64 +710,35 @@ guide: {
   }
 
   entity: package_file_upload: {
-    path: "/files/{owner}/{repo}/{identifier}/complete/": {  # ent=package_file_upload;orig=PackageFileUpload;cmp/resolve=package_file_upload;path=p/t/;cmp-primary;cmp-infreq
+    path: "/files/{owner}/{repo}/{identifier}/abort/": {  # ent=package_file_upload;orig=files;tag=file;cmp/resolve=file;path=p/t/;cmp-primary;cmp-infreq;command=package_file_upload
+      action: "abort": {}  # ent;package_file_upload;ent-keys-before-last;abort;POST
+      op: create: method: *POST  # not-load
+    }
+    path: "/files/{owner}/{repo}/{identifier}/complete/": {  # ent=package_file_upload;orig=files;cmp/resolve=package_file_upload;path=p/t/;cmp-primary;cmp-infreq;command=package_file_upload
       op: create: method: *POST  # not-load
     }
   }
 
-  entity: package_license_policy_evaluation: {
-    path: "/orgs/{org}/license-policy/{policy_slug_perm}/evaluation/": {  # ent=package_license_policy_evaluation;orig=PackageLicensePolicyEvaluationRequest;cmp/resolve=package_license_policy_evaluation;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=PackageLicensePolicyEvaluationRequest
-      rename: param: "org": *"org_id"  # parent:org
-      op: create: method: *POST  # not-load
-      op: list: method: *GET  # array
-    }
-    path: "/orgs/{org}/license-policy/{policy_slug_perm}/evaluation/{slug_perm}/": {  # ent=package_license_policy_evaluation;orig=PackageLicensePolicyEvaluationRequest;cmp/resolve=package_license_policy_evaluation;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "org": *"org_id"  # parent:org
-      rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/evaluation
-      op: load: method: *GET  # end-param
-    }
-  }
-
-  entity: package_version_badge: {
-    path: "/badges/version/{owner}/{repo}/{package_format}/{package_name}/{package_version}/{package_identifiers}/": {  # ent=package_version_badge;orig=PackageVersionBadge;cmp/resolve=package_version_badge;path=t/p/p;cmp-primary;cmp-infreq
-      rename: param: "package_identifiers": *"package_identifier"  # snake-case
-      op: load: method: *GET  # end-param
-    }
-  }
-
-  entity: package_vulnerability_policy_evaluation: {
-    path: "/orgs/{org}/vulnerability-policy/{policy_slug_perm}/evaluation/": {  # ent=package_vulnerability_policy_evaluation;orig=PackageVulnerabilityPolicyEvaluationRequest;cmp/resolve=package_vulnerability_policy_evaluation;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=PackageVulnerabilityPolicyEvaluationRequest
-      rename: param: "org": *"org_id"  # parent:org
-      op: create: method: *POST  # not-load
-      op: list: method: *GET  # array
-    }
-    path: "/orgs/{org}/vulnerability-policy/{policy_slug_perm}/evaluation/{slug_perm}/": {  # ent=package_vulnerability_policy_evaluation;orig=PackageVulnerabilityPolicyEvaluationRequest;cmp/resolve=package_vulnerability_policy_evaluation;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "org": *"org_id"  # parent:org
-      rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/evaluation
-      op: load: method: *GET  # end-param
+  entity: privilege: {
+    path: "/repos/{owner}/{identifier}/privileges": {  # ent=privilege;orig=RepositoryPrivilegeDict;tag=repo;cmp/resolve=repo;same-path-tag=privilege/GET
+      op: list: method: *GET  # array-prop:privileges
+      op: list: transform: res: *("`body.privileges`")|top
+      op: patch: method: *PATCH  # not-load
+      op: update: method: *PUT  # not-load
     }
   }
 
   entity: provider_setting: {
-    path: "/orgs/{org}/openid-connect/": {  # ent=provider_setting;orig=ProviderSettings;cmp/resolve=provider_setting;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=ProviderSettings
-      rename: param: "org": *"org_id"  # parent:org
-      op: list: method: *GET  # array
-    }
-    path: "/orgs/{org}/openid-connect/{slug_perm}/": {  # ent=provider_setting;orig=ProviderSettings;tag=org;cmp/resolve=org;same-path-tag=provider_setting/GET
-      rename: param: "org": *"org_id"  # parent:org
-      op: load: method: *GET  # end-param
-      op: remove: method: *DELETE  # not-load
-    }
-  }
-
-  entity: provider_settings_write: {
-    path: "/orgs/{org}/openid-connect/": {  # ent=provider_settings_write;orig=ProviderSettingsWrite;cmp/resolve=provider_settings_write;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=ProviderSettingsWrite
+    path: "/orgs/{org}/openid-connect/": {  # ent=provider_setting;orig=ProviderSettings;cmp/resolve=provider_settings_write;path=t/p/t/;cmp-record=ProviderSettings;has-cmp=ProviderSettings
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
     }
-    path: "/orgs/{org}/openid-connect/{slug_perm}/": {  # ent=provider_settings_write;orig=ProviderSettingsWrite;cmp/resolve=provider_settings_write;path=t/p/;cmp-primary;cmp-infreq
+    path: "/orgs/{org}/openid-connect/{slug_perm}/": {  # ent=provider_setting;orig=ProviderSettings;tag=org;cmp/resolve=org;path=t/p/;cmp-record=ProviderSettings
       rename: param: "org": *"org_id"  # parent:org
+      op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
+      op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
   }
@@ -754,12 +748,22 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/python/{slug_perm}/": {  # ent=python;orig=PythonUpstream;tag=repo;cmp/resolve=repo;same-path-tag=python/GET
+    path: "/repos/{owner}/{identifier}/upstream/python/{slug_perm}/": {  # ent=python;orig=PythonUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=PythonUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/python
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: python_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/python/": {  # ent=python_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=python_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/python/": {  # ent=python_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=python_package_upload
+      action: "validate_upload": {}  # ent;python_package_upload;shared-selector;/packages/{owner}/{repo}/upload/python
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -769,6 +773,7 @@ guide: {
       op: list: transform: res: *("`body.history`")|top
     }
     path: "/quota/oss/history/{owner}/": {  # ent=quota;tag/path=quota;cmp/resolve=quota;path=t/p/;cmp-primary;cmp-infreq
+      action: "oss": {}  # ent;quota;shared-selector;/quota/history/{owner}
       op: list: method: *GET  # end-param-page
       op: list: transform: res: *("`body.history`")|top
     }
@@ -780,6 +785,16 @@ guide: {
       rename: param: "owner": *"id"  # end-id;GET;parent=true/quota
       op: load: method: *GET  # end-param
       op: load: transform: res: *("`body.usage`")|top
+    }
+  }
+
+  entity: raw_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/raw/": {  # ent=raw_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=raw_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/raw/": {  # ent=raw_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=raw_package_upload
+      action: "validate_upload": {}  # ent;raw_package_upload;shared-selector;/packages/{owner}/{repo}/upload/raw
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -796,30 +811,39 @@ guide: {
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
     }
-    path: "/repos/{owner}/{identifier}/geoip/disable/": {  # ent=repo;orig=Repository;tag=repo;cmp/resolve=repo;path=t/;cmp-primary;cmp-infreq
+    path: "/repos/{owner}/{identifier}/geoip/disable/": {  # ent=repo;orig=Repository;tag=repo;cmp/resolve=repo;verb-of-item=repo
+      action: "geoip_disable": {}  # ent;repo;verb-on-parent;disable;POST
       op: create: method: *POST  # not-load
     }
-    path: "/repos/{owner}/{identifier}/geoip/enable/": {  # ent=repo;orig=Repository;tag=repo;cmp/resolve=repo;path=t/;cmp-primary;cmp-infreq
+    path: "/repos/{owner}/{identifier}/geoip/enable/": {  # ent=repo;orig=Repository;tag=repo;cmp/resolve=repo;verb-of-item=repo
+      action: "geoip_enable": {}  # ent;repo;verb-on-parent;enable;POST
       op: create: method: *POST  # not-load
     }
-    path: "/repos/{owner}/{repo}/transfer-region/": {  # ent=repo;orig=Repository;tag=repo;cmp/resolve=repo;path=p/t/;cmp-primary;cmp-infreq
-      action: "transfer_region": {}  # ent;repo;no-param;transfer-region;POST
+    path: "/repos/{owner}/{identifier}/geoip/status/": {  # ent=repo;orig=Repository;cmp/resolve=repository_geo_ip_status;view-of-item=repo
+      action: "geoip_status": {}  # ent;repo;verb-on-parent;status;GET
+      op: load: method: *GET  # view
+    }
+    path: "/repos/{owner}/{identifier}/geoip/test/": {  # ent=repo;orig=Repository;cmp/resolve=repository_geo_ip_test_address;verb-of-item=repo
+      action: "geoip_test": {}  # ent;repo;verb-on-parent;test;POST
       op: create: method: *POST  # not-load
+    }
+    path: "/repos/{owner}/{identifier}/x509-ecdsa/": {  # ent=repo;orig=Repository;cmp/resolve=repository_x509_ecdsa_certificate;view-of-item=repo
+      action: "x509_ecdsa": {}  # ent;repo;verb-on-parent;x509-ecdsa;GET
+      op: load: method: *GET  # view
+    }
+    path: "/repos/{owner}/{identifier}/x509-rsa/": {  # ent=repo;orig=Repository;cmp/resolve=repository_x509_rsa_certificate;view-of-item=repo
+      action: "x509_rsa": {}  # ent;repo;verb-on-parent;x509-rsa;GET
+      op: load: method: *GET  # view
     }
   }
 
-  entity: repository_audit_log: {
-    path: "/audit-log/{owner}/{repo}/": {  # ent=repository_audit_log;orig=RepositoryAuditLog;cmp/resolve=repository_audit_log;path=t/p/p;cmp-primary;cmp-infreq
-      op: list: method: *GET  # array
-    }
-  }
-
-  entity: repository_ecdsa_key: {
-    path: "/repos/{owner}/{identifier}/ecdsa/": {  # ent=repository_ecdsa_key;orig=RepositoryEcdsaKey;cmp/resolve=repository_ecdsa_key;path=p/t/;cmp-primary;cmp-infreq
+  entity: repository_ecdsa_key_create: {
+    path: "/repos/{owner}/{identifier}/ecdsa/": {  # ent=repository_ecdsa_key_create;orig=RepositoryEcdsaKey;cmp/resolve=repository_ecdsa_key;path=p/t/;path-over-wrapper=RepositoryEcdsaKey;command=repository_ecdsa_key_create
       op: create: method: *POST  # not-load
       op: load: method: *GET  # not-list
     }
-    path: "/repos/{owner}/{identifier}/ecdsa/regenerate/": {  # ent=repository_ecdsa_key;orig=RepositoryEcdsaKey;cmp/resolve=repository_ecdsa_key;path=t/;cmp-primary;cmp-infreq
+    path: "/repos/{owner}/{identifier}/ecdsa/regenerate/": {  # ent=repository_ecdsa_key_create;orig=RepositoryEcdsaKey;cmp/resolve=repository_ecdsa_key;path=t/;cmp-primary;cmp-infreq
+      action: "regenerate": {}  # ent;repository_ecdsa_key_create;command;repository_ecdsa_key
       op: create: method: *POST  # not-load
     }
   }
@@ -832,50 +856,31 @@ guide: {
     }
   }
 
-  entity: repository_geo_ip_status: {
-    path: "/repos/{owner}/{identifier}/geoip/status/": {  # ent=repository_geo_ip_status;orig=RepositoryGeoIpStatus;cmp/resolve=repository_geo_ip_status;path=t/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # not-list
-    }
-  }
-
-  entity: repository_geo_ip_test_address: {
-    path: "/repos/{owner}/{identifier}/geoip/test/": {  # ent=repository_geo_ip_test_address;orig=RepositoryGeoIpTestAddressResponse;cmp/resolve=repository_geo_ip_test_address;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: repository_gpg_key: {
-    path: "/repos/{owner}/{identifier}/gpg/": {  # ent=repository_gpg_key;orig=RepositoryGpgKey;cmp/resolve=repository_gpg_key;path=p/t/;cmp-primary;cmp-infreq
+  entity: repository_gpg_key_create: {
+    path: "/repos/{owner}/{identifier}/gpg/": {  # ent=repository_gpg_key_create;orig=RepositoryGpgKey;cmp/resolve=repository_gpg_key;path=p/t/;path-over-wrapper=RepositoryGpgKey;command=repository_gpg_key_create
       op: create: method: *POST  # not-load
       op: load: method: *GET  # not-list
     }
-    path: "/repos/{owner}/{identifier}/gpg/regenerate/": {  # ent=repository_gpg_key;orig=RepositoryGpgKey;cmp/resolve=repository_gpg_key;path=t/;cmp-primary;cmp-infreq
+    path: "/repos/{owner}/{identifier}/gpg/regenerate/": {  # ent=repository_gpg_key_create;orig=RepositoryGpgKey;cmp/resolve=repository_gpg_key;path=t/;cmp-primary;cmp-infreq
+      action: "regenerate": {}  # ent;repository_gpg_key_create;command;repository_gpg_key
       op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: repository_privilege_dict: {
-    path: "/repos/{owner}/{identifier}/privileges": {  # ent=repository_privilege_dict;orig=RepositoryPrivilegeDict;tag=repo;cmp/resolve=repo;same-path-tag=repository_privilege_dict/GET
-      op: list: method: *GET  # array-prop:privileges
-      op: list: transform: res: *("`body.privileges`")|top
-      op: patch: method: *PATCH  # not-load
-      op: update: method: *PUT  # not-load
     }
   }
 
   entity: repository_retention_rule: {
-    path: "/repos/{owner}/{repo}/retention/": {  # ent=repository_retention_rule;orig=RepositoryRetentionRules;cmp/resolve=repository_retention_rule;path=p/t/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # not-list
+    path: "/repos/{owner}/{repo}/retention/": {  # ent=repository_retention_rule;orig=RepositoryRetentionRules;cmp/resolve=repository_retention_rule;singleton=repository_retention_rule
+      op: load: method: *GET
       op: patch: method: *PATCH  # not-load
     }
   }
 
-  entity: repository_rsa_key: {
-    path: "/repos/{owner}/{identifier}/rsa/": {  # ent=repository_rsa_key;orig=RepositoryRsaKey;cmp/resolve=repository_rsa_key;path=p/t/;cmp-primary;cmp-infreq
+  entity: repository_rsa_key_create: {
+    path: "/repos/{owner}/{identifier}/rsa/": {  # ent=repository_rsa_key_create;orig=RepositoryRsaKey;cmp/resolve=repository_rsa_key;path=p/t/;path-over-wrapper=RepositoryRsaKey;command=repository_rsa_key_create
       op: create: method: *POST  # not-load
       op: load: method: *GET  # not-list
     }
-    path: "/repos/{owner}/{identifier}/rsa/regenerate/": {  # ent=repository_rsa_key;orig=RepositoryRsaKey;cmp/resolve=repository_rsa_key;path=t/;cmp-primary;cmp-infreq
+    path: "/repos/{owner}/{identifier}/rsa/regenerate/": {  # ent=repository_rsa_key_create;orig=RepositoryRsaKey;cmp/resolve=repository_rsa_key;path=t/;cmp-primary;cmp-infreq
+      action: "regenerate": {}  # ent;repository_rsa_key_create;command;repository_rsa_key
       op: create: method: *POST  # not-load
     }
   }
@@ -885,46 +890,24 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/entitlements/{owner}/{repo}/{identifier}/": {  # ent=repository_token;orig=RepositoryToken;tag=entitlement;cmp/resolve=entitlement;same-path-tag=repository_token/GET
+    path: "/entitlements/{owner}/{repo}/sync/": {  # ent=repository_token;orig=RepositoryToken;cmp/resolve=repository_token_sync;path=p/t/;noun-before-verb=entitlements;verb-noun=repository_token
+      action: "sync": {}  # ent;repository_token;verb-on-parent;sync;POST
+      op: create: method: *POST  # not-load
+    }
+    path: "/entitlements/{owner}/{repo}/{identifier}/": {  # ent=repository_token;orig=RepositoryToken;tag=entitlement;cmp/resolve=entitlement;path=t/p/p;cmp-record=RepositoryToken
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
     }
-  }
-
-  entity: repository_token_refresh: {
-    path: "/entitlements/{owner}/{repo}/{identifier}/refresh/": {  # ent=repository_token_refresh;orig=RepositoryTokenRefresh;cmp/resolve=repository_token_refresh;path=p/t/;cmp-primary;cmp-infreq
+    path: "/entitlements/{owner}/{repo}/{identifier}/refresh/": {  # ent=repository_token;orig=RepositoryToken;cmp/resolve=repository_token_refresh;path=p/t/;noun-before-verb=entitlements;verb-noun=repository_token
+      action: "refresh": {}  # ent;repository_token;verb-on-parent;refresh;POST
       op: create: method: *POST  # not-load
     }
   }
 
-  entity: repository_token_sync: {
-    path: "/entitlements/{owner}/{repo}/sync/": {  # ent=repository_token_sync;orig=RepositoryTokenSync;cmp/resolve=repository_token_sync;path=p/t/;cmp-primary;cmp-infreq
+  entity: repository_transfer_region: {
+    path: "/repos/{owner}/{repo}/transfer-region/": {  # ent=repository_transfer_region;orig=repos;tag=repo;cmp/resolve=repo;path=p/t/;cmp-primary;cmp-infreq;command=repository_transfer_region
       op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: repository_webhook: {
-    path: "/webhooks/{owner}/{repo}/": {  # ent=repository_webhook;orig=RepositoryWebhook;cmp/resolve=repository_webhook;path=t/p/p;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
-      op: list: method: *GET  # array
-    }
-    path: "/webhooks/{owner}/{repo}/{identifier}/": {  # ent=repository_webhook;orig=RepositoryWebhook;tag=webhook;cmp/resolve=webhook;same-path-tag=repository_webhook/GET
-      op: load: method: *GET  # end-param
-      op: patch: method: *PATCH  # not-load
-      op: remove: method: *DELETE  # not-load
-    }
-  }
-
-  entity: repository_x509_ecdsa_certificate: {
-    path: "/repos/{owner}/{identifier}/x509-ecdsa/": {  # ent=repository_x509_ecdsa_certificate;orig=RepositoryX509EcdsaCertificate;cmp/resolve=repository_x509_ecdsa_certificate;path=p/t/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # not-list
-    }
-  }
-
-  entity: repository_x509_rsa_certificate: {
-    path: "/repos/{owner}/{identifier}/x509-rsa/": {  # ent=repository_x509_rsa_certificate;orig=RepositoryX509RsaCertificate;cmp/resolve=repository_x509_rsa_certificate;path=p/t/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # not-list
     }
   }
 
@@ -940,7 +923,7 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/rpm/{slug_perm}/": {  # ent=rpm;orig=RpmUpstream;tag=repo;cmp/resolve=repo;same-path-tag=rpm/GET
+    path: "/repos/{owner}/{identifier}/upstream/rpm/{slug_perm}/": {  # ent=rpm;orig=RpmUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=RpmUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/rpm
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -949,17 +932,37 @@ guide: {
     }
   }
 
+  entity: rpm_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/rpm/": {  # ent=rpm_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=rpm_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/rpm/": {  # ent=rpm_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=rpm_package_upload
+      action: "validate_upload": {}  # ent;rpm_package_upload;shared-selector;/packages/{owner}/{repo}/upload/rpm
+      op: create: method: *POST  # not-load
+    }
+  }
+
   entity: ruby: {
     path: "/repos/{owner}/{identifier}/upstream/ruby/": {  # ent=ruby;orig=RubyUpstream;cmp/resolve=ruby_upstream;path=t/;path-primary;resplit-from-cmp=ruby
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/ruby/{slug_perm}/": {  # ent=ruby;orig=RubyUpstream;tag=repo;cmp/resolve=repo;same-path-tag=ruby/GET
+    path: "/repos/{owner}/{identifier}/upstream/ruby/{slug_perm}/": {  # ent=ruby;orig=RubyUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=RubyUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/ruby
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: ruby_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/ruby/": {  # ent=ruby_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=ruby_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/ruby/": {  # ent=ruby_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=ruby_package_upload
+      action: "validate_upload": {}  # ent;ruby_package_upload;shared-selector;/packages/{owner}/{repo}/upload/ruby
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -969,15 +972,15 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/orgs/{org}/services/{service}/": {  # ent=service;orig=Service;tag=org;cmp/resolve=org;same-path-tag=service/GET
+    path: "/orgs/{org}/services/{service}/": {  # ent=service;orig=Service;tag=org;cmp/resolve=org;path=t/p/;path-over-tag
       rename: param: "org": *"org_id"  # parent:org
       rename: param: "service": *"id"  # end-id;GET;parent=true/service
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
     }
-    path: "/orgs/{org}/services/{service}/refresh/": {  # ent=service;orig=Service;cmp/resolve=service;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Service
-      action: "refresh": {}  # ent;service;no-param;refresh;POST
+    path: "/orgs/{org}/services/{service}/refresh/": {  # ent=service;orig=Service;cmp/resolve=service;path=t/p/t/;noun-before-verb=services;verb-noun=service
+      action: "refresh": {}  # ent;service;verb-on-parent;refresh;POST
       rename: param: "org": *"org_id"  # parent:org
       rename: param: "service": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
@@ -1005,7 +1008,7 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/repos/{owner}/{identifier}/upstream/swift/{slug_perm}/": {  # ent=swift;orig=SwiftUpstream;tag=repo;cmp/resolve=repo;same-path-tag=swift/GET
+    path: "/repos/{owner}/{identifier}/upstream/swift/{slug_perm}/": {  # ent=swift;orig=SwiftUpstream;tag=repo;cmp/resolve=repo;path=t/p/;path-over-wrapper=SwiftUpstream
       rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/swift
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
@@ -1014,21 +1017,56 @@ guide: {
     }
   }
 
-  entity: user_auth_token: {
-    path: "/user/token/": {  # ent=user_auth_token;orig=UserAuthToken;cmp/resolve=user_auth_token;path=t/;cmp-primary;cmp-infreq
+  entity: swift_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/swift/": {  # ent=swift_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=swift_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/swift/": {  # ent=swift_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=swift_package_upload
+      action: "validate_upload": {}  # ent;swift_package_upload;shared-selector;/packages/{owner}/{repo}/upload/swift
       op: create: method: *POST  # not-load
     }
   }
 
-  entity: user_authentication_token: {
-    path: "/user/tokens/": {  # ent=user_authentication_token;orig=UserAuthenticationToken;cmp/resolve=user_authentication_token;path=t/;cmp-primary;cmp-infreq
-      action: "token": {}  # ent;user;no-param;tokens;GET
+  entity: team: {
+    path: "/orgs/{org}/teams/": {  # ent=team;orig=OrganizationTeam;cmp/resolve=organization_team;path=t/p/t/;path-over-wrapper=OrganizationTeam;has-cmp=OrganizationTeam
+      rename: param: "org": *"org_id"  # parent:org
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/orgs/{org}/teams/{team}/": {  # ent=team;orig=OrganizationTeam;tag=org;cmp/resolve=org;path=t/p/;path-over-tag
+      rename: param: "org": *"org_id"  # parent:org
+      rename: param: "team": *"id"  # end-id;GET;parent=true/team
+      op: load: method: *GET  # end-param
+      op: patch: method: *PATCH  # not-load
+      op: remove: method: *DELETE  # not-load
+    }
+  }
+
+  entity: terraform_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/terraform/": {  # ent=terraform_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=terraform_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/terraform/": {  # ent=terraform_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=terraform_package_upload
+      action: "validate_upload": {}  # ent;terraform_package_upload;shared-selector;/packages/{owner}/{repo}/upload/terraform
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: token: {
+    path: "/user/tokens/": {  # ent=token;orig=user;cmp/resolve=user_authentication_token;path=t/;path-over-wrapper=UserAuthenticationToken
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:results
       op: list: transform: res: *("`body.results`")|top
     }
-    path: "/user/tokens/{slug_perm}/refresh/": {  # ent=user_authentication_token;orig=UserAuthenticationToken;cmp/resolve=user_authentication_token;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=UserAuthenticationToken
+    path: "/user/tokens/{slug_perm}/refresh/": {  # ent=token;orig=user;cmp/resolve=user_authentication_token;path=t/p/t/;noun-before-verb=tokens;verb-noun=token
+      action: "refresh": {}  # ent;token;verb-on-parent;refresh;PUT
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: user_auth_token: {
+    path: "/user/token/": {  # ent=user_auth_token;orig=UserAuthToken;cmp/resolve=user_auth_token;path=t/;path-over-wrapper=UserAuthToken;command=user_auth_token
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -1039,8 +1077,25 @@ guide: {
   }
 
   entity: user_profile: {
-    path: "/users/profile/{slug}/": {  # ent=user_profile;orig=UserProfile;cmp/resolve=user_profile;path=t/p/;cmp-primary;cmp-infreq
+    path: "/users/profile/{slug}/": {  # ent=user_profile;orig=UserProfile;cmp/resolve=user_profile;path=t/p/;cmp-record=UserProfile
       rename: param: "slug": *"id"  # end-id;GET;parent=true/profile
+      op: load: method: *GET  # end-param
+    }
+  }
+
+  entity: vagrant_package_upload: {
+    path: "/packages/{owner}/{repo}/upload/vagrant/": {  # ent=vagrant_package_upload;orig=packages;tag/path=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=vagrant_package_upload
+      op: create: method: *POST  # not-load
+    }
+    path: "/packages/{owner}/{repo}/validate-upload/vagrant/": {  # ent=vagrant_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=vagrant_package_upload
+      action: "validate_upload": {}  # ent;vagrant_package_upload;shared-selector;/packages/{owner}/{repo}/upload/vagrant
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: version: {
+    path: "/badges/version/{owner}/{repo}/{package_format}/{package_name}/{package_version}/{package_identifiers}/": {  # ent=version;orig=PackageVersionBadge;cmp/resolve=package_version_badge;path=t/p/p;path-over-wrapper=PackageVersionBadge
+      rename: param: "package_identifiers": *"package_identifier"  # snake-case
       op: load: method: *GET  # end-param
     }
   }
@@ -1055,8 +1110,36 @@ guide: {
     path: "/vulnerabilities/{owner}/{repo}/{package}/": {  # ent=vulnerability;orig=vulnerabilities;tag/path=vulnerability;cmp/resolve=vulnerability;path=t/p/p;path-primary
       op: list: method: *GET  # array
     }
-    path: "/vulnerabilities/{owner}/{repo}/{package}/{identifier}/": {  # ent=vulnerability;orig=vulnerabilities;tag/path=vulnerability;cmp/resolve=vulnerability;path=t/p/p;path-primary
+    path: "/vulnerabilities/{owner}/{repo}/{package}/{identifier}/": {  # ent=vulnerability;orig=vulnerabilities;wrapper=vulnerability_scan_result>vulnerability_scan;tag/path=vulnerability;cmp/resolve=vulnerability;path=t/p/p;path-primary
       op: load: method: *GET  # end-param
+    }
+  }
+
+  entity: vulnerability_policy: {
+    path: "/orgs/{org}/vulnerability-policy/": {  # ent=vulnerability_policy;orig=OrganizationPackageVulnerabilityPolicy;cmp/resolve=organization_package_vulnerability_policy;path=t/p/t/;path-over-wrapper=OrganizationPackageVulnerabilityPolicy;has-cmp=OrganizationPackageVulnerabilityPolicy
+      rename: param: "org": *"org_id"  # parent:org
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/orgs/{org}/vulnerability-policy/{slug_perm}/": {  # ent=vulnerability_policy;orig=OrganizationPackageVulnerabilityPolicy;tag=org;cmp/resolve=org;path=t/p/;path-over-wrapper=OrganizationPackageVulnerabilityPolicy
+      rename: param: "org": *"org_id"  # parent:org
+      rename: param: "slug_perm": *"id"  # end-id;GET;parent=true/vulnerability_policy
+      op: load: method: *GET  # end-param
+      op: patch: method: *PATCH  # not-load
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: webhook: {
+    path: "/webhooks/{owner}/{repo}/": {  # ent=webhook;orig=RepositoryWebhook;cmp/resolve=repository_webhook;path=t/p/p;path-over-wrapper=RepositoryWebhook
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array
+    }
+    path: "/webhooks/{owner}/{repo}/{identifier}/": {  # ent=webhook;orig=RepositoryWebhook;tag=webhook;cmp/resolve=webhook;path=t/p/p;path-primary
+      op: load: method: *GET  # end-param
+      op: patch: method: *PATCH  # not-load
+      op: remove: method: *DELETE  # not-load
     }
   }
 

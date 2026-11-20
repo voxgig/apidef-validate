@@ -5,11 +5,141 @@ main: kit: entity: snippet: {
   alias: field: {}
 
   fields: {
+    author: {
+      h: "Author"
+      n: "author"
+      r: false
+      sh: "API_Entities_UserBasic model"
+      t: "`$OBJECT`"
+    }
+    content: {
+      h: "Content"
+      n: "content"
+      r: false
+      sh: "The content of a snippet"
+      t: "`$STRING`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      sh: "The description of a snippet"
+      t: "`$STRING`"
+    }
+    file_name: {
+      h: "File Name"
+      n: "file_name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The name of a snippet file"
+      t: "`$STRING`"
+    }
+    files: {
+      h: "Files"
+      n: "files"
+      r: false
+      sh: "An array of files"
+      t: "`$ARRAY`"
+    }
+    http_url_to_repo: {
+      h: "Http Url To Repo"
+      n: "http_url_to_repo"
+      r: false
+      t: "`$STRING`"
+    }
     id: {
+      fo: "int32"
       h: "Id"
       n: "id"
       r: false
-      syn: true
+      t: "`$INTEGER`"
+    }
+    imported: {
+      h: "Imported"
+      n: "imported"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    imported_from: {
+      h: "Imported From"
+      n: "imported_from"
+      r: false
+      t: "`$STRING`"
+    }
+    project_id: {
+      fo: "int32"
+      h: "Project Id"
+      n: "project_id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    raw_url: {
+      h: "Raw Url"
+      n: "raw_url"
+      r: false
+      t: "`$STRING`"
+    }
+    repository_storage: {
+      h: "Repository Storage"
+      n: "repository_storage"
+      r: false
+      t: "`$STRING`"
+    }
+    ssh_url_to_repo: {
+      h: "Ssh Url To Repo"
+      n: "ssh_url_to_repo"
+      r: false
+      t: "`$STRING`"
+    }
+    title: {
+      h: "Title"
+      n: "title"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The title of the snippet"
+      t: "`$STRING`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
+    }
+    visibility: {
+      h: "Visibility"
+      n: "visibility"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The visibility of the snippet"
+      t: "`$STRING`"
+    }
+    web_url: {
+      h: "Web Url"
+      n: "web_url"
+      r: false
       t: "`$STRING`"
     }
   }
@@ -21,12 +151,20 @@ main: kit: entity: snippet: {
 
   name: "snippet"
   op: {
-    load: {
-      name: "load"
+    create: {
+      name: "create"
       points: [
         {
+          bf: [
+            "content"
+            "description"
+            "file_name"
+            "files"
+            "title"
+            "visibility"
+          ]
           co: {
-            id: "GET /api/v4/snippets/{id}/files/{ref}/{file_path}/raw"
+            id: "POST /api/v4/projects/{id}/snippets"
             source: "swagger2"
             version: 2
           }
@@ -34,18 +172,466 @@ main: kit: entity: snippet: {
             params: [
               {
                 k: "param"
-                n: "file_id"
-                or: "ref"
+                n: "project_id"
+                or: "id"
                 r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/snippets"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "snippets"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "content"
+            "description"
+            "file_name"
+            "files"
+            "title"
+            "visibility"
+          ]
+          co: {
+            id: "POST /api/v4/snippets"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/api/v4/snippets"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "snippets"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/snippets"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/snippets"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "snippets"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/snippets"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "created_after"
+                or: "created_after"
+                r: false
+                style: "form"
                 t: "`$STRING`"
               }
               {
+                explode: true
+                k: "query"
+                n: "created_before"
+                or: "created_before"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/snippets"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "snippets"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/snippets/public"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "created_after"
+                or: "created_after"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "created_before"
+                or: "created_before"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/snippets/public"
+          q: {
+            "$action": "public"
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              lit: "public"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/snippets/{snippet_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
                 k: "param"
-                n: "file_path"
-                or: "file_path"
+                n: "id"
+                or: "snippet_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
                 r: true
                 t: "`$STRING`"
               }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/snippets/{snippet_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              snippet_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/snippets/{snippet_id}/user_agent_detail"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "snippet_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/snippets/{snippet_id}/user_agent_detail"
+          q: {
+            "$action": "user_agent_detail"
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              snippet_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "user_agent_detail"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/snippets/{id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
               {
                 k: "param"
                 n: "id"
@@ -56,18 +642,15 @@ main: kit: entity: snippet: {
             ]
           }
           m: "GET"
-          o: "/api/v4/snippets/{id}/files/{ref}/{file_path}/raw"
+          o: "/api/v4/snippets/{id}"
           q: {
             exist: [
-              "file_id"
-              "file_path"
               "id"
             ]
           }
-          r: {
-            param: {
-              ref: "file_id"
-            }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -81,18 +664,6 @@ main: kit: entity: snippet: {
             }
             {
               var: "id"
-            }
-            {
-              lit: "files"
-            }
-            {
-              var: "file_id"
-            }
-            {
-              var: "file_path"
-            }
-            {
-              lit: "raw"
             }
           ]
           t: {
@@ -147,10 +718,314 @@ main: kit: entity: snippet: {
             res: "`body`"
           }
         }
+        {
+          co: {
+            id: "GET /api/v4/snippets/{id}/user_agent_detail"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/snippets/{id}/user_agent_detail"
+          q: {
+            "$action": "user_agent_detail"
+            exist: [
+              "id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "user_agent_detail"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/snippets/{snippet_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "snippet_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/snippets/{snippet_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              snippet_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /api/v4/snippets/{id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/snippets/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "content"
+            "description"
+            "file_name"
+            "files"
+            "title"
+            "visibility"
+          ]
+          co: {
+            id: "PUT /api/v4/projects/{id}/snippets/{snippet_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "snippet_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/snippets/{snippet_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              snippet_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "content"
+            "description"
+            "file_name"
+            "files"
+            "title"
+            "visibility"
+          ]
+          co: {
+            id: "PUT /api/v4/snippets/{id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/snippets/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "snippets"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
       ]
     }
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+  ]
 
 }

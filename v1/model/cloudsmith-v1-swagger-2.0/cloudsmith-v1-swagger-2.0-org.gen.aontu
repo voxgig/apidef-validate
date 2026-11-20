@@ -77,66 +77,6 @@ main: kit: entity: org: {
       points: [
         {
           co: {
-            id: "POST /orgs/{org}/members/{member}/refresh/"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "member_id"
-                or: "member"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/orgs/{org}/members/{member}/refresh/"
-          q: {
-            exist: [
-              "id"
-              "member_id"
-            ]
-          }
-          r: {
-            param: {
-              member: "member_id"
-              org: "id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "members"
-            }
-            {
-              var: "member_id"
-            }
-            {
-              lit: "refresh"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "POST /orgs/{org}/saml-group-sync/disable/"
             source: "swagger2"
             version: 2
@@ -155,6 +95,7 @@ main: kit: entity: org: {
           m: "POST"
           o: "/orgs/{org}/saml-group-sync/disable/"
           q: {
+            "$action": "saml_group_sync_disable"
             exist: [
               "id"
             ]
@@ -203,6 +144,7 @@ main: kit: entity: org: {
           m: "POST"
           o: "/orgs/{org}/saml-group-sync/enable/"
           q: {
+            "$action": "saml_group_sync_enable"
             exist: [
               "id"
             ]
@@ -236,6 +178,101 @@ main: kit: entity: org: {
     list: {
       name: "list"
       points: [
+        {
+          co: {
+            id: "GET /orgs/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "page_size"
+                or: "page_size"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              org: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "GET /orgs/{org}/license-policy-violation/"
@@ -302,11 +339,61 @@ main: kit: entity: org: {
             }
           ]
           t: {
-            page: {
-              next: "`body.next`"
-            }
             req: "`reqdata`"
-            res: "`body.results`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/saml-group-sync/status/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/saml-group-sync/status/"
+          q: {
+            "$action": "saml_group_sync_status"
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              org: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "saml-group-sync"
+            }
+            {
+              lit: "status"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
           }
         }
         {
@@ -372,164 +459,6 @@ main: kit: entity: org: {
             }
             {
               lit: "vulnerability-policy-violation"
-            }
-          ]
-          t: {
-            page: {
-              next: "`body.next`"
-            }
-            req: "`reqdata`"
-            res: "`body.results`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            query: [
-              {
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "page_size"
-                or: "page_size"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/"
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    load: {
-      name: "load"
-      points: [
-        {
-          co: {
-            id: "GET /orgs/{org}/members/{member}/remove/"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "member_id"
-                or: "member"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/members/{member}/remove/"
-          q: {
-            exist: [
-              "id"
-              "member_id"
-            ]
-          }
-          r: {
-            param: {
-              member: "member_id"
-              org: "id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "members"
-            }
-            {
-              var: "member_id"
-            }
-            {
-              lit: "remove"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          r: {
-            param: {
-              org: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "id"
             }
           ]
           t: {

@@ -1,0 +1,125 @@
+# Entity: github_owned
+
+main: kit: entity: github_owned: {
+
+  alias: field: {}
+
+  fields: {
+    display_name: {
+      h: "Display Name"
+      n: "display_name"
+      r: true
+      sh: "Display name for this image."
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "The ID of the image."
+      t: "`$STRING`"
+    }
+    platform: {
+      h: "Platform"
+      n: "platform"
+      r: true
+      sh: "The operating system of the image."
+      t: "`$STRING`"
+    }
+    size_gb: {
+      h: "Size Gb"
+      n: "size_gb"
+      r: true
+      sh: "Image size in GB."
+      t: "`$INTEGER`"
+    }
+    source: {
+      h: "Source"
+      n: "source"
+      r: true
+      sh: "The image provider."
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "github_owned"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/hosted-runners/images/github-owned"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/hosted-runners/images/github-owned"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "hosted-runners"
+            }
+            {
+              lit: "images"
+            }
+            {
+              lit: "github-owned"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.images`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.org")]
+  ]
+
+}

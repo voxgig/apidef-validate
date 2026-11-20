@@ -9,12 +9,20 @@ main: kit: entity: blob: {
       h: "Content"
       n: "content"
       r: true
+      sh: "The new blob's content."
       t: "`$STRING`"
     }
     encoding: {
       h: "Encoding"
       n: "encoding"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
+      sh: "The encoding used for `content`."
       t: "`$STRING`"
     }
     highlighted_content: {
@@ -70,6 +78,73 @@ main: kit: entity: blob: {
 
   name: "blob"
   op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "content"
+            "encoding"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/git/blobs"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/git/blobs"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "git"
+            }
+            {
+              lit: "blobs"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [

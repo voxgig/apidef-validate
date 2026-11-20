@@ -111,14 +111,15 @@ guide: {
   }
 
   entity: send_transfer: {
-    path: "/api/V1/SendTransfer": {  # ent=send_transfer;orig=SendTransferResponse;cmp/resolve=send_transfer;path=t/;path-primary
+    path: "/api/V1/SendTransfer": {  # ent=send_transfer;orig=SendTransferResponse;cmp/resolve=send_transfer;path=t/;path-primary;command=send_transfer
       op: create: method: *POST  # not-load
     }
   }
 
   entity: transfer_record: {
-    path: "/api/V1/ListTransferRecords": {  # ent=transfer_record;orig=ListTransferRecordsResponse;cmp/resolve=transfer_record;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
+    path: "/api/V1/ListTransferRecords": {  # ent=transfer_record;orig=ListTransferRecordsResponse;cmp/resolve=transfer_record;path=t/;cmp-primary;cmp-infreq;post-read=list
+      op: list: method: *POST  # post-read
+      op: list: transform: res: *("`body.Items`")|top
     }
   }
 

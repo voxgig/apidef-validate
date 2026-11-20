@@ -1,0 +1,103 @@
+# Entity: packages_idpackage_name_versionpackage_version
+
+main: kit: entity: packages_idpackage_name_versionpackage_version: {
+
+  alias: field: {}
+
+  name: "packages_idpackage_name_versionpackage_version"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{project_id}/packages/nuget/v2/Packages\\(Id='*package_name',Version='*package_version'\\)"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "project_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "mynugetpkg"
+                explode: true
+                k: "query"
+                n: "package_name"
+                or: "package_name"
+                r: true
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "1.3.0.17"
+                explode: true
+                k: "query"
+                n: "package_version"
+                or: "package_version"
+                r: true
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{project_id}/packages/nuget/v2/Packages\\(Id='*package_name',Version='*package_version'\\)"
+          q: {
+            exist: [
+              "package_name"
+              "package_version"
+              "project_id"
+            ]
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "packages"
+            }
+            {
+              lit: "nuget"
+            }
+            {
+              lit: "v2"
+            }
+            {
+              lit: "Packages\\(Id='*package_name',Version='*package_version'\\)"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  fields: {
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+  ]
+
+}

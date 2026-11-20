@@ -1,0 +1,92 @@
+# Entity: api_v4_namespaces_id_storage_limit_exclusion
+
+main: kit: entity: api_v4_namespaces_id_storage_limit_exclusion: {
+
+  alias: field: {}
+
+  fields: {
+    reason: {
+      h: "Reason"
+      n: "reason"
+      r: true
+      sh: "The reason the Namespace is being excluded"
+      t: "`$STRING`"
+    }
+  }
+
+  name: "api_v4_namespaces_id_storage_limit_exclusion"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "reason"
+          ]
+          co: {
+            id: "POST /api/v4/namespaces/{id}/storage/limit_exclusion"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "namespace_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/namespaces/{id}/storage/limit_exclusion"
+          q: {
+            exist: [
+              "namespace_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "namespace_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "namespaces"
+            }
+            {
+              var: "namespace_id"
+            }
+            {
+              lit: "storage"
+            }
+            {
+              lit: "limit_exclusion"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.namespace")]
+  ]
+
+}

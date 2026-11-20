@@ -8,6 +8,42 @@ guide: {
   metrics: count: path: 85
   metrics: count: method: 155
 
+  entity: access_token: {
+    path: "/spaces/{space_id}/environments/{environment_id}/app_installations/{app_definition_id}/access_tokens": {  # ent=access_token;orig=App access token;tag=app_access_token;cmp/resolve=app_access_token;path=t/p/t/;path-over-tag;has-cmp=App access token
+      rename: param: "app_definition_id": *"app_installation_id"  # parent:app_installation
+      op: create: method: *POST  # not-load
+    }
+    path: "/users/me/access_tokens": {  # ent=access_token;orig=App access token;tag=personal_access_token;cmp/resolve=personal_access_token;path=t/;path-over-tag
+      op: create: method: *POST  # not-load
+      op: load: method: *GET  # no-schema
+    }
+    path: "/users/me/access_tokens/{token_id}": {  # ent=access_token;orig=App access token;tag=personal_access_token;cmp/resolve=personal_access_token;path=t/p/;path-over-tag
+      rename: param: "token_id": *"id"  # end-id;GET;parent=true/access_token
+      op: load: method: *GET  # end-param
+    }
+    path: "/users/me/access_tokens/{token_id}/revoked": {  # ent=access_token;orig=App access token;tag=personal_access_token;cmp/resolve=personal_access_token;collection-tag=access_token
+      action: "revoked": {}  # ent;access_token;verb-on-parent;revoked;PUT
+      rename: param: "token_id": *"id"  # id-parent-ent
+      op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: action: {
+    path: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/actions/{bulk_action_id}": {  # ent=action;orig=Bulk Actions;tag=bulk_action;cmp/resolve=bulk_action;path=t/p/;path-over-tag
+      rename: param: "bulk_action_id": *"id"  # end-id;GET;parent=true/action
+      op: load: method: *GET  # end-param
+    }
+    path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/actions": {  # ent=action;orig=Bulk Actions;tag=release;cmp/resolve=release;path=t/p/t/;path-over-tag;has-cmp=Releases
+      rename: param: "releases_id": *"release_id"  # parent:release
+      op: load: method: *GET  # no-schema
+    }
+    path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/actions/{release_action_id}": {  # ent=action;orig=Bulk Actions;tag=release;cmp/resolve=release;path=t/p/;path-over-tag
+      rename: param: "release_action_id": *"id"  # end-id;GET;parent=true/action
+      rename: param: "releases_id": *"release_id"  # parent:release
+      op: load: method: *GET  # end-param
+    }
+  }
+
   entity: api_key: {
     path: "/spaces/{space_id}/api_keys": {  # ent=api_key;orig=API keys;tag=api_key;cmp/resolve=api_key;path=t/p/t/;path-primary;has-cmp=API keys
       op: create: method: *POST  # not-load
@@ -18,19 +54,6 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
-    }
-    path: "/spaces/{space_id}/preview_api_keys": {  # ent=api_key;orig=API keys;tag=api_key;cmp/resolve=api_key;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=API keys
-      op: load: method: *GET  # no-schema
-    }
-    path: "/spaces/{space_id}/preview_api_keys/{preview_api_key_id}": {  # ent=api_key;orig=API keys;tag=api_key;cmp/resolve=api_key;path=t/p/;cmp-primary;cmp-infreq
-      op: load: method: *GET  # end-param
-    }
-  }
-
-  entity: app_access_token: {
-    path: "/spaces/{space_id}/environments/{environment_id}/app_installations/{app_definition_id}/access_tokens": {  # ent=app_access_token;orig=App access token;tag=app_access_token;cmp/resolve=app_access_token;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=App access token
-      rename: param: "app_definition_id": *"app_installation_id"  # parent:app_installation
-      op: create: method: *POST  # not-load
     }
   }
 
@@ -57,11 +80,17 @@ guide: {
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-  }
-
-  entity: app_event_subscription: {
-    path: "/organizations/{organization_id}/app_definitions/{app_definition_id}/event_subscription": {  # ent=app_event_subscription;orig=App event subscriptions;tag=app_event_subscription;cmp/resolve=app_event_subscription;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=App event subscriptions
-      op: load: method: *GET  # no-schema
+    path: "/organizations/{organization_id}/app_definitions/{app_definition_id}/event_subscription": {  # ent=app_definition;orig=App definitions;tag=app_event_subscription;cmp/resolve=app_event_subscription;same-path-tag=app_definition/GET
+      action: "event_subscription": {}  # ent;app_definition;verb-on-parent;event_subscription;GET
+      rename: param: "app_definition_id": *"id"  # id-parent-ent
+      op: load: method: *GET  # view
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+    path: "/organizations/{organization_id}/app_definitions/{app_definition_id}/signing_secret": {  # ent=app_definition;orig=App definitions;tag=app_signing_secret;cmp/resolve=app_signing_secret;same-path-tag=app_definition/GET
+      action: "signing_secret": {}  # ent;app_definition;verb-on-parent;signing_secret;GET
+      rename: param: "app_definition_id": *"id"  # id-parent-ent
+      op: load: method: *GET  # view
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
@@ -74,33 +103,6 @@ guide: {
     path: "/spaces/{space_id}/environments/{environment_id}/app_installations/{app_definition_id}": {  # ent=app_installation;orig=App Installations;tag=app_installation;cmp/resolve=app_installation;path=t/p/;path-primary
       rename: param: "app_definition_id": *"id"  # end-id;GET;parent=true/app_installation
       op: load: method: *GET  # end-param
-      op: remove: method: *DELETE  # not-load
-      op: update: method: *PUT  # not-load
-    }
-  }
-
-  entity: app_key: {
-    path: "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys": {  # ent=app_key;orig=App keys;tag=app_key;cmp/resolve=app_key;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=App keys
-      op: create: method: *POST  # not-load
-      op: load: method: *GET  # no-schema
-    }
-    path: "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys/{key_kid}": {  # ent=app_key;orig=App keys;tag=app_key;cmp/resolve=app_key;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "key_kid": *"id"  # end-id;GET;parent=true/key
-      op: load: method: *GET  # end-param
-      op: remove: method: *DELETE  # not-load
-    }
-  }
-
-  entity: app_signed_request: {
-    path: "/organizations/{organization_id}/app_instalations/{app_definition_id}/signed_request": {  # ent=app_signed_request;orig=App signed request;tag=app_signed_request;cmp/resolve=app_signed_request;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=App signed request
-      rename: param: "app_definition_id": *"app_instalation_id"  # parent:app_instalation
-      op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: app_signing_secret: {
-    path: "/organizations/{organization_id}/app_definitions/{app_definition_id}/signing_secret": {  # ent=app_signing_secret;orig=App signing secret;tag=app_signing_secret;cmp/resolve=app_signing_secret;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=App signing secret
-      op: load: method: *GET  # no-schema
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
@@ -131,10 +133,6 @@ guide: {
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-    path: "/spaces/{space_id}/environments/{environment_id}/assets/{asset_id}/files/{locale_code}/process": {  # ent=asset;orig=Assets;tag=asset;cmp/resolve=asset;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Assets
-      rename: param: "asset_id": *"id"  # id-parent-ent
-      op: update: method: *PUT  # not-load
-    }
     path: "/spaces/{space_id}/environments/{environment_id}/assets/{asset_id}/published": {  # ent=asset;orig=Assets;tag=asset;cmp/resolve=asset;path=t/p/t/;verb-on-parent=asset
       action: "published": {}  # ent;asset;verb-on-parent;published;PUT
       rename: param: "asset_id": *"id"  # id-parent-ent
@@ -142,49 +140,18 @@ guide: {
       op: update: method: *PUT  # not-load
     }
     path: "/spaces/{space_id}/environments/{environment_id}/public/assets": {  # ent=asset;orig=Assets;tag=asset;cmp/resolve=asset;path=t/;path-primary
+      action: "public": {}  # ent;asset;shared-selector;/spaces/{space_id}/environments/{environment_id}/assets
       op: load: method: *GET  # no-schema
     }
   }
 
-  entity: assets_key: {
-    path: "/spaces/{space_id}/environments/{environment_id}/asset_keys": {  # ent=assets_key;orig=Assets keys;tag=assets_key;cmp/resolve=assets_key;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Assets keys
-      op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: bulk_action: {
-    path: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/actions/{bulk_action_id}": {  # ent=bulk_action;orig=Bulk Actions;tag=bulk_action;cmp/resolve=bulk_action;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "bulk_action_id": *"id"  # end-id;GET;parent=true/action
-      op: load: method: *GET  # end-param
-    }
-    path: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/publish": {  # ent=bulk_action;orig=Bulk Actions;tag=bulk_action;cmp/resolve=bulk_action;path=t/;cmp-primary;cmp-infreq
-      action: "publish": {}  # ent;bulk_action;no-param;publish;POST
-      op: create: method: *POST  # not-load
-    }
-    path: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/unpublish": {  # ent=bulk_action;orig=Bulk Actions;tag=bulk_action;cmp/resolve=bulk_action;path=t/;cmp-primary;cmp-infreq
-      action: "unpublish": {}  # ent;bulk_action;no-param;unpublish;POST
-      op: create: method: *POST  # not-load
-    }
-    path: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/validate": {  # ent=bulk_action;orig=Bulk Actions;tag=bulk_action;cmp/resolve=bulk_action;path=t/;cmp-primary;cmp-infreq
-      action: "validate": {}  # ent;bulk_action;no-param;validate;POST
-      op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: content_tag: {
-    path: "/spaces/{space_id}/environments/{environment_id}/tags": {  # ent=content_tag;orig=Content tags;tag=content_tag;cmp/resolve=content_tag;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Content tags
+  entity: call: {
+    path: "/spaces/{space_id}/webhooks/{webhook_id}/calls": {  # ent=call;orig=Webhook;tag=webhook;cmp/resolve=webhook;path=t/p/t/;path-over-tag;has-cmp=Webhook
       op: load: method: *GET  # no-schema
     }
-    path: "/spaces/{space_id}/environments/{environment_id}/tags/{query_parameter}": {  # ent=content_tag;orig=Content tags;tag=content_tag;cmp/resolve=content_tag;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "query_parameter": *"id"  # end-id;GET;parent=true/tag
+    path: "/spaces/{space_id}/webhooks/{webhook_id}/calls/{call_id}": {  # ent=call;orig=Webhook;tag=webhook;cmp/resolve=webhook;path=t/p/;path-over-tag
+      rename: param: "call_id": *"id"  # end-id;GET;parent=true/call
       op: load: method: *GET  # end-param
-    }
-    path: "/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}": {  # ent=content_tag;orig=Content tags;tag=content_tag;cmp/resolve=content_tag;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "tag_id": *"id"  # end-id;GET;parent=true/tag
-      op: create: method: *POST  # not-load
-      op: load: method: *GET  # end-param
-      op: remove: method: *DELETE  # not-load
-      op: update: method: *PUT  # not-load
     }
   }
 
@@ -206,6 +173,7 @@ guide: {
       op: update: method: *PUT  # not-load
     }
     path: "/spaces/{space_id}/environments/{environment_id}/public/content_types": {  # ent=content_type;orig=Content Types;tag=content_type;cmp/resolve=content_type;path=t/;path-primary
+      action: "public": {}  # ent;content_type;shared-selector;/spaces/{space_id}/environments/{environment_id}/content_types
       op: load: method: *GET  # no-schema
     }
   }
@@ -220,28 +188,25 @@ guide: {
     }
   }
 
-  entity: entries_collection: {
-    path: "/spaces/{space_id}/environments/{environment_id}/entries": {  # ent=entries_collection;orig=Entries collection;tag=entries_collection;cmp/resolve=entries_collection;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Entries collection
+  entity: entry: {
+    path: "/spaces/{space_id}/environments/{environment_id}/entries": {  # ent=entry;orig=Entries collection;tag=entries_collection;cmp/resolve=entries_collection;path=t/p/t/;path-over-tag;has-cmp=Entries collection
       op: create: method: *POST  # not-load
       op: load: method: *GET  # no-schema
     }
-  }
-
-  entity: entry: {
-    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}": {  # ent=entry;orig=Entry;tag=entry;cmp/resolve=entry;path=t/p/;path-primary
+    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}": {  # ent=entry;orig=Entries collection;tag=entry;cmp/resolve=entry;path=t/p/;path-primary
       rename: param: "entry_id": *"id"  # end-id;GET;parent=true/entry
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/archived": {  # ent=entry;orig=Entry;tag=entry_archiving;cmp/resolve=entry_archiving;path=t/p/t/;verb-on-parent=entry;resplit-from-cmp=entry
+    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/archived": {  # ent=entry;orig=Entries collection;tag=entry_archiving;cmp/resolve=entry_archiving;path=t/p/t/;verb-on-parent=entry;resplit-from-cmp=entry
       action: "archived": {}  # ent;entry;verb-on-parent;archived;PUT
       rename: param: "entry_id": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/published": {  # ent=entry;orig=Entry;tag=entry_publishing;cmp/resolve=entry_publishing;path=t/p/t/;verb-on-parent=entry;resplit-from-cmp=entry
+    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/published": {  # ent=entry;orig=Entries collection;tag=entry_publishing;cmp/resolve=entry_publishing;path=t/p/t/;verb-on-parent=entry;resplit-from-cmp=entry
       action: "published": {}  # ent;entry;verb-on-parent;published;PUT
       rename: param: "entry_id": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
@@ -249,32 +214,80 @@ guide: {
     }
   }
 
-  entity: entry_reference: {
-    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/references": {  # ent=entry_reference;orig=Entry references;tag=entry_reference;cmp/resolve=entry_reference;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Entry references
-      op: load: method: *GET  # no-schema
+  entity: environment: {
+    path: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/publish": {  # ent=environment;orig=Bulk Actions;tag=bulk_action;cmp/resolve=bulk_action;verb-of-item=environment
+      action: "bulk_action_publish": {}  # ent;environment;verb-on-parent;publish;POST
+      rename: param: "environment_id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
     }
-  }
-
-  entity: enviroment: {
-    path: "/spaces/{space_id}/environments": {  # ent=enviroment;orig=Enviroments;tag=enviroment;cmp/resolve=enviroment;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Enviroments
+    path: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/unpublish": {  # ent=environment;orig=Bulk Actions;tag=bulk_action;cmp/resolve=bulk_action;verb-of-item=environment
+      action: "bulk_action_unpublish": {}  # ent;environment;verb-on-parent;unpublish;POST
+      rename: param: "environment_id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
+    }
+    path: "/spaces/{space_id}/environment/{environment_id}/bulk_actions/validate": {  # ent=environment;orig=Bulk Actions;tag=bulk_action;cmp/resolve=bulk_action;verb-of-item=environment
+      action: "bulk_action_validate": {}  # ent;environment;verb-on-parent;validate;POST
+      rename: param: "environment_id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
+    }
+    path: "/spaces/{space_id}/environments": {  # ent=environment;orig=Bulk Actions;tag=enviroment;cmp/resolve=enviroment;path=t/p/t/;path-over-tag;has-cmp=Enviroments
       op: create: method: *POST  # not-load
       op: load: method: *GET  # no-schema
     }
-    path: "/spaces/{space_id}/environments/{environment_id}": {  # ent=enviroment;orig=Enviroments;tag=enviroment;cmp/resolve=enviroment;path=t/p/;cmp-primary;cmp-infreq
+    path: "/spaces/{space_id}/environments/{environment_id}": {  # ent=environment;orig=Bulk Actions;tag=enviroment;cmp/resolve=enviroment;path=t/p/;path-over-tag
+      rename: param: "environment_id": *"id"  # end-id;GET;parent=true/environment
+      op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+    path: "/spaces/{space_id}/environments/{environment_id}/asset_keys": {  # ent=environment;orig=Bulk Actions;tag=assets_key;cmp/resolve=assets_key;path=t/p/t/;path-over-tag;has-cmp=Assets keys
+      action: "asset_keys": {}  # ent;environment;command;asset_key
+      rename: param: "environment_id": *"id"  # end-id;GET;parent=true/environment
+      op: create: method: *POST  # not-load
+    }
+  }
+
+  entity: environment_alias: {
+    path: "/spaces/{space_id}/environment_aliases": {  # ent=environment_alias;orig=Environment alias;tag=environment_alias;cmp/resolve=environment_alias;path=t/p/t/;path-primary;has-cmp=Environment alias
+      op: load: method: *GET  # no-schema
+    }
+    path: "/spaces/{space_id}/environment_aliases/{environment_alias_id}": {  # ent=environment_alias;orig=Environment alias;tag=environment_alias;cmp/resolve=environment_alias;path=t/p/;path-primary
+      rename: param: "environment_alias_id": *"id"  # end-id;GET;parent=true/environment_alias
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
   }
 
-  entity: environment_alia: {
-    path: "/spaces/{space_id}/environment_aliases": {  # ent=environment_alia;orig=Environment alias;tag=environment_alia;cmp/resolve=environment_alia;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Environment alias
+  entity: extension: {
+    path: "/spaces/{space_id}/environments/{environment_id}/extensions": {  # ent=extension;orig=UI Extensions;tag=ui_extension;cmp/resolve=ui_extension;path=t/p/t/;path-over-tag;has-cmp=UI Extensions
+      op: create: method: *POST  # not-load
       op: load: method: *GET  # no-schema
     }
-    path: "/spaces/{space_id}/environment_aliases/{environment_alias_id}": {  # ent=environment_alia;orig=Environment alias;tag=environment_alia;cmp/resolve=environment_alia;path=t/p/;cmp-primary;cmp-infreq
+    path: "/spaces/{space_id}/environments/{environment_id}/extensions/{extension_id}": {  # ent=extension;orig=UI Extensions;tag=ui_extension;cmp/resolve=ui_extension;path=t/p/;path-over-tag
+      rename: param: "extension_id": *"id"  # end-id;GET;parent=true/extension
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: file: {
+    path: "/spaces/{space_id}/environments/{environment_id}/assets/{asset_id}/files/{locale_code}/process": {  # ent=file;orig=Assets;tag=asset;cmp/resolve=asset;path=t/p/t/;noun-before-verb=files;path-over-tag;has-cmp=Assets
+      action: "process": {}  # ent;file;ent-param-2nd-last;process;PUT
+      op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: key: {
+    path: "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys": {  # ent=key;orig=App keys;tag=app_key;cmp/resolve=app_key;path=t/p/t/;path-over-tag;has-cmp=App keys
+      op: create: method: *POST  # not-load
+      op: load: method: *GET  # no-schema
+    }
+    path: "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys/{key_kid}": {  # ent=key;orig=App keys;tag=app_key;cmp/resolve=app_key;path=t/p/;path-over-tag
+      rename: param: "key_kid": *"id"  # end-id;GET;parent=true/key
+      op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
     }
   }
 
@@ -297,19 +310,25 @@ guide: {
     }
   }
 
-  entity: personal_access_token: {
-    path: "/users/me/access_tokens": {  # ent=personal_access_token;orig=Personal Access token;tag=personal_access_token;cmp/resolve=personal_access_token;path=t/;cmp-primary;cmp-infreq
-      op: create: method: *POST  # not-load
+  entity: organization_periodic_usage: {
+    path: "/organizations/{organization_id}/organization_periodic_usages": {  # ent=organization_periodic_usage;orig=Usage;tag=usage;cmp/resolve=usage;path=t/p/t/;path-over-tag;has-cmp=Usage
       op: load: method: *GET  # no-schema
     }
-    path: "/users/me/access_tokens/{token_id}": {  # ent=personal_access_token;orig=Personal Access token;tag=personal_access_token;cmp/resolve=personal_access_token;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "token_id": *"id"  # end-id;GET;parent=true/access_token
+  }
+
+  entity: preview_api_key: {
+    path: "/spaces/{space_id}/preview_api_keys": {  # ent=preview_api_key;orig=API keys;tag=api_key;cmp/resolve=api_key;path=t/p/t/;path-over-tag;has-cmp=API keys
+      op: load: method: *GET  # no-schema
+    }
+    path: "/spaces/{space_id}/preview_api_keys/{preview_api_key_id}": {  # ent=preview_api_key;orig=API keys;tag=api_key;cmp/resolve=api_key;path=t/p/;path-over-tag
+      rename: param: "preview_api_key_id": *"id"  # end-id;GET;parent=true/preview_api_key
       op: load: method: *GET  # end-param
     }
-    path: "/users/me/access_tokens/{token_id}/revoked": {  # ent=personal_access_token;orig=Personal Access token;tag=personal_access_token;cmp/resolve=personal_access_token;path=t/p/t/;verb-on-parent=personal_access_token
-      action: "revoked": {}  # ent;personal_access_token;verb-on-parent;revoked;PUT
-      rename: param: "token_id": *"access_token_id"  # parent:access_token
-      op: update: method: *PUT  # not-load
+  }
+
+  entity: reference: {
+    path: "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/references": {  # ent=reference;orig=Entry references;tag=entry_reference;cmp/resolve=entry_reference;path=t/p/t/;path-over-tag;has-cmp=Entry references
+      op: load: method: *GET  # no-schema
     }
   }
 
@@ -324,22 +343,13 @@ guide: {
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-    path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/actions": {  # ent=release;orig=Releases;tag=release;cmp/resolve=release;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Releases
-      action: "action": {}  # ent;release;ent-param-2nd-last;actions;GET
-      rename: param: "releases_id": *"id"  # id-parent-ent
-      op: load: method: *GET  # no-schema
-    }
-    path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/actions/{release_action_id}": {  # ent=release;orig=Releases;tag=release;cmp/resolve=release;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "releases_id": *"id"  # id-parent-ent
-      op: load: method: *GET  # end-param
-    }
     path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/published": {  # ent=release;orig=Releases;tag=release;cmp/resolve=release;path=t/p/t/;verb-on-parent=release
       action: "published": {}  # ent;release;verb-on-parent;published;PUT
       rename: param: "releases_id": *"id"  # id-parent-ent
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
     }
-    path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/validate": {  # ent=release;orig=Releases;tag=release;cmp/resolve=release;path=t/p/t/;verb-on-parent=release
+    path: "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/validate": {  # ent=release;orig=Releases;tag=release;cmp/resolve=release;path=t/p/t/;noun-before-verb=releases;verb-on-parent=release
       action: "validate": {}  # ent;release;verb-on-parent;validate;POST
       rename: param: "releases_id": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
@@ -359,14 +369,22 @@ guide: {
     }
   }
 
-  entity: schedule_action: {
-    path: "/spaces/{space_id}/scheduled_actions": {  # ent=schedule_action;orig=Schedule actions;tag=schedule_action;cmp/resolve=schedule_action;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Schedule actions
+  entity: scheduled_action: {
+    path: "/spaces/{space_id}/scheduled_actions": {  # ent=scheduled_action;orig=Schedule actions;tag=schedule_action;cmp/resolve=schedule_action;path=t/p/t/;path-over-tag;has-cmp=Schedule actions
       op: create: method: *POST  # not-load
       op: load: method: *GET  # no-schema
     }
-    path: "/spaces/{space_id}/scheduled_actions/{scheduled_action_id}": {  # ent=schedule_action;orig=Schedule actions;tag=schedule_action;cmp/resolve=schedule_action;path=t/p/;cmp-primary;cmp-infreq
+    path: "/spaces/{space_id}/scheduled_actions/{scheduled_action_id}": {  # ent=scheduled_action;orig=Schedule actions;tag=schedule_action;cmp/resolve=schedule_action;path=t/p/;path-over-tag
+      rename: param: "scheduled_action_id": *"id"  # end-id;PUT;parent=true/scheduled_action
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: signed_request: {
+    path: "/organizations/{organization_id}/app_instalations/{app_definition_id}/signed_request": {  # ent=signed_request;orig=App signed request;tag=app_signed_request;cmp/resolve=app_signed_request;path=t/p/t/;path-over-tag;has-cmp=App signed request
+      rename: param: "app_definition_id": *"app_instalation_id"  # parent:app_instalation
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -413,9 +431,27 @@ guide: {
     }
   }
 
-  entity: space_team: {
-    path: "/spaces/{space_id}/teams": {  # ent=space_team;orig=Space teams;tag=space_team;cmp/resolve=space_team;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Space teams
+  entity: space_periodic_usage: {
+    path: "/organizations/{organization_id}/space_periodic_usages": {  # ent=space_periodic_usage;orig=Usage;tag=usage;cmp/resolve=usage;path=t/p/t/;path-over-tag;has-cmp=Usage
       op: load: method: *GET  # no-schema
+    }
+  }
+
+  entity: tag: {
+    path: "/spaces/{space_id}/environments/{environment_id}/tags": {  # ent=tag;orig=Content tags;tag=content_tag;cmp/resolve=content_tag;path=t/p/t/;path-over-tag;has-cmp=Content tags
+      op: load: method: *GET  # no-schema
+    }
+    path: "/spaces/{space_id}/environments/{environment_id}/tags/{query_parameter}": {  # ent=tag;orig=Content tags;tag=content_tag;cmp/resolve=content_tag;path=t/p/;path-over-tag
+      action: "spaces_environments_tags": {}  # ent;tag;shared-selector;/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}
+      rename: param: "query_parameter": *"id"  # end-id;GET;parent=true/tag
+      op: load: method: *GET  # end-param
+    }
+    path: "/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}": {  # ent=tag;orig=Content tags;tag=content_tag;cmp/resolve=content_tag;path=t/p/;path-over-tag
+      rename: param: "tag_id": *"id"  # end-id;GET;parent=true/tag
+      op: create: method: *POST  # not-load
+      op: load: method: *GET  # end-param
+      op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
     }
   }
 
@@ -432,16 +468,9 @@ guide: {
     }
   }
 
-  entity: ui_extension: {
-    path: "/spaces/{space_id}/environments/{environment_id}/extensions": {  # ent=ui_extension;orig=UI Extensions;tag=ui_extension;cmp/resolve=ui_extension;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=UI Extensions
-      op: create: method: *POST  # not-load
+  entity: team: {
+    path: "/spaces/{space_id}/teams": {  # ent=team;orig=Space teams;tag=space_team;cmp/resolve=space_team;path=t/p/t/;path-over-tag;has-cmp=Space teams
       op: load: method: *GET  # no-schema
-    }
-    path: "/spaces/{space_id}/environments/{environment_id}/extensions/{extension_id}": {  # ent=ui_extension;orig=UI Extensions;tag=ui_extension;cmp/resolve=ui_extension;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "extension_id": *"id"  # end-id;GET;parent=true/extension
-      op: load: method: *GET  # end-param
-      op: remove: method: *DELETE  # not-load
-      op: update: method: *PUT  # not-load
     }
   }
 
@@ -456,45 +485,31 @@ guide: {
     }
   }
 
-  entity: usage: {
-    path: "/organizations/{organization_id}/organization_periodic_usages": {  # ent=usage;orig=Usage;tag=usage;cmp/resolve=usage;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Usage
-      op: load: method: *GET  # no-schema
-    }
-    path: "/organizations/{organization_id}/space_periodic_usages": {  # ent=usage;orig=Usage;tag=usage;cmp/resolve=usage;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Usage
-      op: load: method: *GET  # no-schema
-    }
-  }
-
   entity: user: {
-    path: "/users/me": {  # ent=user;orig=Users;tag=user;cmp/resolve=user;path=t/;cmp-primary;cmp-infreq
+    path: "/users/me": {  # ent=user;orig=Users;tag=user;cmp/resolve=user;short-literal;infer-tag
       action: "me": {}  # ent;user;no-param;me;GET
       op: load: method: *GET  # no-schema
     }
   }
 
   entity: webhook: {
-    path: "/spaces/{space_id}/webhook_definitions": {  # ent=webhook;orig=Webhook;tag=webhook;cmp/resolve=webhook;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Webhook
+    path: "/spaces/{space_id}/webhooks/{webhook_id}/health": {  # ent=webhook;orig=Webhook;tag=webhook;cmp/resolve=webhook;view-of-item=webhook
+      action: "health": {}  # ent;webhook;verb-on-parent;health;GET
+      rename: param: "webhook_id": *"id"  # id-parent-ent
+      op: load: method: *GET  # view
+    }
+  }
+
+  entity: webhook_definition: {
+    path: "/spaces/{space_id}/webhook_definitions": {  # ent=webhook_definition;orig=Webhook;tag=webhook;cmp/resolve=webhook;path=t/p/t/;path-over-tag;has-cmp=Webhook
       op: create: method: *POST  # not-load
       op: load: method: *GET  # no-schema
     }
-    path: "/spaces/{space_id}/webhook_definitions/{webhook_definition_id}": {  # ent=webhook;orig=Webhook;tag=webhook;cmp/resolve=webhook;path=t/p/;cmp-primary;cmp-infreq
+    path: "/spaces/{space_id}/webhook_definitions/{webhook_definition_id}": {  # ent=webhook_definition;orig=Webhook;tag=webhook;cmp/resolve=webhook;path=t/p/;path-over-tag
+      rename: param: "webhook_definition_id": *"id"  # end-id;GET;parent=true/webhook_definition
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
-    }
-    path: "/spaces/{space_id}/webhooks/{webhook_id}/calls": {  # ent=webhook;orig=Webhook;tag=webhook;cmp/resolve=webhook;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Webhook
-      action: "call": {}  # ent;webhook;ent-param-2nd-last;calls;GET
-      rename: param: "webhook_id": *"id"  # id-parent-ent
-      op: load: method: *GET  # no-schema
-    }
-    path: "/spaces/{space_id}/webhooks/{webhook_id}/calls/{call_id}": {  # ent=webhook;orig=Webhook;tag=webhook;cmp/resolve=webhook;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "webhook_id": *"id"  # id-parent-ent
-      op: load: method: *GET  # end-param
-    }
-    path: "/spaces/{space_id}/webhooks/{webhook_id}/health": {  # ent=webhook;orig=Webhook;tag=webhook;cmp/resolve=webhook;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=Webhook
-      action: "health": {}  # ent;webhook;ent-param-2nd-last;health;GET
-      rename: param: "webhook_id": *"id"  # id-parent-ent
-      op: load: method: *GET  # no-schema
     }
   }
 

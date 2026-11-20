@@ -1,0 +1,179 @@
+# Entity: option
+
+main: kit: entity: option: {
+
+  alias: field: {}
+
+  fields: {
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      sh: "A description of the property."
+      t: "`$STRING`"
+    }
+    displayName: {
+      h: "Display Name"
+      n: "displayName"
+      r: true
+      sh: "The property's display name."
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    options: {
+      h: "Options"
+      n: "options"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$ARRAY`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    properties: {
+      h: "Properties"
+      n: "properties"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    required: {
+      h: "Required"
+      n: "required"
+      r: true
+      sh: "The property is required if `True`."
+      t: "`$BOOLEAN`"
+    }
+    type: {
+      h: "Type"
+      n: "type"
+      r: true
+      sh: "The option type."
+      t: "`$STRING`"
+    }
+    validation: {
+      h: "Validation"
+      n: "validation"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "option"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /companies/{companyId}/connections/{connectionId}/options/{dataType}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                k: "param"
+                n: "company_id"
+                or: "companyId"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "2e9d2c44-f675-40ba-8049-353bfcb5e171"
+                k: "param"
+                n: "connection_id"
+                or: "connectionId"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "invoices"
+                k: "param"
+                n: "id"
+                or: "dataType"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/companies/{companyId}/connections/{connectionId}/options/{dataType}"
+          q: {
+            exist: [
+              "company_id"
+              "connection_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              companyId: "company_id"
+              connectionId: "connection_id"
+              dataType: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "companies"
+            }
+            {
+              var: "company_id"
+            }
+            {
+              lit: "connections"
+            }
+            {
+              var: "connection_id"
+            }
+            {
+              lit: "options"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.company") path("$.main.kit.entity.connection")]
+  ]
+
+}

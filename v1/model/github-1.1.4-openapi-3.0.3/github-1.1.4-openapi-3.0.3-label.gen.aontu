@@ -13,6 +13,10 @@ main: kit: entity: label: {
           req: false
           type: "`$STRING`"
         }
+        patch: {
+          req: false
+          type: "`$STRING`"
+        }
         update: {
           req: false
           type: "`$STRING`"
@@ -25,6 +29,16 @@ main: kit: entity: label: {
     default: {
       h: "Default"
       n: "default"
+      op: {
+        create: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+        update: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
       r: true
       sh: "Whether this label comes by default in a new repository."
       t: "`$BOOLEAN`"
@@ -34,6 +48,10 @@ main: kit: entity: label: {
       n: "description"
       op: {
         create: {
+          req: false
+          type: "`$STRING`"
+        }
+        patch: {
           req: false
           type: "`$STRING`"
         }
@@ -56,13 +74,44 @@ main: kit: entity: label: {
       fo: "int64"
       h: "Id"
       n: "id"
+      op: {
+        create: {
+          req: false
+          type: "`$INTEGER`"
+        }
+        list: {
+          req: false
+          type: "`$INTEGER`"
+        }
+        update: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
       r: true
       sh: "Unique identifier for the label."
       t: "`$INTEGER`"
     }
+    labels: {
+      h: "Labels"
+      n: "labels"
+      r: true
+      sh: "The names of the custom labels to add to the runner."
+      t: "`$ARRAY`"
+    }
     name: {
       h: "Name"
       n: "name"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
       sh: "The name of the label."
       t: "`$STRING`"
@@ -77,13 +126,46 @@ main: kit: entity: label: {
     node_id: {
       h: "Node Id"
       n: "node_id"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
+      t: "`$STRING`"
+    }
+    total_count: {
+      h: "Total Count"
+      n: "total_count"
+      r: true
+      t: "`$INTEGER`"
+    }
+    type: {
+      h: "Type"
+      n: "type"
+      r: false
+      sh: "The type of label."
       t: "`$STRING`"
     }
     url: {
       fo: "uri"
       h: "Url"
       n: "url"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
       r: true
       sh: "URL for the label"
       t: "`$STRING`"
@@ -100,6 +182,222 @@ main: kit: entity: label: {
     create: {
       name: "create"
       points: [
+        {
+          bf: [
+            "labels"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/issues/{issue_number}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "issue_number"
+                or: "issue_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/issues/{issue_number}/labels"
+          q: {
+            exist: [
+              "issue_number"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "issues"
+            }
+            {
+              var: "issue_number"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "labels"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "runner_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "labels"
+          ]
+          co: {
+            id: "POST /orgs/{org}/actions/runners/{runner_id}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/actions/runners/{runner_id}/labels"
+          q: {
+            exist: [
+              "org_id"
+              "runner_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           bf: [
             "color"
@@ -165,6 +463,97 @@ main: kit: entity: label: {
     list: {
       name: "list"
       points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/issues/{issue_number}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "issue_number"
+                or: "issue_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/issues/{issue_number}/labels"
+          q: {
+            exist: [
+              "issue_number"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "issues"
+            }
+            {
+              var: "issue_number"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           co: {
             id: "GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels"
@@ -254,6 +643,150 @@ main: kit: entity: label: {
           t: {
             req: "`reqdata`"
             res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "runner_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.labels`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/runners/{runner_id}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/runners/{runner_id}/labels"
+          q: {
+            exist: [
+              "org_id"
+              "runner_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.labels`"
           }
         }
         {
@@ -411,80 +944,8 @@ main: kit: entity: label: {
         }
       ]
     }
-    remove: {
-      name: "remove"
-      points: [
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/labels/{name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/labels/{name}"
-          q: {
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              name: "id"
-            }
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "labels"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
-    update: {
-      name: "update"
+    patch: {
+      name: "patch"
       points: [
         {
           bf: [
@@ -564,11 +1025,761 @@ main: kit: entity: label: {
         }
       ]
     }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "issue_number"
+                or: "issue_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/issues/{issue_number}/labels/{name}"
+          q: {
+            exist: [
+              "id"
+              "issue_number"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              name: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "issues"
+            }
+            {
+              var: "issue_number"
+            }
+            {
+              lit: "labels"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels/{name}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/actions/runners/{runner_id}/labels/{name}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+              "runner_id"
+            ]
+          }
+          r: {
+            param: {
+              name: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /orgs/{org}/actions/runners/{runner_id}/labels/{name}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/actions/runners/{runner_id}/labels/{name}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+              "runner_id"
+            ]
+          }
+          r: {
+            param: {
+              name: "id"
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/labels/{name}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/labels/{name}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              name: "id"
+            }
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "labels"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "issue_number"
+                or: "issue_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/issues/{issue_number}/labels"
+          q: {
+            exist: [
+              "issue_number"
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "issues"
+            }
+            {
+              var: "issue_number"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "runner_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /orgs/{org}/actions/runners/{runner_id}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/actions/runners/{runner_id}/labels"
+          q: {
+            exist: [
+              "org_id"
+              "runner_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "labels"
+          ]
+          co: {
+            id: "PUT /repos/{owner}/{repo}/issues/{issue_number}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "issue_number"
+                or: "issue_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/repos/{owner}/{repo}/issues/{issue_number}/labels"
+          q: {
+            exist: [
+              "issue_number"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "issues"
+            }
+            {
+              var: "issue_number"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "labels"
+          ]
+          co: {
+            id: "PUT /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "runner_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "labels"
+          ]
+          co: {
+            id: "PUT /orgs/{org}/actions/runners/{runner_id}/labels"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/orgs/{org}/actions/runners/{runner_id}/labels"
+          q: {
+            exist: [
+              "org_id"
+              "runner_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "runner_id"
+            }
+            {
+              lit: "labels"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
   }
 
 
   relations: ancestors: [
     [path("$.main.kit.entity.repo")]
+    [path("$.main.kit.entity.org") path("$.main.kit.entity.runner")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.runner")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.issue")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.milestone")]
   ]
 

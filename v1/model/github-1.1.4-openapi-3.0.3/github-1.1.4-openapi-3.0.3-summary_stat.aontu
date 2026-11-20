@@ -1,0 +1,222 @@
+# Entity: summary_stat
+
+main: kit: entity: summary_stat: {
+
+  alias: field: {}
+
+  fields: {
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    rate_limited_request_count: {
+      fo: "int64"
+      h: "Rate Limited Request Count"
+      n: "rate_limited_request_count"
+      r: false
+      sh: "The total number of requests that were rate limited within the queried time period"
+      t: "`$INTEGER`"
+    }
+    total_request_count: {
+      fo: "int64"
+      h: "Total Request Count"
+      n: "total_request_count"
+      r: false
+      sh: "The total number of requests within the queried time period"
+      t: "`$INTEGER`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+    parts: [
+      "actor_type"
+      "actor_id"
+    ]
+    sep: "/"
+  }
+
+  name: "summary_stat"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/insights/api/summary-stats/{actor_type}/{actor_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "actor_id"
+                or: "actor_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "actor_type"
+                or: "actor_type"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "max_timestamp"
+                or: "max_timestamp"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "min_timestamp"
+                or: "min_timestamp"
+                r: true
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/insights/api/summary-stats/{actor_type}/{actor_id}"
+          q: {
+            exist: [
+              "actor_id"
+              "actor_type"
+              "min_timestamp"
+              "org"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org"
+            }
+            {
+              lit: "insights"
+            }
+            {
+              lit: "api"
+            }
+            {
+              lit: "summary-stats"
+            }
+            {
+              var: "actor_type"
+            }
+            {
+              var: "actor_id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/insights/api/summary-stats"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "max_timestamp"
+                or: "max_timestamp"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "min_timestamp"
+                or: "min_timestamp"
+                r: true
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/insights/api/summary-stats"
+          q: {
+            exist: [
+              "min_timestamp"
+              "org"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org"
+            }
+            {
+              lit: "insights"
+            }
+            {
+              lit: "api"
+            }
+            {
+              lit: "summary-stats"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.org")]
+    [path("$.main.kit.entity.org")]
+  ]
+
+}

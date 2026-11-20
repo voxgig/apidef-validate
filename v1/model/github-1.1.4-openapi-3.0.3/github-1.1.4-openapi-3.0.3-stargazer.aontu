@@ -1,0 +1,214 @@
+# Entity: stargazer
+
+main: kit: entity: stargazer: {
+
+  alias: field: {}
+
+  fields: {
+    avatar_url: {
+      h: "Avatar Url"
+      n: "avatar_url"
+      r: false
+      t: "`$STRING`"
+    }
+    events_url: {
+      h: "Events Url"
+      n: "events_url"
+      r: false
+      t: "`$STRING`"
+    }
+    followers_url: {
+      h: "Followers Url"
+      n: "followers_url"
+      r: false
+      t: "`$STRING`"
+    }
+    following_url: {
+      h: "Following Url"
+      n: "following_url"
+      r: false
+      t: "`$STRING`"
+    }
+    gists_url: {
+      h: "Gists Url"
+      n: "gists_url"
+      r: false
+      t: "`$STRING`"
+    }
+    gravatar_id: {
+      h: "Gravatar Id"
+      n: "gravatar_id"
+      r: false
+      t: "`$STRING`"
+    }
+    html_url: {
+      h: "Html Url"
+      n: "html_url"
+      r: false
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    login: {
+      h: "Login"
+      n: "login"
+      r: false
+      t: "`$STRING`"
+    }
+    node_id: {
+      h: "Node Id"
+      n: "node_id"
+      r: false
+      t: "`$STRING`"
+    }
+    organizations_url: {
+      h: "Organizations Url"
+      n: "organizations_url"
+      r: false
+      t: "`$STRING`"
+    }
+    received_events_url: {
+      h: "Received Events Url"
+      n: "received_events_url"
+      r: false
+      t: "`$STRING`"
+    }
+    repos_url: {
+      h: "Repos Url"
+      n: "repos_url"
+      r: false
+      t: "`$STRING`"
+    }
+    site_admin: {
+      h: "Site Admin"
+      n: "site_admin"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    starred_url: {
+      h: "Starred Url"
+      n: "starred_url"
+      r: false
+      t: "`$STRING`"
+    }
+    subscriptions_url: {
+      h: "Subscriptions Url"
+      n: "subscriptions_url"
+      r: false
+      t: "`$STRING`"
+    }
+    type: {
+      h: "Type"
+      n: "type"
+      r: false
+      t: "`$STRING`"
+    }
+    url: {
+      h: "Url"
+      n: "url"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "stargazer"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/stargazers"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/stargazers"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "stargazers"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
+  ]
+
+}
