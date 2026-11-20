@@ -1,0 +1,329 @@
+# Entity: database
+
+main: kit: entity: database: {
+
+  alias: field: {}
+
+  fields: {
+    commit_oid: {
+      h: "Commit Oid"
+      n: "commit_oid"
+      r: false
+      sh: "The commit SHA of the repository at the time the CodeQL database was created."
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    content_type: {
+      h: "Content Type"
+      n: "content_type"
+      r: true
+      sh: "The MIME type of the CodeQL database file."
+      t: "`$STRING`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      sh: "The date and time at which the CodeQL database was created, in ISO 8601 format':' YYYY-MM-DDTHH:MM:SSZ."
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "The ID of the CodeQL database."
+      t: "`$INTEGER`"
+    }
+    language: {
+      h: "Language"
+      n: "language"
+      r: true
+      sh: "The language of the CodeQL database."
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "The name of the CodeQL database."
+      t: "`$STRING`"
+    }
+    size: {
+      h: "Size"
+      n: "size"
+      r: true
+      sh: "The size of the CodeQL database file in bytes."
+      t: "`$INTEGER`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: true
+      sh: "The date and time at which the CodeQL database was last updated, in ISO 8601 format':' YYYY-MM-DDTHH:MM:SSZ."
+      t: "`$STRING`"
+    }
+    uploader: {
+      h: "Uploader"
+      n: "uploader"
+      r: true
+      sh: "A GitHub user."
+      t: "`$OBJECT`"
+    }
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      sh: "The URL at which to download the CodeQL database."
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "database"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/code-scanning/codeql/databases"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/code-scanning/codeql/databases"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "codeql"
+            }
+            {
+              lit: "databases"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "language"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              language: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "codeql"
+            }
+            {
+              lit: "databases"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "language"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              language: "id"
+            }
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "codeql"
+            }
+            {
+              lit: "databases"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
+  ]
+
+}

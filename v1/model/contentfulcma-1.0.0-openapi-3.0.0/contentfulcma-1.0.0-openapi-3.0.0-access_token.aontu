@@ -1,0 +1,302 @@
+# Entity: access_token
+
+main: kit: entity: access_token: {
+
+  alias: field: {}
+
+  fields: {
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "access_token"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: false
+          co: {
+            id: "POST /spaces/{space_id}/environments/{environment_id}/app_installations/{app_definition_id}/access_tokens"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "app_installation_id"
+                or: "app_definition_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "environment_id"
+                or: "environment_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "space_id"
+                or: "space_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/spaces/{space_id}/environments/{environment_id}/app_installations/{app_definition_id}/access_tokens"
+          q: {
+            exist: [
+              "app_installation_id"
+              "environment_id"
+              "space_id"
+            ]
+          }
+          r: {
+            param: {
+              app_definition_id: "app_installation_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "spaces"
+            }
+            {
+              var: "space_id"
+            }
+            {
+              lit: "environments"
+            }
+            {
+              var: "environment_id"
+            }
+            {
+              lit: "app_installations"
+            }
+            {
+              var: "app_installation_id"
+            }
+            {
+              lit: "access_tokens"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: false
+          co: {
+            id: "POST /users/me/access_tokens"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/users/me/access_tokens"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "users"
+            }
+            {
+              lit: "me"
+            }
+            {
+              lit: "access_tokens"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /users/me/access_tokens/{token_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "token_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/users/me/access_tokens/{token_id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              token_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "users"
+            }
+            {
+              lit: "me"
+            }
+            {
+              lit: "access_tokens"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /users/me/access_tokens"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/users/me/access_tokens"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "users"
+            }
+            {
+              lit: "me"
+            }
+            {
+              lit: "access_tokens"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: false
+          co: {
+            id: "PUT /users/me/access_tokens/{token_id}/revoked"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                ex: "X"
+                explode: false
+                k: "header"
+                n: "x_contentful_version"
+                or: "X-Contentful-Version"
+                r: false
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "token_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/users/me/access_tokens/{token_id}/revoked"
+          q: {
+            "$action": "revoked"
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              token_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "users"
+            }
+            {
+              lit: "me"
+            }
+            {
+              lit: "access_tokens"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "revoked"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.space") path("$.main.kit.entity.environment") path("$.main.kit.entity.app_installation")]
+  ]
+
+}

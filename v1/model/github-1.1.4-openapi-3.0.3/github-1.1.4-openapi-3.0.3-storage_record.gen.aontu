@@ -1,0 +1,154 @@
+# Entity: storage_record
+
+main: kit: entity: storage_record: {
+
+  alias: field: {}
+
+  fields: {
+    artifact_url: {
+      h: "Artifact Url"
+      n: "artifact_url"
+      r: false
+      t: "`$STRING`"
+    }
+    created_at: {
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    digest: {
+      h: "Digest"
+      n: "digest"
+      r: false
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      t: "`$STRING`"
+    }
+    registry_url: {
+      h: "Registry Url"
+      n: "registry_url"
+      r: false
+      t: "`$STRING`"
+    }
+    repository: {
+      h: "Repository"
+      n: "repository"
+      r: false
+      t: "`$STRING`"
+    }
+    status: {
+      h: "Status"
+      n: "status"
+      r: false
+      t: "`$STRING`"
+    }
+    updated_at: {
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "storage_record"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/artifacts/{subject_digest}/metadata/storage-records"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "sha256:1bb1e949e55dcefc6353e7b36c8897d2a107d8e8dca49d4e3c0ea8493fc0bc72"
+                k: "param"
+                n: "artifact_id"
+                or: "subject_digest"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/artifacts/{subject_digest}/metadata/storage-records"
+          q: {
+            exist: [
+              "artifact_id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              subject_digest: "artifact_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "artifacts"
+            }
+            {
+              var: "artifact_id"
+            }
+            {
+              lit: "metadata"
+            }
+            {
+              lit: "storage-records"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.storage_records`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.org") path("$.main.kit.entity.artifact")]
+  ]
+
+}

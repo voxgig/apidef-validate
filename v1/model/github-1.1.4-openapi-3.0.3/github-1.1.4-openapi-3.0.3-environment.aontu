@@ -115,6 +115,91 @@ main: kit: entity: environment: {
 
   name: "environment"
   op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/environments"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/environments"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "environments"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.environments`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [

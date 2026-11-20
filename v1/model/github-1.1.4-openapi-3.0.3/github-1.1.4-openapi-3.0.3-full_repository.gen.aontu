@@ -209,7 +209,7 @@ main: kit: entity: full_repository: {
         }
       }
       r: true
-      sh: "A short description of the new repository."
+      sh: "A short description of the repository."
       t: [
         "`$ONE`"
         [
@@ -429,13 +429,6 @@ main: kit: entity: full_repository: {
       r: true
       t: "`$STRING`"
     }
-    include_all_branches: {
-      h: "Include All Branches"
-      n: "include_all_branches"
-      r: false
-      sh: "Set to `true` to include the directory structure and files from all branches in the template repository, and not just the default branch."
-      t: "`$BOOLEAN`"
-    }
     is_template: {
       h: "Is Template"
       n: "is_template"
@@ -568,7 +561,7 @@ main: kit: entity: full_repository: {
         }
       }
       r: true
-      sh: "The name of the new repository."
+      sh: "The name of the repository."
       t: "`$STRING`"
     }
     network_count: {
@@ -617,12 +610,6 @@ main: kit: entity: full_repository: {
     owner: {
       h: "Owner"
       n: "owner"
-      op: {
-        create: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
       r: true
       sh: "A GitHub user."
       t: "`$OBJECT`"
@@ -654,7 +641,7 @@ main: kit: entity: full_repository: {
         }
       }
       r: true
-      sh: "Either `true` to create a new private repository or `false` to create a new public one."
+      sh: "Whether the repository is private."
       t: "`$BOOLEAN`"
     }
     pulls_url: {
@@ -929,6 +916,7 @@ main: kit: entity: full_repository: {
           m: "POST"
           o: "/repos/{template_owner}/{template_repo}/generate"
           q: {
+            "$action": "generate"
             exist: [
               "template_owner"
               "template_repo"
@@ -950,6 +938,65 @@ main: kit: entity: full_repository: {
             }
             {
               lit: "generate"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "branch"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/merge-upstream"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/merge-upstream"
+          q: {
+            "$action": "merge_upstream"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "merge-upstream"
             }
           ]
           t: {
@@ -1085,6 +1132,67 @@ main: kit: entity: full_repository: {
         }
       ]
     }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/import"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/import"
+          q: {
+            "$action": "import"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "import"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.project_choices`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [
@@ -1140,6 +1248,539 @@ main: kit: entity: full_repository: {
             res: "`body`"
           }
         }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/code-scanning/default-setup"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/code-scanning/default-setup"
+          q: {
+            "$action": "code_scanning_default_setup"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "default-setup"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/code-security-configuration"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/code-security-configuration"
+          q: {
+            "$action": "code_security_configuration"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-security-configuration"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.configuration`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/community/profile"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/community/profile"
+          q: {
+            "$action": "community_profile"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "community"
+            }
+            {
+              lit: "profile"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/dependency-graph/sbom"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/dependency-graph/sbom"
+          q: {
+            "$action": "dependency_graph_sbom"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "dependency-graph"
+            }
+            {
+              lit: "sbom"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.sbom`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/license"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "ref"
+                or: "ref"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/license"
+          q: {
+            "$action": "license"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "license"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/private-vulnerability-reporting"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/private-vulnerability-reporting"
+          q: {
+            "$action": "private_vulnerability_reporting"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "private-vulnerability-reporting"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/secret-scanning/scan-history"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/secret-scanning/scan-history"
+          q: {
+            "$action": "secret_scanning_scan_history"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "secret-scanning"
+            }
+            {
+              lit: "scan-history"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/stats/code_frequency"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/stats/code_frequency"
+          q: {
+            "$action": "stat_code_frequency"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "stats"
+            }
+            {
+              lit: "code_frequency"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/stats/punch_card"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/stats/punch_card"
+          q: {
+            "$action": "stat_punch_card"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "stats"
+            }
+            {
+              lit: "punch_card"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
       ]
     }
     remove: {
@@ -1186,6 +1827,110 @@ main: kit: entity: full_repository: {
             }
             {
               var: "repo"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/import"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/import"
+          q: {
+            "$action": "import"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "import"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/private-vulnerability-reporting"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/private-vulnerability-reporting"
+          q: {
+            "$action": "private_vulnerability_reporting"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "private-vulnerability-reporting"
             }
           ]
           t: {
@@ -1270,6 +2015,245 @@ main: kit: entity: full_repository: {
             }
             {
               var: "repo"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "tfvc_project"
+            "vcs"
+            "vcs_password"
+            "vcs_username"
+          ]
+          co: {
+            id: "PATCH /repos/{owner}/{repo}/import"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/repos/{owner}/{repo}/import"
+          q: {
+            "$action": "import"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "import"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "tfvc_project"
+            "vcs"
+            "vcs_password"
+            "vcs_url"
+            "vcs_username"
+          ]
+          co: {
+            id: "PUT /repos/{owner}/{repo}/import"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/repos/{owner}/{repo}/import"
+          q: {
+            "$action": "import"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "import"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "use_lfs"
+          ]
+          co: {
+            id: "PATCH /repos/{owner}/{repo}/import/lfs"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/repos/{owner}/{repo}/import/lfs"
+          q: {
+            "$action": "lfs"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "import"
+            }
+            {
+              lit: "lfs"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "PUT /repos/{owner}/{repo}/private-vulnerability-reporting"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/repos/{owner}/{repo}/private-vulnerability-reporting"
+          q: {
+            "$action": "private_vulnerability_reporting"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "private-vulnerability-reporting"
             }
           ]
           t: {

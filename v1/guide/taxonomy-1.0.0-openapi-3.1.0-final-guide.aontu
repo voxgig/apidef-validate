@@ -1,9 +1,31 @@
 {
   entity: {
-    domain: {
-      name: "domain"
+    observation: {
+      name: "observation"
+      path: {
+        "/{year}/observation": {
+          op: {
+            list: {
+              method: "GET"
+              transform: {
+                page: {
+                  total: "`body.total`"
+                }
+                res: "`body.items`"
+              }
+            }
+          }
+        }
+      }
+    }
+    taxon: {
+      name: "taxon"
       path: {
         "/{year}/domain": {
+          action: {
+            domain: {
+            }
+          }
           op: {
             list: {
               method: "GET"
@@ -28,11 +50,43 @@
           }
           rename: {
             param: {
-              did: "id"
+              did: "domain_id"
+            }
+          }
+        }
+        "/{year}/domain/{domain_id}/kingdom/{kingdom_id}": {
+          action: {
+            kingdom: {
+            }
+          }
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+        }
+        "/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}": {
+          action: {
+            phylum: {
+            }
+          }
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              domain: "domain_id"
+              kid: "kingdom_id"
             }
           }
         }
         "/{year}/domain/{id}": {
+          action: {
+            domain: {
+            }
+          }
           op: {
             load: {
               method: "GET"
@@ -42,24 +96,11 @@
             }
           }
         }
-      }
-    }
-    kingdom: {
-      name: "kingdom"
-      path: {
-        "/{year}/domain/{domain_id}/kingdom/{kingdom_id}": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              kingdom_id: "id"
-            }
-          }
-        }
         "/{year}/domain/{id}/kingdom": {
+          action: {
+            kingdom: {
+            }
+          }
           op: {
             create: {
               method: "POST"
@@ -82,48 +123,11 @@
         }
       }
     }
-    observation: {
-      name: "observation"
-      path: {
-        "/{year}/observation": {
-          op: {
-            list: {
-              method: "GET"
-              transform: {
-                page: {
-                  total: "`body.total`"
-                }
-                res: "`body.items`"
-              }
-            }
-          }
-        }
-      }
-    }
-    phylum: {
-      name: "phylum"
-      path: {
-        "/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              domain: "domain_id"
-              itemid: "id"
-              kid: "kingdom_id"
-            }
-          }
-        }
-      }
-    }
   }
 
   metrics: {
     count: {
-      entity: 4
+      entity: 2
       method: 9
       path: 7
     }

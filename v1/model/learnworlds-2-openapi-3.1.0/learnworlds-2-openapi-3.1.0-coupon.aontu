@@ -34,42 +34,43 @@ main: kit: entity: coupon: {
       t: [
         "`$ONE`"
         [
+          "`$NULL`"
+          "`$STRING`"
+        ]
+      ]
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    prefix: {
+      h: "Prefix"
+      n: "prefix"
+      r: false
+      sh: "Coupon prefix"
+      t: [
+        "`$ONE`"
+        [
           "`$STRING`"
           "`$NULL`"
         ]
       ]
     }
-    prefix: {
-      h: "Prefix"
-      n: "prefix"
-      op: {
-        create: {
-          req: false
-          type: [
-            "`$ONE`"
-            [
-              "`$STRING`"
-              "`$NULL`"
-            ]
-          ]
-        }
-      }
-      r: true
-      sh: "Coupon prefix"
-      t: "`$STRING`"
-    }
     quantity: {
       h: "Quantity"
       n: "quantity"
-      op: {
-        create: {
-          req: false
-          type: "`$INTEGER`"
-        }
-      }
-      r: true
-      sh: "Coupon quantity greater than 0"
-      t: "`$NUMBER`"
+      r: false
+      sh: "Number of redemptions that are allowed for this coupon (null as a value means that there is no limit in how many times a coupon can be redeemed)"
+      t: [
+        "`$ONE`"
+        [
+          "`$NUMBER`"
+          "`$NULL`"
+        ]
+      ]
     }
     times_used: {
       h: "Times Used"
@@ -78,6 +79,11 @@ main: kit: entity: coupon: {
       sh: "Coupon number of times used."
       t: "`$INTEGER`"
     }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
   }
 
   name: "coupon"
@@ -121,6 +127,7 @@ main: kit: entity: coupon: {
           m: "POST"
           o: "/v2/promotions/{id}/coupons-bulk"
           q: {
+            "$action": "coupons_bulk"
             exist: [
               "lw_client"
               "promotion_id"
@@ -216,6 +223,172 @@ main: kit: entity: coupon: {
             }
             {
               lit: "coupons"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /v2/promotions/{pid}/coupons"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "promotion_id"
+                or: "pid"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/promotions/{pid}/coupons"
+          q: {
+            exist: [
+              "lw_client"
+              "promotion_id"
+            ]
+          }
+          r: {
+            param: {
+              pid: "promotion_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "promotions"
+            }
+            {
+              var: "promotion_id"
+            }
+            {
+              lit: "coupons"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /v2/promotions/{pid}/coupons/{cid}/usage"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "cid"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "promotion_id"
+                or: "pid"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/promotions/{pid}/coupons/{cid}/usage"
+          q: {
+            "$action": "usage"
+            exist: [
+              "id"
+              "lw_client"
+              "promotion_id"
+            ]
+          }
+          r: {
+            param: {
+              cid: "id"
+              pid: "promotion_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "promotions"
+            }
+            {
+              var: "promotion_id"
+            }
+            {
+              lit: "coupons"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "usage"
             }
           ]
           t: {

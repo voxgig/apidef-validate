@@ -1,0 +1,195 @@
+# Entity: vagrant_package_upload
+
+main: kit: entity: vagrant_package_upload: {
+
+  alias: field: {}
+
+  fields: {
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "The name of this package."
+      t: "`$STRING`"
+    }
+    package_file: {
+      h: "Package File"
+      n: "package_file"
+      r: true
+      sh: "The primary file for the package."
+      t: "`$STRING`"
+    }
+    provider: {
+      h: "Provider"
+      n: "provider"
+      r: true
+      sh: "The virtual machine provider for the box."
+      t: "`$STRING`"
+    }
+    republish: {
+      h: "Republish"
+      n: "republish"
+      r: false
+      sh: "If true, the uploaded package will overwrite any others with the same attributes (e.g."
+      t: "`$BOOLEAN`"
+    }
+    tags: {
+      h: "Tags"
+      n: "tags"
+      r: false
+      sh: "A comma-separated values list of tags to add to the package."
+      t: "`$STRING`"
+    }
+    version: {
+      h: "Version"
+      n: "version"
+      r: true
+      sh: "The raw version for this package."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "vagrant_package_upload"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "name"
+            "package_file"
+            "provider"
+            "republish"
+            "tags"
+            "version"
+          ]
+          co: {
+            id: "POST /packages/{owner}/{repo}/upload/vagrant/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/packages/{owner}/{repo}/upload/vagrant/"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "packages"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "upload"
+            }
+            {
+              lit: "vagrant"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "name"
+            "package_file"
+            "provider"
+            "republish"
+            "tags"
+            "version"
+          ]
+          co: {
+            id: "POST /packages/{owner}/{repo}/validate-upload/vagrant/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/packages/{owner}/{repo}/validate-upload/vagrant/"
+          q: {
+            "$action": "validate_upload"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "packages"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "validate-upload"
+            }
+            {
+              lit: "vagrant"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.package")]
+  ]
+
+}

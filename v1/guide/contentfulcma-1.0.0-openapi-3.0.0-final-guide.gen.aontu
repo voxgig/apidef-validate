@@ -1,5 +1,102 @@
 {
   entity: {
+    access_token: {
+      name: "access_token"
+      path: {
+        "/spaces/{space_id}/environments/{environment_id}/app_installations/{app_definition_id}/access_tokens": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              app_definition_id: "app_installation_id"
+            }
+          }
+        }
+        "/users/me/access_tokens": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            load: {
+              method: "GET"
+            }
+          }
+        }
+        "/users/me/access_tokens/{token_id}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              token_id: "id"
+            }
+          }
+        }
+        "/users/me/access_tokens/{token_id}/revoked": {
+          action: {
+            revoked: {
+            }
+          }
+          op: {
+            update: {
+              method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              token_id: "id"
+            }
+          }
+        }
+      }
+    }
+    action: {
+      name: "action"
+      path: {
+        "/spaces/{space_id}/environment/{environment_id}/bulk_actions/actions/{bulk_action_id}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              bulk_action_id: "id"
+            }
+          }
+        }
+        "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/actions": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              releases_id: "release_id"
+            }
+          }
+        }
+        "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/actions/{release_action_id}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              release_action_id: "id"
+              releases_id: "release_id"
+            }
+          }
+        }
+      }
+    }
     api_key: {
       name: "api_key"
       path: {
@@ -28,37 +125,6 @@
           rename: {
             param: {
               api_key_id: "id"
-            }
-          }
-        }
-        "/spaces/{space_id}/preview_api_keys": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-        }
-        "/spaces/{space_id}/preview_api_keys/{preview_api_key_id}": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-        }
-      }
-    }
-    app_access_token: {
-      name: "app_access_token"
-      path: {
-        "/spaces/{space_id}/environments/{environment_id}/app_installations/{app_definition_id}/access_tokens": {
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-          rename: {
-            param: {
-              app_definition_id: "app_installation_id"
             }
           }
         }
@@ -125,12 +191,11 @@
             }
           }
         }
-      }
-    }
-    app_event_subscription: {
-      name: "app_event_subscription"
-      path: {
         "/organizations/{organization_id}/app_definitions/{app_definition_id}/event_subscription": {
+          action: {
+            event_subscription: {
+            }
+          }
           op: {
             load: {
               method: "GET"
@@ -140,6 +205,33 @@
             }
             update: {
               method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              app_definition_id: "id"
+            }
+          }
+        }
+        "/organizations/{organization_id}/app_definitions/{app_definition_id}/signing_secret": {
+          action: {
+            signing_secret: {
+            }
+          }
+          op: {
+            load: {
+              method: "GET"
+            }
+            remove: {
+              method: "DELETE"
+            }
+            update: {
+              method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              app_definition_id: "id"
             }
           }
         }
@@ -170,71 +262,6 @@
           rename: {
             param: {
               app_definition_id: "id"
-            }
-          }
-        }
-      }
-    }
-    app_key: {
-      name: "app_key"
-      path: {
-        "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            load: {
-              method: "GET"
-            }
-          }
-        }
-        "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys/{key_kid}": {
-          op: {
-            load: {
-              method: "GET"
-            }
-            remove: {
-              method: "DELETE"
-            }
-          }
-          rename: {
-            param: {
-              key_kid: "id"
-            }
-          }
-        }
-      }
-    }
-    app_signed_request: {
-      name: "app_signed_request"
-      path: {
-        "/organizations/{organization_id}/app_instalations/{app_definition_id}/signed_request": {
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-          rename: {
-            param: {
-              app_definition_id: "app_instalation_id"
-            }
-          }
-        }
-      }
-    }
-    app_signing_secret: {
-      name: "app_signing_secret"
-      path: {
-        "/organizations/{organization_id}/app_definitions/{app_definition_id}/signing_secret": {
-          op: {
-            load: {
-              method: "GET"
-            }
-            remove: {
-              method: "DELETE"
-            }
-            update: {
-              method: "PUT"
             }
           }
         }
@@ -310,18 +337,6 @@
             }
           }
         }
-        "/spaces/{space_id}/environments/{environment_id}/assets/{asset_id}/files/{locale_code}/process": {
-          op: {
-            update: {
-              method: "PUT"
-            }
-          }
-          rename: {
-            param: {
-              asset_id: "id"
-            }
-          }
-        }
         "/spaces/{space_id}/environments/{environment_id}/assets/{asset_id}/published": {
           action: {
             published: {
@@ -342,6 +357,10 @@
           }
         }
         "/spaces/{space_id}/environments/{environment_id}/public/assets": {
+          action: {
+            public: {
+            }
+          }
           op: {
             load: {
               method: "GET"
@@ -350,22 +369,17 @@
         }
       }
     }
-    assets_key: {
-      name: "assets_key"
+    call: {
+      name: "call"
       path: {
-        "/spaces/{space_id}/environments/{environment_id}/asset_keys": {
+        "/spaces/{space_id}/webhooks/{webhook_id}/calls": {
           op: {
-            create: {
-              method: "POST"
+            load: {
+              method: "GET"
             }
           }
         }
-      }
-    }
-    bulk_action: {
-      name: "bulk_action"
-      path: {
-        "/spaces/{space_id}/environment/{environment_id}/bulk_actions/actions/{bulk_action_id}": {
+        "/spaces/{space_id}/webhooks/{webhook_id}/calls/{call_id}": {
           op: {
             load: {
               method: "GET"
@@ -373,85 +387,7 @@
           }
           rename: {
             param: {
-              bulk_action_id: "id"
-            }
-          }
-        }
-        "/spaces/{space_id}/environment/{environment_id}/bulk_actions/publish": {
-          action: {
-            publish: {
-            }
-          }
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-        }
-        "/spaces/{space_id}/environment/{environment_id}/bulk_actions/unpublish": {
-          action: {
-            unpublish: {
-            }
-          }
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-        }
-        "/spaces/{space_id}/environment/{environment_id}/bulk_actions/validate": {
-          action: {
-            validate: {
-            }
-          }
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-        }
-      }
-    }
-    content_tag: {
-      name: "content_tag"
-      path: {
-        "/spaces/{space_id}/environments/{environment_id}/tags": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-        }
-        "/spaces/{space_id}/environments/{environment_id}/tags/{query_parameter}": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              query_parameter: "id"
-            }
-          }
-        }
-        "/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            load: {
-              method: "GET"
-            }
-            remove: {
-              method: "DELETE"
-            }
-            update: {
-              method: "PUT"
-            }
-          }
-          rename: {
-            param: {
-              tag_id: "id"
+              call_id: "id"
             }
           }
         }
@@ -508,6 +444,10 @@
           }
         }
         "/spaces/{space_id}/environments/{environment_id}/public/content_types": {
+          action: {
+            public: {
+            }
+          }
           op: {
             load: {
               method: "GET"
@@ -538,8 +478,8 @@
         }
       }
     }
-    entries_collection: {
-      name: "entries_collection"
+    entry: {
+      name: "entry"
       path: {
         "/spaces/{space_id}/environments/{environment_id}/entries": {
           op: {
@@ -551,11 +491,6 @@
             }
           }
         }
-      }
-    }
-    entry: {
-      name: "entry"
-      path: {
         "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}": {
           op: {
             load: {
@@ -617,21 +552,57 @@
         }
       }
     }
-    entry_reference: {
-      name: "entry_reference"
+    environment: {
+      name: "environment"
       path: {
-        "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/references": {
+        "/spaces/{space_id}/environment/{environment_id}/bulk_actions/publish": {
+          action: {
+            bulk_action_publish: {
+            }
+          }
           op: {
-            load: {
-              method: "GET"
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              environment_id: "id"
             }
           }
         }
-      }
-    }
-    enviroment: {
-      name: "enviroment"
-      path: {
+        "/spaces/{space_id}/environment/{environment_id}/bulk_actions/unpublish": {
+          action: {
+            bulk_action_unpublish: {
+            }
+          }
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              environment_id: "id"
+            }
+          }
+        }
+        "/spaces/{space_id}/environment/{environment_id}/bulk_actions/validate": {
+          action: {
+            bulk_action_validate: {
+            }
+          }
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              environment_id: "id"
+            }
+          }
+        }
         "/spaces/{space_id}/environments": {
           op: {
             create: {
@@ -654,11 +625,32 @@
               method: "PUT"
             }
           }
+          rename: {
+            param: {
+              environment_id: "id"
+            }
+          }
+        }
+        "/spaces/{space_id}/environments/{environment_id}/asset_keys": {
+          action: {
+            asset_keys: {
+            }
+          }
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              environment_id: "id"
+            }
+          }
         }
       }
     }
-    environment_alia: {
-      name: "environment_alia"
+    environment_alias: {
+      name: "environment_alias"
       path: {
         "/spaces/{space_id}/environment_aliases": {
           op: {
@@ -677,6 +669,90 @@
             }
             update: {
               method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              environment_alias_id: "id"
+            }
+          }
+        }
+      }
+    }
+    extension: {
+      name: "extension"
+      path: {
+        "/spaces/{space_id}/environments/{environment_id}/extensions": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            load: {
+              method: "GET"
+            }
+          }
+        }
+        "/spaces/{space_id}/environments/{environment_id}/extensions/{extension_id}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+            remove: {
+              method: "DELETE"
+            }
+            update: {
+              method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              extension_id: "id"
+            }
+          }
+        }
+      }
+    }
+    file: {
+      name: "file"
+      path: {
+        "/spaces/{space_id}/environments/{environment_id}/assets/{asset_id}/files/{locale_code}/process": {
+          action: {
+            process: {
+            }
+          }
+          op: {
+            update: {
+              method: "PUT"
+            }
+          }
+        }
+      }
+    }
+    key: {
+      name: "key"
+      path: {
+        "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            load: {
+              method: "GET"
+            }
+          }
+        }
+        "/organizations/{organization_id}/app_definitions/{app_definition_id}/keys/{key_kid}": {
+          op: {
+            load: {
+              method: "GET"
+            }
+            remove: {
+              method: "DELETE"
+            }
+          }
+          rename: {
+            param: {
+              key_kid: "id"
             }
           }
         }
@@ -727,20 +803,29 @@
         }
       }
     }
-    personal_access_token: {
-      name: "personal_access_token"
+    organization_periodic_usage: {
+      name: "organization_periodic_usage"
       path: {
-        "/users/me/access_tokens": {
+        "/organizations/{organization_id}/organization_periodic_usages": {
           op: {
-            create: {
-              method: "POST"
-            }
             load: {
               method: "GET"
             }
           }
         }
-        "/users/me/access_tokens/{token_id}": {
+      }
+    }
+    preview_api_key: {
+      name: "preview_api_key"
+      path: {
+        "/spaces/{space_id}/preview_api_keys": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+        }
+        "/spaces/{space_id}/preview_api_keys/{preview_api_key_id}": {
           op: {
             load: {
               method: "GET"
@@ -748,23 +833,19 @@
           }
           rename: {
             param: {
-              token_id: "id"
+              preview_api_key_id: "id"
             }
           }
         }
-        "/users/me/access_tokens/{token_id}/revoked": {
-          action: {
-            revoked: {
-            }
-          }
+      }
+    }
+    reference: {
+      name: "reference"
+      path: {
+        "/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}/references": {
           op: {
-            update: {
-              method: "PUT"
-            }
-          }
-          rename: {
-            param: {
-              token_id: "access_token_id"
+            load: {
+              method: "GET"
             }
           }
         }
@@ -793,34 +874,6 @@
             }
             update: {
               method: "PUT"
-            }
-          }
-          rename: {
-            param: {
-              releases_id: "id"
-            }
-          }
-        }
-        "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/actions": {
-          action: {
-            action: {
-            }
-          }
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              releases_id: "id"
-            }
-          }
-        }
-        "/spaces/{space_id}/environment/{environment_id}/releases/{releases_id}/actions/{release_action_id}": {
-          op: {
-            load: {
-              method: "GET"
             }
           }
           rename: {
@@ -899,8 +952,8 @@
         }
       }
     }
-    schedule_action: {
-      name: "schedule_action"
+    scheduled_action: {
+      name: "scheduled_action"
       path: {
         "/spaces/{space_id}/scheduled_actions": {
           op: {
@@ -919,6 +972,28 @@
             }
             update: {
               method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              scheduled_action_id: "id"
+            }
+          }
+        }
+      }
+    }
+    signed_request: {
+      name: "signed_request"
+      path: {
+        "/organizations/{organization_id}/app_instalations/{app_definition_id}/signed_request": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              app_definition_id: "app_instalation_id"
             }
           }
         }
@@ -1033,13 +1108,62 @@
         }
       }
     }
-    space_team: {
-      name: "space_team"
+    space_periodic_usage: {
+      name: "space_periodic_usage"
       path: {
-        "/spaces/{space_id}/teams": {
+        "/organizations/{organization_id}/space_periodic_usages": {
           op: {
             load: {
               method: "GET"
+            }
+          }
+        }
+      }
+    }
+    tag: {
+      name: "tag"
+      path: {
+        "/spaces/{space_id}/environments/{environment_id}/tags": {
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+        }
+        "/spaces/{space_id}/environments/{environment_id}/tags/{query_parameter}": {
+          action: {
+            spaces_environments_tags: {
+            }
+          }
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              query_parameter: "id"
+            }
+          }
+        }
+        "/spaces/{space_id}/environments/{environment_id}/tags/{tag_id}": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            load: {
+              method: "GET"
+            }
+            remove: {
+              method: "DELETE"
+            }
+            update: {
+              method: "PUT"
+            }
+          }
+          rename: {
+            param: {
+              tag_id: "id"
             }
           }
         }
@@ -1078,34 +1202,13 @@
         }
       }
     }
-    ui_extension: {
-      name: "ui_extension"
+    team: {
+      name: "team"
       path: {
-        "/spaces/{space_id}/environments/{environment_id}/extensions": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            load: {
-              method: "GET"
-            }
-          }
-        }
-        "/spaces/{space_id}/environments/{environment_id}/extensions/{extension_id}": {
+        "/spaces/{space_id}/teams": {
           op: {
             load: {
               method: "GET"
-            }
-            remove: {
-              method: "DELETE"
-            }
-            update: {
-              method: "PUT"
-            }
-          }
-          rename: {
-            param: {
-              extension_id: "id"
             }
           }
         }
@@ -1138,25 +1241,6 @@
         }
       }
     }
-    usage: {
-      name: "usage"
-      path: {
-        "/organizations/{organization_id}/organization_periodic_usages": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-        }
-        "/organizations/{organization_id}/space_periodic_usages": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-        }
-      }
-    }
     user: {
       name: "user"
       path: {
@@ -1175,6 +1259,27 @@
     }
     webhook: {
       name: "webhook"
+      path: {
+        "/spaces/{space_id}/webhooks/{webhook_id}/health": {
+          action: {
+            health: {
+            }
+          }
+          op: {
+            load: {
+              method: "GET"
+            }
+          }
+          rename: {
+            param: {
+              webhook_id: "id"
+            }
+          }
+        }
+      }
+    }
+    webhook_definition: {
+      name: "webhook_definition"
       path: {
         "/spaces/{space_id}/webhook_definitions": {
           op: {
@@ -1198,48 +1303,9 @@
               method: "PUT"
             }
           }
-        }
-        "/spaces/{space_id}/webhooks/{webhook_id}/calls": {
-          action: {
-            call: {
-            }
-          }
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
           rename: {
             param: {
-              webhook_id: "id"
-            }
-          }
-        }
-        "/spaces/{space_id}/webhooks/{webhook_id}/calls/{call_id}": {
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              webhook_id: "id"
-            }
-          }
-        }
-        "/spaces/{space_id}/webhooks/{webhook_id}/health": {
-          action: {
-            health: {
-            }
-          }
-          op: {
-            load: {
-              method: "GET"
-            }
-          }
-          rename: {
-            param: {
-              webhook_id: "id"
+              webhook_definition_id: "id"
             }
           }
         }

@@ -1,0 +1,99 @@
+# Entity: metric
+
+main: kit: entity: metric: {
+
+  alias: field: {}
+
+  fields: {
+    app_name: {
+      h: "App Name"
+      n: "app_name"
+      r: false
+      sh: "The application name of Unleash Client"
+      t: "`$STRING`"
+    }
+    instance_id: {
+      h: "Instance Id"
+      n: "instance_id"
+      r: false
+      sh: "The instance ID of Unleash Client"
+      t: "`$STRING`"
+    }
+  }
+
+  name: "metric"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "app_name"
+            "instance_id"
+          ]
+          co: {
+            id: "POST /api/v4/feature_flags/unleash/{project_id}/client/metrics"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "unleash_id"
+                or: "project_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/feature_flags/unleash/{project_id}/client/metrics"
+          q: {
+            exist: [
+              "unleash_id"
+            ]
+          }
+          r: {
+            param: {
+              project_id: "unleash_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "feature_flags"
+            }
+            {
+              lit: "unleash"
+            }
+            {
+              var: "unleash_id"
+            }
+            {
+              lit: "client"
+            }
+            {
+              lit: "metrics"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.unleash")]
+  ]
+
+}

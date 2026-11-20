@@ -77,23 +77,6 @@
             }
           }
         }
-        "/v2/affiliates/{id}/payouts/completed": {
-          action: {
-            payout_completed: {
-            }
-          }
-          op: {
-            list: {
-              method: "GET"
-              transform: {
-                page: {
-                  total: "`body.meta.totalItems`"
-                }
-                res: "`body.data`"
-              }
-            }
-          }
-        }
         "/v2/affiliates/{id}/payouts/due": {
           action: {
             payout_due: {
@@ -144,24 +127,6 @@
             }
           }
         }
-        "/v2/forms/{id}/responses": {
-          op: {
-            list: {
-              method: "GET"
-              transform: {
-                page: {
-                  total: "`body.meta.totalItems`"
-                }
-                res: "`body.data`"
-              }
-            }
-          }
-          rename: {
-            param: {
-              id: "form_id"
-            }
-          }
-        }
       }
     }
     bundle: {
@@ -184,21 +149,6 @@
           op: {
             load: {
               method: "GET"
-            }
-          }
-        }
-      }
-    }
-    calendar: {
-      name: "calendar"
-      path: {
-        "/v2/school/events": {
-          op: {
-            list: {
-              method: "GET"
-              transform: {
-                res: "`body.data`"
-              }
             }
           }
         }
@@ -232,56 +182,16 @@
         }
       }
     }
-    community: {
-      name: "community"
+    collection: {
+      name: "collection"
       path: {
         "/v2/community/collections": {
-          action: {
-            collection: {
-            }
-          }
           op: {
             list: {
               method: "GET"
               transform: {
                 res: "`body.data`"
               }
-            }
-          }
-        }
-        "/v2/community/spaces/{id}/users": {
-          op: {
-            create: {
-              method: "POST"
-              transform: {
-                res: "`body.data`"
-              }
-            }
-            list: {
-              method: "GET"
-              transform: {
-                page: {
-                  total: "`body.meta.totalItems`"
-                }
-                res: "`body.data`"
-              }
-            }
-          }
-          rename: {
-            param: {
-              id: "space_id"
-            }
-          }
-        }
-        "/v2/community/spaces/{id}/users/{uid}": {
-          op: {
-            remove: {
-              method: "DELETE"
-            }
-          }
-          rename: {
-            param: {
-              id: "space_id"
             }
           }
         }
@@ -291,10 +201,6 @@
       name: "community_post"
       path: {
         "/v2/community/posts": {
-          action: {
-            post: {
-            }
-          }
           op: {
             list: {
               method: "GET"
@@ -320,10 +226,6 @@
       name: "community_space"
       path: {
         "/v2/community/spaces": {
-          action: {
-            space: {
-            }
-          }
           op: {
             create: {
               method: "POST"
@@ -354,10 +256,59 @@
         }
       }
     }
+    complete: {
+      name: "complete"
+      path: {
+        "/v2/users/{id}/courses/{cid}/complete": {
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              cid: "course_id"
+              id: "user_id"
+            }
+          }
+        }
+      }
+    }
+    completed: {
+      name: "completed"
+      path: {
+        "/v2/affiliates/{id}/payouts/completed": {
+          action: {
+            payout_completed: {
+            }
+          }
+          op: {
+            list: {
+              method: "GET"
+              transform: {
+                page: {
+                  total: "`body.meta.totalItems`"
+                }
+                res: "`body.data`"
+              }
+            }
+          }
+          rename: {
+            param: {
+              id: "affiliate_id"
+            }
+          }
+        }
+      }
+    }
     coupon: {
       name: "coupon"
       path: {
         "/v2/promotions/{id}/coupons-bulk": {
+          action: {
+            coupons_bulk: {
+            }
+          }
           op: {
             create: {
               method: "POST"
@@ -374,6 +325,12 @@
             create: {
               method: "POST"
             }
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.data`"
+              }
+            }
           }
           rename: {
             param: {
@@ -381,26 +338,19 @@
             }
           }
         }
-      }
-    }
-    coupon_usage: {
-      name: "coupon_usage"
-      path: {
         "/v2/promotions/{pid}/coupons/{cid}/usage": {
+          action: {
+            usage: {
+            }
+          }
           op: {
-            list: {
+            load: {
               method: "GET"
-              transform: {
-                page: {
-                  total: "`body.meta.totalItems`"
-                }
-                res: "`body.payments`"
-              }
             }
           }
           rename: {
             param: {
-              cid: "coupon_id"
+              cid: "id"
               pid: "promotion_id"
             }
           }
@@ -433,6 +383,17 @@
             }
             update: {
               method: "PUT"
+            }
+          }
+        }
+        "/v2/courses/{id}/analytics": {
+          action: {
+            analytics: {
+            }
+          }
+          op: {
+            load: {
+              method: "GET"
             }
           }
         }
@@ -470,12 +431,29 @@
             }
           }
         }
-      }
-    }
-    course_analytics: {
-      name: "course_analytics"
-      path: {
-        "/v2/courses/{id}/analytics": {
+        "/v2/users/{id}/courses": {
+          op: {
+            list: {
+              method: "GET"
+              transform: {
+                page: {
+                  total: "`body.meta.totalItems`"
+                }
+                res: "`body.data`"
+              }
+            }
+          }
+          rename: {
+            param: {
+              id: "user_id"
+            }
+          }
+        }
+        "/v2/users/{id}/courses/{cid}/progress": {
+          action: {
+            progress: {
+            }
+          }
           op: {
             load: {
               method: "GET"
@@ -483,7 +461,25 @@
           }
           rename: {
             param: {
-              id: "course_id"
+              cid: "id"
+              id: "user_id"
+            }
+          }
+        }
+        "/v2/users/{id}/courses/{cid}/reset": {
+          action: {
+            reset: {
+            }
+          }
+          op: {
+            create: {
+              method: "POST"
+            }
+          }
+          rename: {
+            param: {
+              cid: "id"
+              id: "user_id"
             }
           }
         }
@@ -515,6 +511,21 @@
           op: {
             create: {
               method: "POST"
+            }
+          }
+        }
+      }
+    }
+    event: {
+      name: "event"
+      path: {
+        "/v2/school/events": {
+          op: {
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.data`"
+              }
             }
           }
         }
@@ -573,26 +584,6 @@
                 }
                 res: "`body.data`"
               }
-            }
-          }
-        }
-      }
-    }
-    multiple_seat: {
-      name: "multiple_seat"
-      path: {
-        "/v2/seats/{id}/users/{uid}": {
-          op: {
-            create: {
-              method: "POST"
-            }
-            remove: {
-              method: "DELETE"
-            }
-          }
-          rename: {
-            param: {
-              id: "seat_id"
             }
           }
         }
@@ -660,22 +651,26 @@
             }
           }
         }
-        "/v2/promotions/{pid}/coupons": {
-          action: {
-            coupon: {
-            }
-          }
+      }
+    }
+    response: {
+      name: "response"
+      path: {
+        "/v2/forms/{id}/responses": {
           op: {
             list: {
               method: "GET"
               transform: {
+                page: {
+                  total: "`body.meta.totalItems`"
+                }
                 res: "`body.data`"
               }
             }
           }
           rename: {
             param: {
-              pid: "id"
+              id: "form_id"
             }
           }
         }
@@ -712,6 +707,21 @@
         }
       }
     }
+    segment: {
+      name: "segment"
+      path: {
+        "/v2/users/segments": {
+          op: {
+            list: {
+              method: "GET"
+              transform: {
+                res: "`body.data`"
+              }
+            }
+          }
+        }
+      }
+    }
     subscription_plan: {
       name: "subscription_plan"
       path: {
@@ -737,10 +747,14 @@
         }
       }
     }
-    unit_analytics: {
-      name: "unit_analytics"
+    unit: {
+      name: "unit"
       path: {
         "/v2/courses/{id}/units/{uid}/analytics": {
+          action: {
+            analytics: {
+            }
+          }
           op: {
             load: {
               method: "GET"
@@ -749,38 +763,7 @@
           rename: {
             param: {
               id: "course_id"
-              uid: "unit_id"
-            }
-          }
-        }
-      }
-    }
-    update_user_progress: {
-      name: "update_user_progress"
-      path: {
-        "/v2/users/{id}/courses/{cid}/complete": {
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-          rename: {
-            param: {
-              cid: "course_id"
-              id: "user_id"
-            }
-          }
-        }
-        "/v2/users/{id}/courses/{cid}/reset": {
-          op: {
-            create: {
-              method: "POST"
-            }
-          }
-          rename: {
-            param: {
-              cid: "course_id"
-              id: "user_id"
+              uid: "id"
             }
           }
         }
@@ -801,6 +784,43 @@
             }
           }
         }
+        "/v2/community/spaces/{id}/users": {
+          op: {
+            create: {
+              method: "POST"
+              transform: {
+                res: "`body.data`"
+              }
+            }
+            list: {
+              method: "GET"
+              transform: {
+                page: {
+                  total: "`body.meta.totalItems`"
+                }
+                res: "`body.data`"
+              }
+            }
+          }
+          rename: {
+            param: {
+              id: "space_id"
+            }
+          }
+        }
+        "/v2/community/spaces/{id}/users/{uid}": {
+          op: {
+            remove: {
+              method: "DELETE"
+            }
+          }
+          rename: {
+            param: {
+              id: "space_id"
+              uid: "id"
+            }
+          }
+        }
         "/v2/seats/{id}/users": {
           op: {
             list: {
@@ -810,6 +830,22 @@
           rename: {
             param: {
               id: "seat_id"
+            }
+          }
+        }
+        "/v2/seats/{id}/users/{uid}": {
+          op: {
+            create: {
+              method: "POST"
+            }
+            remove: {
+              method: "DELETE"
+            }
+          }
+          rename: {
+            param: {
+              id: "seat_id"
+              uid: "id"
             }
           }
         }
@@ -891,20 +927,6 @@
             }
           }
         }
-        "/v2/users/segments": {
-          action: {
-            segment: {
-            }
-          }
-          op: {
-            list: {
-              method: "GET"
-              transform: {
-                res: "`body.data`"
-              }
-            }
-          }
-        }
         "/v2/users/{id}": {
           op: {
             load: {
@@ -912,23 +934,6 @@
             }
             update: {
               method: "PUT"
-            }
-          }
-        }
-        "/v2/users/{id}/courses": {
-          action: {
-            course: {
-            }
-          }
-          op: {
-            list: {
-              method: "GET"
-              transform: {
-                page: {
-                  total: "`body.meta.totalItems`"
-                }
-                res: "`body.data`"
-              }
             }
           }
         }
@@ -966,14 +971,8 @@
             }
           }
           op: {
-            list: {
+            load: {
               method: "GET"
-              transform: {
-                page: {
-                  total: "`body.meta.totalItems`"
-                }
-                res: "`body.data`"
-              }
             }
           }
         }
@@ -1077,27 +1076,6 @@
         }
       }
     }
-    user_progress: {
-      name: "user_progress"
-      path: {
-        "/v2/users/{id}/courses/{cid}/progress": {
-          op: {
-            list: {
-              method: "GET"
-              transform: {
-                res: "`body.progress_per_section_unit`"
-              }
-            }
-          }
-          rename: {
-            param: {
-              cid: "course_id"
-              id: "user_id"
-            }
-          }
-        }
-      }
-    }
     user_role: {
       name: "user_role"
       path: {
@@ -1113,7 +1091,7 @@
         }
         "/v2/users/{id}/user-role": {
           op: {
-            list: {
+            load: {
               method: "GET"
               transform: {
                 res: "`body.user_role`"
@@ -1150,7 +1128,7 @@
 
   metrics: {
     count: {
-      entity: 28
+      entity: 27
       method: 91
       path: 72
     }

@@ -1,0 +1,322 @@
+# Entity: assignment
+
+main: kit: entity: assignment: {
+
+  alias: field: {}
+
+  fields: {
+    accepted: {
+      h: "Accepted"
+      n: "accepted"
+      r: true
+      sh: "The number of students that have accepted the assignment."
+      t: "`$INTEGER`"
+    }
+    classroom: {
+      h: "Classroom"
+      n: "classroom"
+      r: true
+      sh: "A GitHub Classroom classroom"
+      t: "`$OBJECT`"
+    }
+    deadline: {
+      fo: "date-time"
+      h: "Deadline"
+      n: "deadline"
+      r: true
+      sh: "The time at which the assignment is due."
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    editor: {
+      h: "Editor"
+      n: "editor"
+      r: true
+      sh: "The selected editor for the assignment."
+      t: "`$STRING`"
+    }
+    feedback_pull_requests_enabled: {
+      h: "Feedback Pull Requests Enabled"
+      n: "feedback_pull_requests_enabled"
+      r: true
+      sh: "Whether feedback pull request will be created when a student accepts the assignment."
+      t: "`$BOOLEAN`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "Unique identifier of the repository."
+      t: "`$INTEGER`"
+    }
+    invitations_enabled: {
+      h: "Invitations Enabled"
+      n: "invitations_enabled"
+      r: true
+      sh: "Whether the invitation link is enabled."
+      t: "`$BOOLEAN`"
+    }
+    invite_link: {
+      h: "Invite Link"
+      n: "invite_link"
+      r: true
+      sh: "The link that a student can use to accept the assignment."
+      t: "`$STRING`"
+    }
+    language: {
+      h: "Language"
+      n: "language"
+      r: true
+      sh: "The programming language used in the assignment."
+      t: "`$STRING`"
+    }
+    max_members: {
+      h: "Max Members"
+      n: "max_members"
+      op: {
+        list: {
+          req: false
+          type: [
+            "`$ONE`"
+            [
+              "`$INTEGER`"
+              "`$NULL`"
+            ]
+          ]
+        }
+      }
+      r: true
+      sh: "The maximum allowable members per team."
+      t: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    max_teams: {
+      h: "Max Teams"
+      n: "max_teams"
+      op: {
+        list: {
+          req: false
+          type: [
+            "`$ONE`"
+            [
+              "`$INTEGER`"
+              "`$NULL`"
+            ]
+          ]
+        }
+      }
+      r: true
+      sh: "The maximum allowable teams for the assignment."
+      t: [
+        "`$ONE`"
+        [
+          "`$INTEGER`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    passing: {
+      h: "Passing"
+      n: "passing"
+      r: true
+      sh: "The number of students that have passed the assignment."
+      t: "`$INTEGER`"
+    }
+    public_repo: {
+      h: "Public Repo"
+      n: "public_repo"
+      r: true
+      sh: "Whether an accepted assignment creates a public repository."
+      t: "`$BOOLEAN`"
+    }
+    slug: {
+      h: "Slug"
+      n: "slug"
+      r: true
+      sh: "Sluggified name of the assignment."
+      t: "`$STRING`"
+    }
+    starter_code_repository: {
+      h: "Starter Code Repository"
+      n: "starter_code_repository"
+      r: true
+      sh: "A GitHub repository view for Classroom"
+      t: "`$OBJECT`"
+    }
+    students_are_repo_admins: {
+      h: "Students Are Repo Admins"
+      n: "students_are_repo_admins"
+      r: true
+      sh: "Whether students are admins on created repository when a student accepts the assignment."
+      t: "`$BOOLEAN`"
+    }
+    submitted: {
+      h: "Submitted"
+      n: "submitted"
+      r: true
+      sh: "The number of students that have submitted the assignment."
+      t: "`$INTEGER`"
+    }
+    title: {
+      h: "Title"
+      n: "title"
+      r: true
+      sh: "Assignment title."
+      t: "`$STRING`"
+    }
+    type: {
+      h: "Type"
+      n: "type"
+      r: true
+      sh: "Whether it's a group assignment or individual assignment."
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "assignment"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /classrooms/{classroom_id}/assignments"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "classroom_id"
+                or: "classroom_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/classrooms/{classroom_id}/assignments"
+          q: {
+            exist: [
+              "classroom_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "classrooms"
+            }
+            {
+              var: "classroom_id"
+            }
+            {
+              lit: "assignments"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /assignments/{assignment_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "assignment_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/assignments/{assignment_id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              assignment_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "assignments"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.classroom")]
+  ]
+
+}

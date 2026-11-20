@@ -34,109 +34,6 @@ main: kit: entity: api_insights_time_stat: {
       points: [
         {
           co: {
-            id: "GET /orgs/{org}/insights/api/time-stats/{actor_type}/{actor_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "actor_id"
-                or: "actor_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "actor_type"
-                or: "actor_type"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "org"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                explode: true
-                k: "query"
-                n: "max_timestamp"
-                or: "max_timestamp"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "min_timestamp"
-                or: "min_timestamp"
-                r: true
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "timestamp_increment"
-                or: "timestamp_increment"
-                r: true
-                style: "form"
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/insights/api/time-stats/{actor_type}/{actor_id}"
-          q: {
-            exist: [
-              "actor_id"
-              "actor_type"
-              "min_timestamp"
-              "org"
-              "timestamp_increment"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org"
-            }
-            {
-              lit: "insights"
-            }
-            {
-              lit: "api"
-            }
-            {
-              lit: "time-stats"
-            }
-            {
-              var: "actor_type"
-            }
-            {
-              var: "actor_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "GET /orgs/{org}/insights/api/time-stats/users/{user_id}"
             source: "openapi3"
             version: 2
@@ -145,7 +42,7 @@ main: kit: entity: api_insights_time_stat: {
             params: [
               {
                 k: "param"
-                n: "org"
+                n: "org_id"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -193,10 +90,15 @@ main: kit: entity: api_insights_time_stat: {
           q: {
             exist: [
               "min_timestamp"
-              "org"
+              "org_id"
               "timestamp_increment"
               "user_id"
             ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
           }
           rs: {
             kind: "json"
@@ -207,7 +109,7 @@ main: kit: entity: api_insights_time_stat: {
               lit: "orgs"
             }
             {
-              var: "org"
+              var: "org_id"
             }
             {
               lit: "insights"
@@ -230,96 +132,13 @@ main: kit: entity: api_insights_time_stat: {
             res: "`body`"
           }
         }
-        {
-          co: {
-            id: "GET /orgs/{org}/insights/api/time-stats"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                explode: true
-                k: "query"
-                n: "max_timestamp"
-                or: "max_timestamp"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "min_timestamp"
-                or: "min_timestamp"
-                r: true
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "timestamp_increment"
-                or: "timestamp_increment"
-                r: true
-                style: "form"
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/insights/api/time-stats"
-          q: {
-            exist: [
-              "min_timestamp"
-              "org"
-              "timestamp_increment"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org"
-            }
-            {
-              lit: "insights"
-            }
-            {
-              lit: "api"
-            }
-            {
-              lit: "time-stats"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
       ]
     }
   }
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.org")]
     [path("$.main.kit.entity.org") path("$.main.kit.entity.user")]
-    [path("$.main.kit.entity.org")]
   ]
 
 }

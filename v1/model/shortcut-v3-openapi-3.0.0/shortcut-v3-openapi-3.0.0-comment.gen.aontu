@@ -5,11 +5,129 @@ main: kit: entity: comment: {
   alias: field: {}
 
   fields: {
+    app_url: {
+      h: "App Url"
+      n: "app_url"
+      r: true
+      sh: "The Shortcut application url for the Comment."
+      t: "`$STRING`"
+    }
+    author_id: {
+      fo: "uuid"
+      h: "Author Id"
+      n: "author_id"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "The unique ID of the Member that authored the Comment."
+      t: "`$STRING`"
+    }
+    comments: {
+      h: "Comments"
+      n: "comments"
+      r: true
+      sh: "A nested array of threaded comments."
+      t: "`$ARRAY`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "The time/date the Comment was created."
+      t: "`$STRING`"
+    }
+    deleted: {
+      h: "Deleted"
+      n: "deleted"
+      r: true
+      sh: "True/false boolean indicating whether the Comment is deleted."
+      t: "`$BOOLEAN`"
+    }
+    entity_type: {
+      h: "Entity Type"
+      n: "entity_type"
+      r: true
+      sh: "A string description of this resource."
+      t: "`$STRING`"
+    }
+    external_id: {
+      h: "External Id"
+      n: "external_id"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "This field can be set to another unique ID."
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    group_mention_ids: {
+      h: "Group Mention Ids"
+      n: "group_mention_ids"
+      r: true
+      sh: "An array of Group IDs that have been mentioned in this Comment."
+      t: "`$ARRAY`"
+    }
     id: {
+      fo: "int64"
       h: "Id"
       n: "id"
-      r: false
-      syn: true
+      r: true
+      sh: "The unique ID of the Comment."
+      t: "`$INTEGER`"
+    }
+    member_mention_ids: {
+      h: "Member Mention Ids"
+      n: "member_mention_ids"
+      r: true
+      sh: "An array of Member IDs that have been mentioned in this Comment."
+      t: "`$ARRAY`"
+    }
+    mention_ids: {
+      h: "Mention Ids"
+      n: "mention_ids"
+      r: true
+      sh: "`Deprecated:` use `member_mention_ids`."
+      t: "`$ARRAY`"
+    }
+    text: {
+      h: "Text"
+      n: "text"
+      r: true
+      sh: "The text of the Comment."
+      t: "`$STRING`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "The time/date the Comment was updated."
       t: "`$STRING`"
     }
   }
@@ -21,12 +139,19 @@ main: kit: entity: comment: {
 
   name: "comment"
   op: {
-    remove: {
-      name: "remove"
+    create: {
+      name: "create"
       points: [
         {
+          bf: [
+            "author_id"
+            "created_at"
+            "external_id"
+            "text"
+            "updated_at"
+          ]
           co: {
-            id: "DELETE /api/v3/stories/{story-public-id}/comments/{comment-public-id}"
+            id: "POST /api/v3/epics/{epic-public-id}/comments/{comment-public-id}"
             source: "openapi3"
             version: 2
           }
@@ -34,33 +159,37 @@ main: kit: entity: comment: {
             params: [
               {
                 k: "param"
-                n: "id"
-                or: "comment-public-id"
+                n: "epic_id"
+                or: "epic-public-id"
                 r: true
                 t: "`$INTEGER`"
               }
               {
                 k: "param"
-                n: "story_id"
-                or: "story-public-id"
+                n: "id"
+                or: "comment-public-id"
                 r: true
                 t: "`$INTEGER`"
               }
             ]
           }
-          m: "DELETE"
-          o: "/api/v3/stories/{story-public-id}/comments/{comment-public-id}"
+          m: "POST"
+          o: "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}"
           q: {
             exist: [
+              "epic_id"
               "id"
-              "story_id"
             ]
           }
           r: {
             param: {
               "comment-public-id": "id"
-              "story-public-id": "story_id"
+              "epic-public-id": "epic_id"
             }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -70,10 +199,216 @@ main: kit: entity: comment: {
               lit: "v3"
             }
             {
-              lit: "stories"
+              lit: "epics"
             }
             {
-              var: "story_id"
+              var: "epic_id"
+            }
+            {
+              lit: "comments"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: {
+              author_id: "`reqdata.author_id`"
+              created_at: "`reqdata.created_at`"
+              external_id: "`reqdata.external_id`"
+              text: "`reqdata.text`"
+              updated_at: "`reqdata.updated_at`"
+            }
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "author_id"
+            "created_at"
+            "external_id"
+            "text"
+            "updated_at"
+          ]
+          co: {
+            id: "POST /api/v3/epics/{epic-public-id}/comments"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "epic_id"
+                or: "epic-public-id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v3/epics/{epic-public-id}/comments"
+          q: {
+            exist: [
+              "epic_id"
+            ]
+          }
+          r: {
+            param: {
+              "epic-public-id": "epic_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v3"
+            }
+            {
+              lit: "epics"
+            }
+            {
+              var: "epic_id"
+            }
+            {
+              lit: "comments"
+            }
+          ]
+          t: {
+            req: {
+              author_id: "`reqdata.author_id`"
+              created_at: "`reqdata.created_at`"
+              external_id: "`reqdata.external_id`"
+              text: "`reqdata.text`"
+              updated_at: "`reqdata.updated_at`"
+            }
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v3/epics/{epic-public-id}/comments"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "epic_id"
+                or: "epic-public-id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/epics/{epic-public-id}/comments"
+          q: {
+            exist: [
+              "epic_id"
+            ]
+          }
+          r: {
+            param: {
+              "epic-public-id": "epic_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v3"
+            }
+            {
+              lit: "epics"
+            }
+            {
+              var: "epic_id"
+            }
+            {
+              lit: "comments"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v3/epics/{epic-public-id}/comments/{comment-public-id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "epic_id"
+                or: "epic-public-id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "comment-public-id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}"
+          q: {
+            exist: [
+              "epic_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              "comment-public-id": "id"
+              "epic-public-id": "epic_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v3"
+            }
+            {
+              lit: "epics"
+            }
+            {
+              var: "epic_id"
             }
             {
               lit: "comments"
@@ -89,11 +424,156 @@ main: kit: entity: comment: {
         }
       ]
     }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v3/epics/{epic-public-id}/comments/{comment-public-id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "epic_id"
+                or: "epic-public-id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "comment-public-id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}"
+          q: {
+            exist: [
+              "epic_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              "comment-public-id": "id"
+              "epic-public-id": "epic_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v3"
+            }
+            {
+              lit: "epics"
+            }
+            {
+              var: "epic_id"
+            }
+            {
+              lit: "comments"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "text"
+          ]
+          co: {
+            id: "PUT /api/v3/epics/{epic-public-id}/comments/{comment-public-id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "epic_id"
+                or: "epic-public-id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "comment-public-id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v3/epics/{epic-public-id}/comments/{comment-public-id}"
+          q: {
+            exist: [
+              "epic_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              "comment-public-id": "id"
+              "epic-public-id": "epic_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v3"
+            }
+            {
+              lit: "epics"
+            }
+            {
+              var: "epic_id"
+            }
+            {
+              lit: "comments"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: {
+              text: "`reqdata.text`"
+            }
+            res: "`body`"
+          }
+        }
+      ]
+    }
   }
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.story")]
+    [path("$.main.kit.entity.epic")]
   ]
 
 }

@@ -5,69 +5,159 @@ main: kit: entity: integration: {
   alias: field: {}
 
   fields: {
-    api_app_id: {
-      h: "Api App Id"
-      n: "api_app_id"
+    active: {
+      h: "Active"
+      n: "active"
       r: false
-      sh: "The Slack app ID"
+      t: "`$BOOLEAN`"
+    }
+    alert_events: {
+      h: "Alert Events"
+      n: "alert_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    comment_on_event_enabled: {
+      h: "Comment On Event Enabled"
+      n: "comment_on_event_enabled"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    commit_events: {
+      h: "Commit Events"
+      n: "commit_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    confidential_issues_events: {
+      h: "Confidential Issues Events"
+      n: "confidential_issues_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    confidential_note_events: {
+      h: "Confidential Note Events"
+      n: "confidential_note_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
       t: "`$STRING`"
     }
-    authed_users: {
-      h: "Authed Users"
-      n: "authed_users"
+    deployment_events: {
+      h: "Deployment Events"
+      n: "deployment_events"
       r: false
-      sh: "(Deprecated by Slack) An array of Slack user IDs"
-      t: "`$ARRAY`"
+      t: "`$BOOLEAN`"
     }
-    event: {
-      h: "Event"
-      n: "event"
-      r: false
-      sh: "The event object with variable properties"
-      t: "`$OBJECT`"
-    }
-    event_id: {
-      h: "Event Id"
-      n: "event_id"
-      r: false
-      sh: "A unique identifier for this specific event"
-      t: "`$STRING`"
-    }
-    event_time: {
+    id: {
       fo: "int32"
-      h: "Event Time"
-      n: "event_time"
+      h: "Id"
+      n: "id"
       r: false
-      sh: "The epoch timestamp in seconds when this event was dispatched"
       t: "`$INTEGER`"
     }
-    team_id: {
-      h: "Team Id"
-      n: "team_id"
+    incident_events: {
+      h: "Incident Events"
+      n: "incident_events"
       r: false
-      sh: "The Slack workspace ID of where the event occurred"
-      t: "`$STRING`"
+      t: "`$BOOLEAN`"
     }
-    token: {
-      h: "Token"
-      n: "token"
-      op: {
-        create: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
-      r: true
-      sh: "The Mattermost token."
-      t: "`$STRING`"
-    }
-    type: {
-      h: "Type"
-      n: "type"
+    inherited: {
+      h: "Inherited"
+      n: "inherited"
       r: false
-      sh: "The kind of event this is, usually `event_callback`"
+      t: "`$BOOLEAN`"
+    }
+    issues_events: {
+      h: "Issues Events"
+      n: "issues_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    job_events: {
+      h: "Job Events"
+      n: "job_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    merge_requests_events: {
+      h: "Merge Requests Events"
+      n: "merge_requests_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    note_events: {
+      h: "Note Events"
+      n: "note_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    pipeline_events: {
+      h: "Pipeline Events"
+      n: "pipeline_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    properties: {
+      h: "Properties"
+      n: "properties"
+      r: false
+      t: "`$OBJECT`"
+    }
+    push_events: {
+      h: "Push Events"
+      n: "push_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    slug: {
+      fo: "int32"
+      h: "Slug"
+      n: "slug"
+      r: false
+      t: "`$INTEGER`"
+    }
+    tag_push_events: {
+      h: "Tag Push Events"
+      n: "tag_push_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    title: {
+      h: "Title"
+      n: "title"
+      r: false
       t: "`$STRING`"
     }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
+    }
+    vulnerability_events: {
+      h: "Vulnerability Events"
+      n: "vulnerability_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    wiki_page_events: {
+      h: "Wiki Page Events"
+      n: "wiki_page_events"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
   }
 
   name: "integration"
@@ -98,6 +188,7 @@ main: kit: entity: integration: {
           m: "POST"
           o: "/api/v4/projects/{id}/integrations/mattermost_slash_commands/trigger"
           q: {
+            "$action": "mattermost_slash_command_trigger"
             exist: [
               "project_id"
             ]
@@ -158,6 +249,7 @@ main: kit: entity: integration: {
           m: "POST"
           o: "/api/v4/projects/{id}/integrations/slack_slash_commands/trigger"
           q: {
+            "$action": "slack_slash_command_trigger"
             exist: [
               "project_id"
             ]
@@ -195,12 +287,69 @@ main: kit: entity: integration: {
             res: "`body`"
           }
         }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
         {
-          bf: [
-            "token"
-          ]
           co: {
-            id: "POST /api/v4/projects/{id}/services/mattermost_slash_commands/trigger"
+            id: "GET /api/v4/groups/{id}/integrations"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/groups/{id}/integrations"
+          q: {
+            exist: [
+              "group_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "integrations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/integrations"
             source: "swagger2"
             version: 2
           }
@@ -211,12 +360,12 @@ main: kit: entity: integration: {
                 n: "project_id"
                 or: "id"
                 r: true
-                t: "`$STRING`"
+                t: "`$INTEGER`"
               }
             ]
           }
-          m: "POST"
-          o: "/api/v4/projects/{id}/services/mattermost_slash_commands/trigger"
+          m: "GET"
+          o: "/api/v4/projects/{id}/integrations"
           q: {
             exist: [
               "project_id"
@@ -225,6 +374,277 @@ main: kit: entity: integration: {
           r: {
             param: {
               id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "integrations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/groups/{id}/integrations/{slug}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "slug"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/groups/{id}/integrations/{slug}"
+          q: {
+            exist: [
+              "group_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+              slug: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "integrations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/integrations/{slug}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "slug"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/integrations/{slug}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              slug: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "integrations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/groups/{id}/integrations/{slug}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "slug"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/groups/{id}/integrations/{slug}"
+          q: {
+            exist: [
+              "group_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+              slug: "id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "integrations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/integrations/{slug}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "slug"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/integrations/{slug}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              slug: "id"
             }
           }
           s: [
@@ -241,173 +661,10 @@ main: kit: entity: integration: {
               var: "project_id"
             }
             {
-              lit: "services"
-            }
-            {
-              lit: "mattermost_slash_commands"
-            }
-            {
-              lit: "trigger"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "token"
-          ]
-          co: {
-            id: "POST /api/v4/projects/{id}/services/slack_slash_commands/trigger"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/services/slack_slash_commands/trigger"
-          q: {
-            exist: [
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "services"
-            }
-            {
-              lit: "slack_slash_commands"
-            }
-            {
-              lit: "trigger"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "api_app_id"
-            "authed_users"
-            "event"
-            "event_id"
-            "event_time"
-            "team_id"
-            "token"
-            "type"
-          ]
-          co: {
-            id: "POST /api/v4/integrations/slack/events"
-            source: "swagger2"
-            version: 2
-          }
-          m: "POST"
-          o: "/api/v4/integrations/slack/events"
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
               lit: "integrations"
             }
             {
-              lit: "slack"
-            }
-            {
-              lit: "events"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /api/v4/integrations/slack/interactions"
-            source: "swagger2"
-            version: 2
-          }
-          m: "POST"
-          o: "/api/v4/integrations/slack/interactions"
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "integrations"
-            }
-            {
-              lit: "slack"
-            }
-            {
-              lit: "interactions"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "POST /api/v4/integrations/slack/options"
-            source: "swagger2"
-            version: 2
-          }
-          m: "POST"
-          o: "/api/v4/integrations/slack/options"
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "integrations"
-            }
-            {
-              lit: "slack"
-            }
-            {
-              lit: "options"
+              var: "id"
             }
           ]
           t: {
@@ -421,6 +678,7 @@ main: kit: entity: integration: {
 
 
   relations: ancestors: [
+    [path("$.main.kit.entity.group")]
     [path("$.main.kit.entity.project")]
   ]
 

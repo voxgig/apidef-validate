@@ -74,7 +74,12 @@ func (skip *goldenSkip) noteDiffers(rel string) {
 	skip.mismatched[rel] = true
 }
 
-var goldenSkips = []*goldenSkip{}
+var goldenSkips = []*goldenSkip{
+	{Glob: "model/gitlab-*/*-api_entities_integration_basic.aontu", Expect: 1, Reason: "go/v0.29.0 " +
+		"writes the same 156 update points in another order: sortPoints compares $action only when " +
+		"both points have one, and ewm's two points have none, so the order is not total and each " +
+		"port's sort settles it its own way"},
+}
 
 func findSkip(rel string) *goldenSkip {
 	for _, skip := range goldenSkips {

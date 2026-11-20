@@ -1,0 +1,837 @@
+# Entity: upload
+
+main: kit: entity: upload: {
+
+  alias: field: {}
+
+  fields: {
+    created_at: {
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    file: {
+      fo: "binary"
+      h: "File"
+      n: "file"
+      r: true
+      sh: "The attachment file to be uploaded"
+      t: "`$STRING`"
+    }
+    filename: {
+      h: "Filename"
+      n: "filename"
+      r: false
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
+    }
+    size: {
+      h: "Size"
+      n: "size"
+      r: false
+      t: "`$STRING`"
+    }
+    uploaded_by: {
+      h: "Uploaded By"
+      n: "uploaded_by"
+      r: false
+      t: "`$OBJECT`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "upload"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "file"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/uploads"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/uploads"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "uploads"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/groups/{id}/uploads"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/groups/{id}/uploads"
+          q: {
+            exist: [
+              "group_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "uploads"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/uploads"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/uploads"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "uploads"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/groups/{id}/uploads/{secret}/{filename}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "filename"
+                or: "filename"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "secret"
+                or: "secret"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/groups/{id}/uploads/{secret}/{filename}"
+          q: {
+            exist: [
+              "filename"
+              "id"
+              "secret"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "uploads"
+            }
+            {
+              var: "secret"
+            }
+            {
+              var: "filename"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/uploads/{secret}/{filename}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "filename"
+                or: "filename"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "secret"
+                or: "secret"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/uploads/{secret}/{filename}"
+          q: {
+            "$action": "projects"
+            exist: [
+              "filename"
+              "id"
+              "secret"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "uploads"
+            }
+            {
+              var: "secret"
+            }
+            {
+              var: "filename"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/groups/{id}/uploads/{upload_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "upload_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/groups/{id}/uploads/{upload_id}"
+          q: {
+            exist: [
+              "group_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+              upload_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "uploads"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/uploads/{upload_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "upload_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/uploads/{upload_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              upload_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "uploads"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/groups/{id}/uploads/{secret}/{filename}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "filename"
+                or: "filename"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "secret"
+                or: "secret"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/groups/{id}/uploads/{secret}/{filename}"
+          q: {
+            exist: [
+              "filename"
+              "id"
+              "secret"
+            ]
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "uploads"
+            }
+            {
+              var: "secret"
+            }
+            {
+              var: "filename"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/uploads/{secret}/{filename}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "filename"
+                or: "filename"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "secret"
+                or: "secret"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/uploads/{secret}/{filename}"
+          q: {
+            "$action": "projects"
+            exist: [
+              "filename"
+              "id"
+              "secret"
+            ]
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "uploads"
+            }
+            {
+              var: "secret"
+            }
+            {
+              var: "filename"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /api/v4/groups/{id}/uploads/{upload_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "upload_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/groups/{id}/uploads/{upload_id}"
+          q: {
+            exist: [
+              "group_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+              upload_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "uploads"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/uploads/{upload_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "upload_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/uploads/{upload_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              upload_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "uploads"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.group")]
+    [path("$.main.kit.entity.project")]
+  ]
+
+}

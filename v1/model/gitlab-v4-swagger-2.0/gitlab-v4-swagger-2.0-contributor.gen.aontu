@@ -1,0 +1,168 @@
+# Entity: contributor
+
+main: kit: entity: contributor: {
+
+  alias: field: {}
+
+  fields: {
+    additions: {
+      fo: "int32"
+      h: "Additions"
+      n: "additions"
+      r: false
+      t: "`$INTEGER`"
+    }
+    commits: {
+      fo: "int32"
+      h: "Commits"
+      n: "commits"
+      r: false
+      t: "`$INTEGER`"
+    }
+    deletions: {
+      fo: "int32"
+      h: "Deletions"
+      n: "deletions"
+      r: false
+      t: "`$INTEGER`"
+    }
+    email: {
+      h: "Email"
+      n: "email"
+      r: false
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  name: "contributor"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/repository/contributors"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 1
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "commits"
+                explode: true
+                k: "query"
+                n: "order_by"
+                or: "order_by"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "main"
+                explode: true
+                k: "query"
+                n: "ref"
+                or: "ref"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "asc"
+                explode: true
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/repository/contributors"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "repository"
+            }
+            {
+              lit: "contributors"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+  ]
+
+}

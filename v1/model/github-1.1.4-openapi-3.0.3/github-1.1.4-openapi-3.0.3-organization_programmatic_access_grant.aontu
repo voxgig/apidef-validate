@@ -16,21 +16,14 @@ main: kit: entity: organization_programmatic_access_grant: {
       h: "Action"
       n: "action"
       r: true
-      sh: "Action to apply to the requests."
-      t: "`$STRING`"
-    }
-    created_at: {
-      h: "Created At"
-      n: "created_at"
-      r: true
-      sh: "Date and time when the request for access was created."
+      sh: "Action to apply to the fine-grained personal access token."
       t: "`$STRING`"
     }
     id: {
       h: "Id"
       n: "id"
       r: true
-      sh: "Unique identifier of the request for access via fine-grained personal access token."
+      sh: "Unique identifier of the fine-grained personal access token grant."
       t: "`$INTEGER`"
     }
     owner: {
@@ -47,13 +40,6 @@ main: kit: entity: organization_programmatic_access_grant: {
       sh: "The IDs of the fine-grained personal access tokens."
       t: "`$ARRAY`"
     }
-    pat_request_ids: {
-      h: "Pat Request Ids"
-      n: "pat_request_ids"
-      r: false
-      sh: "Unique identifiers of the requests for access via fine-grained personal access token."
-      t: "`$ARRAY`"
-    }
     permissions: {
       h: "Permissions"
       n: "permissions"
@@ -61,36 +47,11 @@ main: kit: entity: organization_programmatic_access_grant: {
       sh: "Permissions requested, categorized by type of permission."
       t: "`$OBJECT`"
     }
-    reason: {
-      h: "Reason"
-      n: "reason"
-      op: {
-        list: {
-          req: true
-          type: [
-            "`$ONE`"
-            [
-              "`$STRING`"
-              "`$NULL`"
-            ]
-          ]
-        }
-      }
-      r: false
-      sh: "Reason for approving or denying the requests."
-      t: [
-        "`$ONE`"
-        [
-          "`$STRING`"
-          "`$NULL`"
-        ]
-      ]
-    }
     repositories_url: {
       h: "Repositories Url"
       n: "repositories_url"
       r: true
-      sh: "URL to the list of repositories requested to be accessed via fine-grained personal access token."
+      sh: "URL to the list of repositories the fine-grained personal access token can access."
       t: "`$STRING`"
     }
     repository_selection: {
@@ -184,6 +145,7 @@ main: kit: entity: organization_programmatic_access_grant: {
           m: "POST"
           o: "/orgs/{org}/personal-access-token-requests"
           q: {
+            "$action": "personal_access_token_requests"
             exist: [
               "org_id"
             ]
@@ -391,6 +353,7 @@ main: kit: entity: organization_programmatic_access_grant: {
           m: "GET"
           o: "/orgs/{org}/personal-access-token-requests"
           q: {
+            "$action": "personal_access_token_requests"
             exist: [
               "org_id"
             ]

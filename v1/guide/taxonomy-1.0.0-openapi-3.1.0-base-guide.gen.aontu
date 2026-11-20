@@ -4,40 +4,9 @@
 #   taxonomy-1.0.0-openapi-3.1.0-guide.aontu
 
 guide: {
-  metrics: count: entity: 4
+  metrics: count: entity: 2
   metrics: count: path: 7
   metrics: count: method: 9
-
-  entity: domain: {
-    path: "/{year}/domain": {  # ent=domain;orig=Taxon;envelope=paginated_taxa;cmp/resolve=taxon;path=p/t/;path-over-cmp
-      op: list: method: *GET  # array-prop:items
-      op: list: transform: res: *("`body.items`")|top
-      op: list: transform: page: total: *("`body.total`")|top
-    }
-    path: "/{year}/domain/{did}/revoke": {  # ent=domain;orig=Taxon;tag=domain;cmp/resolve=domain;path=t/p/t/;verb-on-parent=domain
-      action: "revoke": {}  # ent;domain;verb-on-parent;revoke;POST
-      rename: param: "did": *"id"  # id-parent-ent
-      op: create: method: *POST  # not-load
-    }
-    path: "/{year}/domain/{id}": {  # ent=domain;orig=Taxon;cmp/resolve=taxon;path=t/p/;path-over-cmp
-      op: load: method: *GET  # end-param
-      op: patch: method: *PATCH  # not-load
-    }
-  }
-
-  entity: kingdom: {
-    path: "/{year}/domain/{domain_id}/kingdom/{kingdom_id}": {  # ent=kingdom;orig=Taxon;cmp/resolve=taxon;path=t/p/;path-over-cmp
-      rename: param: "kingdom_id": *"id"  # end-id;GET;parent=true/kingdom
-      op: load: method: *GET  # end-param
-    }
-    path: "/{year}/domain/{id}/kingdom": {  # ent=kingdom;orig=Taxon;cmp/resolve=taxon;path=t/p/t/;path-over-cmp;has-cmp=Taxon
-      rename: param: "id": *"domain_id"  # parent:domain
-      op: create: method: *POST  # not-load
-      op: list: method: *GET  # array-prop:items
-      op: list: transform: res: *("`body.items`")|top
-      op: list: transform: page: total: *("`body.total`")|top
-    }
-  }
 
   entity: observation: {
     path: "/{year}/observation": {  # ent=observation;orig=Observation;envelope=paginated_observation;cmp/resolve=observation;path=p/t/;path-primary
@@ -47,12 +16,40 @@ guide: {
     }
   }
 
-  entity: phylum: {
-    path: "/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}": {  # ent=phylum;orig=Taxon;cmp/resolve=taxon;path=t/p/;path-over-cmp
+  entity: taxon: {
+    path: "/{year}/domain": {  # ent=taxon;orig=Taxon;envelope=paginated_taxa;cmp/resolve=taxon;path=p/t/;cmp-record=Taxon;collection-action=domain
+      action: "domain": {}  # ent;taxon;collection;domain;GET
+      op: list: method: *GET  # array-prop:items
+      op: list: transform: res: *("`body.items`")|top
+      op: list: transform: page: total: *("`body.total`")|top
+    }
+    path: "/{year}/domain/{did}/revoke": {  # ent=taxon;orig=Taxon;tag=domain;cmp/resolve=domain;path=t/p/t/;noun-before-verb=domain;verb-on-parent=taxon
+      action: "revoke": {}  # ent;taxon;verb-on-parent;revoke;POST
+      rename: param: "did": *"domain_id"  # parent:domain
+      op: create: method: *POST  # not-load
+    }
+    path: "/{year}/domain/{domain_id}/kingdom/{kingdom_id}": {  # ent=taxon;orig=Taxon;cmp/resolve=taxon;path=t/p/;cmp-record=Taxon;collection-action=kingdom
+      action: "kingdom": {}  # ent;taxon;collection;kingdom;GET
+      op: load: method: *GET  # end-param
+    }
+    path: "/{year}/domain/{domain}/kingdom/{kid}/phylum/{itemid}": {  # ent=taxon;orig=Taxon;cmp/resolve=taxon;path=t/p/;cmp-record=Taxon;collection-action=phylum
+      action: "phylum": {}  # ent;taxon;collection;phylum;GET
       rename: param: "domain": *"domain_id"  # parent:domain
-      rename: param: "itemid": *"id"  # end-id;GET;parent=true/phylum
       rename: param: "kid": *"kingdom_id"  # parent:kingdom
       op: load: method: *GET  # end-param
+    }
+    path: "/{year}/domain/{id}": {  # ent=taxon;orig=Taxon;cmp/resolve=taxon;path=t/p/;cmp-record=Taxon;collection-action=domain
+      action: "domain": {}  # ent;taxon;collection;domain;GET
+      op: load: method: *GET  # end-param
+      op: patch: method: *PATCH  # not-load
+    }
+    path: "/{year}/domain/{id}/kingdom": {  # ent=taxon;orig=Taxon;cmp/resolve=taxon;path=t/p/t/;cmp-record=Taxon;collection-action=kingdom;has-cmp=Taxon
+      action: "kingdom": {}  # ent;taxon;collection;kingdom;GET
+      rename: param: "id": *"domain_id"  # parent:domain
+      op: create: method: *POST  # not-load
+      op: list: method: *GET  # array-prop:items
+      op: list: transform: res: *("`body.items`")|top
+      op: list: transform: page: total: *("`body.total`")|top
     }
   }
 

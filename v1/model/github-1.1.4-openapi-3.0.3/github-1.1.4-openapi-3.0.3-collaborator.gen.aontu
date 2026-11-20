@@ -106,6 +106,13 @@ main: kit: entity: collaborator: {
       r: true
       t: "`$STRING`"
     }
+    permission: {
+      h: "Permission"
+      n: "permission"
+      r: false
+      sh: "The permission to grant the collaborator."
+      t: "`$STRING`"
+    }
     permissions: {
       h: "Permissions"
       n: "permissions"
@@ -362,10 +369,405 @@ main: kit: entity: collaborator: {
         }
       ]
     }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/collaborators/{username}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/collaborators/{username}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              username: "id"
+            }
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "collaborators"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/collaborators/{username}/permission"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/collaborators/{username}/permission"
+          q: {
+            "$action": "permission"
+            exist: [
+              "owner"
+              "repo"
+              "username"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "collaborators"
+            }
+            {
+              var: "username"
+            }
+            {
+              lit: "permission"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /projects/{project_id}/collaborators/{username}/permission"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "project_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/projects/{project_id}/collaborators/{username}/permission"
+          q: {
+            "$action": "permission"
+            exist: [
+              "project_id"
+              "username"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "collaborators"
+            }
+            {
+              var: "username"
+            }
+            {
+              lit: "permission"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/collaborators/{username}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/collaborators/{username}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              username: "id"
+            }
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "collaborators"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /projects/{project_id}/collaborators/{username}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "project_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/projects/{project_id}/collaborators/{username}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              username: "id"
+            }
+          }
+          s: [
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "collaborators"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "permission"
+          ]
+          co: {
+            id: "PUT /projects/{project_id}/collaborators/{username}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "project_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/projects/{project_id}/collaborators/{username}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              username: "id"
+            }
+          }
+          s: [
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "collaborators"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
   }
 
 
   relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+    [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.project")]
     [path("$.main.kit.entity.repo")]
   ]

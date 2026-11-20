@@ -1,0 +1,131 @@
+# Entity: v3n
+
+main: kit: entity: v3n: {
+
+  alias: field: {}
+
+  fields: {
+    epics: {
+      h: "Epics"
+      n: "epics"
+      r: true
+      sh: "The results of the Epic search query."
+      t: "`$OBJECT`"
+    }
+    iterations: {
+      h: "Iterations"
+      n: "iterations"
+      r: true
+      sh: "The results of the Iteration search query."
+      t: "`$OBJECT`"
+    }
+    milestones: {
+      h: "Milestones"
+      n: "milestones"
+      r: true
+      sh: "The results of the Objective search query."
+      t: "`$OBJECT`"
+    }
+    stories: {
+      h: "Stories"
+      n: "stories"
+      r: true
+      sh: "The results of the Story search query."
+      t: "`$OBJECT`"
+    }
+  }
+
+  name: "v3n"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v3/search"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "detail"
+                or: "detail"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "entity_type"
+                or: "entity_types"
+                r: false
+                style: "form"
+                t: "`$ARRAY`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "next"
+                or: "next"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "page_size"
+                or: "page_size"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "query"
+                or: "query"
+                r: true
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v3/search"
+          q: {
+            exist: [
+              "query"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v3"
+            }
+            {
+              lit: "search"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

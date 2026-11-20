@@ -1,0 +1,348 @@
+# Entity: cache
+
+main: kit: entity: cache: {
+
+  alias: field: {}
+
+  fields: {
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    key: {
+      h: "Key"
+      n: "key"
+      r: false
+      t: "`$STRING`"
+    }
+    last_accessed_at: {
+      fo: "date-time"
+      h: "Last Accessed At"
+      n: "last_accessed_at"
+      r: false
+      t: "`$STRING`"
+    }
+    ref: {
+      h: "Ref"
+      n: "ref"
+      r: false
+      t: "`$STRING`"
+    }
+    size_in_bytes: {
+      h: "Size In Bytes"
+      n: "size_in_bytes"
+      r: false
+      t: "`$INTEGER`"
+    }
+    version: {
+      h: "Version"
+      n: "version"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "cache"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/caches"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "desc"
+                explode: true
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "key"
+                or: "key"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "ref"
+                or: "ref"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "last_accessed_at"
+                explode: true
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/caches"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "caches"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.actions_caches`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/actions/caches/{cache_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "cache_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/actions/caches/{cache_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              cache_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "caches"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/actions/caches"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "key"
+                or: "key"
+                r: true
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "ref"
+                or: "ref"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/actions/caches"
+          q: {
+            exist: [
+              "key"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "caches"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
+  ]
+
+}

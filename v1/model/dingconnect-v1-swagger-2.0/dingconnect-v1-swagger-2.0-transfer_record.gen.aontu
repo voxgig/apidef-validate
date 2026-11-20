@@ -23,13 +23,7 @@ main: kit: entity: transfer_record: {
       h: "Error Codes"
       n: "ErrorCodes"
       r: true
-      t: "`$ARRAY`"
-    }
-    Items: {
-      h: "Items"
-      n: "Items"
-      r: true
-      sh: "The list of items satisfying the transfer query."
+      sh: "Any error codes that were returned as part of the SendTransfer or in the case of a Batch `ProcessingMode` that may have occurred later after the batch was submitted to the Provider."
       t: "`$ARRAY`"
     }
     ResultCode: {
@@ -55,12 +49,11 @@ main: kit: entity: transfer_record: {
       sh: "The amount of records to return"
       t: "`$INTEGER`"
     }
-    ThereAreMoreItems: {
-      h: "There Are More Items"
-      n: "ThereAreMoreItems"
+    TransferRecord: {
+      h: "Transfer Record"
+      n: "TransferRecord"
       r: true
-      sh: "Indicates if the caller should execute the query again."
-      t: "`$BOOLEAN`"
+      t: "`$OBJECT`"
     }
     TransferRef: {
       h: "Transfer Ref"
@@ -73,8 +66,8 @@ main: kit: entity: transfer_record: {
 
   name: "transfer_record"
   op: {
-    create: {
-      name: "create"
+    list: {
+      name: "list"
       points: [
         {
           bf: [
@@ -133,7 +126,7 @@ main: kit: entity: transfer_record: {
               Take: "`reqdata.take`"
               TransferRef: "`reqdata.transfer_ref`"
             }
-            res: "`body`"
+            res: "`body.Items`"
           }
         }
       ]

@@ -1,0 +1,705 @@
+# Entity: invitation
+
+main: kit: entity: invitation: {
+
+  alias: field: {}
+
+  fields: {
+    access_level: {
+      fo: "int32"
+      h: "Access Level"
+      n: "access_level"
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+        update: {
+          req: false
+          type: "`$INTEGER`"
+        }
+      }
+      r: true
+      sh: "A valid access level (defaults: `30`, developer access level)"
+      t: "`$INTEGER`"
+    }
+    created_at: {
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    created_by_name: {
+      h: "Created By Name"
+      n: "created_by_name"
+      r: false
+      t: "`$STRING`"
+    }
+    email: {
+      h: "Email"
+      n: "email"
+      r: false
+      sh: "The email address to invite, or multiple emails separated by comma"
+      t: "`$ARRAY`"
+    }
+    expires_at: {
+      fo: "date-time"
+      h: "Expires At"
+      n: "expires_at"
+      r: false
+      sh: "Date string in the format YEAR-MONTH-DAY"
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    invite_email: {
+      h: "Invite Email"
+      n: "invite_email"
+      r: false
+      t: "`$STRING`"
+    }
+    invite_source: {
+      h: "Invite Source"
+      n: "invite_source"
+      r: false
+      sh: "Source that triggered the member creation process"
+      t: "`$STRING`"
+    }
+    invite_token: {
+      h: "Invite Token"
+      n: "invite_token"
+      r: false
+      t: "`$STRING`"
+    }
+    member_role_id: {
+      fo: "int32"
+      h: "Member Role Id"
+      n: "member_role_id"
+      r: false
+      sh: "The ID of a member role for the invited user"
+      t: "`$INTEGER`"
+    }
+    user_id: {
+      h: "User Id"
+      n: "user_id"
+      r: false
+      sh: "The user ID of the new member or multiple IDs separated by commas."
+      t: "`$ARRAY`"
+    }
+    user_name: {
+      h: "User Name"
+      n: "user_name"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "invitation"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "access_level"
+            "email"
+            "expires_at"
+            "invite_source"
+            "member_role_id"
+            "user_id"
+          ]
+          co: {
+            id: "POST /api/v4/groups/{id}/invitations"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/groups/{id}/invitations"
+          q: {
+            exist: [
+              "group_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "invitations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "access_level"
+            "email"
+            "expires_at"
+            "invite_source"
+            "member_role_id"
+            "user_id"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/invitations"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/invitations"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "invitations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/groups/{id}/invitations"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "query"
+                or: "query"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/groups/{id}/invitations"
+          q: {
+            exist: [
+              "group_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "group_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "invitations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/invitations"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "query"
+                or: "query"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/invitations"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "invitations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/groups/{id}/invitations/{email}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "email"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/groups/{id}/invitations/{email}"
+          q: {
+            exist: [
+              "group_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              email: "id"
+              id: "group_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "invitations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/invitations/{email}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "email"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/invitations/{email}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              email: "id"
+              id: "project_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "invitations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "access_level"
+            "expires_at"
+            "member_role_id"
+          ]
+          co: {
+            id: "PUT /api/v4/groups/{id}/invitations/{email}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "group_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "email"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/groups/{id}/invitations/{email}"
+          q: {
+            exist: [
+              "group_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              email: "id"
+              id: "group_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "groups"
+            }
+            {
+              var: "group_id"
+            }
+            {
+              lit: "invitations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "access_level"
+            "expires_at"
+            "member_role_id"
+          ]
+          co: {
+            id: "PUT /api/v4/projects/{id}/invitations/{email}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "email"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/invitations/{email}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              email: "id"
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "invitations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.group")]
+    [path("$.main.kit.entity.project")]
+  ]
+
+}

@@ -6,6 +6,7 @@ main: kit: entity: status: {
 
   fields: {
     avatar_url: {
+      fo: "uri"
       h: "Avatar Url"
       n: "avatar_url"
       r: true
@@ -31,6 +32,7 @@ main: kit: entity: status: {
       t: "`$STRING`"
     }
     created_at: {
+      fo: "date-time"
       h: "Created At"
       n: "created_at"
       r: true
@@ -86,6 +88,18 @@ main: kit: entity: status: {
       r: true
       t: "`$STRING`"
     }
+    required: {
+      h: "Required"
+      n: "required"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$BOOLEAN`"
+          "`$NULL`"
+        ]
+      ]
+    }
     state: {
       h: "State"
       n: "state"
@@ -94,6 +108,7 @@ main: kit: entity: status: {
       t: "`$STRING`"
     }
     target_url: {
+      fo: "uri"
       h: "Target Url"
       n: "target_url"
       op: {
@@ -119,12 +134,14 @@ main: kit: entity: status: {
       ]
     }
     updated_at: {
+      fo: "date-time"
       h: "Updated At"
       n: "updated_at"
       r: true
       t: "`$STRING`"
     }
     url: {
+      fo: "uri"
       h: "Url"
       n: "url"
       r: true
@@ -226,6 +243,97 @@ main: kit: entity: status: {
       points: [
         {
           co: {
+            id: "GET /repos/{owner}/{repo}/commits/{ref}/status"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "ref"
+                or: "ref"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/commits/{ref}/status"
+          q: {
+            exist: [
+              "owner"
+              "ref"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "commits"
+            }
+            {
+              var: "ref"
+            }
+            {
+              lit: "status"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /repos/{owner}/{repo}/commits/{ref}/statuses"
             source: "openapi3"
             version: 2
@@ -280,6 +388,7 @@ main: kit: entity: status: {
           m: "GET"
           o: "/repos/{owner}/{repo}/commits/{ref}/statuses"
           q: {
+            "$action": "statuses"
             exist: [
               "owner"
               "ref"

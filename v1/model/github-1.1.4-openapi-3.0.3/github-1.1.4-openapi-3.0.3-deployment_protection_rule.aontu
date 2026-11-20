@@ -126,6 +126,83 @@ main: kit: entity: deployment_protection_rule: {
         }
       ]
     }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "environment_name"
+                or: "environment_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules"
+          q: {
+            exist: [
+              "environment_name"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "environments"
+            }
+            {
+              var: "environment_name"
+            }
+            {
+              lit: "deployment_protection_rules"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.custom_deployment_protection_rules`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [

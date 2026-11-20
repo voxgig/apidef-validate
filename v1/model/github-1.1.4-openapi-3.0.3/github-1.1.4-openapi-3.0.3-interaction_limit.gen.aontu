@@ -9,7 +9,13 @@ main: kit: entity: interaction_limit: {
       fo: "date-time"
       h: "Expires At"
       n: "expires_at"
-      r: true
+      op: {
+        update: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
       t: "`$STRING`"
     }
     expiry: {
@@ -22,20 +28,288 @@ main: kit: entity: interaction_limit: {
     limit: {
       h: "Limit"
       n: "limit"
-      r: true
+      op: {
+        update: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
       sh: "The type of GitHub user that can comment, open issues, or create pull requests while the interaction limit is in effect."
       t: "`$STRING`"
     }
     origin: {
       h: "Origin"
       n: "origin"
-      r: true
+      op: {
+        update: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
       t: "`$STRING`"
     }
   }
 
   name: "interaction_limit"
   op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/interaction-limits"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/interaction-limits"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "interaction-limits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/interaction-limits"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/interaction-limits"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "interaction-limits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /user/interaction-limits"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/user/interaction-limits"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "interaction-limits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/interaction-limits"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/interaction-limits"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "interaction-limits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /orgs/{org}/interaction-limits"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/interaction-limits"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "interaction-limits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /user/interaction-limits"
+            source: "openapi3"
+            version: 2
+          }
+          m: "DELETE"
+          o: "/user/interaction-limits"
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "interaction-limits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     update: {
       name: "update"
       points: [

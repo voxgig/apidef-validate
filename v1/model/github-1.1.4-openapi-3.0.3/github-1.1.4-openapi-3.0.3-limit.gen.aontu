@@ -1,0 +1,93 @@
+# Entity: limit
+
+main: kit: entity: limit: {
+
+  alias: field: {}
+
+  fields: {
+    current_usage: {
+      h: "Current Usage"
+      n: "current_usage"
+      r: true
+      sh: "The current number of static public IP addresses in use by Hosted Runners."
+      t: "`$INTEGER`"
+    }
+    maximum: {
+      h: "Maximum"
+      n: "maximum"
+      r: true
+      sh: "The maximum number of static public IP addresses that can be used for Hosted Runners."
+      t: "`$INTEGER`"
+    }
+  }
+
+  name: "limit"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/hosted-runners/limits"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/hosted-runners/limits"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "hosted-runners"
+            }
+            {
+              lit: "limits"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.public_ips`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.org")]
+  ]
+
+}

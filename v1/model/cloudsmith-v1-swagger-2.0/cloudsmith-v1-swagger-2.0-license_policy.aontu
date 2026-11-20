@@ -1,0 +1,515 @@
+# Entity: license_policy
+
+main: kit: entity: license_policy: {
+
+  alias: field: {}
+
+  fields: {
+    allow_unknown_licenses: {
+      h: "Allow Unknown Licenses"
+      n: "allow_unknown_licenses"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      ro: true
+      t: "`$STRING`"
+    }
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      op: {
+        patch: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      t: "`$STRING`"
+    }
+    on_violation_quarantine: {
+      h: "On Violation Quarantine"
+      n: "on_violation_quarantine"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    package_query_string: {
+      h: "Package Query String"
+      n: "package_query_string"
+      r: false
+      t: "`$STRING`"
+    }
+    slug_perm: {
+      fo: "slug"
+      h: "Slug Perm"
+      n: "slug_perm"
+      r: false
+      ro: true
+      t: "`$STRING`"
+    }
+    spdx_identifiers: {
+      h: "Spdx Identifiers"
+      n: "spdx_identifiers"
+      op: {
+        patch: {
+          req: false
+          type: "`$ARRAY`"
+        }
+      }
+      r: true
+      t: "`$ARRAY`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      ro: true
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "license_policy"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "allow_unknown_licenses"
+            "description"
+            "name"
+            "on_violation_quarantine"
+            "package_query_string"
+            "spdx_identifiers"
+          ]
+          co: {
+            id: "POST /orgs/{org}/license-policy/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/license-policy/"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "license-policy"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/license-policy/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "page_size"
+                or: "page_size"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/license-policy/"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "license-policy"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/license-policy/{slug_perm}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "slug_perm"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/license-policy/{slug_perm}/"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              slug_perm: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "license-policy"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    patch: {
+      name: "patch"
+      points: [
+        {
+          bf: [
+            "allow_unknown_licenses"
+            "description"
+            "name"
+            "on_violation_quarantine"
+            "package_query_string"
+            "spdx_identifiers"
+          ]
+          co: {
+            id: "PATCH /orgs/{org}/license-policy/{slug_perm}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "slug_perm"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/orgs/{org}/license-policy/{slug_perm}/"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              slug_perm: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "license-policy"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /orgs/{org}/license-policy/{slug_perm}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "slug_perm"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/license-policy/{slug_perm}/"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              slug_perm: "id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "license-policy"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "allow_unknown_licenses"
+            "description"
+            "name"
+            "on_violation_quarantine"
+            "package_query_string"
+            "spdx_identifiers"
+          ]
+          co: {
+            id: "PUT /orgs/{org}/license-policy/{slug_perm}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "slug_perm"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/orgs/{org}/license-policy/{slug_perm}/"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              slug_perm: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "license-policy"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.org")]
+  ]
+
+}

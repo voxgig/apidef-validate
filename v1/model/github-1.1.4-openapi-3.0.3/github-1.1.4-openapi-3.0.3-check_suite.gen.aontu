@@ -338,6 +338,198 @@ main: kit: entity: check_suite: {
             res: "`body`"
           }
         }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "check_suite_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "check_name"
+                or: "check_name"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "latest"
+                explode: true
+                k: "query"
+                n: "filter"
+                or: "filter"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "status"
+                or: "status"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs"
+          q: {
+            "$action": "check_runs"
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              check_suite_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "check-suites"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "check-runs"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "auto_trigger_checks"
+          ]
+          co: {
+            id: "PATCH /repos/{owner}/{repo}/check-suites/preferences"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/repos/{owner}/{repo}/check-suites/preferences"
+          q: {
+            "$action": "preferences"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "check-suites"
+            }
+            {
+              lit: "preferences"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
       ]
     }
   }

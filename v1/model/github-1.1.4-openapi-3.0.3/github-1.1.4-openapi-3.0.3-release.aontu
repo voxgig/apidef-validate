@@ -354,6 +354,71 @@ main: kit: entity: release: {
             res: "`body`"
           }
         }
+        {
+          bf: [
+            "configuration_file_path"
+            "previous_tag_name"
+            "tag_name"
+            "target_commitish"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/releases/generate-notes"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/releases/generate-notes"
+          q: {
+            "$action": "generate_notes"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "releases"
+            }
+            {
+              lit: "generate-notes"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
       ]
     }
     list: {
@@ -429,65 +494,6 @@ main: kit: entity: release: {
             }
             {
               lit: "releases"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/releases/latest"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/releases/latest"
-          q: {
-            "$action": "latest"
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "releases"
-            }
-            {
-              lit: "latest"
             }
           ]
           t: {
@@ -605,6 +611,7 @@ main: kit: entity: release: {
           m: "GET"
           o: "/repos/{owner}/{repo}/releases/tags/{tag}"
           q: {
+            "$action": "tag"
             exist: [
               "owner"
               "repo"
@@ -633,6 +640,65 @@ main: kit: entity: release: {
             }
             {
               var: "tag"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/releases/latest"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/releases/latest"
+          q: {
+            "$action": "latest"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "releases"
+            }
+            {
+              lit: "latest"
             }
           ]
           t: {

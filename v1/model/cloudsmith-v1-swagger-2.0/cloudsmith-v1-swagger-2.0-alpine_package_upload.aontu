@@ -1,0 +1,177 @@
+# Entity: alpine_package_upload
+
+main: kit: entity: alpine_package_upload: {
+
+  alias: field: {}
+
+  fields: {
+    distribution: {
+      h: "Distribution"
+      n: "distribution"
+      r: true
+      sh: "The distribution to store the package for."
+      t: "`$STRING`"
+    }
+    package_file: {
+      h: "Package File"
+      n: "package_file"
+      r: true
+      sh: "The primary file for the package."
+      t: "`$STRING`"
+    }
+    republish: {
+      h: "Republish"
+      n: "republish"
+      r: false
+      sh: "If true, the uploaded package will overwrite any others with the same attributes (e.g."
+      t: "`$BOOLEAN`"
+    }
+    tags: {
+      h: "Tags"
+      n: "tags"
+      r: false
+      sh: "A comma-separated values list of tags to add to the package."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "alpine_package_upload"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "distribution"
+            "package_file"
+            "republish"
+            "tags"
+          ]
+          co: {
+            id: "POST /packages/{owner}/{repo}/upload/alpine/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/packages/{owner}/{repo}/upload/alpine/"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "packages"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "upload"
+            }
+            {
+              lit: "alpine"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "distribution"
+            "package_file"
+            "republish"
+            "tags"
+          ]
+          co: {
+            id: "POST /packages/{owner}/{repo}/validate-upload/alpine/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/packages/{owner}/{repo}/validate-upload/alpine/"
+          q: {
+            "$action": "validate_upload"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          s: [
+            {
+              lit: "packages"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "validate-upload"
+            }
+            {
+              lit: "alpine"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.package")]
+  ]
+
+}

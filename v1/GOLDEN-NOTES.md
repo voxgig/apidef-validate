@@ -743,3 +743,106 @@ The releases' other changes move no golden:
 - The lockfile moves only apidef and the two logging packages 8.32.2 pins
   exactly, `pino` 10.4.0 and `pino-pretty` 13.2.0. It keeps `shape` at 11.4.1
   and `jostraca` at 0.41.0.
+
+## 2026-11-20 — apidef 8.33.0 and go/v0.29.0
+
+The pins move from 8.32.3 to 8.33.0, and from go/v0.28.3 to go/v0.29.0. In
+between lies one release on each side, 8.32.4 and go/v0.28.4. Each release's
+Go side shipped with its npm side, so both pins move together.
+
+### What moves
+
+865 goldens change, each with its twin: 1,730 files. 211 change in place, 24
+guides and 187 entity models; 350 entity models go and 304 arrive. 13 of the
+18 cases move, and across the eleven whose models move, the entity count falls
+from 791 to 745.
+
+| Release | Goldens changed | Cases |
+|---|---|---|
+| 8.32.4 | 0 | 0 |
+| 8.33.0 | 865 | 13 |
+
+**8.32.4** moves no golden. It rewords the warning a create made only of an
+action raises.
+
+**8.33.0** applies the maintainer's guide rulings 1 to 41 and twelve shared
+corrections (voxgig/apidef#223), which change how a route becomes an entity
+and an operation. Three of them account for most of the movement here:
+
+- **A record several collections answer names them all.** Taxonomy's
+  `domain`, `kingdom` and `phylum` collections all answer the `Taxon` record,
+  so their six routes now belong to one entity, `taxon`, and taxonomy goes
+  from four entities to two.
+- **A record named in the definition's namespace drops the prefix.** GitLab's
+  `api_entities_branch`, `api_entities_badge` and `api_entities_award_emoji`
+  become `branch`, `badge` and `award_emoji`; GitHub's `actions_variable` and
+  `actions_public_key` become `variable` and `public_key`; Cloudsmith's
+  `organization_invite` and `organization_team` become `invite` and `team`.
+- **A command folds into the entity it acts on.** Shortcut's `bulk` route
+  moves into `story`, and its `enable` and `disable` routes into
+  `entity_template` and `iteration`; GitHub's `add` route moves into
+  `simple_user`.
+
+| Case | Entities | Entity models gone / new / changed |
+|---|---|---|
+| github | 264 → 239 | 101 / 76 / 85 |
+| gitlab | 250 → 231 | 174 / 155 / 56 |
+| cloudsmith | 73 → 84 | 28 / 39 / 11 |
+| contentfulcma | 37 → 37 | 17 / 17 / 11 |
+| shortcut | 35 → 28 | 9 / 2 / 9 |
+| learnworlds | 28 → 27 | 8 / 7 / 9 |
+| codatplatform | 19 → 16 | 9 / 6 / 3 |
+| taxonomy | 4 → 2 | 3 / 1 / 0 |
+| pokeapi | 48 → 48 | 1 / 1 / 0 |
+| statuspage | 16 → 16 | 0 / 0 / 2 |
+| dingconnect | 17 → 17 | 0 / 0 / 1 |
+
+elementdemo and petstore change in their base guides only.
+
+### Two readings worth a ruling
+
+The goldens record what 8.33.0 writes. Two of its readings look unintended:
+
+- Shortcut's `GET /api/v3/search` now forms an entity named `v3n`: the guide
+  reads `search` as a verb with the version segment `v3` as its noun
+  (`noun-before-verb=v3`). It was `search` on 8.32.3.
+- GitHub's `actions_secret` is gone: its two routes, the repository's and the
+  environment's `PUT .../secrets/{secret_name}`, now belong to an entity named
+  `empty_object`, after the empty schema their responses declare
+  (`cmp-primary`).
+
+### A Go gap this refresh found
+
+go/v0.29.0 writes one golden differently: GitLab's
+`api_entities_integration_basic`, whose `update` op holds 156 points. Both
+ports write the same 156 points, line for line, in a different order from the
+28th on. `sortPoints` compares two points' `$action` only when both have one,
+and the two `ewm` points have none, so among points with one `exist` key the
+comparison is not a total order: `drone_ci` sorts before `emails_on_push`,
+which ties with the action-less `ewm`, which sorts before `drone_ci`. V8's
+sort and Go's stable sort settle that cycle differently. The skip list in
+`v1/go/validate_test.go` registers the golden with a count of 1 until apidef
+gives the comparison a total order in both ports.
+
+The refresh also clears a register in apidef itself: its `TestValidateGuide`
+listed taxonomy's `domain`, `kingdom` and `phylum` as names the old golden
+declared and the Go port no longer did. Against these goldens the divergence
+is gone, and the test asks for that entry to be deleted.
+
+### Verification
+
+- v1 `npm test` on 8.33.0 passes 23/23, strictly. It passed 23/23 on 8.32.3
+  before the move and on 8.32.4 along the way, where no golden moved.
+- On go/v0.29.0, `go vet ./...` is clean and `go test -count=1 ./...` passes,
+  comparing 791 distinct goldens strictly with 1 skipped, the GitLab golden
+  above. On go/v0.28.4, before the goldens moved, it compared 838 strictly
+  with none skipped.
+- `make port-diff` compares 15 cases and finds one difference, the order of
+  that `update` op's points in GitLab. The three GraphQL cases are dumped by
+  the TypeScript port only, as expected.
+- apidef's own Go golden tests at v0.29.0: `TestValidateModel` and
+  `TestValidateModelData` pass against this corpus, and `TestValidateGuide`
+  reports taxonomy's registered divergence repaired.
+- `make comments`, `make deps` and the root `npm test` are clean.
+- The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
+  whose v0.29.0 requires what v0.28.3 did.

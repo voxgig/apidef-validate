@@ -8,7 +8,13 @@ main: kit: entity: attestation: {
     bundle: {
       h: "Bundle"
       n: "bundle"
-      r: false
+      op: {
+        list: {
+          req: false
+          type: "`$OBJECT`"
+        }
+      }
+      r: true
       sh: "The attestation's Sigstore Bundle."
       t: "`$OBJECT`"
     }
@@ -16,6 +22,13 @@ main: kit: entity: attestation: {
       h: "Bundle Url"
       n: "bundle_url"
       r: false
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
       t: "`$STRING`"
     }
     repository_id: {
@@ -26,11 +39,283 @@ main: kit: entity: attestation: {
     }
   }
 
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "attestation"
   op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "bundle"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/attestations"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/attestations"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "attestations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
     list: {
       name: "list"
       points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/attestations/{subject_digest}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "subject_digest"
+                or: "subject_digest"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "after"
+                or: "after"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "predicate_type"
+                or: "predicate_type"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/attestations/{subject_digest}"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "subject_digest"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "attestations"
+            }
+            {
+              var: "subject_digest"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.attestations`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/attestations/{subject_digest}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "subject_digest"
+                or: "subject_digest"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "after"
+                or: "after"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "predicate_type"
+                or: "predicate_type"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/attestations/{subject_digest}"
+          q: {
+            exist: [
+              "org_id"
+              "subject_digest"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "attestations"
+            }
+            {
+              var: "subject_digest"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.attestations`"
+          }
+        }
         {
           co: {
             id: "GET /users/{username}/attestations/{subject_digest}"
@@ -127,10 +412,133 @@ main: kit: entity: attestation: {
         }
       ]
     }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /orgs/{org}/attestations/{attestation_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "attestation_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/attestations/{attestation_id}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              attestation_id: "id"
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "attestations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /users/{username}/attestations/{attestation_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "attestation_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/users/{username}/attestations/{attestation_id}"
+          q: {
+            exist: [
+              "id"
+              "username"
+            ]
+          }
+          r: {
+            param: {
+              attestation_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "users"
+            }
+            {
+              var: "username"
+            }
+            {
+              lit: "attestations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
   }
 
 
   relations: ancestors: [
+    [path("$.main.kit.entity.org")]
+    [path("$.main.kit.entity.repo")]
+    [path("$.main.kit.entity.user")]
+    [path("$.main.kit.entity.org")]
+    [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.user")]
   ]
 

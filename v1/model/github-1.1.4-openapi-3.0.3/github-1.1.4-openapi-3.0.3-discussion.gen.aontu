@@ -1,0 +1,910 @@
+# Entity: discussion
+
+main: kit: entity: discussion: {
+
+  alias: field: {}
+
+  fields: {
+    author: {
+      h: "Author"
+      n: "author"
+      r: true
+      sh: "A GitHub user."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    body: {
+      h: "Body"
+      n: "body"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "The main text of the discussion."
+      t: "`$STRING`"
+    }
+    body_html: {
+      h: "Body Html"
+      n: "body_html"
+      r: true
+      t: "`$STRING`"
+    }
+    body_version: {
+      h: "Body Version"
+      n: "body_version"
+      r: true
+      sh: "The current version of the body content."
+      t: "`$STRING`"
+    }
+    comments_count: {
+      h: "Comments Count"
+      n: "comments_count"
+      r: true
+      t: "`$INTEGER`"
+    }
+    comments_url: {
+      fo: "uri"
+      h: "Comments Url"
+      n: "comments_url"
+      r: true
+      t: "`$STRING`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      t: "`$STRING`"
+    }
+    html_url: {
+      fo: "uri"
+      h: "Html Url"
+      n: "html_url"
+      r: true
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    last_edited_at: {
+      fo: "date-time"
+      h: "Last Edited At"
+      n: "last_edited_at"
+      r: true
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    node_id: {
+      h: "Node Id"
+      n: "node_id"
+      r: true
+      t: "`$STRING`"
+    }
+    number: {
+      h: "Number"
+      n: "number"
+      r: true
+      sh: "The unique sequence number of a team discussion."
+      t: "`$INTEGER`"
+    }
+    pinned: {
+      h: "Pinned"
+      n: "pinned"
+      r: true
+      sh: "Whether or not this discussion should be pinned for easy retrieval."
+      t: "`$BOOLEAN`"
+    }
+    private: {
+      h: "Private"
+      n: "private"
+      op: {
+        create: {
+          req: false
+          type: "`$BOOLEAN`"
+        }
+      }
+      r: true
+      sh: "Whether or not this discussion should be restricted to team members and organization owners."
+      t: "`$BOOLEAN`"
+    }
+    reactions: {
+      h: "Reactions"
+      n: "reactions"
+      r: true
+      t: "`$OBJECT`"
+    }
+    team_url: {
+      fo: "uri"
+      h: "Team Url"
+      n: "team_url"
+      r: true
+      t: "`$STRING`"
+    }
+    title: {
+      h: "Title"
+      n: "title"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "The title of the discussion."
+      t: "`$STRING`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: true
+      t: "`$STRING`"
+    }
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "discussion"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "body"
+            "private"
+            "title"
+          ]
+          co: {
+            id: "POST /orgs/{org}/teams/{team_slug}/discussions"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "team_slug"
+                or: "team_slug"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/teams/{team_slug}/discussions"
+          q: {
+            exist: [
+              "org_id"
+              "team_slug"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_slug"
+            }
+            {
+              lit: "discussions"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "body"
+            "private"
+            "title"
+          ]
+          co: {
+            id: "POST /teams/{team_id}/discussions"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "team_id"
+                or: "team_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/teams/{team_id}/discussions"
+          q: {
+            exist: [
+              "team_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_id"
+            }
+            {
+              lit: "discussions"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/teams/{team_slug}/discussions"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "team_slug"
+                or: "team_slug"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "desc"
+                explode: true
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "pinned"
+                or: "pinned"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/teams/{team_slug}/discussions"
+          q: {
+            exist: [
+              "org_id"
+              "team_slug"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_slug"
+            }
+            {
+              lit: "discussions"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /teams/{team_id}/discussions"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "team_id"
+                or: "team_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: "desc"
+                explode: true
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/teams/{team_id}/discussions"
+          q: {
+            exist: [
+              "team_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_id"
+            }
+            {
+              lit: "discussions"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "discussion_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "team_slug"
+                or: "team_slug"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+              "team_slug"
+            ]
+          }
+          r: {
+            param: {
+              discussion_number: "id"
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_slug"
+            }
+            {
+              lit: "discussions"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /teams/{team_id}/discussions/{discussion_number}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "discussion_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "team_id"
+                or: "team_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/teams/{team_id}/discussions/{discussion_number}"
+          q: {
+            exist: [
+              "id"
+              "team_id"
+            ]
+          }
+          r: {
+            param: {
+              discussion_number: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_id"
+            }
+            {
+              lit: "discussions"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "discussion_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "team_slug"
+                or: "team_slug"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+              "team_slug"
+            ]
+          }
+          r: {
+            param: {
+              discussion_number: "id"
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_slug"
+            }
+            {
+              lit: "discussions"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /teams/{team_id}/discussions/{discussion_number}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "discussion_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "team_id"
+                or: "team_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/teams/{team_id}/discussions/{discussion_number}"
+          q: {
+            exist: [
+              "id"
+              "team_id"
+            ]
+          }
+          r: {
+            param: {
+              discussion_number: "id"
+            }
+          }
+          s: [
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_id"
+            }
+            {
+              lit: "discussions"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "body"
+            "title"
+          ]
+          co: {
+            id: "PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "discussion_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "team_slug"
+                or: "team_slug"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+              "team_slug"
+            ]
+          }
+          r: {
+            param: {
+              discussion_number: "id"
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_slug"
+            }
+            {
+              lit: "discussions"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "body"
+            "title"
+          ]
+          co: {
+            id: "PATCH /teams/{team_id}/discussions/{discussion_number}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "discussion_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "team_id"
+                or: "team_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/teams/{team_id}/discussions/{discussion_number}"
+          q: {
+            exist: [
+              "id"
+              "team_id"
+            ]
+          }
+          r: {
+            param: {
+              discussion_number: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "teams"
+            }
+            {
+              var: "team_id"
+            }
+            {
+              lit: "discussions"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.org") path("$.main.kit.entity.team")]
+  ]
+
+}

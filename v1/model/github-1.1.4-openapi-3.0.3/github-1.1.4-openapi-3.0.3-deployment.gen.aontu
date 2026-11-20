@@ -234,6 +234,80 @@ main: kit: entity: deployment: {
       name: "create"
       points: [
         {
+          co: {
+            id: "POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "pages_deployment_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel"
+          q: {
+            "$action": "cancel"
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              pages_deployment_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pages"
+            }
+            {
+              lit: "deployments"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "cancel"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
           bf: [
             "comment"
             "environment_ids"
@@ -366,6 +440,72 @@ main: kit: entity: deployment: {
             }
             {
               var: "repo"
+            }
+            {
+              lit: "deployments"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "artifact_id"
+            "artifact_url"
+            "environment"
+            "oidc_token"
+            "pages_build_version"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/pages/deployments"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/pages/deployments"
+          q: {
+            "$action": "pages"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pages"
             }
             {
               lit: "deployments"
@@ -574,6 +714,81 @@ main: kit: entity: deployment: {
             res: "`body`"
           }
         }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "pages_deployment_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}"
+          q: {
+            "$action": "pages"
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              pages_deployment_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pages"
+            }
+            {
+              lit: "deployments"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
       ]
     }
     remove: {
@@ -653,7 +868,7 @@ main: kit: entity: deployment: {
 
   relations: ancestors: [
     [path("$.main.kit.entity.repo")]
-    [path("$.main.kit.entity.repo")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.run")]
   ]
 
 }

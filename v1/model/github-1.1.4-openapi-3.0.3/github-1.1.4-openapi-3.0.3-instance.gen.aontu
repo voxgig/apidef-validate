@@ -1,0 +1,209 @@
+# Entity: instance
+
+main: kit: entity: instance: {
+
+  alias: field: {}
+
+  fields: {
+    analysis_key: {
+      h: "Analysis Key"
+      n: "analysis_key"
+      r: false
+      sh: "Identifies the configuration under which the analysis was executed."
+      t: "`$STRING`"
+    }
+    category: {
+      h: "Category"
+      n: "category"
+      r: false
+      sh: "Identifies the configuration under which the analysis was executed."
+      t: "`$STRING`"
+    }
+    classifications: {
+      h: "Classifications"
+      n: "classifications"
+      r: false
+      sh: "Classifications that have been applied to the file that triggered the alert."
+      t: "`$ARRAY`"
+    }
+    commit_sha: {
+      h: "Commit Sha"
+      n: "commit_sha"
+      r: false
+      t: "`$STRING`"
+    }
+    environment: {
+      h: "Environment"
+      n: "environment"
+      r: false
+      sh: "Identifies the variable values associated with the environment in which the analysis that generated this alert instance was performed, such as the language that was analyzed."
+      t: "`$STRING`"
+    }
+    html_url: {
+      h: "Html Url"
+      n: "html_url"
+      r: false
+      t: "`$STRING`"
+    }
+    location: {
+      h: "Location"
+      n: "location"
+      r: false
+      sh: "Describe a region within a file for the alert."
+      t: "`$OBJECT`"
+    }
+    message: {
+      h: "Message"
+      n: "message"
+      r: false
+      t: "`$OBJECT`"
+    }
+    ref: {
+      h: "Ref"
+      n: "ref"
+      r: false
+      sh: "The Git reference, formatted as `refs/pull/<number>/merge`, `refs/pull/<number>/head`, `refs/heads/<branch name>` or simply `<branch name>`."
+      t: "`$STRING`"
+    }
+    state: {
+      h: "State"
+      n: "state"
+      r: false
+      sh: "State of a code scanning alert."
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+  }
+
+  name: "instance"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "alert_number"
+                or: "alert_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "pr"
+                or: "pr"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "ref"
+                or: "ref"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances"
+          q: {
+            exist: [
+              "alert_number"
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "code-scanning"
+            }
+            {
+              lit: "alerts"
+            }
+            {
+              var: "alert_number"
+            }
+            {
+              lit: "instances"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.alert")]
+  ]
+
+}

@@ -1,0 +1,224 @@
+# Entity: export
+
+main: kit: entity: export: {
+
+  alias: field: {}
+
+  fields: {
+    branch: {
+      h: "Branch"
+      n: "branch"
+      r: false
+      sh: "Name of the exported branch"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    completed_at: {
+      fo: "date-time"
+      h: "Completed At"
+      n: "completed_at"
+      r: false
+      sh: "Completion time of the last export operation"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    export_url: {
+      h: "Export Url"
+      n: "export_url"
+      r: false
+      sh: "Url for fetching export details"
+      t: "`$STRING`"
+    }
+    html_url: {
+      h: "Html Url"
+      n: "html_url"
+      r: false
+      sh: "Web url for the exported branch"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      sh: "Id for the export details"
+      t: "`$STRING`"
+    }
+    sha: {
+      h: "Sha"
+      n: "sha"
+      r: false
+      sh: "Git commit SHA of the exported branch"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    state: {
+      h: "State"
+      n: "state"
+      r: false
+      sh: "State of the latest export"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "export"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /user/codespaces/{codespace_name}/exports"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "codespace_name"
+                or: "codespace_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/user/codespaces/{codespace_name}/exports"
+          q: {
+            exist: [
+              "codespace_name"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              var: "codespace_name"
+            }
+            {
+              lit: "exports"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /user/codespaces/{codespace_name}/exports/{export_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "codespace_name"
+                or: "codespace_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "export_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/user/codespaces/{codespace_name}/exports/{export_id}"
+          q: {
+            exist: [
+              "codespace_name"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              export_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              var: "codespace_name"
+            }
+            {
+              lit: "exports"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.codespace")]
+  ]
+
+}

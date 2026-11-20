@@ -45,6 +45,12 @@ main: kit: entity: course: {
       sh: "Categories this course belongs in"
       t: "`$ARRAY`"
     }
+    course: {
+      h: "Course"
+      n: "course"
+      r: false
+      t: "`$OBJECT`"
+    }
     courseImage: {
       h: "Course Image"
       n: "courseImage"
@@ -205,6 +211,88 @@ main: kit: entity: course: {
     create: {
       name: "create"
       points: [
+        {
+          bf: [
+            "units"
+          ]
+          co: {
+            id: "POST /v2/users/{id}/courses/{cid}/reset"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: false
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "cid"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "user_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/v2/users/{id}/courses/{cid}/reset"
+          q: {
+            "$action": "reset"
+            exist: [
+              "id"
+              "user_id"
+            ]
+          }
+          r: {
+            param: {
+              cid: "id"
+              id: "user_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "user_id"
+            }
+            {
+              lit: "courses"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "reset"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
         {
           bf: [
             "access"
@@ -469,6 +557,85 @@ main: kit: entity: course: {
         }
         {
           co: {
+            id: "GET /v2/users/{id}/courses"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "user_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/users/{id}/courses"
+          q: {
+            exist: [
+              "lw_client"
+              "user_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "user_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "user_id"
+            }
+            {
+              lit: "courses"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.meta.totalItems`"
+            }
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+        {
+          co: {
             id: "GET /v2/courses"
             source: "openapi3"
             version: 2
@@ -552,6 +719,86 @@ main: kit: entity: course: {
       points: [
         {
           co: {
+            id: "GET /v2/users/{id}/courses/{cid}/progress"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "cid"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "user_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/users/{id}/courses/{cid}/progress"
+          q: {
+            "$action": "progress"
+            exist: [
+              "id"
+              "lw_client"
+              "user_id"
+            ]
+          }
+          r: {
+            param: {
+              cid: "id"
+              id: "user_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "user_id"
+            }
+            {
+              lit: "courses"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "progress"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /v2/courses/{id}"
             source: "openapi3"
             version: 2
@@ -599,6 +846,66 @@ main: kit: entity: course: {
             }
             {
               var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /v2/courses/{id}/analytics"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/courses/{id}/analytics"
+          q: {
+            "$action": "analytics"
+            exist: [
+              "id"
+              "lw_client"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "courses"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "analytics"
             }
           ]
           t: {
@@ -681,5 +988,8 @@ main: kit: entity: course: {
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.user")]
+  ]
 
 }

@@ -1,0 +1,102 @@
+# Entity: sync
+
+main: kit: entity: sync: {
+
+  alias: field: {}
+
+  fields: {
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "sync"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /companies/{companyId}/sync/{datasetId}/validation"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "8a210b68-6988-11ed-a1eb-0242ac120002"
+                k: "param"
+                n: "company_id"
+                or: "companyId"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "datasetId"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/companies/{companyId}/sync/{datasetId}/validation"
+          q: {
+            "$action": "validation"
+            exist: [
+              "company_id"
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              companyId: "company_id"
+              datasetId: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "companies"
+            }
+            {
+              var: "company_id"
+            }
+            {
+              lit: "sync"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "validation"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.company")]
+  ]
+
+}

@@ -1,0 +1,598 @@
+# Entity: review
+
+main: kit: entity: review: {
+
+  alias: field: {}
+
+  fields: {
+    author_association: {
+      h: "Author Association"
+      n: "author_association"
+      r: true
+      sh: "How the author is associated with the repository."
+      t: "`$STRING`"
+    }
+    body: {
+      h: "Body"
+      n: "body"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "The text of the review."
+      t: "`$STRING`"
+    }
+    body_html: {
+      h: "Body Html"
+      n: "body_html"
+      r: false
+      t: "`$STRING`"
+    }
+    body_text: {
+      h: "Body Text"
+      n: "body_text"
+      r: false
+      t: "`$STRING`"
+    }
+    comments: {
+      h: "Comments"
+      n: "comments"
+      r: false
+      sh: "Use the following table to specify the location, destination, and contents of the draft review comment."
+      t: "`$ARRAY`"
+    }
+    commit_id: {
+      h: "Commit Id"
+      n: "commit_id"
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "A commit SHA for the review."
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    event: {
+      h: "Event"
+      n: "event"
+      r: false
+      sh: "The review action you want to perform."
+      t: "`$STRING`"
+    }
+    html_url: {
+      fo: "uri"
+      h: "Html Url"
+      n: "html_url"
+      r: true
+      t: "`$STRING`"
+    }
+    id: {
+      fo: "int64"
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "Unique identifier of the review"
+      t: "`$INTEGER`"
+    }
+    links: {
+      h: "Links"
+      n: "links"
+      r: true
+      t: "`$OBJECT`"
+    }
+    node_id: {
+      h: "Node Id"
+      n: "node_id"
+      r: true
+      t: "`$STRING`"
+    }
+    pull_request_url: {
+      fo: "uri"
+      h: "Pull Request Url"
+      n: "pull_request_url"
+      r: true
+      t: "`$STRING`"
+    }
+    state: {
+      h: "State"
+      n: "state"
+      r: true
+      t: "`$STRING`"
+    }
+    submitted_at: {
+      fo: "date-time"
+      h: "Submitted At"
+      n: "submitted_at"
+      r: false
+      t: "`$STRING`"
+    }
+    user: {
+      h: "User"
+      n: "user"
+      r: true
+      sh: "A GitHub user."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "review"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "body"
+            "comments"
+            "commit_id"
+            "event"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "pull_number"
+                or: "pull_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/pulls/{pull_number}/reviews"
+          q: {
+            exist: [
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "pull_number"
+            }
+            {
+              lit: "reviews"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "pull_number"
+                or: "pull_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/pulls/{pull_number}/reviews"
+          q: {
+            exist: [
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "pull_number"
+            }
+            {
+              lit: "reviews"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "review_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "pull_number"
+                or: "pull_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              review_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "pull_number"
+            }
+            {
+              lit: "reviews"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "review_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "pull_number"
+                or: "pull_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              review_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "pull_number"
+            }
+            {
+              lit: "reviews"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "body"
+          ]
+          co: {
+            id: "PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "review_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "pull_number"
+                or: "pull_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              review_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "pull_number"
+            }
+            {
+              lit: "reviews"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.pull")]
+  ]
+
+}

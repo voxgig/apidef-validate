@@ -5,20 +5,78 @@ main: kit: entity: feature_flag: {
   alias: field: {}
 
   fields: {
-    app_name: {
-      h: "App Name"
-      n: "app_name"
+    active: {
+      h: "Active"
+      n: "active"
       r: false
-      sh: "The application name of Unleash Client"
+      sh: "The active state of the flag."
+      t: "`$BOOLEAN`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
       t: "`$STRING`"
     }
-    instance_id: {
-      h: "Instance Id"
-      n: "instance_id"
+    description: {
+      h: "Description"
+      n: "description"
       r: false
-      sh: "The instance ID of Unleash Client"
+      sh: "The description of the feature flag"
       t: "`$STRING`"
     }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The name of the feature flag"
+      t: "`$STRING`"
+    }
+    scopes: {
+      h: "Scopes"
+      n: "scopes"
+      r: false
+      t: "`$STRING`"
+    }
+    strategies: {
+      h: "Strategies"
+      n: "strategies"
+      r: false
+      t: "`$OBJECT`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
+    }
+    version: {
+      h: "Version"
+      n: "version"
+      r: false
+      sh: "The version of the feature flag."
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
   }
 
   name: "feature_flag"
@@ -28,11 +86,14 @@ main: kit: entity: feature_flag: {
       points: [
         {
           bf: [
-            "app_name"
-            "instance_id"
+            "active"
+            "description"
+            "name"
+            "strategies"
+            "version"
           ]
           co: {
-            id: "POST /api/v4/feature_flags/unleash/{project_id}/client/metrics"
+            id: "POST /api/v4/projects/{id}/feature_flags"
             source: "swagger2"
             version: 2
           }
@@ -41,18 +102,27 @@ main: kit: entity: feature_flag: {
               {
                 k: "param"
                 n: "project_id"
-                or: "project_id"
+                or: "id"
                 r: true
                 t: "`$STRING`"
               }
             ]
           }
           m: "POST"
-          o: "/api/v4/feature_flags/unleash/{project_id}/client/metrics"
+          o: "/api/v4/projects/{id}/feature_flags"
           q: {
             exist: [
               "project_id"
             ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -62,19 +132,13 @@ main: kit: entity: feature_flag: {
               lit: "v4"
             }
             {
-              lit: "feature_flags"
-            }
-            {
-              lit: "unleash"
+              lit: "projects"
             }
             {
               var: "project_id"
             }
             {
-              lit: "client"
-            }
-            {
-              lit: "metrics"
+              lit: "feature_flags"
             }
           ]
           t: {
@@ -82,13 +146,14 @@ main: kit: entity: feature_flag: {
             res: "`body`"
           }
         }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
         {
-          bf: [
-            "app_name"
-            "instance_id"
-          ]
           co: {
-            id: "POST /api/v4/feature_flags/unleash/{project_id}/client/register"
+            id: "GET /api/v4/projects/{id}/feature_flags"
             source: "swagger2"
             version: 2
           }
@@ -97,18 +162,58 @@ main: kit: entity: feature_flag: {
               {
                 k: "param"
                 n: "project_id"
-                or: "project_id"
+                or: "id"
                 r: true
                 t: "`$STRING`"
               }
             ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "scope"
+                or: "scope"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
           }
-          m: "POST"
-          o: "/api/v4/feature_flags/unleash/{project_id}/client/register"
+          m: "GET"
+          o: "/api/v4/projects/{id}/feature_flags"
           q: {
             exist: [
               "project_id"
             ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -118,19 +223,13 @@ main: kit: entity: feature_flag: {
               lit: "v4"
             }
             {
-              lit: "feature_flags"
-            }
-            {
-              lit: "unleash"
+              lit: "projects"
             }
             {
               var: "project_id"
             }
             {
-              lit: "client"
-            }
-            {
-              lit: "register"
+              lit: "feature_flags"
             }
           ]
           t: {
@@ -145,7 +244,7 @@ main: kit: entity: feature_flag: {
       points: [
         {
           co: {
-            id: "GET /api/v4/feature_flags/unleash/{project_id}"
+            id: "GET /api/v4/projects/{id}/feature_flags/{feature_flag_name}"
             source: "swagger2"
             version: 2
           }
@@ -153,39 +252,37 @@ main: kit: entity: feature_flag: {
             params: [
               {
                 k: "param"
-                n: "project_id"
-                or: "project_id"
+                n: "id"
+                or: "feature_flag_name"
                 r: true
                 t: "`$STRING`"
               }
-            ]
-            query: [
               {
-                explode: true
-                k: "query"
-                n: "app_name"
-                or: "app_name"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "instance_id"
-                or: "instance_id"
-                r: false
-                style: "form"
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
                 t: "`$STRING`"
               }
             ]
           }
           m: "GET"
-          o: "/api/v4/feature_flags/unleash/{project_id}"
+          o: "/api/v4/projects/{id}/feature_flags/{feature_flag_name}"
           q: {
             exist: [
+              "id"
               "project_id"
             ]
+          }
+          r: {
+            param: {
+              feature_flag_name: "id"
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -195,13 +292,162 @@ main: kit: entity: feature_flag: {
               lit: "v4"
             }
             {
-              lit: "feature_flags"
-            }
-            {
-              lit: "unleash"
+              lit: "projects"
             }
             {
               var: "project_id"
+            }
+            {
+              lit: "feature_flags"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/feature_flags/{feature_flag_name}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "feature_flag_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/feature_flags/{feature_flag_name}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              feature_flag_name: "id"
+              id: "project_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "feature_flags"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "active"
+            "description"
+            "name"
+            "strategies"
+          ]
+          co: {
+            id: "PUT /api/v4/projects/{id}/feature_flags/{feature_flag_name}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "feature_flag_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/feature_flags/{feature_flag_name}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              feature_flag_name: "id"
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "feature_flags"
+            }
+            {
+              var: "id"
             }
           ]
           t: {
@@ -214,5 +460,8 @@ main: kit: entity: feature_flag: {
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+  ]
 
 }

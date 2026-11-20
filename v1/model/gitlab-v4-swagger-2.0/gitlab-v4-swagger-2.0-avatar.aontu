@@ -1,0 +1,82 @@
+# Entity: avatar
+
+main: kit: entity: avatar: {
+
+  alias: field: {}
+
+  fields: {
+    avatar_url: {
+      h: "Avatar Url"
+      n: "avatar_url"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  name: "avatar"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/avatar"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "email"
+                or: "email"
+                r: true
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "size"
+                or: "size"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/avatar"
+          q: {
+            exist: [
+              "email"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "avatar"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

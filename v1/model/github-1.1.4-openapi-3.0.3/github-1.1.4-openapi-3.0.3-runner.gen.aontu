@@ -51,6 +51,13 @@ main: kit: entity: runner: {
       sh: "The ID of the runner group."
       t: "`$INTEGER`"
     }
+    runners: {
+      h: "Runners"
+      n: "runners"
+      r: true
+      sh: "List of runner IDs to add to the runner group."
+      t: "`$ARRAY`"
+    }
     status: {
       h: "Status"
       n: "status"
@@ -67,6 +74,533 @@ main: kit: entity: runner: {
 
   name: "runner"
   op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "labels"
+            "name"
+            "runner_group_id"
+            "work_folder"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/actions/runners/generate-jitconfig"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/actions/runners/generate-jitconfig"
+          q: {
+            "$action": "generate_jitconfig"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              lit: "generate-jitconfig"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.runner`"
+          }
+        }
+        {
+          co: {
+            id: "POST /repos/{owner}/{repo}/actions/runners/remove-token"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/actions/runners/remove-token"
+          q: {
+            "$action": "remove_token"
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              lit: "remove-token"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "labels"
+            "name"
+            "runner_group_id"
+            "work_folder"
+          ]
+          co: {
+            id: "POST /orgs/{org}/actions/runners/generate-jitconfig"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/actions/runners/generate-jitconfig"
+          q: {
+            "$action": "generate_jitconfig"
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              lit: "generate-jitconfig"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.runner`"
+          }
+        }
+        {
+          co: {
+            id: "POST /orgs/{org}/actions/runners/remove-token"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/actions/runners/remove-token"
+          q: {
+            "$action": "remove_token"
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              lit: "remove-token"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/runners"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_group_id"
+                or: "runner_group_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}/runners"
+          q: {
+            exist: [
+              "org_id"
+              "runner_group_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runner-groups"
+            }
+            {
+              var: "runner_group_id"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.runners`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/runners"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "name"
+                or: "name"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/runners"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.runners`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/actions/runners"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "name"
+                or: "name"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/actions/runners"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.runners`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [
@@ -215,6 +749,80 @@ main: kit: entity: runner: {
       points: [
         {
           co: {
+            id: "DELETE /orgs/{org}/actions/runner-groups/{runner_group_id}/runners/{runner_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_group_id"
+                or: "runner_group_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}/runners/{runner_id}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+              "runner_group_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              runner_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runner-groups"
+            }
+            {
+              var: "runner_group_id"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}"
             source: "openapi3"
             version: 2
@@ -345,12 +953,157 @@ main: kit: entity: runner: {
         }
       ]
     }
+    update: {
+      name: "update"
+      points: [
+        {
+          co: {
+            id: "PUT /orgs/{org}/actions/runner-groups/{runner_group_id}/runners/{runner_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "runner_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_group_id"
+                or: "runner_group_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}/runners/{runner_id}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+              "runner_group_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              runner_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runner-groups"
+            }
+            {
+              var: "runner_group_id"
+            }
+            {
+              lit: "runners"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "runners"
+          ]
+          co: {
+            id: "PUT /orgs/{org}/actions/runner-groups/{runner_group_id}/runners"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "runner_group_id"
+                or: "runner_group_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/orgs/{org}/actions/runner-groups/{runner_group_id}/runners"
+          q: {
+            exist: [
+              "org_id"
+              "runner_group_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runner-groups"
+            }
+            {
+              var: "runner_group_id"
+            }
+            {
+              lit: "runners"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
   }
 
 
   relations: ancestors: [
     [path("$.main.kit.entity.org")]
     [path("$.main.kit.entity.repo")]
+    [path("$.main.kit.entity.org") path("$.main.kit.entity.runner_group")]
   ]
 
 }

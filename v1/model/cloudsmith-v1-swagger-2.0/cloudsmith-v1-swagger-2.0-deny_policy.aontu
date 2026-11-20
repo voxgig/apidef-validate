@@ -1,0 +1,507 @@
+# Entity: deny_policy
+
+main: kit: entity: deny_policy: {
+
+  alias: field: {}
+
+  fields: {
+    action: {
+      h: "Action"
+      n: "action"
+      r: false
+      ro: true
+      t: "`$STRING`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      ro: true
+      t: "`$STRING`"
+    }
+    description: {
+      h: "Description"
+      n: "description"
+      r: false
+      t: "`$STRING`"
+    }
+    enabled: {
+      h: "Enabled"
+      n: "enabled"
+      r: false
+      sh: "Whether this rule is enabled or disabled."
+      t: "`$BOOLEAN`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      t: "`$STRING`"
+    }
+    package_query_string: {
+      h: "Package Query String"
+      n: "package_query_string"
+      op: {
+        patch: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "Packages that match this query will trigger this deny rule."
+      t: "`$STRING`"
+    }
+    slug_perm: {
+      fo: "slug"
+      h: "Slug Perm"
+      n: "slug_perm"
+      r: false
+      ro: true
+      t: "`$STRING`"
+    }
+    status: {
+      h: "Status"
+      n: "status"
+      r: false
+      ro: true
+      t: "`$STRING`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      ro: true
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "deny_policy"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "description"
+            "enabled"
+            "name"
+            "package_query_string"
+          ]
+          co: {
+            id: "POST /orgs/{org}/deny-policy/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/deny-policy/"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "deny-policy"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/deny-policy/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "page_size"
+                or: "page_size"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/deny-policy/"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "deny-policy"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/deny-policy/{slug_perm}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "slug_perm"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/deny-policy/{slug_perm}/"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              slug_perm: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "deny-policy"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    patch: {
+      name: "patch"
+      points: [
+        {
+          bf: [
+            "description"
+            "enabled"
+            "name"
+            "package_query_string"
+          ]
+          co: {
+            id: "PATCH /orgs/{org}/deny-policy/{slug_perm}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "slug_perm"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/orgs/{org}/deny-policy/{slug_perm}/"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              slug_perm: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "deny-policy"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /orgs/{org}/deny-policy/{slug_perm}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "slug_perm"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/deny-policy/{slug_perm}/"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              slug_perm: "id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "deny-policy"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "description"
+            "enabled"
+            "name"
+            "package_query_string"
+          ]
+          co: {
+            id: "PUT /orgs/{org}/deny-policy/{slug_perm}/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "slug_perm"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/orgs/{org}/deny-policy/{slug_perm}/"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              slug_perm: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "deny-policy"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.org")]
+  ]
+
+}

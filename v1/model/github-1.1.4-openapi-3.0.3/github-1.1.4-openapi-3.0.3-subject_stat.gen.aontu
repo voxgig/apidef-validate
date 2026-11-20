@@ -1,0 +1,197 @@
+# Entity: subject_stat
+
+main: kit: entity: subject_stat: {
+
+  alias: field: {}
+
+  fields: {
+    last_rate_limited_timestamp: {
+      h: "Last Rate Limited Timestamp"
+      n: "last_rate_limited_timestamp"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    last_request_timestamp: {
+      h: "Last Request Timestamp"
+      n: "last_request_timestamp"
+      r: false
+      t: "`$STRING`"
+    }
+    rate_limited_request_count: {
+      h: "Rate Limited Request Count"
+      n: "rate_limited_request_count"
+      r: false
+      t: "`$INTEGER`"
+    }
+    subject_id: {
+      fo: "int64"
+      h: "Subject Id"
+      n: "subject_id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    subject_name: {
+      h: "Subject Name"
+      n: "subject_name"
+      r: false
+      t: "`$STRING`"
+    }
+    subject_type: {
+      h: "Subject Type"
+      n: "subject_type"
+      r: false
+      t: "`$STRING`"
+    }
+    total_request_count: {
+      h: "Total Request Count"
+      n: "total_request_count"
+      r: false
+      t: "`$INTEGER`"
+    }
+  }
+
+  name: "subject_stat"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /orgs/{org}/insights/api/subject-stats"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "desc"
+                explode: true
+                k: "query"
+                n: "direction"
+                or: "direction"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "max_timestamp"
+                or: "max_timestamp"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "min_timestamp"
+                or: "min_timestamp"
+                r: true
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                style: "form"
+                t: "`$ARRAY`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "subject_name_substring"
+                or: "subject_name_substring"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/insights/api/subject-stats"
+          q: {
+            exist: [
+              "min_timestamp"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "insights"
+            }
+            {
+              lit: "api"
+            }
+            {
+              lit: "subject-stats"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.org")]
+  ]
+
+}

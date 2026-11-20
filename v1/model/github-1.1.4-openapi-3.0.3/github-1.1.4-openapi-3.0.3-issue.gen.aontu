@@ -17,19 +17,6 @@ main: kit: entity: issue: {
         ]
       ]
     }
-    actor: {
-      h: "Actor"
-      n: "actor"
-      r: true
-      sh: "A GitHub user."
-      t: [
-        "`$ONE`"
-        [
-          "`$OBJECT`"
-          "`$NULL`"
-        ]
-      ]
-    }
     assignee: {
       h: "Assignee"
       n: "assignee"
@@ -78,52 +65,25 @@ main: kit: entity: issue: {
         ]
       ]
     }
-    assigner: {
-      h: "Assigner"
-      n: "assigner"
-      r: true
-      sh: "A GitHub user."
-      t: [
-        "`$ONE`"
-        [
-          "`$OBJECT`"
-          "`$NULL`"
-        ]
-      ]
-    }
     author_association: {
       h: "Author Association"
       n: "author_association"
-      op: {
-        list: {
-          req: false
-          type: "`$STRING`"
-        }
-        load: {
-          req: false
-          type: "`$STRING`"
-        }
-        update: {
-          req: false
-          type: "`$STRING`"
-        }
-      }
-      r: true
+      r: false
       sh: "How the author is associated with the repository."
       t: "`$STRING`"
     }
     body: {
       h: "Body"
       n: "body"
-      op: {
-        update: {
-          req: true
-          type: "`$STRING`"
-        }
-      }
       r: false
-      sh: "Contents of the issue comment"
-      t: "`$STRING`"
+      sh: "Contents of the issue"
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     body_html: {
       h: "Body Html"
@@ -176,30 +136,6 @@ main: kit: entity: issue: {
       r: true
       t: "`$STRING`"
     }
-    commit_id: {
-      h: "Commit Id"
-      n: "commit_id"
-      r: true
-      t: [
-        "`$ONE`"
-        [
-          "`$STRING`"
-          "`$NULL`"
-        ]
-      ]
-    }
-    commit_url: {
-      h: "Commit Url"
-      n: "commit_url"
-      r: true
-      t: [
-        "`$ONE`"
-        [
-          "`$STRING`"
-          "`$NULL`"
-        ]
-      ]
-    }
     created_at: {
       fo: "date-time"
       h: "Created At"
@@ -207,23 +143,11 @@ main: kit: entity: issue: {
       r: true
       t: "`$STRING`"
     }
-    dismissed_review: {
-      h: "Dismissed Review"
-      n: "dismissed_review"
-      r: true
-      t: "`$OBJECT`"
-    }
     draft: {
       h: "Draft"
       n: "draft"
       r: false
       t: "`$BOOLEAN`"
-    }
-    event: {
-      h: "Event"
-      n: "event"
-      r: true
-      t: "`$STRING`"
     }
     events_url: {
       fo: "uri"
@@ -244,26 +168,7 @@ main: kit: entity: issue: {
       h: "Id"
       n: "id"
       r: true
-      sh: "Unique identifier of the issue comment"
       t: "`$INTEGER`"
-    }
-    issue: {
-      h: "Issue"
-      n: "issue"
-      r: true
-      sh: "Issues are a great way to keep track of tasks, enhancements, and bugs for your projects."
-      t: [
-        "`$ONE`"
-        [
-          "`$OBJECT`"
-          "`$NULL`"
-        ]
-      ]
-      union: {
-        branches: 3
-        count: 3
-        depth: 5
-      }
     }
     issue_dependencies_summary: {
       h: "Issue Dependencies Summary"
@@ -281,20 +186,6 @@ main: kit: entity: issue: {
         count: 1
         depth: 3
       }
-    }
-    issue_url: {
-      fo: "uri"
-      h: "Issue Url"
-      n: "issue_url"
-      r: true
-      t: "`$STRING`"
-    }
-    label: {
-      h: "Label"
-      n: "label"
-      r: true
-      sh: "Issue Event Label"
-      t: "`$OBJECT`"
     }
     labels: {
       h: "Labels"
@@ -324,18 +215,6 @@ main: kit: entity: issue: {
       r: true
       t: "`$STRING`"
     }
-    lock_reason: {
-      h: "Lock Reason"
-      n: "lock_reason"
-      r: false
-      t: [
-        "`$ONE`"
-        [
-          "`$STRING`"
-          "`$NULL`"
-        ]
-      ]
-    }
     locked: {
       h: "Locked"
       n: "locked"
@@ -356,8 +235,14 @@ main: kit: entity: issue: {
         }
       }
       r: true
-      sh: "Issue Event Milestone"
-      t: "`$OBJECT`"
+      sh: "A collection of related issues and pull requests."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
     }
     node_id: {
       h: "Node Id"
@@ -404,13 +289,6 @@ main: kit: entity: issue: {
         depth: 2
       }
     }
-    project_card: {
-      h: "Project Card"
-      n: "project_card"
-      r: true
-      sh: "Issue Event Project Card"
-      t: "`$OBJECT`"
-    }
     pull_request: {
       h: "Pull Request"
       n: "pull_request"
@@ -421,13 +299,6 @@ main: kit: entity: issue: {
       h: "Reactions"
       n: "reactions"
       r: true
-      t: "`$OBJECT`"
-    }
-    rename: {
-      h: "Rename"
-      n: "rename"
-      r: true
-      sh: "Issue Event Rename"
       t: "`$OBJECT`"
     }
     repository: {
@@ -443,39 +314,6 @@ main: kit: entity: issue: {
       n: "repository_url"
       r: true
       t: "`$STRING`"
-    }
-    requested_reviewer: {
-      h: "Requested Reviewer"
-      n: "requested_reviewer"
-      r: true
-      sh: "A GitHub user."
-      t: [
-        "`$ONE`"
-        [
-          "`$OBJECT`"
-          "`$NULL`"
-        ]
-      ]
-    }
-    requested_team: {
-      h: "Requested Team"
-      n: "requested_team"
-      r: true
-      sh: "Groups of organization members that gives permissions on specified repositories."
-      t: "`$OBJECT`"
-    }
-    review_requester: {
-      h: "Review Requester"
-      n: "review_requester"
-      r: true
-      sh: "A GitHub user."
-      t: [
-        "`$ONE`"
-        [
-          "`$OBJECT`"
-          "`$NULL`"
-        ]
-      ]
     }
     state: {
       h: "State"
@@ -576,7 +414,7 @@ main: kit: entity: issue: {
       h: "Url"
       n: "url"
       r: true
-      sh: "URL for the issue comment"
+      sh: "URL for the issue"
       t: "`$STRING`"
     }
     user: {
@@ -834,84 +672,6 @@ main: kit: entity: issue: {
             }
             {
               lit: "blocked_by"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "labels"
-          ]
-          co: {
-            id: "POST /repos/{owner}/{repo}/issues/{issue_number}/labels"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "issue_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/repos/{owner}/{repo}/issues/{issue_number}/labels"
-          q: {
-            "$action": "label"
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              issue_number: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "labels"
             }
           ]
           t: {
@@ -1472,178 +1232,6 @@ main: kit: entity: issue: {
         }
         {
           co: {
-            id: "GET /repos/{owner}/{repo}/issues/{issue_number}/labels"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "issue_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/issues/{issue_number}/labels"
-          q: {
-            "$action": "label"
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              issue_number: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "labels"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/issues/{issue_number}/parent"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "issue_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/issues/{issue_number}/parent"
-          q: {
-            "$action": "parent"
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              issue_number: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "parent"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "GET /repos/{owner}/{repo}/issues/{issue_number}/sub_issues"
             source: "openapi3"
             version: 2
@@ -1732,103 +1320,6 @@ main: kit: entity: issue: {
             }
             {
               lit: "sub_issues"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/issues/{issue_number}/timeline"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "issue_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/issues/{issue_number}/timeline"
-          q: {
-            "$action": "timeline"
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              issue_number: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "timeline"
             }
           ]
           t: {
@@ -1999,196 +1490,6 @@ main: kit: entity: issue: {
             }
             {
               lit: "issues"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/issues/comments"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                explode: true
-                k: "query"
-                n: "direction"
-                or: "direction"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "since"
-                or: "since"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                ex: "created"
-                explode: true
-                k: "query"
-                n: "sort"
-                or: "sort"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/issues/comments"
-          q: {
-            "$action": "comment"
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              lit: "comments"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/issues/events"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/issues/events"
-          q: {
-            "$action": "event"
-            exist: [
-              "owner"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              lit: "events"
             }
           ]
           t: {
@@ -2564,6 +1865,9 @@ main: kit: entity: issue: {
           }
           m: "GET"
           o: "/user/issues"
+          q: {
+            "$action": "user"
+          }
           rs: {
             kind: "json"
             media: "application/json"
@@ -2586,287 +1890,6 @@ main: kit: entity: issue: {
     load: {
       name: "load"
       points: [
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/issues/{issue_number}/assignees/{assignee}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "assignee"
-                or: "assignee"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "id"
-                or: "issue_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/issues/{issue_number}/assignees/{assignee}"
-          q: {
-            exist: [
-              "assignee"
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              issue_number: "id"
-            }
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "assignees"
-            }
-            {
-              var: "assignee"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/assignees/{assignee}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "assignee"
-                or: "assignee"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/assignees/{assignee}"
-          q: {
-            exist: [
-              "assignee"
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "assignees"
-            }
-            {
-              var: "assignee"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/issues/comments/{comment_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "comment_id"
-                or: "comment_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/issues/comments/{comment_id}"
-          q: {
-            exist: [
-              "comment_id"
-              "owner"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              lit: "comments"
-            }
-            {
-              var: "comment_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repos/{owner}/{repo}/issues/events/{event_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "event_id"
-                or: "event_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repos/{owner}/{repo}/issues/events/{event_id}"
-          q: {
-            exist: [
-              "event_id"
-              "owner"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              lit: "events"
-            }
-            {
-              var: "event_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body.issue`"
-          }
-        }
         {
           co: {
             id: "GET /repos/{owner}/{repo}/issues/{issue_number}"
@@ -2931,6 +1954,178 @@ main: kit: entity: issue: {
             }
             {
               var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/issues/{issue_number}/parent"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "issue_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/issues/{issue_number}/parent"
+          q: {
+            "$action": "parent"
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              issue_number: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "issues"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "parent"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/issues/{issue_number}/timeline"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "issue_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/issues/{issue_number}/timeline"
+          q: {
+            "$action": "timeline"
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              issue_number: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "issues"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "timeline"
             }
           ]
           t: {
@@ -3032,156 +2227,6 @@ main: kit: entity: issue: {
           }
         }
         {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "issue_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "name"
-                or: "name"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/issues/{issue_number}/labels/{name}"
-          q: {
-            exist: [
-              "id"
-              "name"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              issue_number: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "labels"
-            }
-            {
-              var: "name"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "comment_id"
-                or: "comment_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/issues/comments/{comment_id}"
-          q: {
-            exist: [
-              "comment_id"
-              "owner"
-              "repo"
-            ]
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              lit: "comments"
-            }
-            {
-              var: "comment_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
           bf: [
             "assignees"
           ]
@@ -3252,77 +2297,6 @@ main: kit: entity: issue: {
             }
             {
               lit: "assignees"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "issue_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/repos/{owner}/{repo}/issues/{issue_number}/labels"
-          q: {
-            "$action": "label"
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              issue_number: "id"
-            }
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "labels"
             }
           ]
           t: {
@@ -3486,78 +2460,6 @@ main: kit: entity: issue: {
       points: [
         {
           bf: [
-            "body"
-          ]
-          co: {
-            id: "PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "comment_id"
-                or: "comment_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PATCH"
-          o: "/repos/{owner}/{repo}/issues/comments/{comment_id}"
-          q: {
-            exist: [
-              "comment_id"
-              "owner"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              lit: "comments"
-            }
-            {
-              var: "comment_id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
             "assignee"
             "assignees"
             "body"
@@ -3631,84 +2533,6 @@ main: kit: entity: issue: {
             }
             {
               var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "labels"
-          ]
-          co: {
-            id: "PUT /repos/{owner}/{repo}/issues/{issue_number}/labels"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "issue_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/repos/{owner}/{repo}/issues/{issue_number}/labels"
-          q: {
-            "$action": "label"
-            exist: [
-              "id"
-              "owner"
-              "repo"
-            ]
-          }
-          r: {
-            param: {
-              issue_number: "id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "issues"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "labels"
             }
           ]
           t: {
@@ -3882,10 +2706,6 @@ main: kit: entity: issue: {
     [path("$.main.kit.entity.org")]
     [path("$.main.kit.entity.repo")]
     [path("$.main.kit.entity.repo")]
-    [path("$.main.kit.entity.repo") path("$.main.kit.entity.event")]
-    [path("$.main.kit.entity.repo") path("$.main.kit.entity.assignee")]
-    [path("$.main.kit.entity.repo")]
-    [path("$.main.kit.entity.repo") path("$.main.kit.entity.label")]
   ]
 
 }

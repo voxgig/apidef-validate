@@ -16,8 +16,8 @@ main: kit: entity: oidc_custom_sub: {
 
   name: "oidc_custom_sub"
   op: {
-    list: {
-      name: "list"
+    load: {
+      name: "load"
       points: [
         {
           co: {
@@ -74,7 +74,73 @@ main: kit: entity: oidc_custom_sub: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.include_claim_keys`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "include_claim_keys"
+          ]
+          co: {
+            id: "PUT /orgs/{org}/actions/oidc/customization/sub"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/orgs/{org}/actions/oidc/customization/sub"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "oidc"
+            }
+            {
+              lit: "customization"
+            }
+            {
+              lit: "sub"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
           }
         }
       ]

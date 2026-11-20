@@ -1,0 +1,653 @@
+# Entity: invitation
+
+main: kit: entity: invitation: {
+
+  alias: field: {}
+
+  fields: {
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      t: "`$STRING`"
+    }
+    email: {
+      h: "Email"
+      n: "email"
+      op: {
+        list: {
+          req: true
+          type: [
+            "`$ONE`"
+            [
+              "`$STRING`"
+              "`$NULL`"
+            ]
+          ]
+        }
+      }
+      r: false
+      sh: "**Required unless you provide `invitee_id`**."
+      t: "`$STRING`"
+    }
+    expired: {
+      h: "Expired"
+      n: "expired"
+      r: false
+      sh: "Whether or not the invitation has expired"
+      t: "`$BOOLEAN`"
+    }
+    failed_at: {
+      h: "Failed At"
+      n: "failed_at"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    failed_reason: {
+      h: "Failed Reason"
+      n: "failed_reason"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    html_url: {
+      h: "Html Url"
+      n: "html_url"
+      r: true
+      t: "`$STRING`"
+    }
+    id: {
+      fo: "int64"
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "Unique identifier of the repository invitation."
+      t: "`$INTEGER`"
+    }
+    invitation_source: {
+      h: "Invitation Source"
+      n: "invitation_source"
+      r: false
+      t: "`$STRING`"
+    }
+    invitation_teams_url: {
+      h: "Invitation Teams Url"
+      n: "invitation_teams_url"
+      r: true
+      t: "`$STRING`"
+    }
+    invitee: {
+      h: "Invitee"
+      n: "invitee"
+      r: true
+      sh: "A GitHub user."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    invitee_id: {
+      h: "Invitee Id"
+      n: "invitee_id"
+      r: false
+      sh: "**Required unless you provide `email`**."
+      t: "`$INTEGER`"
+    }
+    inviter: {
+      h: "Inviter"
+      n: "inviter"
+      r: true
+      sh: "A GitHub user."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    login: {
+      h: "Login"
+      n: "login"
+      r: true
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    node_id: {
+      h: "Node Id"
+      n: "node_id"
+      r: true
+      t: "`$STRING`"
+    }
+    permissions: {
+      h: "Permissions"
+      n: "permissions"
+      op: {
+        update: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "The permission associated with the invitation."
+      t: "`$STRING`"
+    }
+    repository: {
+      h: "Repository"
+      n: "repository"
+      r: true
+      sh: "Minimal Repository"
+      t: "`$OBJECT`"
+    }
+    role: {
+      h: "Role"
+      n: "role"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The role for the new member."
+      t: "`$STRING`"
+    }
+    team_count: {
+      h: "Team Count"
+      n: "team_count"
+      r: true
+      t: "`$INTEGER`"
+    }
+    team_ids: {
+      h: "Team Ids"
+      n: "team_ids"
+      r: false
+      sh: "Specify IDs for the teams you want to invite new members to."
+      t: "`$ARRAY`"
+    }
+    url: {
+      h: "Url"
+      n: "url"
+      r: true
+      sh: "URL for the repository invitation"
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "invitation"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "email"
+            "invitee_id"
+            "role"
+            "team_ids"
+          ]
+          co: {
+            id: "POST /orgs/{org}/invitations"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/invitations"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "invitations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/invitations"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/invitations"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "invitations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /orgs/{org}/invitations"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: "all"
+                explode: true
+                k: "query"
+                n: "invitation_source"
+                or: "invitation_source"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "all"
+                explode: true
+                k: "query"
+                n: "role"
+                or: "role"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/orgs/{org}/invitations"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "invitations"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /repos/{owner}/{repo}/invitations/{invitation_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "invitation_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/repos/{owner}/{repo}/invitations/{invitation_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              invitation_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "invitations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /orgs/{org}/invitations/{invitation_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "invitation_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/invitations/{invitation_id}"
+          q: {
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              invitation_id: "id"
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "invitations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "permissions"
+          ]
+          co: {
+            id: "PATCH /repos/{owner}/{repo}/invitations/{invitation_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "invitation_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/repos/{owner}/{repo}/invitations/{invitation_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              invitation_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "invitations"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.org")]
+    [path("$.main.kit.entity.repo")]
+  ]
+
+}

@@ -1,0 +1,125 @@
+# Entity: api_v4_projects_idref_reftrigger_pipeline
+
+main: kit: entity: api_v4_projects_idref_reftrigger_pipeline: {
+
+  alias: field: {}
+
+  fields: {
+    inputs: {
+      h: "Inputs"
+      n: "inputs"
+      r: false
+      sh: "The list of inputs to be used to create the pipeline."
+      t: "`$OBJECT`"
+    }
+    token: {
+      h: "Token"
+      n: "token"
+      r: true
+      sh: "The unique token of trigger or job token"
+      t: "`$STRING`"
+    }
+    variables: {
+      h: "Variables"
+      n: "variables"
+      r: false
+      sh: "The list of variables to be injected into build"
+      t: "`$OBJECT`"
+    }
+  }
+
+  name: "api_v4_projects_idref_reftrigger_pipeline"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "inputs"
+            "token"
+            "variables"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/(ref/{ref}/)trigger/pipeline"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 18
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "develop"
+                k: "param"
+                n: "ref_id"
+                or: "ref"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/(ref/{ref}/)trigger/pipeline"
+          q: {
+            exist: [
+              "project_id"
+              "ref_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              ref: "ref_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "(ref"
+            }
+            {
+              var: "ref_id"
+            }
+            {
+              lit: ")trigger"
+            }
+            {
+              lit: "pipeline"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+  ]
+
+}

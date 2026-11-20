@@ -1,0 +1,663 @@
+# Entity: pipeline_schedule
+
+main: kit: entity: pipeline_schedule: {
+
+  alias: field: {}
+
+  fields: {
+    active: {
+      h: "Active"
+      n: "active"
+      r: false
+      sh: "The activation of pipeline schedule"
+      t: "`$BOOLEAN`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    cron: {
+      h: "Cron"
+      n: "cron"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The cron"
+      t: "`$STRING`"
+    }
+    cron_timezone: {
+      h: "Cron Timezone"
+      n: "cron_timezone"
+      r: false
+      sh: "The timezone"
+      t: "`$STRING`"
+    }
+    description: {
+      h: "Description"
+      n: "description"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The description of pipeline schedule"
+      t: "`$STRING`"
+    }
+    id: {
+      fo: "int32"
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    inputs: {
+      h: "Inputs"
+      n: "inputs"
+      r: false
+      sh: "Inputs for the pipeline schedule"
+      t: "`$OBJECT`"
+    }
+    last_pipeline: {
+      h: "Last Pipeline"
+      n: "last_pipeline"
+      r: false
+      sh: "API_Entities_Ci_PipelineBasic model"
+      t: "`$OBJECT`"
+    }
+    next_run_at: {
+      fo: "date-time"
+      h: "Next Run At"
+      n: "next_run_at"
+      r: false
+      t: "`$STRING`"
+    }
+    owner: {
+      h: "Owner"
+      n: "owner"
+      r: false
+      sh: "API_Entities_UserBasic model"
+      t: "`$OBJECT`"
+    }
+    ref: {
+      h: "Ref"
+      n: "ref"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The branch/tag name will be triggered"
+      t: "`$STRING`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      t: "`$STRING`"
+    }
+    variables: {
+      h: "Variables"
+      n: "variables"
+      r: false
+      sh: "API_Entities_Ci_Variable model"
+      t: "`$OBJECT`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "pipeline_schedule"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/play"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 13
+                k: "param"
+                n: "id"
+                or: "pipeline_schedule_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 18
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/play"
+          q: {
+            "$action": "play"
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              pipeline_schedule_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "pipeline_schedules"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "play"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/take_ownership"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 13
+                k: "param"
+                n: "id"
+                or: "pipeline_schedule_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 18
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/take_ownership"
+          q: {
+            "$action": "take_ownership"
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              pipeline_schedule_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "pipeline_schedules"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "take_ownership"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "active"
+            "cron"
+            "cron_timezone"
+            "description"
+            "inputs"
+            "ref"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/pipeline_schedules"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 18
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/pipeline_schedules"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "pipeline_schedules"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/pipeline_schedules"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 18
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "active"
+                explode: true
+                k: "query"
+                n: "scope"
+                or: "scope"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/pipeline_schedules"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "pipeline_schedules"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 13
+                k: "param"
+                n: "id"
+                or: "pipeline_schedule_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 18
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              pipeline_schedule_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "pipeline_schedules"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 13
+                k: "param"
+                n: "id"
+                or: "pipeline_schedule_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 18
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              pipeline_schedule_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "pipeline_schedules"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "active"
+            "cron"
+            "cron_timezone"
+            "description"
+            "inputs"
+            "ref"
+          ]
+          co: {
+            id: "PUT /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: 13
+                k: "param"
+                n: "id"
+                or: "pipeline_schedule_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 18
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}"
+          q: {
+            exist: [
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              pipeline_schedule_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "pipeline_schedules"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+  ]
+
+}

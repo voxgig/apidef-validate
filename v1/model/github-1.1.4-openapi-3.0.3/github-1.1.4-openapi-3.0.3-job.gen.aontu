@@ -227,6 +227,229 @@ main: kit: entity: job: {
 
   name: "job"
   op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "attempt_number"
+                or: "attempt_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "run_id"
+                or: "run_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs"
+          q: {
+            exist: [
+              "attempt_number"
+              "owner"
+              "repo"
+              "run_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runs"
+            }
+            {
+              var: "run_id"
+            }
+            {
+              lit: "attempts"
+            }
+            {
+              var: "attempt_number"
+            }
+            {
+              lit: "jobs"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.jobs`"
+          }
+        }
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "run_id"
+                or: "run_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: "latest"
+                explode: true
+                k: "query"
+                n: "filter"
+                or: "filter"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/actions/runs/{run_id}/jobs"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+              "run_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "runs"
+            }
+            {
+              var: "run_id"
+            }
+            {
+              lit: "jobs"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.jobs`"
+          }
+        }
+      ]
+    }
     load: {
       name: "load"
       points: [
@@ -311,6 +534,8 @@ main: kit: entity: job: {
 
   relations: ancestors: [
     [path("$.main.kit.entity.repo")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.run")]
+    [path("$.main.kit.entity.repo") path("$.main.kit.entity.run") path("$.main.kit.entity.attempt")]
   ]
 
 }

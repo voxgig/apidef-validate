@@ -1,0 +1,406 @@
+# Entity: issue_event
+
+main: kit: entity: issue_event: {
+
+  alias: field: {}
+
+  fields: {
+    actor: {
+      h: "Actor"
+      n: "actor"
+      r: true
+      sh: "A GitHub user."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    assignee: {
+      h: "Assignee"
+      n: "assignee"
+      r: true
+      sh: "A GitHub user."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    assigner: {
+      h: "Assigner"
+      n: "assigner"
+      r: true
+      sh: "A GitHub user."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    author_association: {
+      h: "Author Association"
+      n: "author_association"
+      r: false
+      sh: "How the author is associated with the repository."
+      t: "`$STRING`"
+    }
+    commit_id: {
+      h: "Commit Id"
+      n: "commit_id"
+      r: true
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    commit_url: {
+      h: "Commit Url"
+      n: "commit_url"
+      r: true
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: true
+      t: "`$STRING`"
+    }
+    dismissed_review: {
+      h: "Dismissed Review"
+      n: "dismissed_review"
+      r: true
+      t: "`$OBJECT`"
+    }
+    event: {
+      h: "Event"
+      n: "event"
+      r: true
+      t: "`$STRING`"
+    }
+    id: {
+      fo: "int64"
+      h: "Id"
+      n: "id"
+      r: true
+      t: "`$INTEGER`"
+    }
+    issue: {
+      h: "Issue"
+      n: "issue"
+      r: true
+      sh: "Issues are a great way to keep track of tasks, enhancements, and bugs for your projects."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+      union: {
+        branches: 3
+        count: 3
+        depth: 5
+      }
+    }
+    label: {
+      h: "Label"
+      n: "label"
+      r: true
+      sh: "Issue Event Label"
+      t: "`$OBJECT`"
+    }
+    lock_reason: {
+      h: "Lock Reason"
+      n: "lock_reason"
+      r: false
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    milestone: {
+      h: "Milestone"
+      n: "milestone"
+      r: true
+      sh: "Issue Event Milestone"
+      t: "`$OBJECT`"
+    }
+    node_id: {
+      h: "Node Id"
+      n: "node_id"
+      r: true
+      t: "`$STRING`"
+    }
+    performed_via_github_app: {
+      h: "Performed Via Github App"
+      n: "performed_via_github_app"
+      r: true
+      sh: "GitHub apps are a new way to extend GitHub."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+      union: {
+        branches: 2
+        count: 1
+        depth: 2
+      }
+    }
+    project_card: {
+      h: "Project Card"
+      n: "project_card"
+      r: true
+      sh: "Issue Event Project Card"
+      t: "`$OBJECT`"
+    }
+    rename: {
+      h: "Rename"
+      n: "rename"
+      r: true
+      sh: "Issue Event Rename"
+      t: "`$OBJECT`"
+    }
+    requested_reviewer: {
+      h: "Requested Reviewer"
+      n: "requested_reviewer"
+      r: true
+      sh: "A GitHub user."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    requested_team: {
+      h: "Requested Team"
+      n: "requested_team"
+      r: true
+      sh: "Groups of organization members that gives permissions on specified repositories."
+      t: "`$OBJECT`"
+    }
+    review_requester: {
+      h: "Review Requester"
+      n: "review_requester"
+      r: true
+      sh: "A GitHub user."
+      t: [
+        "`$ONE`"
+        [
+          "`$OBJECT`"
+          "`$NULL`"
+        ]
+      ]
+    }
+    url: {
+      fo: "uri"
+      h: "Url"
+      n: "url"
+      r: true
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "issue_event"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/issues/events"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/issues/events"
+          q: {
+            exist: [
+              "owner"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "issues"
+            }
+            {
+              lit: "events"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/issues/events/{event_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "event_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/issues/events/{event_id}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              event_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "issues"
+            }
+            {
+              lit: "events"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
+  ]
+
+}

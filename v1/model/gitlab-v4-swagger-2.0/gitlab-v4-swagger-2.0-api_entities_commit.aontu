@@ -28,15 +28,8 @@ main: kit: entity: api_entities_commit: {
       h: "Branch"
       n: "branch"
       r: true
-      sh: "The name of the branch"
+      sh: "Target branch name"
       t: "`$STRING`"
-    }
-    commits: {
-      h: "Commits"
-      n: "commits"
-      r: true
-      sh: "The context commits’ SHA."
-      t: "`$ARRAY`"
     }
     committed_date: {
       fo: "date-time"
@@ -87,7 +80,6 @@ main: kit: entity: api_entities_commit: {
       h: "Message"
       n: "message"
       r: false
-      sh: "A custom commit message to use for the picked commit"
       t: "`$STRING`"
     }
     parent_ids: {
@@ -134,79 +126,6 @@ main: kit: entity: api_entities_commit: {
       points: [
         {
           bf: [
-            "commits"
-          ]
-          co: {
-            id: "POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "merge_request_id"
-                or: "merge_request_iid"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits"
-          q: {
-            exist: [
-              "merge_request_id"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-              merge_request_iid: "merge_request_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "merge_requests"
-            }
-            {
-              var: "merge_request_id"
-            }
-            {
-              lit: "context_commits"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
             "branch"
             "dry_run"
             "message"
@@ -237,6 +156,7 @@ main: kit: entity: api_entities_commit: {
           m: "POST"
           o: "/api/v4/projects/{id}/repository/commits/{sha}/cherry_pick"
           q: {
+            "$action": "cherry_pick"
             exist: [
               "project_id"
               "sha"
@@ -275,6 +195,80 @@ main: kit: entity: api_entities_commit: {
             }
             {
               lit: "cherry_pick"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "commits"
+          ]
+          co: {
+            id: "POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "merge_request_id"
+                or: "merge_request_iid"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits"
+          q: {
+            "$action": "context_commit"
+            exist: [
+              "merge_request_id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              merge_request_iid: "merge_request_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "merge_requests"
+            }
+            {
+              var: "merge_request_id"
+            }
+            {
+              lit: "context_commits"
             }
           ]
           t: {
@@ -360,101 +354,9 @@ main: kit: entity: api_entities_commit: {
         }
       ]
     }
-    list: {
-      name: "list"
+    load: {
+      name: "load"
       points: [
-        {
-          co: {
-            id: "GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/commits"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "merge_request_id"
-                or: "merge_request_iid"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 20
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/commits"
-          q: {
-            exist: [
-              "merge_request_id"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-              merge_request_iid: "merge_request_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "merge_requests"
-            }
-            {
-              var: "merge_request_id"
-            }
-            {
-              lit: "commits"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
         {
           co: {
             id: "GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits"
@@ -482,6 +384,7 @@ main: kit: entity: api_entities_commit: {
           m: "GET"
           o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits"
           q: {
+            "$action": "context_commit"
             exist: [
               "merge_request_id"
               "project_id"
@@ -518,255 +421,6 @@ main: kit: entity: api_entities_commit: {
             }
             {
               lit: "context_commits"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /api/v4/projects/{id}/repository/merge_base"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                ex: 1
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: "main"
-                explode: false
-                k: "query"
-                n: "ref"
-                or: "refs"
-                r: true
-                style: "form"
-                t: "`$ARRAY`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/projects/{id}/repository/merge_base"
-          q: {
-            exist: [
-              "project_id"
-              "ref"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "repository"
-            }
-            {
-              lit: "merge_base"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /api/v4/projects/{id}/repository/commits"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                explode: true
-                k: "query"
-                n: "all"
-                or: "all"
-                r: false
-                style: "form"
-                t: "`$BOOLEAN`"
-              }
-              {
-                ex: "John Smith"
-                explode: true
-                k: "query"
-                n: "author"
-                or: "author"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "first_parent"
-                or: "first_parent"
-                r: false
-                style: "form"
-                t: "`$BOOLEAN`"
-              }
-              {
-                ex: "default"
-                explode: true
-                k: "query"
-                n: "order"
-                or: "order"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: "README.md"
-                explode: true
-                k: "query"
-                n: "path"
-                or: "path"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                ex: 20
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: "v1.1.0"
-                explode: true
-                k: "query"
-                n: "ref_name"
-                or: "ref_name"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                ex: "2021-09-20T11:50:22.001"
-                explode: true
-                k: "query"
-                n: "since"
-                or: "since"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                ex: false
-                explode: true
-                k: "query"
-                n: "trailer"
-                or: "trailers"
-                r: false
-                style: "form"
-                t: "`$BOOLEAN`"
-              }
-              {
-                ex: "2021-09-20T11:50:22.001"
-                explode: true
-                k: "query"
-                n: "until"
-                or: "until"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                explode: true
-                k: "query"
-                n: "with_stat"
-                or: "with_stats"
-                r: false
-                style: "form"
-                t: "`$BOOLEAN`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/api/v4/projects/{id}/repository/commits"
-          q: {
-            exist: [
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "repository"
-            }
-            {
-              lit: "commits"
             }
           ]
           t: {
@@ -817,6 +471,7 @@ main: kit: entity: api_entities_commit: {
           m: "DELETE"
           o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits"
           q: {
+            "$action": "context_commit"
             exist: [
               "commit"
               "merge_request_id"
@@ -863,9 +518,8 @@ main: kit: entity: api_entities_commit: {
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.project")]
     [path("$.main.kit.entity.project") path("$.main.kit.entity.merge_request")]
-    [path("$.main.kit.entity.project")]
+    [path("$.main.kit.entity.project") path("$.main.kit.entity.commit")]
   ]
 
 }

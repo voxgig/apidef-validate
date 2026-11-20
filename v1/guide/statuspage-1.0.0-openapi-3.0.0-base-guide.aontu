@@ -53,11 +53,11 @@ guide: {
   }
 
   entity: group_component: {
-    path: "/pages/{page_id}/component-groups": {  # ent=group_component;orig=GroupComponent;cmp/resolve=group_component;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=GroupComponent
+    path: "/pages/{page_id}/component-groups": {  # ent=group_component;orig=GroupComponent;cmp/resolve=group_component;path=t/p/t/;cmp-record=GroupComponent;has-cmp=GroupComponent
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/pages/{page_id}/component-groups/{id}": {  # ent=group_component;orig=GroupComponent;cmp/resolve=group_component;path=t/p/;cmp-primary;cmp-infreq
+    path: "/pages/{page_id}/component-groups/{id}": {  # ent=group_component;orig=GroupComponent;cmp/resolve=group_component;path=t/p/;cmp-record=GroupComponent
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
@@ -70,20 +70,20 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/pages/{page_id}/incidents/active_maintenance": {  # ent=incident;orig=Incident;cmp/resolve=incident;path=t/;cmp-primary;cmp-infreq
-      action: "active_maintenance": {}  # ent;incident;no-param;active_maintenance;GET
+    path: "/pages/{page_id}/incidents/active_maintenance": {  # ent=incident;orig=Incident;cmp/resolve=incident;variant=incident
+      action: "active_maintenance": {}  # ent;incident;verb-on-parent;active_maintenance;GET
       op: list: method: *GET  # array
     }
-    path: "/pages/{page_id}/incidents/scheduled": {  # ent=incident;orig=Incident;cmp/resolve=incident;path=t/;cmp-primary;cmp-infreq
-      action: "scheduled": {}  # ent;incident;no-param;scheduled;GET
+    path: "/pages/{page_id}/incidents/scheduled": {  # ent=incident;orig=Incident;cmp/resolve=incident;variant=incident
+      action: "scheduled": {}  # ent;incident;verb-on-parent;scheduled;GET
       op: list: method: *GET  # array
     }
-    path: "/pages/{page_id}/incidents/unresolved": {  # ent=incident;orig=Incident;cmp/resolve=incident;path=t/;cmp-primary;cmp-infreq
-      action: "unresolved": {}  # ent;incident;no-param;unresolved;GET
+    path: "/pages/{page_id}/incidents/unresolved": {  # ent=incident;orig=Incident;cmp/resolve=incident;variant=incident
+      action: "unresolved": {}  # ent;incident;verb-on-parent;unresolved;GET
       op: list: method: *GET  # array
     }
-    path: "/pages/{page_id}/incidents/upcoming": {  # ent=incident;orig=Incident;cmp/resolve=incident;path=t/;cmp-primary;cmp-infreq
-      action: "upcoming": {}  # ent;incident;no-param;upcoming;GET
+    path: "/pages/{page_id}/incidents/upcoming": {  # ent=incident;orig=Incident;cmp/resolve=incident;variant=incident
+      action: "upcoming": {}  # ent;incident;verb-on-parent;upcoming;GET
       op: list: method: *GET  # array
     }
     path: "/pages/{page_id}/incidents/{incident_id}": {  # ent=incident;orig=Incident;cmp/resolve=incident;path=t/p/;path-primary
@@ -91,6 +91,11 @@ guide: {
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
+    }
+    path: "/pages/{page_id}/incidents/{incident_id}/postmortem/publish": {  # ent=incident;orig=Incident;cmp/resolve=postmortem;verb-of-item=incident
+      action: "postmortem_publish": {}  # ent;incident;verb-on-parent;publish;PUT
+      rename: param: "incident_id": *"id"  # id-parent-ent
       op: update: method: *PUT  # not-load
     }
   }
@@ -114,8 +119,8 @@ guide: {
     path: "/pages/{page_id}/metrics": {  # ent=metric;orig=Metric;cmp/resolve=metric;path=t/p/t/;path-primary;has-cmp=Metric
       op: load: method: *GET  # not-list
     }
-    path: "/pages/{page_id}/metrics/data": {  # ent=metric;orig=Metric;tag=metric;cmp/resolve=metric;path=t/;cmp-primary;cmp-infreq
-      action: "data": {}  # ent;metric;no-param;data;POST
+    path: "/pages/{page_id}/metrics/data": {  # ent=metric;orig=Metric;tag=metric;cmp/resolve=metric;path=t/;cmp-primary;cmp-infreq;command=pages_page_id_metrics_data
+      action: "data": {}  # ent;metric;command;pages_page_id_metrics_data
       op: create: method: *POST  # not-load
     }
     path: "/pages/{page_id}/metrics/{metric_id}": {  # ent=metric;orig=Metric;cmp/resolve=metric;path=t/p/;path-primary
@@ -132,9 +137,9 @@ guide: {
       op: create: transform: res: *("`body.data`")|top
       op: remove: method: *DELETE  # not-load
     }
-    path: "/pages/{page_id}/metrics_providers/{metrics_provider_id}/metrics": {  # ent=metric;orig=Metric;cmp/resolve=metric;path=t/p/t/;path-primary;has-cmp=Metric
+    path: "/pages/{page_id}/metrics_providers/{metrics_provider_id}/metrics": {  # ent=metric;orig=Metric;cmp/resolve=metric;singleton=metric
       op: create: method: *POST  # not-load
-      op: load: method: *GET  # not-list
+      op: load: method: *GET
     }
     path: "/pages/{page_id}/page_access_users/{page_access_user_id}/metrics": {  # ent=metric;orig=Metric;cmp/resolve=metric;path=t/p/t/;path-primary;has-cmp=Metric
       op: list: method: *GET  # array
@@ -242,13 +247,9 @@ guide: {
   }
 
   entity: postmortem: {
-    path: "/pages/{page_id}/incidents/{incident_id}/postmortem": {  # ent=postmortem;orig=Postmortem;tag=incident_postmortem;cmp/resolve=incident_postmortem;same-path-tag=postmortem/GET
+    path: "/pages/{page_id}/incidents/{incident_id}/postmortem": {  # ent=postmortem;orig=Postmortem;tag=incident_postmortem;cmp/resolve=incident_postmortem;path=t/p/t/;path-over-tag;has-cmp=incident postmortem
       op: load: method: *GET  # not-list
       op: remove: method: *DELETE  # not-load
-      op: update: method: *PUT  # not-load
-    }
-    path: "/pages/{page_id}/incidents/{incident_id}/postmortem/publish": {  # ent=postmortem;orig=Postmortem;cmp/resolve=postmortem;path=t/;cmp-primary;cmp-infreq
-      action: "publish": {}  # ent;postmortem;no-param;publish;PUT
       op: update: method: *PUT  # not-load
     }
     path: "/pages/{page_id}/incidents/{incident_id}/postmortem/revert": {  # ent=postmortem;orig=Postmortem;cmp/resolve=postmortem;path=t/;cmp-primary;cmp-infreq
@@ -258,8 +259,8 @@ guide: {
   }
 
   entity: status_embed_config: {
-    path: "/pages/{page_id}/status_embed_config": {  # ent=status_embed_config;orig=StatusEmbedConfig;cmp/resolve=status_embed_config;path=t/p/t/;path-primary;has-cmp=StatusEmbedConfig
-      op: load: method: *GET  # not-list
+    path: "/pages/{page_id}/status_embed_config": {  # ent=status_embed_config;orig=StatusEmbedConfig;cmp/resolve=status_embed_config;singleton=status_embed_config
+      op: load: method: *GET
       op: patch: method: *PATCH  # not-load
       op: update: method: *PUT  # not-load
     }
@@ -275,7 +276,7 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
     }
-    path: "/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}/resend_confirmation": {  # ent=subscriber;orig=Subscriber;tag=incident_subscriber;cmp/resolve=incident_subscriber;path=t/p/t/;verb-on-parent=subscriber
+    path: "/pages/{page_id}/incidents/{incident_id}/subscribers/{subscriber_id}/resend_confirmation": {  # ent=subscriber;orig=Subscriber;tag=incident_subscriber;cmp/resolve=incident_subscriber;verb-of-item=subscriber
       action: "resend_confirmation": {}  # ent;subscriber;verb-on-parent;resend_confirmation;POST
       rename: param: "subscriber_id": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
@@ -284,28 +285,28 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
-    path: "/pages/{page_id}/subscribers/count": {  # ent=subscriber;orig=Subscriber;tag/path=subscriber;cmp/resolve=subscriber;path=t/;cmp-primary;cmp-infreq
-      action: "count": {}  # ent;subscriber;no-param;count;GET
-      op: load: method: *GET  # not-list
+    path: "/pages/{page_id}/subscribers/count": {  # ent=subscriber;orig=Subscriber;tag/path=subscriber;cmp/resolve=subscriber;verb-of-item=subscriber
+      action: "count": {}  # ent;subscriber;verb-on-parent;count;GET
+      op: load: method: *GET  # view
     }
     path: "/pages/{page_id}/subscribers/histogram_by_state": {  # ent=subscriber;orig=Subscriber;tag/path=subscriber;cmp/resolve=subscriber;path=t/;cmp-primary;cmp-infreq
       action: "histogram_by_state": {}  # ent;subscriber;no-param;histogram_by_state;GET
       op: load: method: *GET  # not-list
     }
-    path: "/pages/{page_id}/subscribers/reactivate": {  # ent=subscriber;orig=Subscriber;tag=subscriber;cmp/resolve=subscriber;path=t/;cmp-primary;cmp-infreq
-      action: "reactivate": {}  # ent;subscriber;no-param;reactivate;POST
+    path: "/pages/{page_id}/subscribers/reactivate": {  # ent=subscriber;orig=Subscriber;tag=subscriber;cmp/resolve=subscriber;path=t/;cmp-primary;cmp-infreq;command=pages_page_id_subscribers_reactivate
+      action: "reactivate": {}  # ent;subscriber;command;pages_page_id_subscribers_reactivate
       op: create: method: *POST  # not-load
     }
-    path: "/pages/{page_id}/subscribers/resend_confirmation": {  # ent=subscriber;orig=Subscriber;tag=subscriber;cmp/resolve=subscriber;path=t/;cmp-primary;cmp-infreq
-      action: "resend_confirmation": {}  # ent;subscriber;no-param;resend_confirmation;POST
+    path: "/pages/{page_id}/subscribers/resend_confirmation": {  # ent=subscriber;orig=Subscriber;tag=subscriber;cmp/resolve=subscriber;verb-of-item=subscriber
+      action: "resend_confirmation": {}  # ent;subscriber;verb-on-parent;resend_confirmation;POST
       op: create: method: *POST  # not-load
     }
-    path: "/pages/{page_id}/subscribers/unsubscribe": {  # ent=subscriber;orig=Subscriber;tag=subscriber;cmp/resolve=subscriber;path=t/;cmp-primary;cmp-infreq
+    path: "/pages/{page_id}/subscribers/unsubscribe": {  # ent=subscriber;orig=Subscriber;tag=subscriber;cmp/resolve=subscriber;path=t/;noun-before-verb=subscribers;path-primary
       action: "unsubscribe": {}  # ent;subscriber;no-param;unsubscribe;POST
       op: create: method: *POST  # not-load
     }
-    path: "/pages/{page_id}/subscribers/unsubscribed": {  # ent=subscriber;orig=Subscriber;cmp/resolve=subscriber;path=t/;cmp-primary;cmp-infreq
-      action: "unsubscribed": {}  # ent;subscriber;no-param;unsubscribed;GET
+    path: "/pages/{page_id}/subscribers/unsubscribed": {  # ent=subscriber;orig=Subscriber;cmp/resolve=subscriber;variant=subscriber
+      action: "unsubscribed": {}  # ent;subscriber;verb-on-parent;unsubscribed;GET
       op: list: method: *GET  # array
     }
     path: "/pages/{page_id}/subscribers/{subscriber_id}": {  # ent=subscriber;orig=Subscriber;cmp/resolve=subscriber;path=t/p/;path-primary
@@ -314,7 +315,7 @@ guide: {
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
     }
-    path: "/pages/{page_id}/subscribers/{subscriber_id}/resend_confirmation": {  # ent=subscriber;orig=Subscriber;tag=subscriber;cmp/resolve=subscriber;path=t/p/t/;verb-on-parent=subscriber
+    path: "/pages/{page_id}/subscribers/{subscriber_id}/resend_confirmation": {  # ent=subscriber;orig=Subscriber;tag=subscriber;cmp/resolve=subscriber;verb-of-item=subscriber
       action: "resend_confirmation": {}  # ent;subscriber;verb-on-parent;resend_confirmation;POST
       rename: param: "subscriber_id": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load

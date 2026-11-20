@@ -1,0 +1,191 @@
+# Entity: time_stat
+
+main: kit: entity: time_stat: {
+
+  alias: field: {}
+
+  fields: {
+    human_time_estimate: {
+      h: "Human Time Estimate"
+      n: "human_time_estimate"
+      r: false
+      t: "`$STRING`"
+    }
+    human_total_time_spent: {
+      h: "Human Total Time Spent"
+      n: "human_total_time_spent"
+      r: false
+      t: "`$STRING`"
+    }
+    time_estimate: {
+      fo: "int32"
+      h: "Time Estimate"
+      n: "time_estimate"
+      r: false
+      t: "`$INTEGER`"
+    }
+    total_time_spent: {
+      fo: "int32"
+      h: "Total Time Spent"
+      n: "total_time_spent"
+      r: false
+      t: "`$INTEGER`"
+    }
+  }
+
+  name: "time_stat"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/issues/{issue_iid}/time_stats"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "issue_id"
+                or: "issue_iid"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/issues/{issue_iid}/time_stats"
+          q: {
+            exist: [
+              "issue_id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              issue_iid: "issue_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "issues"
+            }
+            {
+              var: "issue_id"
+            }
+            {
+              lit: "time_stats"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/time_stats"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "merge_request_id"
+                or: "merge_request_iid"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/merge_requests/{merge_request_iid}/time_stats"
+          q: {
+            exist: [
+              "merge_request_id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+              merge_request_iid: "merge_request_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "merge_requests"
+            }
+            {
+              var: "merge_request_id"
+            }
+            {
+              lit: "time_stats"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.project") path("$.main.kit.entity.issue")]
+    [path("$.main.kit.entity.project") path("$.main.kit.entity.merge_request")]
+  ]
+
+}

@@ -1,0 +1,197 @@
+# Entity: content
+
+main: kit: entity: content: {
+
+  alias: field: {}
+
+  fields: {
+    content: {
+      h: "Content"
+      n: "content"
+      r: false
+      t: "`$STRING`"
+    }
+    download_url: {
+      h: "Download Url"
+      n: "download_url"
+      r: false
+      t: "`$STRING`"
+    }
+    encoding: {
+      h: "Encoding"
+      n: "encoding"
+      r: false
+      t: "`$STRING`"
+    }
+    git_url: {
+      h: "Git Url"
+      n: "git_url"
+      r: false
+      t: "`$STRING`"
+    }
+    html_url: {
+      h: "Html Url"
+      n: "html_url"
+      r: false
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+    links: {
+      h: "Links"
+      n: "links"
+      r: false
+      t: "`$OBJECT`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      t: "`$STRING`"
+    }
+    path: {
+      h: "Path"
+      n: "path"
+      r: false
+      t: "`$STRING`"
+    }
+    sha: {
+      h: "Sha"
+      n: "sha"
+      r: false
+      t: "`$STRING`"
+    }
+    size: {
+      h: "Size"
+      n: "size"
+      r: false
+      t: "`$INTEGER`"
+    }
+    type: {
+      h: "Type"
+      n: "type"
+      r: false
+      t: "`$STRING`"
+    }
+    url: {
+      h: "Url"
+      n: "url"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "content"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /repos/{owner}/{repo}/contents/{path}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "path"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "ref"
+                or: "ref"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/repos/{owner}/{repo}/contents/{path}"
+          q: {
+            exist: [
+              "id"
+              "owner"
+              "repo"
+            ]
+          }
+          r: {
+            param: {
+              path: "id"
+            }
+          }
+          rs: {
+            alternatives: [
+              {
+                binary: true
+                kind: "raw"
+                media: "application/vnd.github.object"
+              }
+            ]
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "contents"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.repo")]
+  ]
+
+}

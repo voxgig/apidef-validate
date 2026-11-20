@@ -14,21 +14,14 @@ main: kit: entity: organization_invitation: {
     email: {
       h: "Email"
       n: "email"
-      op: {
-        list: {
-          req: true
-          type: [
-            "`$ONE`"
-            [
-              "`$STRING`"
-              "`$NULL`"
-            ]
-          ]
-        }
-      }
-      r: false
-      sh: "**Required unless you provide `invitee_id`**."
-      t: "`$STRING`"
+      r: true
+      t: [
+        "`$ONE`"
+        [
+          "`$STRING`"
+          "`$NULL`"
+        ]
+      ]
     }
     failed_at: {
       h: "Failed At"
@@ -73,13 +66,6 @@ main: kit: entity: organization_invitation: {
       r: true
       t: "`$STRING`"
     }
-    invitee_id: {
-      h: "Invitee Id"
-      n: "invitee_id"
-      r: false
-      sh: "**Required unless you provide `email`**."
-      t: "`$INTEGER`"
-    }
     inviter: {
       h: "Inviter"
       n: "inviter"
@@ -108,14 +94,7 @@ main: kit: entity: organization_invitation: {
     role: {
       h: "Role"
       n: "role"
-      op: {
-        list: {
-          req: true
-          type: "`$STRING`"
-        }
-      }
-      r: false
-      sh: "The role for the new member."
+      r: true
       t: "`$STRING`"
     }
     team_count: {
@@ -123,13 +102,6 @@ main: kit: entity: organization_invitation: {
       n: "team_count"
       r: true
       t: "`$INTEGER`"
-    }
-    team_ids: {
-      h: "Team Ids"
-      n: "team_ids"
-      r: false
-      sh: "Specify IDs for the teams you want to invite new members to."
-      t: "`$ARRAY`"
     }
   }
 
@@ -140,66 +112,6 @@ main: kit: entity: organization_invitation: {
 
   name: "organization_invitation"
   op: {
-    create: {
-      name: "create"
-      points: [
-        {
-          bf: [
-            "email"
-            "invitee_id"
-            "role"
-            "team_ids"
-          ]
-          co: {
-            id: "POST /orgs/{org}/invitations"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/orgs/{org}/invitations"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "invitations"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-      ]
-    }
     list: {
       name: "list"
       points: [
@@ -267,97 +179,6 @@ main: kit: entity: organization_invitation: {
             }
             {
               lit: "failed_invitations"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /orgs/{org}/invitations"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: "all"
-                explode: true
-                k: "query"
-                n: "invitation_source"
-                or: "invitation_source"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: "all"
-                explode: true
-                k: "query"
-                n: "role"
-                or: "role"
-                r: false
-                style: "form"
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/invitations"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "invitations"
             }
           ]
           t: {

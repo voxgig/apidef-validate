@@ -1,0 +1,211 @@
+# Entity: statistic
+
+main: kit: entity: statistic: {
+
+  alias: field: {}
+
+  fields: {
+    active_users: {
+      fo: "int32"
+      h: "Active Users"
+      n: "active_users"
+      r: false
+      sh: "Number of active users"
+      t: "`$INTEGER`"
+    }
+    days: {
+      h: "Days"
+      n: "days"
+      r: false
+      t: "`$ARRAY`"
+    }
+    forks: {
+      fo: "int32"
+      h: "Forks"
+      n: "forks"
+      r: false
+      sh: "Approximate number of repo forks"
+      t: "`$INTEGER`"
+    }
+    groups: {
+      fo: "int32"
+      h: "Groups"
+      n: "groups"
+      r: false
+      sh: "Approximate number of projects"
+      t: "`$INTEGER`"
+    }
+    issues: {
+      fo: "int32"
+      h: "Issues"
+      n: "issues"
+      r: false
+      sh: "Approximate number of issues"
+      t: "`$INTEGER`"
+    }
+    merge_requests: {
+      fo: "int32"
+      h: "Merge Requests"
+      n: "merge_requests"
+      r: false
+      sh: "Approximate number of merge requests"
+      t: "`$INTEGER`"
+    }
+    milestones: {
+      fo: "int32"
+      h: "Milestones"
+      n: "milestones"
+      r: false
+      sh: "Approximate number of milestones"
+      t: "`$INTEGER`"
+    }
+    notes: {
+      fo: "int32"
+      h: "Notes"
+      n: "notes"
+      r: false
+      sh: "Approximate number of notes"
+      t: "`$INTEGER`"
+    }
+    projects: {
+      fo: "int32"
+      h: "Projects"
+      n: "projects"
+      r: false
+      sh: "Approximate number of projects"
+      t: "`$INTEGER`"
+    }
+    snippets: {
+      fo: "int32"
+      h: "Snippets"
+      n: "snippets"
+      r: false
+      sh: "Approximate number of snippets"
+      t: "`$INTEGER`"
+    }
+    ssh_keys: {
+      fo: "int32"
+      h: "Ssh Keys"
+      n: "ssh_keys"
+      r: false
+      sh: "Approximate number of SSH keys"
+      t: "`$INTEGER`"
+    }
+    total: {
+      fo: "int32"
+      h: "Total"
+      n: "total"
+      r: false
+      t: "`$INTEGER`"
+    }
+    users: {
+      fo: "int32"
+      h: "Users"
+      n: "users"
+      r: false
+      sh: "Approximate number of users"
+      t: "`$INTEGER`"
+    }
+  }
+
+  name: "statistic"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/statistics"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/statistics"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "statistics"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.fetches`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/application/statistics"
+            source: "swagger2"
+            version: 2
+          }
+          m: "GET"
+          o: "/api/v4/application/statistics"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "application"
+            }
+            {
+              lit: "statistics"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+  ]
+
+}

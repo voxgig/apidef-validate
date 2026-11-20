@@ -162,12 +162,15 @@ main: kit: entity: api_entities_integration: {
 
   name: "api_entities_integration"
   op: {
-    load: {
-      name: "load"
+    create: {
+      name: "create"
       points: [
         {
+          bf: [
+            "token"
+          ]
           co: {
-            id: "GET /api/v4/groups/{id}/integrations/{slug}"
+            id: "POST /api/v4/projects/{id}/services/mattermost_slash_commands/trigger"
             source: "swagger2"
             version: 2
           }
@@ -175,37 +178,25 @@ main: kit: entity: api_entities_integration: {
             params: [
               {
                 k: "param"
-                n: "group_id"
+                n: "project_id"
                 or: "id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "id"
-                or: "slug"
                 r: true
                 t: "`$STRING`"
               }
             ]
           }
-          m: "GET"
-          o: "/api/v4/groups/{id}/integrations/{slug}"
+          m: "POST"
+          o: "/api/v4/projects/{id}/services/mattermost_slash_commands/trigger"
           q: {
+            "$action": "mattermost_slash_command_trigger"
             exist: [
-              "group_id"
-              "id"
+              "project_id"
             ]
           }
           r: {
             param: {
-              id: "group_id"
-              slug: "id"
+              id: "project_id"
             }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
           }
           s: [
             {
@@ -215,16 +206,19 @@ main: kit: entity: api_entities_integration: {
               lit: "v4"
             }
             {
-              lit: "groups"
+              lit: "projects"
             }
             {
-              var: "group_id"
+              var: "project_id"
             }
             {
-              lit: "integrations"
+              lit: "services"
             }
             {
-              var: "id"
+              lit: "mattermost_slash_commands"
+            }
+            {
+              lit: "trigger"
             }
           ]
           t: {
@@ -233,8 +227,11 @@ main: kit: entity: api_entities_integration: {
           }
         }
         {
+          bf: [
+            "token"
+          ]
           co: {
-            id: "GET /api/v4/projects/{id}/integrations/{slug}"
+            id: "POST /api/v4/projects/{id}/services/slack_slash_commands/trigger"
             source: "swagger2"
             version: 2
           }
@@ -242,11 +239,67 @@ main: kit: entity: api_entities_integration: {
             params: [
               {
                 k: "param"
-                n: "id"
-                or: "slug"
+                n: "project_id"
+                or: "id"
                 r: true
                 t: "`$STRING`"
               }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/services/slack_slash_commands/trigger"
+          q: {
+            "$action": "slack_slash_command_trigger"
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "services"
+            }
+            {
+              lit: "slack_slash_commands"
+            }
+            {
+              lit: "trigger"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/services"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
               {
                 k: "param"
                 n: "project_id"
@@ -257,17 +310,16 @@ main: kit: entity: api_entities_integration: {
             ]
           }
           m: "GET"
-          o: "/api/v4/projects/{id}/integrations/{slug}"
+          o: "/api/v4/projects/{id}/services"
           q: {
+            "$action": "service"
             exist: [
-              "id"
               "project_id"
             ]
           }
           r: {
             param: {
               id: "project_id"
-              slug: "id"
             }
           }
           rs: {
@@ -288,10 +340,7 @@ main: kit: entity: api_entities_integration: {
               var: "project_id"
             }
             {
-              lit: "integrations"
-            }
-            {
-              var: "id"
+              lit: "services"
             }
           ]
           t: {
@@ -299,6 +348,11 @@ main: kit: entity: api_entities_integration: {
             res: "`body`"
           }
         }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
         {
           co: {
             id: "GET /api/v4/projects/{id}/services/{slug}"
@@ -326,6 +380,7 @@ main: kit: entity: api_entities_integration: {
           m: "GET"
           o: "/api/v4/projects/{id}/services/{slug}"
           q: {
+            "$action": "service"
             exist: [
               "project_id"
               "slug"
@@ -372,132 +427,6 @@ main: kit: entity: api_entities_integration: {
       points: [
         {
           co: {
-            id: "DELETE /api/v4/groups/{id}/integrations/{slug}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "group_id"
-                or: "id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "id"
-                or: "slug"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/groups/{id}/integrations/{slug}"
-          q: {
-            exist: [
-              "group_id"
-              "id"
-            ]
-          }
-          r: {
-            param: {
-              id: "group_id"
-              slug: "id"
-            }
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "groups"
-            }
-            {
-              var: "group_id"
-            }
-            {
-              lit: "integrations"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /api/v4/projects/{id}/integrations/{slug}"
-            source: "swagger2"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "slug"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "project_id"
-                or: "id"
-                r: true
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/api/v4/projects/{id}/integrations/{slug}"
-          q: {
-            exist: [
-              "id"
-              "project_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "project_id"
-              slug: "id"
-            }
-          }
-          s: [
-            {
-              lit: "api"
-            }
-            {
-              lit: "v4"
-            }
-            {
-              lit: "projects"
-            }
-            {
-              var: "project_id"
-            }
-            {
-              lit: "integrations"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "DELETE /api/v4/projects/{id}/services/{slug}"
             source: "swagger2"
             version: 2
@@ -523,6 +452,7 @@ main: kit: entity: api_entities_integration: {
           m: "DELETE"
           o: "/api/v4/projects/{id}/services/{slug}"
           q: {
+            "$action": "service"
             exist: [
               "project_id"
               "slug"
@@ -564,7 +494,6 @@ main: kit: entity: api_entities_integration: {
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.group")]
     [path("$.main.kit.entity.project")]
     [path("$.main.kit.entity.project")]
   ]

@@ -907,7 +907,7 @@ main: kit: entity: user: {
             params: [
               {
                 k: "param"
-                n: "org_id"
+                n: "org"
                 or: "org"
                 r: true
                 t: "`$STRING`"
@@ -947,13 +947,12 @@ main: kit: entity: user: {
           o: "/orgs/{org}/organization-roles/{role_id}/users"
           q: {
             exist: [
-              "org_id"
+              "org"
               "organization_role_id"
             ]
           }
           r: {
             param: {
-              org: "org_id"
               role_id: "organization_role_id"
             }
           }
@@ -966,7 +965,7 @@ main: kit: entity: user: {
               lit: "orgs"
             }
             {
-              var: "org_id"
+              var: "org"
             }
             {
               lit: "organization-roles"
@@ -976,55 +975,6 @@ main: kit: entity: user: {
             }
             {
               lit: "users"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /user/blocks"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/user/blocks"
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "blocks"
             }
           ]
           t: {
@@ -1064,6 +1014,9 @@ main: kit: entity: user: {
           }
           m: "GET"
           o: "/user/following"
+          q: {
+            "$action": "user_following"
+          }
           rs: {
             kind: "json"
             media: "application/json"
@@ -1202,6 +1155,7 @@ main: kit: entity: user: {
           m: "GET"
           o: "/user/{account_id}"
           q: {
+            "$action": "user"
             exist: [
               "id"
             ]
@@ -1276,46 +1230,6 @@ main: kit: entity: user: {
         }
         {
           co: {
-            id: "GET /user/blocks/{username}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/user/blocks/{username}"
-          q: {
-            exist: [
-              "username"
-            ]
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "blocks"
-            }
-            {
-              var: "username"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "GET /user/following/{username}"
             source: "openapi3"
             version: 2
@@ -1347,6 +1261,71 @@ main: kit: entity: user: {
             }
             {
               var: "username"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /users/{username}/hovercard"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "subject_id"
+                or: "subject_id"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "subject_type"
+                or: "subject_type"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/users/{username}/hovercard"
+          q: {
+            "$action": "hovercard"
+            exist: [
+              "username"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "users"
+            }
+            {
+              var: "username"
+            }
+            {
+              lit: "hovercard"
             }
           ]
           t: {
@@ -1590,7 +1569,7 @@ main: kit: entity: user: {
         }
         {
           co: {
-            id: "DELETE /users/{username}/attestations/{attestation_id}"
+            id: "DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}"
             source: "openapi3"
             version: 2
           }
@@ -1598,8 +1577,15 @@ main: kit: entity: user: {
             params: [
               {
                 k: "param"
-                n: "attestation_id"
-                or: "attestation_id"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "role_id"
+                or: "role_id"
                 r: true
                 t: "`$INTEGER`"
               }
@@ -1613,14 +1599,24 @@ main: kit: entity: user: {
             ]
           }
           m: "DELETE"
-          o: "/users/{username}/attestations/{attestation_id}"
+          o: "/orgs/{org}/organization-roles/users/{username}/{role_id}"
           q: {
             exist: [
-              "attestation_id"
+              "org"
+              "role_id"
               "username"
             ]
           }
           s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org"
+            }
+            {
+              lit: "organization-roles"
+            }
             {
               lit: "users"
             }
@@ -1628,10 +1624,66 @@ main: kit: entity: user: {
               var: "username"
             }
             {
-              lit: "attestations"
+              var: "role_id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "DELETE /orgs/{org}/organization-roles/users/{username}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/organization-roles/users/{username}"
+          q: {
+            exist: [
+              "id"
+              "org"
+            ]
+          }
+          r: {
+            param: {
+              username: "id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
             }
             {
-              var: "attestation_id"
+              var: "org"
+            }
+            {
+              lit: "organization-roles"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
             }
           ]
           t: {
@@ -1686,46 +1738,6 @@ main: kit: entity: user: {
             }
             {
               var: "subject_digest"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /user/blocks/{username}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/user/blocks/{username}"
-          q: {
-            exist: [
-              "username"
-            ]
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "blocks"
-            }
-            {
-              var: "username"
             }
           ]
           t: {
@@ -1863,12 +1875,26 @@ main: kit: entity: user: {
         }
         {
           co: {
-            id: "PUT /user/blocks/{username}"
+            id: "PUT /orgs/{org}/organization-roles/users/{username}/{role_id}"
             source: "openapi3"
             version: 2
           }
           g: {
             params: [
+              {
+                k: "param"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "role_id"
+                or: "role_id"
+                r: true
+                t: "`$INTEGER`"
+              }
               {
                 k: "param"
                 n: "username"
@@ -1879,21 +1905,32 @@ main: kit: entity: user: {
             ]
           }
           m: "PUT"
-          o: "/user/blocks/{username}"
+          o: "/orgs/{org}/organization-roles/users/{username}/{role_id}"
           q: {
             exist: [
+              "org"
+              "role_id"
               "username"
             ]
           }
           s: [
             {
-              lit: "user"
+              lit: "orgs"
             }
             {
-              lit: "blocks"
+              var: "org"
+            }
+            {
+              lit: "organization-roles"
+            }
+            {
+              lit: "users"
             }
             {
               var: "username"
+            }
+            {
+              var: "role_id"
             }
           ]
           t: {
@@ -1947,10 +1984,10 @@ main: kit: entity: user: {
 
 
   relations: ancestors: [
-    [path("$.main.kit.entity.block")]
+    [path("$.main.kit.entity.org")]
+    [path("$.main.kit.entity.org")]
     [path("$.main.kit.entity.org") path("$.main.kit.entity.organization_role")]
     [path("$.main.kit.entity.repo") path("$.main.kit.entity.branch")]
-    [path("$.main.kit.entity.attestation")]
     [path("$.main.kit.entity.following")]
   ]
 

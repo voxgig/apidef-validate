@@ -1,0 +1,176 @@
+# Entity: token
+
+main: kit: entity: token: {
+
+  alias: field: {}
+
+  fields: {
+    created: {
+      fo: "date-time"
+      h: "Created"
+      n: "created"
+      r: false
+      ro: true
+      sh: "The time at which the API key was created."
+      t: "`$STRING`"
+    }
+    key: {
+      h: "Key"
+      n: "key"
+      r: false
+      ro: true
+      sh: "The unique API key used for authentication."
+      t: "`$STRING`"
+    }
+    slug_perm: {
+      h: "Slug Perm"
+      n: "slug_perm"
+      r: false
+      ro: true
+      sh: "The slug_perm for token."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "token"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /user/tokens/"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/user/tokens/"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "tokens"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /user/tokens/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "page_size"
+                or: "page_size"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/user/tokens/"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "tokens"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.results`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          co: {
+            id: "PUT /user/tokens/{slug_perm}/refresh/"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "slug_perm"
+                or: "slug_perm"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/user/tokens/{slug_perm}/refresh/"
+          q: {
+            "$action": "refresh"
+            exist: [
+              "slug_perm"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "tokens"
+            }
+            {
+              var: "slug_perm"
+            }
+            {
+              lit: "refresh"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

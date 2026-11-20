@@ -1,0 +1,168 @@
+# Entity: call
+
+main: kit: entity: call: {
+
+  alias: field: {}
+
+  fields: {
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      syn: true
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "call"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /spaces/{space_id}/webhooks/{webhook_id}/calls/{call_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "call_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "space_id"
+                or: "space_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "webhook_id"
+                or: "webhook_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/spaces/{space_id}/webhooks/{webhook_id}/calls/{call_id}"
+          q: {
+            exist: [
+              "id"
+              "space_id"
+              "webhook_id"
+            ]
+          }
+          r: {
+            param: {
+              call_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "spaces"
+            }
+            {
+              var: "space_id"
+            }
+            {
+              lit: "webhooks"
+            }
+            {
+              var: "webhook_id"
+            }
+            {
+              lit: "calls"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /spaces/{space_id}/webhooks/{webhook_id}/calls"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "space_id"
+                or: "space_id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "webhook_id"
+                or: "webhook_id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/spaces/{space_id}/webhooks/{webhook_id}/calls"
+          q: {
+            exist: [
+              "space_id"
+              "webhook_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "spaces"
+            }
+            {
+              var: "space_id"
+            }
+            {
+              lit: "webhooks"
+            }
+            {
+              var: "webhook_id"
+            }
+            {
+              lit: "calls"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.space") path("$.main.kit.entity.webhook")]
+  ]
+
+}

@@ -1,0 +1,745 @@
+# Entity: event
+
+main: kit: entity: event: {
+
+  alias: field: {}
+
+  fields: {
+    action_name: {
+      h: "Action Name"
+      n: "action_name"
+      r: false
+      t: "`$STRING`"
+    }
+    author: {
+      h: "Author"
+      n: "author"
+      r: false
+      sh: "API_Entities_UserBasic model"
+      t: "`$OBJECT`"
+    }
+    author_id: {
+      fo: "int32"
+      h: "Author Id"
+      n: "author_id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    author_username: {
+      h: "Author Username"
+      n: "author_username"
+      r: false
+      t: "`$STRING`"
+    }
+    created_at: {
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    id: {
+      fo: "int32"
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    imported: {
+      h: "Imported"
+      n: "imported"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    imported_from: {
+      h: "Imported From"
+      n: "imported_from"
+      r: false
+      t: "`$STRING`"
+    }
+    note: {
+      h: "Note"
+      n: "note"
+      r: false
+      t: "`$OBJECT`"
+    }
+    project_id: {
+      fo: "int32"
+      h: "Project Id"
+      n: "project_id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    push_data: {
+      h: "Push Data"
+      n: "push_data"
+      r: false
+      t: "`$OBJECT`"
+    }
+    target_id: {
+      fo: "int32"
+      h: "Target Id"
+      n: "target_id"
+      r: false
+      t: "`$INTEGER`"
+    }
+    target_iid: {
+      fo: "int32"
+      h: "Target Iid"
+      n: "target_iid"
+      r: false
+      t: "`$INTEGER`"
+    }
+    target_title: {
+      h: "Target Title"
+      n: "target_title"
+      r: false
+      t: "`$STRING`"
+    }
+    target_type: {
+      h: "Target Type"
+      n: "target_type"
+      r: false
+      t: "`$STRING`"
+    }
+    wiki_page: {
+      h: "Wiki Page"
+      n: "wiki_page"
+      r: false
+      sh: "API_Entities_WikiPageBasic model"
+      t: "`$OBJECT`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "event"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /api/v4/projects/{id}/hooks/{hook_id}/events/{hook_log_id}/resend"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "hook_id"
+                or: "hook_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "hook_log_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/api/v4/projects/{id}/hooks/{hook_id}/events/{hook_log_id}/resend"
+          q: {
+            "$action": "resend"
+            exist: [
+              "hook_id"
+              "id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              hook_log_id: "id"
+              id: "project_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "hooks"
+            }
+            {
+              var: "hook_id"
+            }
+            {
+              lit: "events"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "resend"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /api/v4/container_registry_event/events"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/api/v4/container_registry_event/events"
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "container_registry_event"
+            }
+            {
+              lit: "events"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "api_app_id"
+            "authed_users"
+            "event"
+            "event_id"
+            "event_time"
+            "team_id"
+            "token"
+            "type"
+          ]
+          co: {
+            id: "POST /api/v4/integrations/slack/events"
+            source: "swagger2"
+            version: 2
+          }
+          m: "POST"
+          o: "/api/v4/integrations/slack/events"
+          q: {
+            "$action": "integrations_slack"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "integrations"
+            }
+            {
+              lit: "slack"
+            }
+            {
+              lit: "events"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/users/{id}/events"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "user_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "action"
+                or: "action"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "after"
+                or: "after"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "desc"
+                explode: true
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "target_type"
+                or: "target_type"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/users/{id}/events"
+          q: {
+            exist: [
+              "user_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "user_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "user_id"
+            }
+            {
+              lit: "events"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/events"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "action"
+                or: "action"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "after"
+                or: "after"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "all"
+                explode: true
+                k: "query"
+                n: "scope"
+                or: "scope"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: "desc"
+                explode: true
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "target_type"
+                or: "target_type"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/events"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "events"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/hooks/{hook_id}/events"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "hook_id"
+                or: "hook_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                explode: false
+                k: "query"
+                n: "status"
+                or: "status"
+                r: false
+                style: "form"
+                t: "`$ARRAY`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/hooks/{hook_id}/events"
+          q: {
+            exist: [
+              "hook_id"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "hooks"
+            }
+            {
+              var: "hook_id"
+            }
+            {
+              lit: "events"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /api/v4/projects/{id}/events"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "action"
+                or: "action"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "after"
+                or: "after"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 20
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "desc"
+                explode: true
+                k: "query"
+                n: "sort"
+                or: "sort"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+              {
+                explode: true
+                k: "query"
+                n: "target_type"
+                or: "target_type"
+                r: false
+                style: "form"
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/v4/projects/{id}/events"
+          q: {
+            exist: [
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "events"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+    [path("$.main.kit.entity.user")]
+    [path("$.main.kit.entity.project") path("$.main.kit.entity.hook")]
+  ]
+
+}
