@@ -520,75 +520,6 @@ main: kit: entity: user: {
         }
         {
           bf: [
-            "duration"
-            "duration_type"
-            "justification"
-            "price"
-            "productId"
-            "productType"
-            "send_enrollment_email"
-          ]
-          co: {
-            id: "POST /v2/users/{id}/enrollment"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            header: [
-              {
-                explode: false
-                k: "header"
-                n: "lw_client"
-                or: "Lw-Client"
-                r: true
-                style: "simple"
-                t: "`$STRING`"
-              }
-            ]
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/v2/users/{id}/enrollment"
-          q: {
-            "$action": "enrollment"
-            exist: [
-              "id"
-              "lw_client"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "v2"
-            }
-            {
-              lit: "users"
-            }
-            {
-              var: "id"
-            }
-            {
-              lit: "enrollment"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
             "answers"
             "generalFeedback"
           ]
@@ -726,6 +657,75 @@ main: kit: entity: user: {
           t: {
             req: "`reqdata`"
             res: "`body.data`"
+          }
+        }
+        {
+          bf: [
+            "duration"
+            "duration_type"
+            "justification"
+            "price"
+            "productId"
+            "productType"
+            "send_enrollment_email"
+          ]
+          co: {
+            id: "POST /v2/users/{id}/enrollment"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/v2/users/{id}/enrollment"
+          q: {
+            "$action": "enrollment"
+            exist: [
+              "id"
+              "lw_client"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "enrollment"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
           }
         }
         {
@@ -872,6 +872,97 @@ main: kit: entity: user: {
         }
         {
           co: {
+            id: "GET /v2/community/spaces/{id}/users"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "space_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                explode: true
+                k: "query"
+                n: "items_per_page"
+                or: "items_per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/community/spaces/{id}/users"
+          q: {
+            exist: [
+              "lw_client"
+              "space_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "space_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "community"
+            }
+            {
+              lit: "spaces"
+            }
+            {
+              var: "space_id"
+            }
+            {
+              lit: "users"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.meta.totalItems`"
+            }
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+        {
+          co: {
             id: "GET /v2/users/by-segment"
             source: "openapi3"
             version: 2
@@ -998,97 +1089,6 @@ main: kit: entity: user: {
             }
           ]
           t: {
-            req: "`reqdata`"
-            res: "`body.data`"
-          }
-        }
-        {
-          co: {
-            id: "GET /v2/community/spaces/{id}/users"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            header: [
-              {
-                explode: false
-                k: "header"
-                n: "lw_client"
-                or: "Lw-Client"
-                r: true
-                style: "simple"
-                t: "`$STRING`"
-              }
-            ]
-            params: [
-              {
-                k: "param"
-                n: "space_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                explode: true
-                k: "query"
-                n: "items_per_page"
-                or: "items_per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/v2/community/spaces/{id}/users"
-          q: {
-            exist: [
-              "lw_client"
-              "space_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "space_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "v2"
-            }
-            {
-              lit: "community"
-            }
-            {
-              lit: "spaces"
-            }
-            {
-              var: "space_id"
-            }
-            {
-              lit: "users"
-            }
-          ]
-          t: {
-            page: {
-              total: "`body.meta.totalItems`"
-            }
             req: "`reqdata`"
             res: "`body.data`"
           }

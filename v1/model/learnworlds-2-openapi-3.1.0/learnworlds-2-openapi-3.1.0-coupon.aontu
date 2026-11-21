@@ -93,6 +93,75 @@ main: kit: entity: coupon: {
       points: [
         {
           bf: [
+            "code"
+            "expires"
+            "quantity"
+          ]
+          co: {
+            id: "POST /v2/promotions/{pid}/coupons"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "promotion_id"
+                or: "pid"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/v2/promotions/{pid}/coupons"
+          q: {
+            exist: [
+              "lw_client"
+              "promotion_id"
+            ]
+          }
+          r: {
+            param: {
+              pid: "promotion_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "promotions"
+            }
+            {
+              var: "promotion_id"
+            }
+            {
+              lit: "coupons"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
             "expires"
             "prefix"
             "quantity"
@@ -154,75 +223,6 @@ main: kit: entity: coupon: {
             }
             {
               lit: "coupons-bulk"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "code"
-            "expires"
-            "quantity"
-          ]
-          co: {
-            id: "POST /v2/promotions/{pid}/coupons"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            header: [
-              {
-                explode: false
-                k: "header"
-                n: "lw_client"
-                or: "Lw-Client"
-                r: true
-                style: "simple"
-                t: "`$STRING`"
-              }
-            ]
-            params: [
-              {
-                k: "param"
-                n: "promotion_id"
-                or: "pid"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/v2/promotions/{pid}/coupons"
-          q: {
-            exist: [
-              "lw_client"
-              "promotion_id"
-            ]
-          }
-          r: {
-            param: {
-              pid: "promotion_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "v2"
-            }
-            {
-              lit: "promotions"
-            }
-            {
-              var: "promotion_id"
-            }
-            {
-              lit: "coupons"
             }
           ]
           t: {

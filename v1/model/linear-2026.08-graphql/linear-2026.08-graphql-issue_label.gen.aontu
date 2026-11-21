@@ -378,6 +378,65 @@ main: kit: entity: issue_label: {
       points: [
         {
           co: {
+            id: "POST issueLabelUpdate"
+            source: "graphql"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "replace_team_label"
+                or: "replaceTeamLabels"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          gq: {
+            doc: "mutation IssueLabelUpdate($id: String!, $input: IssueLabelUpdateInput!, $replaceTeamLabels: Boolean) { issueLabelUpdate(id: $id, input: $input, replaceTeamLabels: $replaceTeamLabels) { issueLabel { ...IssueLabelFields } success } } fragment IssueLabelFields on IssueLabel { archivedAt color createdAt creator { id } description id inheritedFrom { id } isGroup lastAppliedAt name parent { id } retiredAt retiredBy { id } team { id } updatedAt }"
+            field: "issueLabelUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "IssueLabelUpdateInput!"
+                name: "input"
+              }
+              {
+                from: "replace_team_label"
+                gqltype: "Boolean"
+                name: "replaceTeamLabels"
+              }
+            ]
+          }
+          k: "graphql"
+          m: "POST"
+          o: "issueLabelUpdate"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          t: {
+            req: "`reqdata`"
+            res: "`body.data.issueLabelUpdate.issueLabel`"
+          }
+        }
+        {
+          co: {
             id: "POST issueLabelRestore"
             source: "graphql"
             version: 2
@@ -460,65 +519,6 @@ main: kit: entity: issue_label: {
           t: {
             req: "`reqdata`"
             res: "`body.data.issueLabelRetire.issueLabel`"
-          }
-        }
-        {
-          co: {
-            id: "POST issueLabelUpdate"
-            source: "graphql"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "replace_team_label"
-                or: "replaceTeamLabels"
-                r: false
-                t: "`$BOOLEAN`"
-              }
-            ]
-          }
-          gq: {
-            doc: "mutation IssueLabelUpdate($id: String!, $input: IssueLabelUpdateInput!, $replaceTeamLabels: Boolean) { issueLabelUpdate(id: $id, input: $input, replaceTeamLabels: $replaceTeamLabels) { issueLabel { ...IssueLabelFields } success } } fragment IssueLabelFields on IssueLabel { archivedAt color createdAt creator { id } description id inheritedFrom { id } isGroup lastAppliedAt name parent { id } retiredAt retiredBy { id } team { id } updatedAt }"
-            field: "issueLabelUpdate"
-            optype: "mutation"
-            vars: [
-              {
-                from: "id"
-                gqltype: "String!"
-                name: "id"
-              }
-              {
-                from: ""
-                gqltype: "IssueLabelUpdateInput!"
-                name: "input"
-              }
-              {
-                from: "replace_team_label"
-                gqltype: "Boolean"
-                name: "replaceTeamLabels"
-              }
-            ]
-          }
-          k: "graphql"
-          m: "POST"
-          o: "issueLabelUpdate"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          t: {
-            req: "`reqdata`"
-            res: "`body.data.issueLabelUpdate.issueLabel`"
           }
         }
       ]

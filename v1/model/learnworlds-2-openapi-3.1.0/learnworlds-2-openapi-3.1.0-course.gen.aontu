@@ -353,6 +353,85 @@ main: kit: entity: course: {
       points: [
         {
           co: {
+            id: "GET /v2/users/{id}/courses"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            header: [
+              {
+                explode: false
+                k: "header"
+                n: "lw_client"
+                or: "Lw-Client"
+                r: true
+                style: "simple"
+                t: "`$STRING`"
+              }
+            ]
+            params: [
+              {
+                k: "param"
+                n: "user_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v2/users/{id}/courses"
+          q: {
+            exist: [
+              "lw_client"
+              "user_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "user_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "v2"
+            }
+            {
+              lit: "users"
+            }
+            {
+              var: "user_id"
+            }
+            {
+              lit: "courses"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.meta.totalItems`"
+            }
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+        {
+          co: {
             id: "GET /v2/courses/{id}/grades"
             source: "openapi3"
             version: 2
@@ -545,85 +624,6 @@ main: kit: entity: course: {
             }
             {
               lit: "users"
-            }
-          ]
-          t: {
-            page: {
-              total: "`body.meta.totalItems`"
-            }
-            req: "`reqdata`"
-            res: "`body.data`"
-          }
-        }
-        {
-          co: {
-            id: "GET /v2/users/{id}/courses"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            header: [
-              {
-                explode: false
-                k: "header"
-                n: "lw_client"
-                or: "Lw-Client"
-                r: true
-                style: "simple"
-                t: "`$STRING`"
-              }
-            ]
-            params: [
-              {
-                k: "param"
-                n: "user_id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/v2/users/{id}/courses"
-          q: {
-            exist: [
-              "lw_client"
-              "user_id"
-            ]
-          }
-          r: {
-            param: {
-              id: "user_id"
-            }
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "v2"
-            }
-            {
-              lit: "users"
-            }
-            {
-              var: "user_id"
-            }
-            {
-              lit: "courses"
             }
           ]
           t: {

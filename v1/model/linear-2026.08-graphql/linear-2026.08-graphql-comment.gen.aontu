@@ -530,6 +530,65 @@ main: kit: entity: comment: {
       points: [
         {
           co: {
+            id: "POST commentUpdate"
+            source: "graphql"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "skip_edited_at"
+                or: "skipEditedAt"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          gq: {
+            doc: "mutation CommentUpdate($id: String!, $input: CommentUpdateInput!, $skipEditedAt: Boolean) { commentUpdate(id: $id, input: $input, skipEditedAt: $skipEditedAt) { comment { ...CommentFields } success } } fragment CommentFields on Comment { agentSession { id } archivedAt body bodyData botActor { id } createdAt documentContent { id } documentContentId editedAt externalThread { id } externalUser { id } hideInLinear id initiative { id } initiativeId initiativeUpdate { id } initiativeUpdateId isArtificialAgentSessionRoot issue { id } issueId onBehalfOf { id } parent { id } parentId post { id } project { id } projectId projectUpdate { id } projectUpdateId quotedText reactionData resolvedAt resolvingComment { id } resolvingCommentId resolvingUser { id } threadSummary updatedAt url user { id } }"
+            field: "commentUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "CommentUpdateInput!"
+                name: "input"
+              }
+              {
+                from: "skip_edited_at"
+                gqltype: "Boolean"
+                name: "skipEditedAt"
+              }
+            ]
+          }
+          k: "graphql"
+          m: "POST"
+          o: "commentUpdate"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          t: {
+            req: "`reqdata`"
+            res: "`body.data.commentUpdate.comment`"
+          }
+        }
+        {
+          co: {
             id: "POST commentResolve"
             source: "graphql"
             version: 2
@@ -624,65 +683,6 @@ main: kit: entity: comment: {
           t: {
             req: "`reqdata`"
             res: "`body.data.commentUnresolve.comment`"
-          }
-        }
-        {
-          co: {
-            id: "POST commentUpdate"
-            source: "graphql"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "skip_edited_at"
-                or: "skipEditedAt"
-                r: false
-                t: "`$BOOLEAN`"
-              }
-            ]
-          }
-          gq: {
-            doc: "mutation CommentUpdate($id: String!, $input: CommentUpdateInput!, $skipEditedAt: Boolean) { commentUpdate(id: $id, input: $input, skipEditedAt: $skipEditedAt) { comment { ...CommentFields } success } } fragment CommentFields on Comment { agentSession { id } archivedAt body bodyData botActor { id } createdAt documentContent { id } documentContentId editedAt externalThread { id } externalUser { id } hideInLinear id initiative { id } initiativeId initiativeUpdate { id } initiativeUpdateId isArtificialAgentSessionRoot issue { id } issueId onBehalfOf { id } parent { id } parentId post { id } project { id } projectId projectUpdate { id } projectUpdateId quotedText reactionData resolvedAt resolvingComment { id } resolvingCommentId resolvingUser { id } threadSummary updatedAt url user { id } }"
-            field: "commentUpdate"
-            optype: "mutation"
-            vars: [
-              {
-                from: "id"
-                gqltype: "String!"
-                name: "id"
-              }
-              {
-                from: ""
-                gqltype: "CommentUpdateInput!"
-                name: "input"
-              }
-              {
-                from: "skip_edited_at"
-                gqltype: "Boolean"
-                name: "skipEditedAt"
-              }
-            ]
-          }
-          k: "graphql"
-          m: "POST"
-          o: "commentUpdate"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          t: {
-            req: "`reqdata`"
-            res: "`body.data.commentUpdate.comment`"
           }
         }
       ]

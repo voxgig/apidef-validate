@@ -27,6 +27,13 @@ guide: {
     }
   }
 
+  entity: badge: {
+    path: "/badges/version/{owner}/{repo}/{package_format}/{package_name}/{package_version}/{package_identifiers}/": {  # ent=badge;orig=badges;tag=badge;cmp/resolve=badge;path=t/p/p;cmp-primary;cmp-infreq
+      rename: param: "package_identifiers": *"package_identifier"  # snake-case
+      op: load: method: *GET  # end-param
+    }
+  }
+
   entity: cargo: {
     path: "/repos/{owner}/{identifier}/upstream/cargo/": {  # ent=cargo;orig=CargoUpstream;cmp/resolve=cargo_upstream;path=t/;path-primary;resplit-from-cmp=cargo
       op: create: method: *POST  # not-load
@@ -1090,13 +1097,6 @@ guide: {
     path: "/packages/{owner}/{repo}/validate-upload/vagrant/": {  # ent=vagrant_package_upload;orig=packages;tag=package;cmp/resolve=package;path=t/;cmp-primary;cmp-infreq;command=vagrant_package_upload
       action: "validate_upload": {}  # ent;vagrant_package_upload;shared-selector;/packages/{owner}/{repo}/upload/vagrant
       op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: version: {
-    path: "/badges/version/{owner}/{repo}/{package_format}/{package_name}/{package_version}/{package_identifiers}/": {  # ent=version;orig=PackageVersionBadge;cmp/resolve=package_version_badge;path=t/p/p;path-over-wrapper=PackageVersionBadge
-      rename: param: "package_identifiers": *"package_identifier"  # snake-case
-      op: load: method: *GET  # end-param
     }
   }
 

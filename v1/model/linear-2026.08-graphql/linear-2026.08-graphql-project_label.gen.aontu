@@ -385,6 +385,65 @@ main: kit: entity: project_label: {
       points: [
         {
           co: {
+            id: "POST projectLabelUpdate"
+            source: "graphql"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "replace_team_label"
+                or: "replaceTeamLabels"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+            ]
+          }
+          gq: {
+            doc: "mutation ProjectLabelUpdate($id: String!, $input: ProjectLabelUpdateInput!, $replaceTeamLabels: Boolean) { projectLabelUpdate(id: $id, input: $input, replaceTeamLabels: $replaceTeamLabels) { projectLabel { ...ProjectLabelFields } success } } fragment ProjectLabelFields on ProjectLabel { archivedAt color createdAt creator { id } description id inheritedFrom { id } isGroup lastAppliedAt name organization { id } parent { id } retiredAt retiredBy { id } team { id } updatedAt }"
+            field: "projectLabelUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "ProjectLabelUpdateInput!"
+                name: "input"
+              }
+              {
+                from: "replace_team_label"
+                gqltype: "Boolean"
+                name: "replaceTeamLabels"
+              }
+            ]
+          }
+          k: "graphql"
+          m: "POST"
+          o: "projectLabelUpdate"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          t: {
+            req: "`reqdata`"
+            res: "`body.data.projectLabelUpdate.projectLabel`"
+          }
+        }
+        {
+          co: {
             id: "POST projectLabelRestore"
             source: "graphql"
             version: 2
@@ -467,65 +526,6 @@ main: kit: entity: project_label: {
           t: {
             req: "`reqdata`"
             res: "`body.data.projectLabelRetire.projectLabel`"
-          }
-        }
-        {
-          co: {
-            id: "POST projectLabelUpdate"
-            source: "graphql"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "replace_team_label"
-                or: "replaceTeamLabels"
-                r: false
-                t: "`$BOOLEAN`"
-              }
-            ]
-          }
-          gq: {
-            doc: "mutation ProjectLabelUpdate($id: String!, $input: ProjectLabelUpdateInput!, $replaceTeamLabels: Boolean) { projectLabelUpdate(id: $id, input: $input, replaceTeamLabels: $replaceTeamLabels) { projectLabel { ...ProjectLabelFields } success } } fragment ProjectLabelFields on ProjectLabel { archivedAt color createdAt creator { id } description id inheritedFrom { id } isGroup lastAppliedAt name organization { id } parent { id } retiredAt retiredBy { id } team { id } updatedAt }"
-            field: "projectLabelUpdate"
-            optype: "mutation"
-            vars: [
-              {
-                from: "id"
-                gqltype: "String!"
-                name: "id"
-              }
-              {
-                from: ""
-                gqltype: "ProjectLabelUpdateInput!"
-                name: "input"
-              }
-              {
-                from: "replace_team_label"
-                gqltype: "Boolean"
-                name: "replaceTeamLabels"
-              }
-            ]
-          }
-          k: "graphql"
-          m: "POST"
-          o: "projectLabelUpdate"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          t: {
-            req: "`reqdata`"
-            res: "`body.data.projectLabelUpdate.projectLabel`"
           }
         }
       ]

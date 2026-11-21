@@ -275,6 +275,53 @@ main: kit: entity: project_status: {
       points: [
         {
           co: {
+            id: "POST projectStatusUpdate"
+            source: "graphql"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          gq: {
+            doc: "mutation ProjectStatusUpdate($id: String!, $input: ProjectStatusUpdateInput!) { projectStatusUpdate(id: $id, input: $input) { status { ...ProjectStatusFields } success } } fragment ProjectStatusFields on ProjectStatus { archivedAt color createdAt description id indefinite name position type updatedAt }"
+            field: "projectStatusUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "ProjectStatusUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          k: "graphql"
+          m: "POST"
+          o: "projectStatusUpdate"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          t: {
+            req: "`reqdata`"
+            res: "`body.data.projectStatusUpdate.status`"
+          }
+        }
+        {
+          co: {
             id: "POST projectStatusArchive"
             source: "graphql"
             version: 2
@@ -357,53 +404,6 @@ main: kit: entity: project_status: {
           t: {
             req: "`reqdata`"
             res: "`body.data.projectStatusUnarchive.entity`"
-          }
-        }
-        {
-          co: {
-            id: "POST projectStatusUpdate"
-            source: "graphql"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          gq: {
-            doc: "mutation ProjectStatusUpdate($id: String!, $input: ProjectStatusUpdateInput!) { projectStatusUpdate(id: $id, input: $input) { status { ...ProjectStatusFields } success } } fragment ProjectStatusFields on ProjectStatus { archivedAt color createdAt description id indefinite name position type updatedAt }"
-            field: "projectStatusUpdate"
-            optype: "mutation"
-            vars: [
-              {
-                from: "id"
-                gqltype: "String!"
-                name: "id"
-              }
-              {
-                from: ""
-                gqltype: "ProjectStatusUpdateInput!"
-                name: "input"
-              }
-            ]
-          }
-          k: "graphql"
-          m: "POST"
-          o: "projectStatusUpdate"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          t: {
-            req: "`reqdata`"
-            res: "`body.data.projectStatusUpdate.status`"
           }
         }
       ]

@@ -450,6 +450,72 @@ main: kit: entity: org: {
       points: [
         {
           co: {
+            id: "GET /users/{username}/orgs"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "username"
+                or: "username"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/users/{username}/orgs"
+          q: {
+            exist: [
+              "username"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "users"
+            }
+            {
+              var: "username"
+            }
+            {
+              lit: "orgs"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /orgs/{org}/installations"
             source: "openapi3"
             version: 2
@@ -525,20 +591,11 @@ main: kit: entity: org: {
         }
         {
           co: {
-            id: "GET /users/{username}/orgs"
+            id: "GET /user/orgs"
             source: "openapi3"
             version: 2
           }
           g: {
-            params: [
-              {
-                k: "param"
-                n: "username"
-                or: "username"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
             query: [
               {
                 ex: 1
@@ -563,22 +620,14 @@ main: kit: entity: org: {
             ]
           }
           m: "GET"
-          o: "/users/{username}/orgs"
-          q: {
-            exist: [
-              "username"
-            ]
-          }
+          o: "/user/orgs"
           rs: {
             kind: "json"
             media: "application/json"
           }
           s: [
             {
-              lit: "users"
-            }
-            {
-              var: "username"
+              lit: "user"
             }
             {
               lit: "orgs"
@@ -643,55 +692,6 @@ main: kit: entity: org: {
             }
             {
               lit: "memberships"
-            }
-            {
-              lit: "orgs"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /user/orgs"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/user/orgs"
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "user"
             }
             {
               lit: "orgs"

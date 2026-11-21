@@ -280,6 +280,53 @@ main: kit: entity: release_stage: {
       points: [
         {
           co: {
+            id: "POST releaseStageUpdate"
+            source: "graphql"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          gq: {
+            doc: "mutation ReleaseStageUpdate($id: String!, $input: ReleaseStageUpdateInput!) { releaseStageUpdate(id: $id, input: $input) { releaseStage { ...ReleaseStageFields } success } } fragment ReleaseStageFields on ReleaseStage { archivedAt color createdAt frozen id name pipeline { id } position type updatedAt }"
+            field: "releaseStageUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "ReleaseStageUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          k: "graphql"
+          m: "POST"
+          o: "releaseStageUpdate"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          t: {
+            req: "`reqdata`"
+            res: "`body.data.releaseStageUpdate.releaseStage`"
+          }
+        }
+        {
+          co: {
             id: "POST releaseStageArchive"
             source: "graphql"
             version: 2
@@ -362,53 +409,6 @@ main: kit: entity: release_stage: {
           t: {
             req: "`reqdata`"
             res: "`body.data.releaseStageUnarchive.entity`"
-          }
-        }
-        {
-          co: {
-            id: "POST releaseStageUpdate"
-            source: "graphql"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          gq: {
-            doc: "mutation ReleaseStageUpdate($id: String!, $input: ReleaseStageUpdateInput!) { releaseStageUpdate(id: $id, input: $input) { releaseStage { ...ReleaseStageFields } success } } fragment ReleaseStageFields on ReleaseStage { archivedAt color createdAt frozen id name pipeline { id } position type updatedAt }"
-            field: "releaseStageUpdate"
-            optype: "mutation"
-            vars: [
-              {
-                from: "id"
-                gqltype: "String!"
-                name: "id"
-              }
-              {
-                from: ""
-                gqltype: "ReleaseStageUpdateInput!"
-                name: "input"
-              }
-            ]
-          }
-          k: "graphql"
-          m: "POST"
-          o: "releaseStageUpdate"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          t: {
-            req: "`reqdata`"
-            res: "`body.data.releaseStageUpdate.releaseStage`"
           }
         }
       ]

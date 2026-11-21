@@ -1967,6 +1967,59 @@ main: kit: entity: repository: {
         }
         {
           co: {
+            id: "GET /user/codespaces/secrets/{secret_name}/repositories"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "secret_name"
+                or: "secret_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/user/codespaces/secrets/{secret_name}/repositories"
+          q: {
+            exist: [
+              "secret_name"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              lit: "secrets"
+            }
+            {
+              var: "secret_name"
+            }
+            {
+              lit: "repositories"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.repositories`"
+          }
+        }
+        {
+          co: {
             id: "GET /orgs/{org}/actions/permissions/self-hosted-runners/repositories"
             source: "openapi3"
             version: 2
@@ -2051,55 +2104,37 @@ main: kit: entity: repository: {
         }
         {
           co: {
-            id: "GET /user/codespaces/secrets/{secret_name}/repositories"
+            id: "GET /repositories"
             source: "openapi3"
             version: 2
           }
           g: {
-            params: [
+            query: [
               {
-                k: "param"
-                n: "secret_name"
-                or: "secret_name"
-                r: true
-                t: "`$STRING`"
+                explode: true
+                k: "query"
+                n: "since"
+                or: "since"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
               }
             ]
           }
           m: "GET"
-          o: "/user/codespaces/secrets/{secret_name}/repositories"
-          q: {
-            exist: [
-              "secret_name"
-            ]
-          }
+          o: "/repositories"
           rs: {
             kind: "json"
             media: "application/json"
           }
           s: [
             {
-              lit: "user"
-            }
-            {
-              lit: "codespaces"
-            }
-            {
-              lit: "secrets"
-            }
-            {
-              var: "secret_name"
-            }
-            {
               lit: "repositories"
             }
           ]
           t: {
-            page: {
-              total: "`body.total_count`"
-            }
             req: "`reqdata`"
-            res: "`body.repositories`"
+            res: "`body`"
           }
         }
         {
@@ -2155,41 +2190,6 @@ main: kit: entity: repository: {
             }
             req: "`reqdata`"
             res: "`body.repositories`"
-          }
-        }
-        {
-          co: {
-            id: "GET /repositories"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            query: [
-              {
-                explode: true
-                k: "query"
-                n: "since"
-                or: "since"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/repositories"
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repositories"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
           }
         }
       ]
@@ -2694,6 +2694,68 @@ main: kit: entity: repository: {
         }
         {
           co: {
+            id: "DELETE /user/codespaces/secrets/{secret_name}/repositories/{repository_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "repository_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "secret_name"
+                or: "secret_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/user/codespaces/secrets/{secret_name}/repositories/{repository_id}"
+          q: {
+            exist: [
+              "id"
+              "secret_name"
+            ]
+          }
+          r: {
+            param: {
+              repository_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              lit: "secrets"
+            }
+            {
+              var: "secret_name"
+            }
+            {
+              lit: "repositories"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "DELETE /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}"
             source: "openapi3"
             version: 2
@@ -2746,68 +2808,6 @@ main: kit: entity: repository: {
             }
             {
               lit: "self-hosted-runners"
-            }
-            {
-              lit: "repositories"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /user/codespaces/secrets/{secret_name}/repositories/{repository_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "repository_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "secret_name"
-                or: "secret_name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/user/codespaces/secrets/{secret_name}/repositories/{repository_id}"
-          q: {
-            exist: [
-              "id"
-              "secret_name"
-            ]
-          }
-          r: {
-            param: {
-              repository_id: "id"
-            }
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "codespaces"
-            }
-            {
-              lit: "secrets"
-            }
-            {
-              var: "secret_name"
             }
             {
               lit: "repositories"
@@ -3323,73 +3323,6 @@ main: kit: entity: repository: {
         }
         {
           co: {
-            id: "PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "repository_id"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}"
-          q: {
-            "$action": "self_hosted_runners"
-            exist: [
-              "id"
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-              repository_id: "id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "actions"
-            }
-            {
-              lit: "permissions"
-            }
-            {
-              lit: "self-hosted-runners"
-            }
-            {
-              lit: "repositories"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "PUT /user/codespaces/secrets/{secret_name}/repositories/{repository_id}"
             source: "openapi3"
             version: 2
@@ -3778,6 +3711,73 @@ main: kit: entity: repository: {
           }
         }
         {
+          co: {
+            id: "PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "repository_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}"
+          q: {
+            "$action": "self_hosted_runners"
+            exist: [
+              "id"
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+              repository_id: "id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "actions"
+            }
+            {
+              lit: "permissions"
+            }
+            {
+              lit: "self-hosted-runners"
+            }
+            {
+              lit: "repositories"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
           bf: [
             "selected_repository_ids"
           ]
@@ -3836,6 +3836,55 @@ main: kit: entity: repository: {
             "selected_repository_ids"
           ]
           co: {
+            id: "PUT /user/codespaces/secrets/{secret_name}/repositories"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "secret_name"
+                or: "secret_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/user/codespaces/secrets/{secret_name}/repositories"
+          q: {
+            exist: [
+              "secret_name"
+            ]
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              lit: "secrets"
+            }
+            {
+              var: "secret_name"
+            }
+            {
+              lit: "repositories"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "selected_repository_ids"
+          ]
+          co: {
             id: "PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories"
             source: "openapi3"
             version: 2
@@ -3879,55 +3928,6 @@ main: kit: entity: repository: {
             }
             {
               lit: "self-hosted-runners"
-            }
-            {
-              lit: "repositories"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "selected_repository_ids"
-          ]
-          co: {
-            id: "PUT /user/codespaces/secrets/{secret_name}/repositories"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "secret_name"
-                or: "secret_name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "PUT"
-          o: "/user/codespaces/secrets/{secret_name}/repositories"
-          q: {
-            exist: [
-              "secret_name"
-            ]
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "codespaces"
-            }
-            {
-              lit: "secrets"
-            }
-            {
-              var: "secret_name"
             }
             {
               lit: "repositories"

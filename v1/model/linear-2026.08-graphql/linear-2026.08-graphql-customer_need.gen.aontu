@@ -424,6 +424,65 @@ main: kit: entity: customer_need: {
       points: [
         {
           co: {
+            id: "POST customerNeedUpdate"
+            source: "graphql"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "clear_attachment"
+                or: "clearAttachment"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          gq: {
+            doc: "mutation CustomerNeedUpdate($clearAttachment: Boolean, $id: String!, $input: CustomerNeedUpdateInput!) { customerNeedUpdate(clearAttachment: $clearAttachment, id: $id, input: $input) { need { ...CustomerNeedFields } success } } fragment CustomerNeedFields on CustomerNeed { archivedAt attachment { id } body bodyData comment { id } content createdAt creator { id } customer { id } id issue { id } originalIssue { id } priority project { id } projectAttachment { id } updatedAt url }"
+            field: "customerNeedUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "clear_attachment"
+                gqltype: "Boolean"
+                name: "clearAttachment"
+              }
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "CustomerNeedUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          k: "graphql"
+          m: "POST"
+          o: "customerNeedUpdate"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          t: {
+            req: "`reqdata`"
+            res: "`body.data.customerNeedUpdate.need`"
+          }
+        }
+        {
+          co: {
             id: "POST customerNeedArchive"
             source: "graphql"
             version: 2
@@ -506,65 +565,6 @@ main: kit: entity: customer_need: {
           t: {
             req: "`reqdata`"
             res: "`body.data.customerNeedUnarchive.entity`"
-          }
-        }
-        {
-          co: {
-            id: "POST customerNeedUpdate"
-            source: "graphql"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "clear_attachment"
-                or: "clearAttachment"
-                r: false
-                t: "`$BOOLEAN`"
-              }
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          gq: {
-            doc: "mutation CustomerNeedUpdate($clearAttachment: Boolean, $id: String!, $input: CustomerNeedUpdateInput!) { customerNeedUpdate(clearAttachment: $clearAttachment, id: $id, input: $input) { need { ...CustomerNeedFields } success } } fragment CustomerNeedFields on CustomerNeed { archivedAt attachment { id } body bodyData comment { id } content createdAt creator { id } customer { id } id issue { id } originalIssue { id } priority project { id } projectAttachment { id } updatedAt url }"
-            field: "customerNeedUpdate"
-            optype: "mutation"
-            vars: [
-              {
-                from: "clear_attachment"
-                gqltype: "Boolean"
-                name: "clearAttachment"
-              }
-              {
-                from: "id"
-                gqltype: "String!"
-                name: "id"
-              }
-              {
-                from: ""
-                gqltype: "CustomerNeedUpdateInput!"
-                name: "input"
-              }
-            ]
-          }
-          k: "graphql"
-          m: "POST"
-          o: "customerNeedUpdate"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          t: {
-            req: "`reqdata`"
-            res: "`body.data.customerNeedUpdate.need`"
           }
         }
       ]

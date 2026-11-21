@@ -187,6 +187,32 @@ main: kit: entity: release: {
       points: [
         {
           co: {
+            id: "POST releaseCreate"
+            source: "graphql"
+            version: 2
+          }
+          gq: {
+            doc: "mutation ReleaseCreate($input: ReleaseCreateInput!) { releaseCreate(input: $input) { release { ...ReleaseFields } success } } fragment ReleaseFields on Release { archivedAt autoArchivedAt canceledAt commitSha completedAt createdAt creator { id } currentProgress description id issueCount name pipeline { id } progressHistory releaseNote { id } slugId stage { id } startDate startedAt targetDate trashed updatedAt url version }"
+            field: "releaseCreate"
+            optype: "mutation"
+            vars: [
+              {
+                from: ""
+                gqltype: "ReleaseCreateInput!"
+                name: "input"
+              }
+            ]
+          }
+          k: "graphql"
+          m: "POST"
+          o: "releaseCreate"
+          t: {
+            req: "`reqdata`"
+            res: "`body.data.releaseCreate.release`"
+          }
+        }
+        {
+          co: {
             id: "POST releaseComplete"
             source: "graphql"
             version: 2
@@ -212,32 +238,6 @@ main: kit: entity: release: {
           t: {
             req: "`reqdata`"
             res: "`body.data.releaseComplete.release`"
-          }
-        }
-        {
-          co: {
-            id: "POST releaseCreate"
-            source: "graphql"
-            version: 2
-          }
-          gq: {
-            doc: "mutation ReleaseCreate($input: ReleaseCreateInput!) { releaseCreate(input: $input) { release { ...ReleaseFields } success } } fragment ReleaseFields on Release { archivedAt autoArchivedAt canceledAt commitSha completedAt createdAt creator { id } currentProgress description id issueCount name pipeline { id } progressHistory releaseNote { id } slugId stage { id } startDate startedAt targetDate trashed updatedAt url version }"
-            field: "releaseCreate"
-            optype: "mutation"
-            vars: [
-              {
-                from: ""
-                gqltype: "ReleaseCreateInput!"
-                name: "input"
-              }
-            ]
-          }
-          k: "graphql"
-          m: "POST"
-          o: "releaseCreate"
-          t: {
-            req: "`reqdata`"
-            res: "`body.data.releaseCreate.release`"
           }
         }
         {
@@ -571,6 +571,53 @@ main: kit: entity: release: {
       points: [
         {
           co: {
+            id: "POST releaseUpdate"
+            source: "graphql"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          gq: {
+            doc: "mutation ReleaseUpdate($id: String!, $input: ReleaseUpdateInput!) { releaseUpdate(id: $id, input: $input) { release { ...ReleaseFields } success } } fragment ReleaseFields on Release { archivedAt autoArchivedAt canceledAt commitSha completedAt createdAt creator { id } currentProgress description id issueCount name pipeline { id } progressHistory releaseNote { id } slugId stage { id } startDate startedAt targetDate trashed updatedAt url version }"
+            field: "releaseUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "ReleaseUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          k: "graphql"
+          m: "POST"
+          o: "releaseUpdate"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          t: {
+            req: "`reqdata`"
+            res: "`body.data.releaseUpdate.release`"
+          }
+        }
+        {
+          co: {
             id: "POST releaseArchive"
             source: "graphql"
             version: 2
@@ -653,53 +700,6 @@ main: kit: entity: release: {
           t: {
             req: "`reqdata`"
             res: "`body.data.releaseUnarchive.entity`"
-          }
-        }
-        {
-          co: {
-            id: "POST releaseUpdate"
-            source: "graphql"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          gq: {
-            doc: "mutation ReleaseUpdate($id: String!, $input: ReleaseUpdateInput!) { releaseUpdate(id: $id, input: $input) { release { ...ReleaseFields } success } } fragment ReleaseFields on Release { archivedAt autoArchivedAt canceledAt commitSha completedAt createdAt creator { id } currentProgress description id issueCount name pipeline { id } progressHistory releaseNote { id } slugId stage { id } startDate startedAt targetDate trashed updatedAt url version }"
-            field: "releaseUpdate"
-            optype: "mutation"
-            vars: [
-              {
-                from: "id"
-                gqltype: "String!"
-                name: "id"
-              }
-              {
-                from: ""
-                gqltype: "ReleaseUpdateInput!"
-                name: "input"
-              }
-            ]
-          }
-          k: "graphql"
-          m: "POST"
-          o: "releaseUpdate"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          t: {
-            req: "`reqdata`"
-            res: "`body.data.releaseUpdate.release`"
           }
         }
       ]

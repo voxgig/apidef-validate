@@ -703,87 +703,6 @@ main: kit: entity: team: {
         }
         {
           co: {
-            id: "GET /orgs/{org}/teams/{team_slug}/invitations"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "team_slug"
-                or: "team_slug"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-            query: [
-              {
-                ex: 1
-                explode: true
-                k: "query"
-                n: "page"
-                or: "page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-              {
-                ex: 30
-                explode: true
-                k: "query"
-                n: "per_page"
-                or: "per_page"
-                r: false
-                style: "form"
-                t: "`$INTEGER`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/orgs/{org}/teams/{team_slug}/invitations"
-          q: {
-            "$action": "invitation"
-            exist: [
-              "org"
-              "team_slug"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org"
-            }
-            {
-              lit: "teams"
-            }
-            {
-              var: "team_slug"
-            }
-            {
-              lit: "invitations"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
             id: "GET /orgs/{org}/teams/{team_slug}/teams"
             source: "openapi3"
             version: 2
@@ -941,7 +860,7 @@ main: kit: entity: team: {
         }
         {
           co: {
-            id: "GET /teams/{team_id}/invitations"
+            id: "GET /orgs/{org}/teams/{team_slug}/invitations"
             source: "openapi3"
             version: 2
           }
@@ -949,10 +868,17 @@ main: kit: entity: team: {
             params: [
               {
                 k: "param"
-                n: "id"
-                or: "team_id"
+                n: "org"
+                or: "org"
                 r: true
-                t: "`$INTEGER`"
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "team_slug"
+                or: "team_slug"
+                r: true
+                t: "`$STRING`"
               }
             ]
             query: [
@@ -979,17 +905,13 @@ main: kit: entity: team: {
             ]
           }
           m: "GET"
-          o: "/teams/{team_id}/invitations"
+          o: "/orgs/{org}/teams/{team_slug}/invitations"
           q: {
             "$action": "invitation"
             exist: [
-              "id"
+              "org"
+              "team_slug"
             ]
-          }
-          r: {
-            param: {
-              team_id: "id"
-            }
           }
           rs: {
             kind: "json"
@@ -997,10 +919,16 @@ main: kit: entity: team: {
           }
           s: [
             {
+              lit: "orgs"
+            }
+            {
+              var: "org"
+            }
+            {
               lit: "teams"
             }
             {
-              var: "id"
+              var: "team_slug"
             }
             {
               lit: "invitations"
@@ -1141,6 +1069,78 @@ main: kit: entity: team: {
             }
             {
               lit: "teams"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /teams/{team_id}/invitations"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "team_id"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+            query: [
+              {
+                ex: 1
+                explode: true
+                k: "query"
+                n: "page"
+                or: "page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 30
+                explode: true
+                k: "query"
+                n: "per_page"
+                or: "per_page"
+                r: false
+                style: "form"
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/teams/{team_id}/invitations"
+          q: {
+            "$action": "invitation"
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              team_id: "id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "teams"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "invitations"
             }
           ]
           t: {
@@ -1590,6 +1590,62 @@ main: kit: entity: team: {
         }
         {
           co: {
+            id: "DELETE /orgs/{org}/teams/{team_slug}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "team_slug"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "org"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/orgs/{org}/teams/{team_slug}"
+          q: {
+            exist: [
+              "id"
+              "org"
+            ]
+          }
+          r: {
+            param: {
+              team_slug: "id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org"
+            }
+            {
+              lit: "teams"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "DELETE /orgs/{org}/organization-roles/teams/{team_slug}"
             source: "openapi3"
             version: 2
@@ -1695,62 +1751,6 @@ main: kit: entity: team: {
             }
             {
               lit: "security-managers"
-            }
-            {
-              lit: "teams"
-            }
-            {
-              var: "id"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "DELETE /orgs/{org}/teams/{team_slug}"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "team_slug"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "org"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "DELETE"
-          o: "/orgs/{org}/teams/{team_slug}"
-          q: {
-            exist: [
-              "id"
-              "org"
-            ]
-          }
-          r: {
-            param: {
-              team_slug: "id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org"
             }
             {
               lit: "teams"
