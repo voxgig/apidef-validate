@@ -806,10 +806,13 @@ The goldens record what 8.33.0 writes. Two of its readings look unintended:
 - Shortcut's `GET /api/v3/search` now forms an entity named `v3n`: the guide
   reads `search` as a verb with the version segment `v3` as its noun
   (`noun-before-verb=v3`). It was `search` on 8.32.3.
-- GitHub's `actions_secret` is gone: its two routes, the repository's and the
-  environment's `PUT .../secrets/{secret_name}`, now belong to an entity named
-  `empty_object`, after the empty schema their responses declare
-  (`cmp-primary`).
+- GitHub's secret `PUT` routes, the repository's and the environment's
+  `PUT .../secrets/{secret_name}`, belong to an entity named `empty_object`,
+  after the empty schema their responses declare (`cmp-primary`), while the
+  other methods of their paths form `secret`. That reading predates this
+  release: on 8.32.3 the same routes sat in `empty_object` beside
+  `actions_secret`. (Corrected in the 8.33.1 notes below; this entry first
+  said the routes moved there in 8.33.0.)
 
 ### A Go gap this refresh found
 
@@ -846,3 +849,97 @@ is gone, and the test asks for that entry to be deleted.
 - `make comments`, `make deps` and the root `npm test` are clean.
 - The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
   whose v0.29.0 requires what v0.28.3 did.
+
+## 2026-11-21 — apidef 8.33.1 and go/v0.29.1
+
+The pins move from 8.33.0 to 8.33.1, and from go/v0.29.0 to go/v0.29.1: one
+release on each side, shipped together from one commit.
+
+### What moves
+
+102 goldens change, each with its twin: 204 files. 91 change in place, 11
+guides and 80 entity models; 6 entity models go and 5 arrive. 12 of the 18
+cases move, and the entity count falls from 937 to 936.
+
+| Release | Goldens changed | Cases |
+|---|---|---|
+| 8.33.1 | 102 | 12 |
+
+**8.33.1** (voxgig/apidef#228) settles the three follow-ups the 8.33.0 notes
+recorded:
+
+- **The points of an operation have a total order.** Among points with as
+  many `exist` keys, a plain point now sorts before an action point, actions
+  sort by `$action`, and then `exist` decides. Before, points that tied kept
+  their input order, and where an operation mixed plain and action points the
+  comparison had no total order at all. 72 entity models change only in the
+  order of their points, across ten cases: Linear 24, GitLab 17, GitHub 14,
+  the GitHub GraphQL schema 7, and six cases with three or fewer.
+- **A version segment ends the noun walk.** A trailing verb names the noun
+  before it, and the walk took the nearest literal, so a verb straight after a
+  version segment was named for the version. The verb now names the route:
+  Shortcut's `GET /api/v3/search` forms `search` again, where 8.33.0 formed
+  `v3n`; GitLab's `/api/v4/search` and `/api/v4/packages/conan/v1/ping` form
+  `search` and `ping`, not `v4n` and `v1n`; and PokeAPI's `/api/v2/move/`
+  routes form `move`, not `v2n`.
+- **An object schema with no properties names nothing.** GitHub's
+  `empty-object` named the entity `empty_object` after itself, out of eleven
+  of the routes that answer it. They now join the entities their paths give:
+  four of the five secret `PUT`s join `secret` and the fifth
+  `dependabot_secret`, the two `rerun` routes join `run` and `job`, the two
+  `rerequest` routes join `check_run` and `check_suite`, the code-scanning
+  default-setup `PATCH` joins `full_repository`, and the `PUT` of the OIDC
+  `sub` claim joins `sub`.
+  Cloudsmith's badge route answers `PackageVersionBadge`, an object with no
+  properties, and is named by its tag: `badge`, where it was `version`. In
+  `foo`, whose components declare no properties either, only the base guide's
+  `# why` comments change.
+
+| Case | Entities | Entity models gone / new / changed |
+|---|---|---|
+| linear (GraphQL) | 86 → 86 | 0 / 0 / 24 |
+| github | 239 → 238 | 1 / 0 / 22 |
+| gitlab | 231 → 231 | 2 / 2 / 17 |
+| github (GraphQL) | 65 → 65 | 0 / 0 / 7 |
+| learnworlds | 27 → 27 | 0 / 0 / 3 |
+| cloudsmith | 84 → 84 | 1 / 1 / 2 |
+| statuspage | 16 → 16 | 0 / 0 / 2 |
+| shortcut | 28 → 28 | 1 / 1 / 1 |
+| codatplatform | 16 → 16 | 0 / 0 / 1 |
+| contentfulcma | 37 → 37 | 0 / 0 / 1 |
+| pokeapi | 48 → 48 | 1 / 1 / 0 |
+
+foo changes in its base guide only.
+
+### A correction to the 8.33.0 notes
+
+Those notes said GitHub's secret `PUT` routes moved into `empty_object` in
+8.33.0. They did not: they were already there on 8.32.3, and 8.33.0 only
+renamed the other methods of their paths from `actions_secret` to `secret`.
+The entry above is corrected. `empty_object` was a long-standing reading, and
+8.33.1 removes it.
+
+### The Go port reproduces every golden again
+
+go/v0.29.1 writes GitLab's `api_entities_integration_basic` as the TypeScript
+port does, so the skip list in `v1/go/validate_test.go` is empty again and the
+README says so. A basic flow's steps now read an operation's last plain
+point, not its last point, so the new order cannot lend a step an action's
+arguments; flows are not goldens here, and apidef's own suite pins that.
+
+### Verification
+
+- v1 `npm test` on 8.33.1 passes 23/23, strictly, with nothing skipped. On
+  8.33.0, before the move, it passed in this pull request's first CI run.
+- Regenerating from the published 8.33.1 writes, byte for byte, the goldens
+  first generated from the release candidate, linked in locally before the
+  release.
+- On go/v0.29.1, `go vet ./...` is clean and `go test -count=1 ./...` passes,
+  comparing 791 distinct goldens strictly with none skipped.
+- `make port-diff` compares 15 cases and finds no difference. The three
+  GraphQL cases are dumped by the TypeScript port only, as expected.
+- apidef's own Go golden tests at the released commit, `TestValidateGuide`,
+  `TestValidateModel` and `TestValidateModelData`, pass against this corpus.
+- `make comments`, `make deps` and the root `npm test` are clean.
+- The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
+  whose v0.29.1 requires what v0.29.0 did.

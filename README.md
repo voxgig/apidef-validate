@@ -78,10 +78,9 @@ their human titles match their names. The Go module writes no `# why`
 annotations, so the trailing comments of the golden are dropped before the
 base guide comparison.
 
-The Go port reproduces every golden of its cases but one, so `guide-case`
-and `model-case` compare the rest strictly, and the list at the top of
-`v1/go/validate_test.go` holds that one: a GitLab entity whose points the
-two ports write in a different order. The list is where a known gap goes when
+The Go port reproduces every golden of its cases, so `guide-case` and
+`model-case` compare each one strictly, and the list at the top of
+`v1/go/validate_test.go` is empty. The list is where a known gap goes when
 a release leaves the port behind: one entry per gap, holding a path glob,
 the reason, and the number of distinct goldens under that glob the port is
 expected to miss. A matching golden is still compared and logged, and a

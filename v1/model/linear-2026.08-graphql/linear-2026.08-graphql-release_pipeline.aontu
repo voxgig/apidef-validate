@@ -374,6 +374,53 @@ main: kit: entity: release_pipeline: {
       points: [
         {
           co: {
+            id: "POST releasePipelineUpdate"
+            source: "graphql"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          gq: {
+            doc: "mutation ReleasePipelineUpdate($id: String!, $input: ReleasePipelineUpdateInput!) { releasePipelineUpdate(id: $id, input: $input) { releasePipeline { ...ReleasePipelineFields } success } } fragment ReleasePipelineFields on ReleasePipeline { approximateReleaseCount archivedAt autoGenerateReleaseNotesOnCompletion createdAt id includePathPatterns isProduction latestReleaseNote { id } name releaseNoteTemplate { id } rolloverIssuesOnCompletion slugId trashed type updatedAt url }"
+            field: "releasePipelineUpdate"
+            optype: "mutation"
+            vars: [
+              {
+                from: "id"
+                gqltype: "String!"
+                name: "id"
+              }
+              {
+                from: ""
+                gqltype: "ReleasePipelineUpdateInput!"
+                name: "input"
+              }
+            ]
+          }
+          k: "graphql"
+          m: "POST"
+          o: "releasePipelineUpdate"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          t: {
+            req: "`reqdata`"
+            res: "`body.data.releasePipelineUpdate.releasePipeline`"
+          }
+        }
+        {
+          co: {
             id: "POST releasePipelineArchive"
             source: "graphql"
             version: 2
@@ -456,53 +503,6 @@ main: kit: entity: release_pipeline: {
           t: {
             req: "`reqdata`"
             res: "`body.data.releasePipelineUnarchive.entity`"
-          }
-        }
-        {
-          co: {
-            id: "POST releasePipelineUpdate"
-            source: "graphql"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "id"
-                or: "id"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          gq: {
-            doc: "mutation ReleasePipelineUpdate($id: String!, $input: ReleasePipelineUpdateInput!) { releasePipelineUpdate(id: $id, input: $input) { releasePipeline { ...ReleasePipelineFields } success } } fragment ReleasePipelineFields on ReleasePipeline { approximateReleaseCount archivedAt autoGenerateReleaseNotesOnCompletion createdAt id includePathPatterns isProduction latestReleaseNote { id } name releaseNoteTemplate { id } rolloverIssuesOnCompletion slugId trashed type updatedAt url }"
-            field: "releasePipelineUpdate"
-            optype: "mutation"
-            vars: [
-              {
-                from: "id"
-                gqltype: "String!"
-                name: "id"
-              }
-              {
-                from: ""
-                gqltype: "ReleasePipelineUpdateInput!"
-                name: "input"
-              }
-            ]
-          }
-          k: "graphql"
-          m: "POST"
-          o: "releasePipelineUpdate"
-          q: {
-            exist: [
-              "id"
-            ]
-          }
-          t: {
-            req: "`reqdata`"
-            res: "`body.data.releasePipelineUpdate.releasePipeline`"
           }
         }
       ]

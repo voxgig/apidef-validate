@@ -4,7 +4,7 @@
 #   github-1.1.4-openapi-3.0.3-guide.aontu
 
 guide: {
-  metrics: count: entity: 239
+  metrics: count: entity: 238
   metrics: count: path: 722
   metrics: count: method: 1089
 
@@ -251,7 +251,7 @@ guide: {
       rename: param: "attestation_id": *"id"  # end-id;DELETE;parent=true/attestation
       op: remove: method: *DELETE  # not-load
     }
-    path: "/users/{username}/attestations/{subject_digest}": {  # ent=attestation;orig=orgs;cmp/resolve=empty_object;path=t/p/;cmp-shared;path-over-cmp
+    path: "/users/{username}/attestations/{subject_digest}": {  # ent=attestation;orig=orgs;tag=user;cmp/resolve=user;path=t/p/;path-over-tag
       op: list: method: *GET  # end-param-page
       op: list: transform: res: *("`body.attestations`")|top
     }
@@ -431,6 +431,11 @@ guide: {
       op: load: method: *GET  # end-param
       op: patch: method: *PATCH  # not-load
     }
+    path: "/repos/{owner}/{repo}/check-runs/{check_run_id}/rerequest": {  # ent=check_run;orig=check-run;tag=check;cmp/resolve=check;path=t/p/t/;verb-on-parent=check_run
+      action: "rerequest": {}  # ent;check_run;verb-on-parent;rerequest;POST
+      rename: param: "check_run_id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
+    }
   }
 
   entity: check_suite: {
@@ -449,6 +454,11 @@ guide: {
       action: "check_runs": {}  # ent;check_suite;verb-on-parent;check-runs;GET
       rename: param: "check_suite_id": *"id"  # id-parent-ent
       op: load: method: *GET  # view
+    }
+    path: "/repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest": {  # ent=check_suite;orig=check-suite;tag=check;cmp/resolve=check;path=t/p/t/;verb-on-parent=check_suite
+      action: "rerequest": {}  # ent;check_suite;verb-on-parent;rerequest;POST
+      rename: param: "check_suite_id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -947,6 +957,7 @@ guide: {
       rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
     }
   }
 
@@ -1085,46 +1096,6 @@ guide: {
     }
   }
 
-  entity: empty_object: {
-    path: "/orgs/{org}/actions/secrets/{secret_name}": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/;cmp-primary;cmp-infreq
-      rename: param: "org": *"org_id"  # parent:org
-      op: update: method: *PUT  # not-load
-    }
-    path: "/orgs/{org}/dependabot/secrets/{secret_name}": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/;cmp-primary;cmp-infreq
-      action: "dependabot": {}  # ent;empty_object;shared-selector;/orgs/{org}/actions/secrets/{secret_name}
-      rename: param: "org": *"org_id"  # parent:org
-      op: update: method: *PUT  # not-load
-    }
-    path: "/repos/{owner}/{repo}/actions/jobs/{job_id}/rerun": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=empty-object
-      op: create: method: *POST  # not-load
-    }
-    path: "/repos/{owner}/{repo}/actions/oidc/customization/sub": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/;cmp-primary;cmp-infreq
-      op: update: method: *PUT  # not-load
-    }
-    path: "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=empty-object
-      op: create: method: *POST  # not-load
-    }
-    path: "/repos/{owner}/{repo}/actions/secrets/{secret_name}": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/;cmp-primary;cmp-infreq
-      op: update: method: *PUT  # not-load
-    }
-    path: "/repos/{owner}/{repo}/check-runs/{check_run_id}/rerequest": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=empty-object
-      op: create: method: *POST  # not-load
-    }
-    path: "/repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/t/;cmp-primary;cmp-infreq;has-cmp=empty-object
-      op: create: method: *POST  # not-load
-    }
-    path: "/repos/{owner}/{repo}/code-scanning/default-setup": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/;cmp-primary;cmp-infreq
-      op: patch: method: *PATCH  # not-load
-    }
-    path: "/repos/{owner}/{repo}/dependabot/secrets/{secret_name}": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/;cmp-primary;cmp-infreq
-      action: "dependabot": {}  # ent;empty_object;shared-selector;/repos/{owner}/{repo}/actions/secrets/{secret_name}
-      op: update: method: *PUT  # not-load
-    }
-    path: "/repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}": {  # ent=empty_object;orig=empty-object;cmp/resolve=empty_object;path=t/p/;cmp-primary;cmp-infreq
-      op: update: method: *PUT  # not-load
-    }
-  }
-
   entity: enterprise_team: {
     path: "/enterprises/{enterprise}/teams": {  # ent=enterprise_team;orig=enterprise-team;cmp/resolve=enterprise_team;path=t/p/t/;cmp-record=enterprise-team;has-cmp=enterprise-team
       rename: param: "enterprise": *"enterprise_id"  # parent-resource:enterprise
@@ -1256,9 +1227,10 @@ guide: {
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
     }
-    path: "/repos/{owner}/{repo}/code-scanning/default-setup": {  # ent=full_repository;orig=full-repository;cmp/resolve=code_scanning_default_setup;view-of-item=full_repository
+    path: "/repos/{owner}/{repo}/code-scanning/default-setup": {  # ent=full_repository;orig=full-repository;tag=code_scanning;cmp/resolve=code_scanning;same-path-tag=full_repository/GET
       action: "code_scanning_default_setup": {}  # ent;full_repository;verb-on-parent;default-setup;GET
       op: load: method: *GET  # view
+      op: patch: method: *PATCH  # not-load
     }
     path: "/repos/{owner}/{repo}/code-security-configuration": {  # ent=full_repository;orig=full-repository;wrapper=code_security_configuration_for_repository>code_security_configuration;cmp/resolve=code_security_configuration;view-of-item=full_repository
       action: "code_security_configuration": {}  # ent;full_repository;verb-on-parent;code-security-configuration;GET
@@ -1800,6 +1772,11 @@ guide: {
       rename: param: "job_id": *"id"  # end-id;GET;parent=true/job
       op: load: method: *GET  # end-param
     }
+    path: "/repos/{owner}/{repo}/actions/jobs/{job_id}/rerun": {  # ent=job;tag=action;cmp/resolve=action;path=t/p/t/;verb-on-parent=job
+      action: "rerun": {}  # ent;job;verb-on-parent;rerun;POST
+      rename: param: "job_id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
+    }
     path: "/repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs": {  # ent=job;tag=action;cmp/resolve=action;path=t/p/t/;path-over-tag;has-cmp=actions
       op: list: method: *GET  # array-prop:jobs
       op: list: transform: res: *("`body.jobs`")|top
@@ -2140,7 +2117,7 @@ guide: {
   }
 
   entity: oidc_custom_sub: {
-    path: "/orgs/{org}/actions/oidc/customization/sub": {  # ent=oidc_custom_sub;orig=oidc-custom-sub;cmp/resolve=empty_object;singleton=oidc_custom_sub
+    path: "/orgs/{org}/actions/oidc/customization/sub": {  # ent=oidc_custom_sub;orig=oidc-custom-sub;tag=oidc;cmp/resolve=oidc;singleton=oidc_custom_sub
       rename: param: "org": *"org_id"  # parent:org
       op: load: method: *GET
       op: update: method: *PUT  # not-load
@@ -3219,7 +3196,7 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
     }
-    path: "/repos/{owner}/{repo}/actions/runs/{run_id}/approve": {  # ent=run;orig=actions;cmp/resolve=empty_object;path=t/p/t/;noun-before-verb=runs;verb-noun=run
+    path: "/repos/{owner}/{repo}/actions/runs/{run_id}/approve": {  # ent=run;orig=actions;tag=action;cmp/resolve=action;path=t/p/t/;noun-before-verb=runs;verb-on-parent=run
       action: "approve": {}  # ent;run;verb-on-parent;approve;POST
       rename: param: "run_id": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
@@ -3239,7 +3216,12 @@ guide: {
       rename: param: "run_id": *"id"  # id-parent-ent
       op: create: method: *POST  # not-load
     }
-    path: "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs": {  # ent=run;orig=actions;cmp/resolve=empty_object;path=t/p/t/;cmp-shared;path-over-cmp;has-cmp=empty-object
+    path: "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun": {  # ent=run;orig=actions;tag=action;cmp/resolve=action;path=t/p/t/;verb-on-parent=run
+      action: "rerun": {}  # ent;run;verb-on-parent;rerun;POST
+      rename: param: "run_id": *"id"  # id-parent-ent
+      op: create: method: *POST  # not-load
+    }
+    path: "/repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs": {  # ent=run;orig=actions;tag=action;cmp/resolve=action;path=t/p/t/;path-over-tag;has-cmp=actions
       action: "rerun_failed_jobs": {}  # ent;run;command;rerun_failed_job
       rename: param: "run_id": *"id"  # end-id;GET;parent=true/run
       op: create: method: *POST  # not-load
@@ -3408,6 +3390,7 @@ guide: {
       rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
     }
     path: "/orgs/{org}/codespaces/secrets": {  # ent=secret;orig=actions;tag=codespace;cmp/resolve=codespace;path=t/;path-over-tag
       action: "codespaces": {}  # ent;secret;shared-selector;/orgs/{org}/actions/secrets
@@ -3437,6 +3420,7 @@ guide: {
       rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
     }
     path: "/repos/{owner}/{repo}/actions/secrets": {  # ent=secret;orig=actions;tag=action;cmp/resolve=action;path=t/;path-over-tag
       op: list: method: *GET  # array-prop:secrets
@@ -3447,6 +3431,7 @@ guide: {
       rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
     }
     path: "/repos/{owner}/{repo}/codespaces/secrets": {  # ent=secret;orig=actions;tag=codespace;cmp/resolve=codespace;path=t/;path-over-tag
       action: "codespaces": {}  # ent;secret;shared-selector;/repos/{owner}/{repo}/actions/secrets
@@ -3476,6 +3461,7 @@ guide: {
       rename: param: "secret_name": *"id"  # end-id;GET;parent=true/secret
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
+      op: update: method: *PUT  # not-load
     }
     path: "/user/codespaces/secrets": {  # ent=secret;orig=actions;tag=codespace;cmp/resolve=codespace;path=t/;path-over-tag
       op: list: method: *GET  # array-prop:secrets
@@ -3645,9 +3631,10 @@ guide: {
   }
 
   entity: sub: {
-    path: "/repos/{owner}/{repo}/actions/oidc/customization/sub": {  # ent=sub;orig=oidc-custom-sub-repo;cmp/resolve=oidc_custom_sub_repo;path=t/;path-over-wrapper=oidc-custom-sub-repo
+    path: "/repos/{owner}/{repo}/actions/oidc/customization/sub": {  # ent=sub;orig=oidc-custom-sub-repo;tag=action;cmp/resolve=action;same-path-tag=sub/GET
       op: list: method: *GET  # array-prop:include_claim_keys
       op: list: transform: res: *("`body.include_claim_keys`")|top
+      op: update: method: *PUT  # not-load
     }
   }
 
@@ -3969,7 +3956,7 @@ guide: {
   }
 
   entity: variable: {
-    path: "/orgs/{org}/actions/variables": {  # ent=variable;orig=actions;cmp/resolve=empty_object;path=t/;cmp-shared;path-over-wrapper=organization-actions-variable
+    path: "/orgs/{org}/actions/variables": {  # ent=variable;orig=actions;tag=action;cmp/resolve=action;path=t/;path-over-tag
       rename: param: "org": *"org_id"  # parent:org
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:variables
@@ -3983,7 +3970,7 @@ guide: {
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
     }
-    path: "/repos/{owner}/{repo}/actions/variables": {  # ent=variable;orig=actions;cmp/resolve=empty_object;path=t/;cmp-shared;path-over-wrapper=actions-variable
+    path: "/repos/{owner}/{repo}/actions/variables": {  # ent=variable;orig=actions;tag=action;cmp/resolve=action;path=t/;path-over-tag
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:variables
       op: list: transform: res: *("`body.variables`")|top
@@ -3995,7 +3982,7 @@ guide: {
       op: patch: method: *PATCH  # not-load
       op: remove: method: *DELETE  # not-load
     }
-    path: "/repos/{owner}/{repo}/environments/{environment_name}/variables": {  # ent=variable;orig=actions;cmp/resolve=empty_object;path=t/p/t/;cmp-shared;path-over-wrapper=actions-variable;has-cmp=empty-object
+    path: "/repos/{owner}/{repo}/environments/{environment_name}/variables": {  # ent=variable;orig=actions;tag=action;cmp/resolve=action;path=t/p/t/;path-over-tag;has-cmp=actions
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array-prop:variables
       op: list: transform: res: *("`body.variables`")|top

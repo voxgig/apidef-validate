@@ -536,6 +536,87 @@ main: kit: entity: codespace: {
       name: "create"
       points: [
         {
+          bf: [
+            "client_ip"
+            "devcontainer_path"
+            "display_name"
+            "geo"
+            "idle_timeout_minutes"
+            "location"
+            "machine"
+            "multi_repo_permissions_opt_out"
+            "retention_period_minutes"
+            "working_directory"
+          ]
+          co: {
+            id: "POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "owner"
+                or: "owner"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "pull_number"
+                or: "pull_number"
+                r: true
+                t: "`$INTEGER`"
+              }
+              {
+                k: "param"
+                n: "repo"
+                or: "repo"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/repos/{owner}/{repo}/pulls/{pull_number}/codespaces"
+          q: {
+            exist: [
+              "owner"
+              "pull_number"
+              "repo"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "repos"
+            }
+            {
+              var: "owner"
+            }
+            {
+              var: "repo"
+            }
+            {
+              lit: "pulls"
+            }
+            {
+              var: "pull_number"
+            }
+            {
+              lit: "codespaces"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
           co: {
             id: "POST /orgs/{org}/members/{username}/codespaces/{codespace_name}/stop"
             source: "openapi3"
@@ -623,87 +704,6 @@ main: kit: entity: codespace: {
             "location"
             "machine"
             "multi_repo_permissions_opt_out"
-            "retention_period_minutes"
-            "working_directory"
-          ]
-          co: {
-            id: "POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "owner"
-                or: "owner"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "param"
-                n: "pull_number"
-                or: "pull_number"
-                r: true
-                t: "`$INTEGER`"
-              }
-              {
-                k: "param"
-                n: "repo"
-                or: "repo"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/repos/{owner}/{repo}/pulls/{pull_number}/codespaces"
-          q: {
-            exist: [
-              "owner"
-              "pull_number"
-              "repo"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "repos"
-            }
-            {
-              var: "owner"
-            }
-            {
-              var: "repo"
-            }
-            {
-              lit: "pulls"
-            }
-            {
-              var: "pull_number"
-            }
-            {
-              lit: "codespaces"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "client_ip"
-            "devcontainer_path"
-            "display_name"
-            "geo"
-            "idle_timeout_minutes"
-            "location"
-            "machine"
-            "multi_repo_permissions_opt_out"
             "ref"
             "retention_period_minutes"
             "working_directory"
@@ -755,6 +755,60 @@ main: kit: entity: codespace: {
             }
             {
               lit: "codespaces"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          bf: [
+            "selected_usernames"
+          ]
+          co: {
+            id: "POST /orgs/{org}/codespaces/access/selected_users"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "org_id"
+                or: "org"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/orgs/{org}/codespaces/access/selected_users"
+          q: {
+            exist: [
+              "org_id"
+            ]
+          }
+          r: {
+            param: {
+              org: "org_id"
+            }
+          }
+          s: [
+            {
+              lit: "orgs"
+            }
+            {
+              var: "org_id"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              lit: "access"
+            }
+            {
+              lit: "selected_users"
             }
           ]
           t: {
@@ -903,60 +957,6 @@ main: kit: entity: codespace: {
             }
             {
               lit: "stop"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          bf: [
-            "selected_usernames"
-          ]
-          co: {
-            id: "POST /orgs/{org}/codespaces/access/selected_users"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "org_id"
-                or: "org"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "POST"
-          o: "/orgs/{org}/codespaces/access/selected_users"
-          q: {
-            exist: [
-              "org_id"
-            ]
-          }
-          r: {
-            param: {
-              org: "org_id"
-            }
-          }
-          s: [
-            {
-              lit: "orgs"
-            }
-            {
-              var: "org_id"
-            }
-            {
-              lit: "codespaces"
-            }
-            {
-              lit: "access"
-            }
-            {
-              lit: "selected_users"
             }
           ]
           t: {
@@ -1356,57 +1356,6 @@ main: kit: entity: codespace: {
         }
         {
           co: {
-            id: "GET /user/codespaces/{codespace_name}/machines"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            params: [
-              {
-                k: "param"
-                n: "codespace_name"
-                or: "codespace_name"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/user/codespaces/{codespace_name}/machines"
-          q: {
-            "$action": "machine"
-            exist: [
-              "codespace_name"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "user"
-            }
-            {
-              lit: "codespaces"
-            }
-            {
-              var: "codespace_name"
-            }
-            {
-              lit: "machines"
-            }
-          ]
-          t: {
-            page: {
-              total: "`body.total_count`"
-            }
-            req: "`reqdata`"
-            res: "`body.machines`"
-          }
-        }
-        {
-          co: {
             id: "GET /orgs/{org}/codespaces"
             source: "openapi3"
             version: 2
@@ -1477,6 +1426,57 @@ main: kit: entity: codespace: {
             }
             req: "`reqdata`"
             res: "`body.codespaces`"
+          }
+        }
+        {
+          co: {
+            id: "GET /user/codespaces/{codespace_name}/machines"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "codespace_name"
+                or: "codespace_name"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/user/codespaces/{codespace_name}/machines"
+          q: {
+            "$action": "machine"
+            exist: [
+              "codespace_name"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "user"
+            }
+            {
+              lit: "codespaces"
+            }
+            {
+              var: "codespace_name"
+            }
+            {
+              lit: "machines"
+            }
+          ]
+          t: {
+            page: {
+              total: "`body.total_count`"
+            }
+            req: "`reqdata`"
+            res: "`body.machines`"
           }
         }
         {
