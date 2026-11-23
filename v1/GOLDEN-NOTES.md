@@ -943,3 +943,58 @@ arguments; flows are not goldens here, and apidef's own suite pins that.
 - `make comments`, `make deps` and the root `npm test` are clean.
 - The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
   whose v0.29.1 requires what v0.29.0 did.
+
+## 2026-11-23 — apidef 8.33.2 and go/v0.29.2
+
+The pins move from 8.33.1 to 8.33.2, and from go/v0.29.1 to go/v0.29.2: one
+release on each side, shipped together from one commit.
+
+### What moves
+
+4 goldens change, each with its twin: 8 files. 3 guides change in place; 1
+entity model goes and 1 arrives. 2 of the 18 cases move, and the entity count
+stays at 936.
+
+| Release | Goldens changed | Cases |
+|---|---|---|
+| 8.33.2 | 4 | 2 |
+
+**8.33.2** (voxgig/apidef#234) narrows a rule of 8.33.1: an object schema
+with no properties names nothing only when it is closed, with
+`additionalProperties: false`. An open one may hold fields its definition
+leaves undeclared, so it names its entity again.
+
+- Cloudsmith's badge route answers `PackageVersionBadge`, an object with no
+  properties that is not closed, and forms `version` again, where 8.33.1
+  formed `badge` after its tag.
+- In `foo`, whose components set `additionalProperties: true`, only the base
+  guide's `# why` comments change, back to what 8.33.0 wrote.
+- GitHub's `empty-object` is closed, so its eleven routes keep the entities
+  their paths give them in 8.33.1, and no GitHub golden moves.
+
+Every changed file is byte for byte what the 8.33.0 refresh recorded for it.
+
+| Case | Entities | Entity models gone / new / changed |
+|---|---|---|
+| cloudsmith | 84 → 84 | 1 / 1 / 0 |
+
+foo changes in its base guide only.
+
+The release also carries voxgig/apidef#231, which fixes two crashes of the
+guide, and #233, a test of apidef's own; neither moves a golden here.
+
+### Verification
+
+- v1 `npm test` on 8.33.2 passes 23/23, strictly, with nothing skipped.
+- Regenerating from the published 8.33.2 writes, byte for byte, the goldens
+  first generated from the release candidate, linked in locally before the
+  release.
+- On go/v0.29.2, `go vet ./...` is clean and `go test -count=1 ./...` passes,
+  comparing 791 distinct goldens strictly with none skipped.
+- `make port-diff` compares 15 cases and finds no difference. The three
+  GraphQL cases are dumped by the TypeScript port only, as expected.
+- apidef's own Go golden tests at the released commit, `TestValidateGuide`,
+  `TestValidateModel` and `TestValidateModelData`, pass against this corpus.
+- `make comments`, `make deps` and the root `npm test` are clean.
+- The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
+  whose v0.29.2 requires what v0.29.1 did.
