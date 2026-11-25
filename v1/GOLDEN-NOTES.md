@@ -1049,3 +1049,52 @@ golden moves for it.
   GraphQL cases are dumped by the TypeScript port only, as expected.
 - `make comments`, `make deps` and the root `npm test` are clean.
 - The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module.
+
+## 2026-11-25 — apidef 8.34.0 and go/v0.30.0
+
+The pins move from 8.33.3 to 8.34.0, and from go/v0.29.3 to go/v0.30.0:
+one release on each side, shipped together from one commit.
+
+### What moves
+
+21 goldens change, each with its twin: 42 files, all in the GitLab case.
+Its 2 guides and 16 entity models change in place; 3 entity models go and 2
+arrive, so the entity count falls from 936 to 935.
+
+| Release | Goldens changed | Cases |
+|---|---|---|
+| 8.34.0 | 21 | 1 |
+
+**8.34.0** (voxgig/apidef#239) moves 24 GitLab routes:
+
+- **`authorize` is a verb word.** Its 20 `.../authorize` routes were the
+  entity `authorize`, or an action spelt with the literal before it; each now
+  acts on its resource with the action `authorize`, as
+  `POST /api/v4/projects/{id}/uploads/authorize` is `upload` with
+  `authorize`, and `PUT .../nuget/authorize` is `package` with
+  `nuget_authorize`. The `authorize` entity is gone, and `import` arrives
+  for `/groups/import/authorize` and `/projects/import/authorize`, which
+  `POST /api/v4/import/github/gists` joins.
+- **A dotted segment is named before its first dot.** `Release.gpg` beside
+  `Release` is `release` with the action `release_gpg`, where it was the
+  entity `release_gpg`; `Marshal.4.8` is `marshal`, where it was
+  `marshal48`.
+
+| Case | Entities | Entity models gone / new / changed |
+|---|---|---|
+| gitlab | 231 → 230 | 3 / 2 / 16 |
+
+### Verification
+
+- v1 `npm test` on 8.34.0 passes 23/23, strictly, with nothing skipped.
+- Every GitLab golden that 8.34.0 keeps or changes is byte for byte what the
+  release candidate, linked in locally before the release, generated.
+- On go/v0.30.0, `go vet ./...` is clean and `go test -count=1 ./...` passes,
+  comparing 790 distinct goldens strictly with none skipped.
+- `make port-diff` compares 15 cases and finds no difference. The three
+  GraphQL cases are dumped by the TypeScript port only, as expected.
+- apidef's own Go golden tests at the released commit, `TestValidateGuide`,
+  `TestValidateModel` and `TestValidateModelData`, pass against this corpus.
+- `make comments`, `make deps` and the root `npm test` are clean.
+- The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
+  whose v0.30.0 requires what v0.29.3 did.

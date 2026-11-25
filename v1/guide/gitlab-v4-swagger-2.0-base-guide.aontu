@@ -4,7 +4,7 @@
 #   gitlab-v4-swagger-2.0-guide.aontu
 
 guide: {
-  metrics: count: entity: 231
+  metrics: count: entity: 230
   metrics: count: path: 861
   metrics: count: method: 1106
 
@@ -1440,10 +1440,6 @@ guide: {
       action: "cancel": {}  # ent;github;no-param;cancel;POST
       op: create: method: *POST  # not-load
     }
-    path: "/api/v4/import/github/gists": {  # ent=api_v4_import_github;orig=ProjectEntity;tag=import;cmp/resolve=import;path=t/;cmp-primary;cmp-infreq
-      action: "gists": {}  # ent;api_v4_import_github;command;import
-      op: create: method: *POST  # not-load
-    }
   }
 
   entity: api_v4_job: {
@@ -1479,6 +1475,11 @@ guide: {
       op: load: method: *GET  # no-schema
       op: update: method: *PUT  # not-load
     }
+    path: "/api/v4/projects/{id}/packages/generic/{package_name}/*package_version/(*path/){file_name}/authorize": {  # ent=api_v4_projects_id_packages_generic_package_namepackage_versionpath;orig=generic_packages;tag=generic_package;cmp/resolve=generic_package;verb-of-item=generic;resplit-from-cmp=generic
+      action: "package_version_path__authorize": {}  # ent;generic;verb-on-parent;authorize;PUT
+      rename: param: "id": *"project_id"  # parent:project
+      op: update: method: *PUT  # not-load
+    }
   }
 
   entity: api_v4_projects_id_packages_gomodule_namev_module_version_mod: {
@@ -1500,6 +1501,12 @@ guide: {
       rename: param: "id": *"project_id"  # parent:project
       rename: param: "model_version_id": *"ml_model_id"  # parent:ml_model
       op: load: method: *GET  # no-schema
+      op: update: method: *PUT  # not-load
+    }
+    path: "/api/v4/projects/{id}/packages/ml_models/{model_version_id}/files/(*path/){file_name}/authorize": {  # ent=api_v4_projects_id_packages_ml_models_model_version_id_filespath;orig=ml_model_registry;tag=ml_model_registry;cmp/resolve=ml_model_registry;short-literal;infer-opid
+      action: "authorize": {}  # ent;api_v4_projects_id_packages_ml_models_model_version_id_filespath;command;api_v4_projects_id_packages_ml_models_model_version_id_filespath2
+      rename: param: "id": *"project_id"  # parent:project
+      rename: param: "model_version_id": *"ml_model_id"  # parent:ml_model
       op: update: method: *PUT  # not-load
     }
   }
@@ -1572,8 +1579,8 @@ guide: {
       op: create: method: *POST  # not-load
       op: load: method: *GET  # no-schema
     }
-    path: "/api/v4/jobs/{id}/artifacts/authorize": {  # ent=artifact;orig=jobs;tag=job;cmp/resolve=job;path=t/;cmp-primary;cmp-infreq;command=api_v4_jobs_id_artifacts_authorize
-      action: "artifact_authorize": {}  # ent;api_v4_jobs_id_artifacts_authorize;ent-param-3rd-last;artifacts/authorize;POST
+    path: "/api/v4/jobs/{id}/artifacts/authorize": {  # ent=artifact;orig=jobs;tag=job;cmp/resolve=job;verb-of-item=artifact
+      action: "authorize": {}  # ent;artifact;verb-on-parent;authorize;POST
       rename: param: "id": *"job_id"  # parent:job
       op: create: method: *POST  # not-load
     }
@@ -1645,85 +1652,6 @@ guide: {
       action: "v2": {}  # ent;authenticate;shared-selector;/api/v4/projects/{id}/packages/conan/v1/users/authenticate
       rename: param: "id": *"project_id"  # parent:project
       op: load: method: *GET  # no-schema
-    }
-  }
-
-  entity: authorize: {
-    path: "/api/v4/groups/import/authorize": {  # ent=authorize;orig=group_import;tag=group_import;cmp/resolve=group_import;path=t/;path-over-tag
-      op: create: method: *POST  # not-load
-    }
-    path: "/api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize": {  # ent=authorize;orig=group_import;tag=conan_package;cmp/resolve=conan_package;path=p/t/;path-over-tag
-      rename: param: "conan_package_reference": *"package_id"  # not-primary
-      op: update: method: *PUT  # not-load
-    }
-    path: "/api/v4/projects/import-relation/authorize": {  # ent=authorize;orig=group_import;tag=project_import;cmp/resolve=project_import;path=t/;path-over-tag
-      action: "projects_import_relation": {}  # ent;authorize;shared-selector;/api/v4/groups/import/authorize
-      op: create: method: *POST  # not-load
-    }
-    path: "/api/v4/projects/import/authorize": {  # ent=authorize;orig=group_import;tag=project_import;cmp/resolve=project_import;path=t/;path-over-tag
-      action: "projects": {}  # ent;authorize;shared-selector;/api/v4/groups/import/authorize
-      op: create: method: *POST  # not-load
-    }
-    path: "/api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images/authorize": {  # ent=authorize;orig=group_import;tag=alert_management;cmp/resolve=alert_management;path=t/;path-over-tag
-      rename: param: "alert_iid": *"alert_management_alert_id"  # parent:alert_management_alert
-      rename: param: "id": *"project_id"  # parent:project
-      op: create: method: *POST  # not-load
-    }
-    path: "/api/v4/projects/{id}/issues/{issue_iid}/metric_images/authorize": {  # ent=authorize;orig=group_import;tag=project;cmp/resolve=project;path=t/;path-over-tag
-      rename: param: "id": *"project_id"  # parent:project
-      rename: param: "issue_iid": *"issue_id"  # parent:issue
-      op: create: method: *POST  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize": {  # ent=authorize;orig=group_import;tag=conan_package;cmp/resolve=conan_package;path=p/t/;path-over-tag
-      rename: param: "conan_package_reference": *"package_id"  # not-primary
-      rename: param: "id": *"project_id"  # parent:project
-      op: update: method: *PUT  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/generic/{package_name}/*package_version/(*path/){file_name}/authorize": {  # ent=authorize;orig=group_import;tag=generic_package;cmp/resolve=generic_package;path=t/;path-over-tag
-      rename: param: "id": *"project_id"  # parent:project
-      op: update: method: *PUT  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/helm/api/{channel}/charts/authorize": {  # ent=authorize;orig=group_import;tag=helm_package;cmp/resolve=helm_package;path=t/;path-over-tag
-      rename: param: "channel": *"api_id"  # not-primary
-      rename: param: "id": *"project_id"  # parent:project
-      op: create: method: *POST  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/ml_models/{model_version_id}/files/(*path/){file_name}/authorize": {  # ent=authorize;orig=group_import;tag=ml_model_registry;cmp/resolve=ml_model_registry;path=t/;path-over-tag
-      rename: param: "id": *"project_id"  # parent:project
-      rename: param: "model_version_id": *"ml_model_id"  # parent:ml_model
-      op: update: method: *PUT  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/nuget/authorize": {  # ent=authorize;orig=group_import;tag=nuget_package;cmp/resolve=nuget_package;path=t/;path-over-tag
-      rename: param: "id": *"project_id"  # parent:project
-      op: update: method: *PUT  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/nuget/symbolpackage/authorize": {  # ent=authorize;orig=group_import;tag=nuget_package;cmp/resolve=nuget_package;path=t/;path-over-tag
-      action: "symbolpackage": {}  # ent;authorize;shared-selector;/api/v4/projects/{id}/packages/nuget/authorize
-      rename: param: "id": *"project_id"  # parent:project
-      op: update: method: *PUT  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/nuget/v2/authorize": {  # ent=authorize;orig=group_import;tag=nuget_package;cmp/resolve=nuget_package;path=t/;path-over-tag
-      action: "v2": {}  # ent;authorize;shared-selector;/api/v4/projects/{id}/packages/nuget/authorize
-      rename: param: "id": *"project_id"  # parent:project
-      op: update: method: *PUT  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/pypi/authorize": {  # ent=authorize;orig=group_import;tag=pypi_package;cmp/resolve=pypi_package;path=t/;path-over-tag
-      action: "pypi": {}  # ent;authorize;shared-selector;/api/v4/projects/{id}/packages/rpm/authorize
-      rename: param: "id": *"project_id"  # parent:project
-      op: create: method: *POST  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/rpm/authorize": {  # ent=authorize;orig=group_import;tag=rpm_package;cmp/resolve=rpm_package;path=t/;path-over-tag
-      rename: param: "id": *"project_id"  # parent:project
-      op: create: method: *POST  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/rubygems/api/v1/gems/authorize": {  # ent=authorize;orig=group_import;tag=rubygem_package;cmp/resolve=rubygem_package;path=t/;path-over-tag
-      action: "rubygems_v1_gems": {}  # ent;authorize;shared-selector;/api/v4/projects/{id}/packages/rpm/authorize
-      rename: param: "id": *"project_id"  # parent:project
-      op: create: method: *POST  # not-load
-    }
-    path: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}/*module_version/file/authorize": {  # ent=authorize;orig=group_import;tag=terraform_registry;cmp/resolve=terraform_registry;path=t/;path-over-tag
-      rename: param: "id": *"project_id"  # parent:project
-      op: update: method: *PUT  # not-load
     }
   }
 
@@ -1997,6 +1925,11 @@ guide: {
 
   entity: chart: {
     path: "/api/v4/projects/{id}/packages/helm/api/{channel}/charts": {  # ent=chart;orig=helm_packages;tag=helm_package;cmp/resolve=helm_package;path=t/p/t/;path-over-tag;has-cmp=helm_packages
+      rename: param: "id": *"project_id"  # parent:project
+      op: create: method: *POST  # not-load
+    }
+    path: "/api/v4/projects/{id}/packages/helm/api/{channel}/charts/authorize": {  # ent=chart;orig=helm_packages;tag=helm_package;cmp/resolve=helm_package;verb-of-item=chart
+      action: "authorize": {}  # ent;chart;verb-on-parent;authorize;POST
       rename: param: "id": *"project_id"  # parent:project
       op: create: method: *POST  # not-load
     }
@@ -2622,7 +2555,7 @@ guide: {
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
-    path: "/api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize": {  # ent=file;orig=pypi_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;verb-on-parent=file
+    path: "/api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize": {  # ent=file;orig=pypi_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;noun-before-verb=export;verb-on-parent=file
       action: "authorize": {}  # ent;file;verb-on-parent;authorize;PUT
       op: update: method: *PUT  # not-load
     }
@@ -2637,7 +2570,7 @@ guide: {
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
-    path: "/api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize": {  # ent=file;orig=pypi_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;verb-on-parent=file
+    path: "/api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize": {  # ent=file;orig=pypi_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;noun-before-verb=export;verb-on-parent=file
       action: "authorize": {}  # ent;file;verb-on-parent;authorize;PUT
       rename: param: "id": *"project_id"  # parent:project
       op: update: method: *PUT  # not-load
@@ -2657,7 +2590,7 @@ guide: {
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
-    path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files/{file_name}/authorize": {  # ent=file;orig=pypi_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;verb-on-parent=file
+    path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files/{file_name}/authorize": {  # ent=file;orig=pypi_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;noun-before-verb=files;verb-on-parent=file
       action: "authorize": {}  # ent;file;verb-on-parent;authorize;PUT
       rename: param: "id": *"project_id"  # parent:project
       op: update: method: *PUT  # not-load
@@ -2675,7 +2608,7 @@ guide: {
       op: load: method: *GET  # end-param
       op: update: method: *PUT  # not-load
     }
-    path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files/{file_name}/authorize": {  # ent=file;orig=pypi_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;verb-on-parent=file
+    path: "/api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files/{file_name}/authorize": {  # ent=file;orig=pypi_packages;tag=conan_package;cmp/resolve=conan_package;path=t/p/t/;noun-before-verb=files;verb-on-parent=file
       action: "authorize": {}  # ent;file;verb-on-parent;authorize;PUT
       rename: param: "conan_package_reference": *"package_id"  # not-primary
       rename: param: "id": *"project_id"  # parent:project
@@ -2751,6 +2684,11 @@ guide: {
 
   entity: gem: {
     path: "/api/v4/projects/{id}/packages/rubygems/api/v1/gems": {  # ent=gem;orig=rubygem_packages;tag=rubygem_package;cmp/resolve=rubygem_package;path=t/;path-over-tag
+      rename: param: "id": *"project_id"  # parent:project
+      op: create: method: *POST  # not-load
+    }
+    path: "/api/v4/projects/{id}/packages/rubygems/api/v1/gems/authorize": {  # ent=gem;orig=rubygem_packages;tag=rubygem_package;cmp/resolve=rubygem_package;verb-of-item=gem
+      action: "authorize": {}  # ent;gem;verb-on-parent;authorize;POST
       rename: param: "id": *"project_id"  # parent:project
       op: create: method: *POST  # not-load
     }
@@ -2832,10 +2770,6 @@ guide: {
       action: "pending_member": {}  # ent;group;ent-param-2nd-last;pending_members;GET
       op: load: method: *GET  # no-schema
     }
-    path: "/api/v4/groups/{id}/placeholder_reassignments/authorize": {  # ent=group;orig=API_Entities_Group;tag=group;cmp/resolve=group;path=t/;cmp-primary;cmp-infreq
-      action: "placeholder_reassignment_authorize": {}  # ent;group;ent-param-3rd-last;placeholder_reassignments/authorize;POST
-      op: create: method: *POST  # not-load
-    }
     path: "/api/v4/groups/{id}/restore": {  # ent=group;orig=API_Entities_Group;tag=group;cmp/resolve=group;path=t/p/t/;noun-before-verb=groups;verb-on-parent=group
       action: "restore": {}  # ent;group;verb-on-parent;restore;POST
       op: create: method: *POST  # not-load
@@ -2900,6 +2834,20 @@ guide: {
       op: load: method: *GET  # end-param
       op: remove: method: *DELETE  # not-load
       op: update: method: *PUT  # not-load
+    }
+  }
+
+  entity: import: {
+    path: "/api/v4/groups/import/authorize": {  # ent=import;orig=group_import;tag=group_import;cmp/resolve=group_import;path=t/;noun-before-verb=import;path-over-tag
+      action: "authorize": {}  # ent;import;no-param;authorize;POST
+      op: create: method: *POST  # not-load
+    }
+    path: "/api/v4/import/github/gists": {  # ent=import;orig=group_import;tag=import;cmp/resolve=import;path=t/;cmp-primary;cmp-infreq
+      op: create: method: *POST  # not-load
+    }
+    path: "/api/v4/projects/import/authorize": {  # ent=import;orig=group_import;tag=project_import;cmp/resolve=project_import;path=t/;noun-before-verb=import;path-over-tag
+      action: "authorize": {}  # ent;import;no-param;authorize;POST
+      op: create: method: *POST  # not-load
     }
   }
 
@@ -3198,9 +3146,9 @@ guide: {
     }
   }
 
-  entity: marshal48: {
-    path: "/api/v4/projects/{id}/packages/rubygems/quick/Marshal.4.8/{file_name}": {  # ent=marshal48;orig=rubygem_packages;tag=rubygem_package;cmp/resolve=rubygem_package;path=t/p/;path-over-tag
-      rename: param: "file_name": *"id"  # end-id;GET;parent=true/marshal48
+  entity: marshal: {
+    path: "/api/v4/projects/{id}/packages/rubygems/quick/Marshal.4.8/{file_name}": {  # ent=marshal;orig=rubygem_packages;tag=rubygem_package;cmp/resolve=rubygem_package;path=t/p/;path-over-tag
+      rename: param: "file_name": *"id"  # end-id;GET;parent=true/marshal
       rename: param: "id": *"project_id"  # parent:project
       op: load: method: *GET  # end-param
     }
@@ -3327,6 +3275,12 @@ guide: {
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
     }
+    path: "/api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images/authorize": {  # ent=metric_image;orig=API_Entities_MetricImage;tag=alert_management;cmp/resolve=alert_management;verb-of-item=metric_image
+      action: "authorize": {}  # ent;metric_image;verb-on-parent;authorize;POST
+      rename: param: "alert_iid": *"alert_management_alert_id"  # parent:alert_management_alert
+      rename: param: "id": *"project_id"  # parent:project
+      op: create: method: *POST  # not-load
+    }
     path: "/api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images/{metric_image_id}": {  # ent=metric_image;orig=API_Entities_MetricImage;tag=alert_management;cmp/resolve=alert_management;path=t/p/;path-over-tag
       rename: param: "alert_iid": *"alert_management_alert_id"  # parent:alert_management_alert
       rename: param: "id": *"project_id"  # parent:project
@@ -3340,6 +3294,12 @@ guide: {
       op: create: method: *POST  # not-load
       op: load: method: *GET  # no-schema
     }
+    path: "/api/v4/projects/{id}/issues/{issue_iid}/metric_images/authorize": {  # ent=metric_image;orig=API_Entities_MetricImage;tag=project;cmp/resolve=project;verb-of-item=metric_image
+      action: "authorize": {}  # ent;metric_image;verb-on-parent;authorize;POST
+      rename: param: "id": *"project_id"  # parent:project
+      rename: param: "issue_iid": *"issue_id"  # parent:issue
+      op: create: method: *POST  # not-load
+    }
     path: "/api/v4/projects/{id}/issues/{issue_iid}/metric_images/{metric_image_id}": {  # ent=metric_image;orig=API_Entities_MetricImage;cmp/resolve=ee_api_entities_issuable_metric_image;path=t/p/;path-over-wrapper=EE_API_Entities_IssuableMetricImage
       rename: param: "id": *"project_id"  # parent:project
       rename: param: "issue_iid": *"issue_id"  # parent:issue
@@ -3352,6 +3312,11 @@ guide: {
   entity: module: {
     path: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}": {  # ent=module;orig=terraform_registry;tag=terraform_registry;cmp/resolve=terraform_registry;path=t/p/p;path-over-tag
       op: load: method: *GET  # no-schema
+    }
+    path: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}/*module_version/file/authorize": {  # ent=module;orig=terraform_registry;tag=terraform_registry;cmp/resolve=terraform_registry;verb-of-item=module
+      action: "module_version_file_authorize": {}  # ent;module;verb-on-parent;authorize;PUT
+      rename: param: "id": *"project_id"  # parent:project
+      op: update: method: *PUT  # not-load
     }
   }
 
@@ -3455,6 +3420,11 @@ guide: {
       op: create: method: *POST  # not-load
       op: create: transform: res: *("`body.upload_urls`")|top
     }
+    path: "/api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize": {  # ent=package;orig=composer_packages;tag=conan_package;cmp/resolve=conan_package;path=p/t/;noun-before-verb=package;path-over-tag
+      action: "authorize": {}  # ent;package;ent-keys-before-last;authorize;PUT
+      rename: param: "conan_package_reference": *"package_id"  # not-primary
+      op: update: method: *PUT  # not-load
+    }
     path: "/api/v4/projects/{id}/packages": {  # ent=package;orig=composer_packages;cmp/resolve=api_entities_package;path=t/p/t/;path-over-wrapper=API_Entities_Package;has-cmp=API_Entities_Package
       rename: param: "id": *"project_id"  # parent:project
       op: list: method: *GET  # array
@@ -3492,6 +3462,12 @@ guide: {
       rename: param: "id": *"project_id"  # parent:project
       op: create: method: *POST  # not-load
       op: create: transform: res: *("`body.upload_urls`")|top
+    }
+    path: "/api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize": {  # ent=package;orig=composer_packages;tag=conan_package;cmp/resolve=conan_package;path=p/t/;noun-before-verb=package;path-over-tag
+      action: "authorize": {}  # ent;package;ent-keys-before-last;authorize;PUT
+      rename: param: "conan_package_reference": *"package_id"  # not-primary
+      rename: param: "id": *"project_id"  # parent:project
+      op: update: method: *PUT  # not-load
     }
     path: "/api/v4/projects/{id}/packages/conan/v1/ping": {  # ent=package;orig=composer_packages;tag=conan_package;cmp/resolve=conan_package;verb-of-item=package
       action: "conan_v1_ping": {}  # ent;package;verb-on-parent;ping;GET
@@ -3540,6 +3516,11 @@ guide: {
       rename: param: "id": *"project_id"  # parent:project
       op: update: method: *PUT  # not-load
     }
+    path: "/api/v4/projects/{id}/packages/nuget/authorize": {  # ent=package;orig=composer_packages;tag=nuget_package;cmp/resolve=nuget_package;verb-of-item=package
+      action: "nuget_authorize": {}  # ent;package;verb-on-parent;authorize;PUT
+      rename: param: "id": *"project_id"  # parent:project
+      op: update: method: *PUT  # not-load
+    }
     path: "/api/v4/projects/{id}/packages/nuget/query": {  # ent=package;orig=composer_packages;envelope=api_entities_nuget_search_result;cmp/resolve=api_entities_nuget_search_result;verb-of-item=package
       action: "nuget_query": {}  # ent;package;verb-on-parent;query;GET
       rename: param: "id": *"project_id"  # parent:project
@@ -3550,13 +3531,33 @@ guide: {
       rename: param: "id": *"project_id"  # parent:project
       op: update: method: *PUT  # not-load
     }
+    path: "/api/v4/projects/{id}/packages/nuget/symbolpackage/authorize": {  # ent=package;orig=composer_packages;tag=nuget_package;cmp/resolve=nuget_package;verb-of-item=package
+      action: "nuget_symbolpackage_authorize": {}  # ent;package;verb-on-parent;authorize;PUT
+      rename: param: "id": *"project_id"  # parent:project
+      op: update: method: *PUT  # not-load
+    }
+    path: "/api/v4/projects/{id}/packages/nuget/v2/authorize": {  # ent=package;orig=composer_packages;tag=nuget_package;cmp/resolve=nuget_package;verb-of-item=package
+      action: "nuget_v2_authorize": {}  # ent;package;verb-on-parent;authorize;PUT
+      rename: param: "id": *"project_id"  # parent:project
+      op: update: method: *PUT  # not-load
+    }
     path: "/api/v4/projects/{id}/packages/pypi": {  # ent=package;orig=composer_packages;tag=pypi_package;cmp/resolve=pypi_package;path=t/;path-primary;command=api_v4_projects_id_packages_pypi
       action: "pypi": {}  # ent;package;command;api_v4_projects_id_packages_pypi
       rename: param: "id": *"project_id"  # parent:project
       op: create: method: *POST  # not-load
     }
+    path: "/api/v4/projects/{id}/packages/pypi/authorize": {  # ent=package;orig=composer_packages;tag=pypi_package;cmp/resolve=pypi_package;verb-of-item=package
+      action: "pypi_authorize": {}  # ent;package;verb-on-parent;authorize;POST
+      rename: param: "id": *"project_id"  # parent:project
+      op: create: method: *POST  # not-load
+    }
     path: "/api/v4/projects/{id}/packages/rpm": {  # ent=package;orig=composer_packages;tag=rpm_package;cmp/resolve=rpm_package;path=t/;path-primary;resplit-from-cmp=rpm
       action: "rpm": {}  # ent;package;command;rpm
+      rename: param: "id": *"project_id"  # parent:project
+      op: create: method: *POST  # not-load
+    }
+    path: "/api/v4/projects/{id}/packages/rpm/authorize": {  # ent=package;orig=composer_packages;tag=rpm_package;cmp/resolve=rpm_package;verb-of-item=package
+      action: "rpm_authorize": {}  # ent;package;verb-on-parent;authorize;POST
       rename: param: "id": *"project_id"  # parent:project
       op: create: method: *POST  # not-load
     }
@@ -3804,6 +3805,11 @@ guide: {
       op: create: method: *POST  # not-load
       op: load: method: *GET  # no-schema
     }
+    path: "/api/v4/groups/{id}/placeholder_reassignments/authorize": {  # ent=placeholder_reassignment;orig=groups;tag=group;cmp/resolve=group;verb-of-item=placeholder_reassignment
+      action: "authorize": {}  # ent;placeholder_reassignment;verb-on-parent;authorize;POST
+      rename: param: "id": *"group_id"  # parent:group
+      op: create: method: *POST  # not-load
+    }
   }
 
   entity: plan_limit: {
@@ -3845,6 +3851,10 @@ guide: {
     }
     path: "/api/v4/projects/import-relation": {  # ent=project;orig=feature_flags;cmp/resolve=api_entities_relation_import_tracker;path=t/;cmp-primary;cmp-infreq
       action: "import_relation": {}  # ent;project;command;api_entities_relation_import_tracker
+      op: create: method: *POST  # not-load
+    }
+    path: "/api/v4/projects/import-relation/authorize": {  # ent=project;orig=feature_flags;tag=project_import;cmp/resolve=project_import;path=t/;noun-before-verb=import-relation;path-over-tag
+      action: "authorize": {}  # ent;import_relation;no-param;authorize;POST
       op: create: method: *POST  # not-load
     }
     path: "/api/v4/projects/{id}": {  # ent=project;orig=feature_flags;tag=project;cmp/resolve=project;path=t/p/;path-primary
@@ -3960,10 +3970,6 @@ guide: {
       action: "unarchive": {}  # ent;project;verb-on-parent;unarchive;POST
       op: create: method: *POST  # not-load
     }
-    path: "/api/v4/projects/{id}/uploads/authorize": {  # ent=project;orig=feature_flags;tag=project;cmp/resolve=project;path=t/;cmp-primary;cmp-infreq
-      action: "upload_authorize": {}  # ent;project;ent-param-3rd-last;uploads/authorize;POST
-      op: create: method: *POST  # not-load
-    }
     path: "/api/v4/users/{user_id}/projects": {  # ent=project;orig=feature_flags;cmp/resolve=api_entities_basic_project_detail;path=t/p/t/;path-over-wrapper=API_Entities_BasicProjectDetails;has-cmp=API_Entities_BasicProjectDetails
       op: list: method: *GET  # array
     }
@@ -4044,11 +4050,21 @@ guide: {
       rename: param: "id": *"group_id"  # parent:group
       op: load: method: *GET  # no-schema
     }
+    path: "/api/v4/groups/{id}/-/packages/debian/dists/*distribution/Release.gpg": {  # ent=release;orig=debian_packages;tag=debian_package;cmp/resolve=debian_package;path=t/;path-over-tag
+      action: "release_gpg": {}  # ent;release;shared-selector;/api/v4/groups/{id}/-/packages/debian/dists/*distribution/Release
+      rename: param: "id": *"group_id"  # parent:group
+      op: load: method: *GET  # no-schema
+    }
     path: "/api/v4/groups/{id}/releases": {  # ent=release;orig=debian_packages;cmp/resolve=api_entities_release;path=t/p/t/;path-over-wrapper=API_Entities_Release;has-cmp=API_Entities_Release
       rename: param: "id": *"group_id"  # parent:group
       op: list: method: *GET  # array
     }
     path: "/api/v4/projects/{id}/packages/debian/dists/*distribution/Release": {  # ent=release;orig=debian_packages;tag=debian_package;cmp/resolve=debian_package;path=t/;path-over-tag
+      rename: param: "id": *"project_id"  # parent:project
+      op: load: method: *GET  # no-schema
+    }
+    path: "/api/v4/projects/{id}/packages/debian/dists/*distribution/Release.gpg": {  # ent=release;orig=debian_packages;tag=debian_package;cmp/resolve=debian_package;path=t/;path-over-tag
+      action: "release_gpg": {}  # ent;release;shared-selector;/api/v4/projects/{id}/packages/debian/dists/*distribution/Release
       rename: param: "id": *"project_id"  # parent:project
       op: load: method: *GET  # no-schema
     }
@@ -4078,17 +4094,6 @@ guide: {
       rename: param: "id": *"project_id"  # parent:project
       rename: param: "tag_name": *"id"  # end-id;GET;parent=true/release
       op: create: method: *POST  # not-load
-    }
-  }
-
-  entity: release_gpg: {
-    path: "/api/v4/groups/{id}/-/packages/debian/dists/*distribution/Release.gpg": {  # ent=release_gpg;orig=debian_packages;tag=debian_package;cmp/resolve=debian_package;path=t/;path-over-tag;word-break=release_gpg
-      rename: param: "id": *"group_id"  # parent:group
-      op: load: method: *GET  # no-schema
-    }
-    path: "/api/v4/projects/{id}/packages/debian/dists/*distribution/Release.gpg": {  # ent=release_gpg;orig=debian_packages;tag=debian_package;cmp/resolve=debian_package;path=t/;path-over-tag;word-break=release_gpg
-      rename: param: "id": *"project_id"  # parent:project
-      op: load: method: *GET  # no-schema
     }
   }
 
@@ -4702,6 +4707,11 @@ guide: {
       rename: param: "id": *"project_id"  # parent:project
       op: create: method: *POST  # not-load
       op: list: method: *GET  # array
+    }
+    path: "/api/v4/projects/{id}/uploads/authorize": {  # ent=upload;orig=API_Entities_MarkdownUploadAdmin;tag=project;cmp/resolve=project;verb-of-item=upload
+      action: "authorize": {}  # ent;upload;verb-on-parent;authorize;POST
+      rename: param: "id": *"project_id"  # parent:project
+      op: create: method: *POST  # not-load
     }
     path: "/api/v4/projects/{id}/uploads/{secret}/{filename}": {  # ent=upload;orig=API_Entities_MarkdownUploadAdmin;tag=project;cmp/resolve=project;path=t/p/p;path-over-tag
       action: "projects": {}  # ent;upload;shared-selector;/api/v4/groups/{id}/uploads/{secret}/{filename}
