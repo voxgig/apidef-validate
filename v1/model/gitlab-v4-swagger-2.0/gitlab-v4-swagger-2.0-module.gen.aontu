@@ -118,8 +118,110 @@ main: kit: entity: module: {
         }
       ]
     }
+    update: {
+      name: "update"
+      points: [
+        {
+          bf: [
+            "module_version"
+          ]
+          co: {
+            id: "PUT /api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}/*module_version/file/authorize"
+            source: "swagger2"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "infra-registry"
+                k: "param"
+                n: "module_name"
+                or: "module_name"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "aws"
+                k: "param"
+                n: "module_system"
+                or: "module_system"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "project_id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PUT"
+          o: "/api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}/*module_version/file/authorize"
+          q: {
+            "$action": "module_version_file_authorize"
+            exist: [
+              "module_name"
+              "module_system"
+              "project_id"
+            ]
+          }
+          r: {
+            param: {
+              id: "project_id"
+            }
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "v4"
+            }
+            {
+              lit: "projects"
+            }
+            {
+              var: "project_id"
+            }
+            {
+              lit: "packages"
+            }
+            {
+              lit: "terraform"
+            }
+            {
+              lit: "modules"
+            }
+            {
+              var: "module_name"
+            }
+            {
+              var: "module_system"
+            }
+            {
+              lit: "*module_version"
+            }
+            {
+              lit: "file"
+            }
+            {
+              lit: "authorize"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
   }
 
 
+  relations: ancestors: [
+    [path("$.main.kit.entity.project")]
+  ]
 
 }
