@@ -998,3 +998,54 @@ guide, and #233, a test of apidef's own; neither moves a golden here.
 - `make comments`, `make deps` and the root `npm test` are clean.
 - The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
   whose v0.29.2 requires what v0.29.1 did.
+
+## 2026-11-25 — apidef 8.33.3 and go/v0.29.3
+
+The pins move from 8.33.2 to 8.33.3, and from go/v0.29.2 to go/v0.29.3: one
+release on each side, shipped together from one commit.
+
+### What moves
+
+60 entity models change, each with its twin: 120 files. No guide changes,
+6 of the 18 cases move, and the entity count stays at 936.
+
+| Release | Goldens changed | Cases |
+|---|---|---|
+| 8.33.3 | 60 | 6 |
+
+**8.33.3** (voxgig/apidef#238) takes a field's requiredness from its parent's
+`required` list only. Before, an object-typed field that listed required
+fields of its own was marked required itself, whatever its parent said.
+
+- 111 fields move from `r: true` to `r: false`. GitHub's `protected-branch`
+  is typical: `allow_deletions` is an object that requires `enabled`, but
+  the branch requires only `url`, so `allow_deletions` is optional.
+- A field's per-operation record follows: it is written only where an
+  operation's requiredness differs from the field's. 13 fields drop one,
+  because the request now agrees with the field (GitLab's draft note
+  `position`). 10 fields gain one, because the request differs from the
+  field (GitHub's `tagger` is optional when a tag is created; branch
+  protection's update requires `enforce_admins`).
+
+| Case | Entities | Entity models changed |
+|---|---|---|
+| cloudsmith | 84 | 3 |
+| dingconnect | 17 | 1 |
+| github | 238 | 48 |
+| gitlab | 231 | 2 |
+| shortcut | 28 | 4 |
+| statuspage | 16 | 2 |
+
+The release also carries voxgig/apidef#237. It keeps the first of a
+repeated parameter, with a warning, and lets an operation's parameter
+override the path's. No definition here repeats a parameter, and no
+golden moves for it.
+
+### Verification
+
+- v1 `npm test` on 8.33.3 passes 23/23, strictly, with nothing skipped.
+- On go/v0.29.3, `go vet ./...` is clean and `go test -count=1 ./...` passes.
+- `make port-diff` compares 15 cases and finds no difference. The three
+  GraphQL cases are dumped by the TypeScript port only, as expected.
+- `make comments`, `make deps` and the root `npm test` are clean.
+- The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module.
