@@ -8,32 +8,14 @@ main: kit: entity: protected_branch: {
     allow_deletions: {
       h: "Allow Deletions"
       n: "allow_deletions"
-      op: {
-        update: {
-          req: false
-          type: "`$BOOLEAN`"
-        }
-      }
-      r: true
+      r: false
       sh: "Allows deletion of the protected branch by anyone with write access to the repository."
       t: "`$OBJECT`"
     }
     allow_force_pushes: {
       h: "Allow Force Pushes"
       n: "allow_force_pushes"
-      op: {
-        update: {
-          req: false
-          type: [
-            "`$ONE`"
-            [
-              "`$BOOLEAN`"
-              "`$NULL`"
-            ]
-          ]
-        }
-      }
-      r: true
+      r: false
       sh: "Permits force pushes to the protected branch by anyone with write access to the repository."
       t: "`$OBJECT`"
     }
@@ -47,20 +29,26 @@ main: kit: entity: protected_branch: {
     block_creations: {
       h: "Block Creations"
       n: "block_creations"
-      op: {
-        update: {
-          req: false
-          type: "`$BOOLEAN`"
-        }
-      }
-      r: true
+      r: false
       sh: "If set to `true`, the `restrictions` branch protection settings which limits who can push will also block pushes which create new branches, unless the push is initiated by a user, team, or app which has the ability to push."
       t: "`$OBJECT`"
     }
     enforce_admins: {
       h: "Enforce Admins"
       n: "enforce_admins"
-      r: true
+      op: {
+        update: {
+          req: true
+          type: [
+            "`$ONE`"
+            [
+              "`$BOOLEAN`"
+              "`$NULL`"
+            ]
+          ]
+        }
+      }
+      r: false
       sh: "Enforce all configured restrictions for administrators."
       t: "`$OBJECT`"
     }
@@ -81,20 +69,26 @@ main: kit: entity: protected_branch: {
     required_linear_history: {
       h: "Required Linear History"
       n: "required_linear_history"
-      op: {
-        update: {
-          req: false
-          type: "`$BOOLEAN`"
-        }
-      }
-      r: true
+      r: false
       sh: "Enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch."
       t: "`$OBJECT`"
     }
     required_pull_request_reviews: {
       h: "Required Pull Request Reviews"
       n: "required_pull_request_reviews"
-      r: true
+      op: {
+        update: {
+          req: true
+          type: [
+            "`$ONE`"
+            [
+              "`$OBJECT`"
+              "`$NULL`"
+            ]
+          ]
+        }
+      }
+      r: false
       sh: "Require at least one approving review on a pull request, before merging."
       t: "`$OBJECT`"
       union: {
@@ -106,20 +100,44 @@ main: kit: entity: protected_branch: {
     required_signatures: {
       h: "Required Signatures"
       n: "required_signatures"
-      r: true
+      r: false
       t: "`$OBJECT`"
     }
     required_status_checks: {
       h: "Required Status Checks"
       n: "required_status_checks"
-      r: true
+      op: {
+        update: {
+          req: true
+          type: [
+            "`$ONE`"
+            [
+              "`$OBJECT`"
+              "`$NULL`"
+            ]
+          ]
+        }
+      }
+      r: false
       sh: "Status Check Policy"
       t: "`$OBJECT`"
     }
     restrictions: {
       h: "Restrictions"
       n: "restrictions"
-      r: true
+      op: {
+        update: {
+          req: true
+          type: [
+            "`$ONE`"
+            [
+              "`$OBJECT`"
+              "`$NULL`"
+            ]
+          ]
+        }
+      }
+      r: false
       sh: "Branch Restriction Policy"
       t: "`$OBJECT`"
     }
