@@ -1098,3 +1098,46 @@ arrive, so the entity count falls from 936 to 935.
 - `make comments`, `make deps` and the root `npm test` are clean.
 - The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
   whose v0.30.0 requires what v0.29.3 did.
+
+## 2026-11-26 — apidef 8.34.1 and go/v0.30.1
+
+The pins move from 8.34.0 to 8.34.1, and from go/v0.30.0 to go/v0.30.1: one
+release on each side, shipped together from one commit.
+
+### What moves
+
+4 goldens change, each with its twin: 8 files, all in the GitLab case. Its 2
+guides and 1 entity model change in place, and 1 entity model goes, so the
+entity count falls from 935 to 934.
+
+| Release | Goldens changed | Cases |
+|---|---|---|
+| 8.34.1 | 4 | 1 |
+
+**8.34.1** (voxgig/apidef#253) settles voxgig/apidef#240. When the walk for
+the noun before a trailing verb meets a version segment, only the path's first
+one ends it, as `v3` does in `/api/v3/search`; a later one versions a sub-API
+and is skipped. GitLab's `GET /api/v4/packages/conan/v1/ping` passes Conan's
+`v1` and reads `conan`: it joins the `conan` entity as a `load` route, where
+8.33.1 to 8.34.0 formed an entity of its own, `ping`. Of the 74 GitLab paths
+with two version segments, it is the only one whose name moves.
+
+| Case | Entities | Entity models gone / new / changed |
+|---|---|---|
+| gitlab | 230 → 229 | 1 / 0 / 1 |
+
+### Verification
+
+- v1 `npm test` on 8.34.1 passes 23/23, strictly, with nothing skipped.
+- Regenerating from the published 8.34.1 writes, byte for byte, the goldens
+  first generated from the release candidate, linked in locally before the
+  release.
+- On go/v0.30.1, `go vet ./...` is clean and `go test -count=1 ./...` passes,
+  comparing 789 distinct goldens strictly with none skipped.
+- `make port-diff` compares 15 cases and finds no difference. The three
+  GraphQL cases are dumped by the TypeScript port only, as expected.
+- apidef's own Go golden tests at the released commit, `TestValidateGuide`,
+  `TestValidateModel` and `TestValidateModelData`, pass against this corpus.
+- `make comments`, `make deps` and the root `npm test` are clean.
+- The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
+  whose v0.30.1 requires what v0.30.0 did.
