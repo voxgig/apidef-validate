@@ -1179,3 +1179,42 @@ so no route in the 18 cases has that shape.
 - `make comments`, `make deps` and the root `npm test` are clean.
 - The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
   whose v0.31.0 requires what v0.30.1 did.
+
+## 2026-11-27 — apidef 8.36.0 and go/v0.32.0
+
+The pins move from 8.35.0 to 8.36.0, and from go/v0.31.0 to go/v0.32.0: one
+release on each side, shipped together from one commit (voxgig/apidef#260).
+
+### What moves
+
+No golden changes, and the entity count stays at 934. The release carries
+two changes:
+
+| Change | Pull request | Reaches |
+|---|---|---|
+| The guide reports the routes its own evidence contests, as near misses | voxgig/apidef#257 | a new report file, no guide or model |
+| `pick` is a verb word, a `Schema` suffix is a command affix, and a vowelless last word keeps its `s` | voxgig/apidef#258 | guides, entity models |
+
+The second renames a route only where a definition has one of those three
+shapes. No route in the 18 cases has one: every guide and entity model twin
+regenerates byte for byte, `# why` notes included.
+
+The first writes nothing into the goldens. With the `why` traces on, as the
+v1 harness runs, apidef now writes `apidef-near-misses.txt` in the working
+directory beside `apidef-warnings.txt`. For this suite that is `v1/`, and
+`.gitignore` now ignores the report there as it ignores the warnings. The
+Go harness writes no report.
+
+### Verification
+
+- v1 `npm test` on 8.36.0 passes 23/23, strictly, with nothing skipped, and
+  rewrites all 970 `.gen.aontu` twins without a byte changing.
+- On go/v0.32.0, `go vet ./...` is clean and `go test -count=1 ./...` passes,
+  comparing 789 distinct goldens strictly with none skipped.
+- `make port-diff` compares 15 cases and finds no difference. The three
+  GraphQL cases are dumped by the TypeScript port only, as expected.
+- apidef's own Go golden tests at the released tree, `TestValidateGuide`,
+  `TestValidateModel` and `TestValidateModelData`, pass against this corpus.
+- `make comments`, `make deps` and the root `npm test` are clean.
+- The lockfile moves only apidef. `v1/go/go.mod` moves only the apidef module,
+  whose v0.32.0 requires what v0.31.0 did.
